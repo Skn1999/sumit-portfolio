@@ -16,7 +16,7 @@ export default {
       fontFamily: {
         'body': ['Inter', 'sans-serif'],
         'engineer': ['Space Mono', 'monospace'],
-        'designer': ['Playfair Display', 'serif'],
+        'designer': ['Bebas Neue', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

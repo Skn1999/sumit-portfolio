@@ -8,7 +8,7 @@ const ModeToggle = () => {
   return (
     <button
       onClick={toggleMode}
-      className="fixed top-6 right-6 z-50 group"
+      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 group"
       aria-label="Toggle between engineer and designer mode"
     >
       <div className="relative flex items-center gap-2 px-4 py-2 bg-card border-2 border-primary/20 rounded-full shadow-lg hover:shadow-xl mode-transition hover:scale-105">
