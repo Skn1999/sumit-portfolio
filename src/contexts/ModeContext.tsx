@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { useTransition } from "./TransitionContext";
 
-type Mode = 'engineer' | 'designer';
+type Mode = "engineer" | "designer";
 
 interface ModeContextType {
   mode: Mode;
@@ -9,15 +10,18 @@ interface ModeContextType {
 
 const ModeContext = createContext<ModeContextType | undefined>(undefined);
 
-export const ModeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [mode, setMode] = useState<Mode>('designer');
+export const ModeProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [mode, setMode] = useState<Mode>("designer");
+  const { startTransition } = useTransition();
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-mode', mode);
+    document.documentElement.setAttribute("data-mode", mode);
   }, [mode]);
 
   const toggleMode = () => {
-    setMode(prev => prev === 'engineer' ? 'designer' : 'engineer');
+    setMode((prev) => (prev === "engineer" ? "designer" : "engineer"));
   };
 
   return (
@@ -30,7 +34,7 @@ export const ModeProvider: React.FC<{ children: React.ReactNode }> = ({ children
 export const useMode = () => {
   const context = useContext(ModeContext);
   if (context === undefined) {
-    throw new Error('useMode must be used within a ModeProvider');
+    throw new Error("useMode must be used within a ModeProvider");
   }
   return context;
 };

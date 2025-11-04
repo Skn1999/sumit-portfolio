@@ -1,0 +1,10 @@
+/* ...existing code... */
+
+:root {
+  --mode-transition-delay: 0s;
+}
+
+.mode-dependent-content {
+  transition: opacity 0.3s ease;
+  transition-delay: var(--mode-transition-delay);
+}
