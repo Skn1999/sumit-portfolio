@@ -10,7 +10,7 @@ interface ModeContextType {
 const ModeContext = createContext<ModeContextType | undefined>(undefined);
 
 export const ModeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [mode, setMode] = useState<Mode>('engineer');
+  const [mode, setMode] = useState<Mode>('designer');
 
   useEffect(() => {
     document.documentElement.setAttribute('data-mode', mode);

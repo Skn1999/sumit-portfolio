@@ -23,11 +23,15 @@ All colors MUST be HSL.
     --engineer-surface: 210 20% 95%;
     --engineer-glow: 200 90% 60%;
     
-    /* Designer Mode Colors - Warm, Creative */
-    --designer-primary: 260 65% 55%;
-    --designer-accent: 25 85% 60%;
-    --designer-surface: 280 25% 95%;
-    --designer-glow: 280 70% 65%;
+    /* Designer Mode Colors - Neubrutalism + Calm Serenity */
+    --designer-primary: 280 60% 65%;
+    --designer-accent: 45 90% 70%;
+    --designer-surface: 45 100% 95%;
+    --designer-glow: 280 60% 75%;
+    --designer-border: 0 0% 15%;
+    
+    /* Neubrutalism bold shadows */
+    --designer-shadow: 0 0% 15%;
 
     --primary: 200 95% 45%;
     --primary-foreground: 0 0% 100%;
@@ -119,6 +123,27 @@ All colors MUST be HSL.
   }
   
   .glow-designer {
-    box-shadow: 0 0 40px -10px hsl(var(--designer-glow) / 0.5);
+    box-shadow: 6px 6px 0px hsl(var(--designer-border));
+  }
+  
+  .neubrutalism-card {
+    @apply border-4 border-[hsl(var(--designer-border))] rounded-lg;
+    box-shadow: 8px 8px 0px hsl(var(--designer-border));
+  }
+  
+  .neubrutalism-button {
+    @apply border-[3px] border-[hsl(var(--designer-border))];
+    box-shadow: 4px 4px 0px hsl(var(--designer-border));
+    transition: all 0.2s ease;
+  }
+  
+  .neubrutalism-button:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px hsl(var(--designer-border));
+  }
+  
+  .neubrutalism-button:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px hsl(var(--designer-border));
   }
 }
