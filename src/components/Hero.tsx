@@ -12,13 +12,17 @@ const Hero = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Photo - Left side */}
           <div className="order-2 md:order-1 flex justify-center">
-            <div className={`relative mode-transition ${
+            <div className={`relative apple-lift ${
               isEngineer 
-                ? 'rounded-lg overflow-hidden border-2 border-[hsl(var(--engineer-primary))] glow-engineer' 
+                ? 'rounded-lg overflow-hidden border-2 border-[hsl(var(--engineer-primary))] shadow-[0_8px_30px_rgb(0,0,0,0.12)]' 
                 : 'neubrutalism-card overflow-hidden bg-[hsl(var(--designer-surface))]'
             }`}>
-              <div className="w-64 h-64 md:w-80 md:h-80 bg-muted flex items-center justify-center">
-                <span className="text-muted-foreground text-sm">Photo placeholder</span>
+              <div className="w-64 h-64 md:w-80 md:h-80 bg-muted flex items-center justify-center group cursor-pointer">
+                <img 
+                  src={isEngineer ? "/images/hero-engineer.png" : "/images/hero-designer.png"}
+                  alt="Sumit Knayyar"
+                  className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-105"
+                />
               </div>
             </div>
           </div>
@@ -73,9 +77,9 @@ const Hero = () => {
             <div className="flex items-center gap-4 flex-wrap pt-2">
               <Button 
                 size="lg" 
-                className={`mode-transition font-body font-semibold ${
+                className={`font-body font-semibold ${
                   isEngineer 
-                    ? 'glow-engineer' 
+                    ? '' 
                     : 'neubrutalism-button bg-[hsl(var(--designer-accent))] text-[hsl(var(--designer-border))] hover:bg-[hsl(var(--designer-accent))]'
                 }`}
                 onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
@@ -87,7 +91,7 @@ const Hero = () => {
               <Button 
                 size="lg" 
                 variant="outline"
-                className={`mode-transition font-body font-semibold ${
+                className={`font-body font-semibold ${
                   isEngineer ? '' : 'neubrutalism-button'
                 }`}
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
@@ -101,7 +105,7 @@ const Hero = () => {
                 href="https://github.com/sumit" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className={`p-3 mode-transition ${
+                className={`p-3 apple-scale ${
                   isEngineer 
                     ? 'rounded-full bg-muted hover:bg-primary hover:text-primary-foreground' 
                     : 'neubrutalism-button bg-[hsl(var(--designer-surface))] hover:bg-[hsl(var(--designer-primary))] hover:text-white'
@@ -114,7 +118,7 @@ const Hero = () => {
                 href="https://linkedin.com/in/sumit-knayyar" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className={`p-3 mode-transition ${
+                className={`p-3 apple-scale ${
                   isEngineer 
                     ? 'rounded-full bg-muted hover:bg-primary hover:text-primary-foreground' 
                     : 'neubrutalism-button bg-[hsl(var(--designer-surface))] hover:bg-[hsl(var(--designer-primary))] hover:text-white'
@@ -125,7 +129,7 @@ const Hero = () => {
               </a>
               <a 
                 href="mailto:sknayyar.sk@gmail.com"
-                className={`p-3 mode-transition ${
+                className={`p-3 apple-scale ${
                   isEngineer 
                     ? 'rounded-full bg-muted hover:bg-primary hover:text-primary-foreground' 
                     : 'neubrutalism-button bg-[hsl(var(--designer-surface))] hover:bg-[hsl(var(--designer-primary))] hover:text-white'

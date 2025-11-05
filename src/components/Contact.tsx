@@ -29,10 +29,10 @@ const Contact = () => {
         <div className="flex flex-wrap gap-4 justify-center">
           <Button 
             size="lg"
-            className={`mode-transition ${
+            className={`${
               isEngineer 
-                ? 'glow-engineer font-engineer' 
-                : 'glow-designer font-designer'
+                ? 'font-engineer' 
+                : 'font-designer neubrutalism-button bg-[hsl(var(--designer-primary))] text-white hover:bg-[hsl(var(--designer-primary))/90]'
             }`}
             asChild
           >
@@ -45,8 +45,8 @@ const Contact = () => {
           <Button 
             size="lg" 
             variant="outline"
-            className={`mode-transition ${
-              isEngineer ? 'font-engineer' : 'font-designer'
+            className={`${
+              isEngineer ? 'font-engineer' : 'font-designer neubrutalism-button'
             }`}
             asChild
           >
@@ -59,8 +59,8 @@ const Contact = () => {
           <Button 
             size="lg" 
             variant="outline"
-            className={`mode-transition ${
-              isEngineer ? 'font-engineer' : 'font-designer'
+            className={`${
+              isEngineer ? 'font-engineer' : 'font-designer neubrutalism-button'
             }`}
             asChild
           >

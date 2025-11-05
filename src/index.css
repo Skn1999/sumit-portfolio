@@ -11,7 +11,7 @@ All colors MUST be HSL.
 @layer base {
   :root {
     --mode-transition-delay: 0s;
-    --background: 0 0% 98%;
+    --background: 0 0% 99%;
     --foreground: 220 15% 15%;
 
     --card: 0 0% 100%;
@@ -21,44 +21,46 @@ All colors MUST be HSL.
     --popover-foreground: 220 15% 15%;
 
     /* Engineer Mode Colors - Cool, Technical */
-    --engineer-primary: 200 95% 45%;
-    --engineer-accent: 190 85% 55%;
-    --engineer-surface: 210 20% 95%;
-    --engineer-glow: 200 90% 60%;
+    --engineer-primary: 215 85% 55%;
+    --engineer-accent: 200 95% 60%;
+    --engineer-surface: 215 30% 96%;
+    --engineer-glow: 215 85% 60%;
 
     /* Designer Mode Colors - Neubrutalism + Calm Serenity */
-    --designer-primary: 280 60% 65%;
-    --designer-accent: 45 90% 70%;
-    --designer-surface: 45 100% 95%;
-    --designer-glow: 280 60% 75%;
+    --designer-primary: 260 75% 60%;
+    --designer-accent: 340 85% 65%;
+    --designer-surface: 260 25% 97%;
+    --designer-glow: 260 75% 70%;
     --designer-border: 0 0% 15%;
 
     /* Neubrutalism bold shadows */
     --designer-shadow: 0 0% 15%;
 
-    --primary: 200 95% 45%;
+    --primary: 215 85% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 15% 92%;
+    --secondary: 210 15% 97%;
     --secondary-foreground: 220 15% 15%;
 
-    --muted: 210 15% 95%;
+    --muted: 210 15% 98%;
     --muted-foreground: 220 10% 45%;
 
-    --accent: 200 90% 50%;
+    --accent: 215 85% 60%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 85% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 88%;
-    --input: 220 15% 88%;
-    --ring: 200 95% 45%;
+    --border: 220 15% 92%;
+    --input: 220 15% 94%;
+    --ring: 215 85% 55%;
 
     --radius: 0.75rem;
 
-    /* Transitions */
+    /* Transitions - Apple-like easing */
     --transition-mode: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-spring: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 
     --sidebar-background: 0 0% 98%;
 
@@ -158,5 +160,31 @@ All colors MUST be HSL.
   .neubrutalism-button:active {
     transform: translate(4px, 4px);
     box-shadow: 0px 0px 0px hsl(var(--designer-border));
+  }
+
+  /* Apple-like hover effects */
+  .apple-hover {
+    transition: var(--transition-smooth);
+  }
+
+  .apple-hover:hover {
+    transform: translateY(-2px);
+  }
+
+  .apple-scale {
+    transition: var(--transition-spring);
+  }
+
+  .apple-scale:hover {
+    transform: scale(1.02);
+  }
+
+  .apple-lift {
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .apple-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -8px hsl(var(--primary) / 0.15);
   }
 }

@@ -73,11 +73,14 @@ const Projects = () => {
           {projects.map((project, index) => (
             <div
               key={index}
-              className={`group p-8 rounded-2xl bg-card border mode-transition hover:shadow-2xl ${
+              className={`group p-8 rounded-2xl bg-card border apple-lift ${
                 isEngineer 
-                  ? 'hover:border-[hsl(var(--engineer-primary))] hover:glow-engineer' 
-                  : 'hover:border-[hsl(var(--designer-primary))] hover:glow-designer'
+                  ? 'hover:border-[hsl(var(--engineer-primary))]' 
+                  : 'neubrutalism-card'
               }`}
+              style={{
+                transitionDelay: `${index * 50}ms`
+              }}
             >
               <h3 
                 className={`text-2xl font-bold mb-4 mode-transition ${
@@ -95,10 +98,10 @@ const Projects = () => {
                 {project.tech.map((tech, techIndex) => (
                   <span
                     key={techIndex}
-                    className={`px-3 py-1 rounded-md text-xs font-medium mode-transition ${
+                    className={`px-3 py-1 rounded-md text-xs font-medium apple-scale ${
                       isEngineer 
                         ? 'bg-[hsl(var(--engineer-surface))] text-[hsl(var(--engineer-primary))]' 
-                        : 'bg-[hsl(var(--designer-surface))] text-[hsl(var(--designer-primary))]'
+                        : 'bg-[hsl(var(--designer-surface))] text-[hsl(var(--designer-primary))] border-2 border-[hsl(var(--designer-border))]'
                     }`}
                   >
                     {tech}

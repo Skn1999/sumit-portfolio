@@ -53,11 +53,14 @@ const Skills = () => {
           {Object.entries(skills).map(([category, items], index) => (
             <div
               key={index}
-              className={`p-8 rounded-2xl bg-card border mode-transition hover:shadow-lg ${
+              className={`p-8 rounded-2xl bg-card border apple-lift ${
                 isEngineer 
                   ? 'hover:border-[hsl(var(--engineer-primary))]' 
-                  : 'hover:border-[hsl(var(--designer-primary))]'
+                  : 'neubrutalism-card'
               }`}
+              style={{
+                transitionDelay: `${index * 50}ms`
+              }}
             >
               <h3 
                 className={`text-2xl font-bold mb-6 text-primary mode-transition ${
@@ -71,10 +74,10 @@ const Skills = () => {
                 {items.map((skill, skillIndex) => (
                   <span
                     key={skillIndex}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium mode-transition ${
+                    className={`px-4 py-2 rounded-lg text-sm font-medium apple-scale ${
                       isEngineer 
                         ? 'bg-[hsl(var(--engineer-surface))] text-[hsl(var(--engineer-primary))] border border-[hsl(var(--engineer-primary))/0.3]' 
-                        : 'bg-[hsl(var(--designer-surface))] text-[hsl(var(--designer-primary))] border border-[hsl(var(--designer-primary))/0.3]'
+                        : 'neubrutalism-button bg-[hsl(var(--designer-surface))] text-[hsl(var(--designer-primary))]'
                     }`}
                   >
                     {skill}

@@ -68,11 +68,14 @@ const About = () => {
             return (
               <div
                 key={index}
-                className={`p-8 rounded-2xl bg-card border mode-transition hover:shadow-xl ${
+                className={`p-8 rounded-2xl bg-card border apple-lift ${
                   isEngineer 
-                    ? 'hover:border-[hsl(var(--engineer-primary))] hover:glow-engineer' 
-                    : 'hover:border-[hsl(var(--designer-primary))] hover:glow-designer'
+                    ? 'hover:border-[hsl(var(--engineer-primary))]' 
+                    : 'neubrutalism-card'
                 }`}
+                style={{
+                  transitionDelay: `${index * 50}ms`
+                }}
               >
                 <div className={`inline-flex p-4 rounded-xl mb-6 mode-transition ${
                   isEngineer 
