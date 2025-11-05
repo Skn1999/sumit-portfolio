@@ -11,7 +11,7 @@ All colors MUST be HSL.
 @layer base {
   :root {
     --mode-transition-delay: 0s;
-    --background: 0 0% 99%;
+    --background: 0 0% 100%;
     --foreground: 220 15% 15%;
 
     --card: 0 0% 100%;
@@ -29,7 +29,7 @@ All colors MUST be HSL.
     /* Designer Mode Colors - Neubrutalism + Calm Serenity */
     --designer-primary: 260 75% 60%;
     --designer-accent: 340 85% 65%;
-    --designer-surface: 260 25% 97%;
+    --designer-surface: 0 0% 99%;
     --designer-glow: 260 75% 70%;
     --designer-border: 0 0% 15%;
 
