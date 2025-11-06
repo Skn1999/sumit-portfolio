@@ -1,6 +1,7 @@
 import { useMode } from '@/contexts/ModeContext';
 import { ExternalLink, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
 
 const Projects = () => {
   const { mode } = useMode();
@@ -59,6 +60,12 @@ const Projects = () => {
   return (
     <section id="projects" className="py-24 px-6 bg-muted/30">
       <div className="max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+        >
         <h2 
           className={`text-5xl md:text-6xl font-bold text-center mb-16 mode-transition ${
             isEngineer 
@@ -71,7 +78,11 @@ const Projects = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
               key={index}
               className={`group p-8 rounded-2xl bg-card border apple-lift ${
                 isEngineer 
@@ -158,9 +169,10 @@ const Projects = () => {
                   </>
                 )}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
+        </motion.div>
       </div>
     </section>
   );

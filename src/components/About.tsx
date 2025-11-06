@@ -1,5 +1,6 @@
 import { useMode } from '@/contexts/ModeContext';
 import { Briefcase, GraduationCap, Award } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const About = () => {
   const { mode } = useMode();
@@ -52,6 +53,13 @@ const About = () => {
   return (
     <section id="about" className="py-24 px-6 bg-muted/30">
       <div className="max-w-6xl mx-auto">
+        {/* Scroll reveal animation wrapper */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
         <h2 
           className={`text-5xl md:text-6xl font-bold text-center mb-16 mode-transition ${
             isEngineer 
@@ -66,7 +74,11 @@ const About = () => {
           {journey.map((item, index) => {
             const Icon = item.icon;
             return (
-              <div
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 key={index}
                 className={`p-8 rounded-2xl bg-card border apple-lift ${
                   isEngineer 
@@ -98,10 +110,11 @@ const About = () => {
                 <p className="text-muted-foreground leading-relaxed">
                   {item.description}
                 </p>
-              </div>
+              </motion.div>
             );
           })}
         </div>
+        </motion.div>
 
         <div className="mt-16 text-center max-w-3xl mx-auto">
           <p className="text-xl text-muted-foreground leading-relaxed">

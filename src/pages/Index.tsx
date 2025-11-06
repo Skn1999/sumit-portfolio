@@ -7,12 +7,20 @@ import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import FloatingShapes3D from "@/components/FloatingShapes3D";
 import HeroRibbons from "@/components/HeroRibbons";
+import ScrollProgress from "@/components/ScrollProgress";
+import { motion } from "framer-motion";
 
 const IndexContent = () => {
   const { mode } = useMode();
 
   return (
-    <div className="min-h-screen mode-transition relative mode-dependent-content">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+      className="min-h-screen mode-transition relative mode-dependent-content"
+    >
+      <ScrollProgress />
       {mode === "designer" && <FloatingShapes3D />}
       <div className="relative z-10">
         <ModeToggle />
@@ -22,7 +30,7 @@ const IndexContent = () => {
         <Projects />
         <Contact />
       </div>
-    </div>
+    </motion.div>
   );
 };
 
