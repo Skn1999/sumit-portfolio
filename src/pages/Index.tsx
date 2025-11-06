@@ -6,7 +6,7 @@ import Skills from "@/components/Skills";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import FloatingShapes3D from "@/components/FloatingShapes3D";
-import HeroWithSwirls from "@/components/HeroWithSwirls";
+import HeroRibbons from "@/components/HeroRibbons";
 
 const IndexContent = () => {
   const { mode } = useMode();
@@ -16,7 +16,7 @@ const IndexContent = () => {
       {mode === "designer" && <FloatingShapes3D />}
       <div className="relative z-10">
         <ModeToggle />
-        <HeroWithSwirls />
+        <HeroRibbons />
         <About />
         <Skills />
         <Projects />
