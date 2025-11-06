@@ -119,19 +119,20 @@ export const SwirlText: React.FC<SwirlTextProps> = ({
                 <text
                   fontFamily="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
                   fontSize={fontSize}
+                  fontWeight="700"
                   textAnchor="middle"
                   dominantBaseline="middle"
                   style={{
                     pointerEvents: "none",
                     userSelect: "none",
                     paintOrder: "stroke",
-                    filter: "drop-shadow(0 6px 18px rgba(50,50,50,0.35))",
+                    filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.15))",
                   }}
                   fill={useOutline ? "none" : color}
                   stroke={useOutline ? color : "none"}
                   strokeWidth={
                     useOutline
-                      ? Math.max(1, Math.round(size * 0.05))
+                      ? Math.max(1.5, Math.round(size * 0.035))
                       : undefined
                   }
                   strokeLinejoin={useOutline ? "round" : undefined}

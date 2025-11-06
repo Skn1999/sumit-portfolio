@@ -23,13 +23,13 @@ All colors MUST be HSL.
     /* Engineer Mode Colors - Cool, Technical */
     --engineer-primary: 215 85% 55%;
     --engineer-accent: 200 95% 60%;
-    --engineer-surface: 215 30% 96%;
+    --engineer-surface: 0 0% 100%;
     --engineer-glow: 215 85% 60%;
 
     /* Designer Mode Colors - Neubrutalism + Calm Serenity */
     --designer-primary: 260 75% 60%;
     --designer-accent: 340 85% 65%;
-    --designer-surface: 0 0% 99%;
+    --designer-surface: 0 0% 100%;
     --designer-glow: 260 75% 70%;
     --designer-border: 0 0% 15%;
 
