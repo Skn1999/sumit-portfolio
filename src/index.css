@@ -194,11 +194,30 @@ All colors MUST be HSL.
     transform-style: preserve-3d;
     perspective: 1000px;
     will-change: transform;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
   }
 
   /* Smooth transition between modes */
-  .hero-photo {
-    transition: border 0.3s ease, box-shadow 0.3s ease;
+  .hero-photo > div::after {
+    content: "";
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    left: 5%;
+    bottom: -80px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.15);
+    filter: blur(30px);
+    transform: translateZ(-50px) rotateX(90deg)
+      translate(var(--shadow-x, 0), var(--shadow-y, 0));
+    opacity: var(--shadow-opacity, 0.15);
+    transform-origin: center bottom;
+    transition: all 0.3s ease;
+  }
+
+  .designer-frame > div::after {
+    background: rgba(0, 0, 0, 0.12);
+    filter: blur(35px);
   }
 
   /* responsive adjustments */

@@ -25,12 +25,12 @@ const HeroRibbons: React.FC = () => {
   });
 
   // Parallax effect for photo (moves slower than scroll)
-  const photoY = useTransform(scrollYProgress, [0, 1], [0, 600]);
+  const photoY = useTransform(scrollYProgress, [0, 1], [-150, 150]);
   const photoScale = useTransform(scrollYProgress, [0, 1], [1, 0.82]);
   const photoOpacity = useTransform(scrollYProgress, [0.7, 1], [1, 0]);
 
   // Horizontal motion for four ribbons with different speeds
-  const x1 = useTransform(scrollYProgress, [0, 1], ["30%", "-30%"]);
+  const x1 = useTransform(scrollYProgress, [0, 1], ["50%", "-50%"]);
   const x2 = useTransform(scrollYProgress, [0, 1], ["-35%", "35%"]);
   const x3 = useTransform(scrollYProgress, [0, 1], ["25%", "-25%"]);
   const x4 = useTransform(scrollYProgress, [0, 1], ["-30%", "30%"]);
@@ -124,7 +124,7 @@ const HeroRibbons: React.FC = () => {
     >
       {/* Photo centered with parallax */}
       {/* <motion.div
-        style={{ y: photoY, scale: photoScale }}
+        style={{ y: photoY, scale: photoScale, opacity: photoOpacity }}
         className="absolute  z-20 w-[min(90vw,420px)] h-[min(90vw,420px)] md:w-[420px] md:h-[60vh] will-change-transform"
       >
         <div
@@ -141,7 +141,6 @@ const HeroRibbons: React.FC = () => {
           />
         </div>
       </motion.div> */}
-
       {/* Ribbons group with global fade */}
       <motion.div
         style={{ opacity: ribbonsOpacity }}
@@ -170,6 +169,7 @@ const HeroRibbons: React.FC = () => {
           </motion.div>
         ))}
       </motion.div>
+      ]
       <motion.div
         style={{
           y: photoY,
@@ -179,7 +179,6 @@ const HeroRibbons: React.FC = () => {
       >
         <HeroPhoto />
       </motion.div>
-
       {/* Visually hidden H1 for SEO */}
       <h1 className="sr-only">
         Sumit Knayyar — Engineer and Designer Portfolio

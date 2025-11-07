@@ -13,18 +13,35 @@ const HeroPhoto = () => {
 
   // --- increased sensitivity: larger angle range ---
   // Transform mouse position into rotation (more sensitive)
-  const rawRotateX = useTransform(mouseY, [-0.5, 0.5], ["14deg", "-14deg"]);
-  const rawRotateY = useTransform(mouseX, [-0.5, 0.5], ["-16deg", "16deg"]);
+  const rawRotateX = useTransform(mouseY, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rawRotateY = useTransform(mouseX, [-0.5, 0.5], ["-10deg", "10deg"]);
+  const rawPositionX = useTransform(mouseX, [-0.5, 0.5], [-15, 15]);
+  const rawPositionY = useTransform(mouseY, [-0.5, 0.5], [-15, 15]);
+  const shadowX = useTransform(mouseX, [-0.5, 0.5], ["15px", "-15px"]);
+  const shadowY = useTransform(mouseY, [-0.5, 0.5], ["15px", "-15px"]);
+  const shadowOpacity = useTransform(mouseY, [-0.5, 0, 0.5], [0.2, 0.15, 0.1]);
 
   // --- snappier spring for more responsive feel ---
   const rotateX = useSpring(rawRotateX, {
-    damping: 18,
-    stiffness: 300,
-    mass: 1,
+    damping: 20,
+    stiffness: 150,
+    mass: 2,
   });
   const rotateY = useSpring(rawRotateY, {
-    damping: 18,
-    stiffness: 300,
+    damping: 20,
+    stiffness: 150,
+    mass: 2,
+  });
+
+  const positionX = useSpring(rawPositionX, {
+    damping: 30,
+    stiffness: 90,
+    mass: 1,
+  });
+
+  const positionY = useSpring(rawPositionY, {
+    damping: 30,
+    stiffness: 90,
     mass: 1,
   });
 
@@ -68,23 +85,25 @@ const HeroPhoto = () => {
         bounce: 0.35,
       }}
     >
-      <div
-        className="relative w-[420px] h-[420px] rounded-[20px] overflow-hidden"
+      <motion.div
+        className="relative w-[min(90vw,420px)] h-[min(90vw,420px)] md:w-[420px] md:h-[60vh] rounded-[20px] overflow-hidden"
         style={{
           transformStyle: "preserve-3d",
+          x: positionX,
+          y: positionY,
         }}
       >
         <motion.img
-          src="/hero-photo.jpg"
+          src="/images//hero.jpg"
           alt="Profile"
           className="w-full h-full object-cover"
           style={{
-            scale: 1.08,
+            scale: 1.05,
             willChange: "transform",
           }}
           draggable={false}
         />
-      </div>
+      </motion.div>
     </motion.div>
   );
 };
