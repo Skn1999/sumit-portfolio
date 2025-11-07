@@ -164,10 +164,9 @@ All colors MUST be HSL.
   .swirl-svg-wrapper {
     position: absolute;
     left: 50%;
-    top: 50%;
     will-change: transform;
-    transform-style: preserve-3d;
     pointer-events: none;
+    transform-style: preserve-3d;
   }
 
   /* ensure SVG text uses the same visual weight */
@@ -189,6 +188,17 @@ All colors MUST be HSL.
     display: block;
     -webkit-user-drag: none;
     user-select: none;
+  }
+
+  .hero-photo {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    will-change: transform;
+  }
+
+  /* Smooth transition between modes */
+  .hero-photo {
+    transition: border 0.3s ease, box-shadow 0.3s ease;
   }
 
   /* responsive adjustments */

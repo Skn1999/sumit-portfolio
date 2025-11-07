@@ -5,13 +5,16 @@ type SwirlTextProps = {
   text: string;
   radius: number;
   count?: number;
-  size?: number; // font-size px
+  size?: number;
   outline?: boolean;
   opacity?: number;
-  speed?: number; // multiplier for rotation
+  speed?: number;
   clockwise?: boolean;
   color?: string;
   z?: number;
+  angle?: number; // NEW: initial rotation angle
+  yPercent?: number; // NEW: vertical position as percent of hero height
+  frequency?: number; // NEW: sine wave frequency
 };
 
 export const SwirlText: React.FC<SwirlTextProps> = ({
@@ -23,8 +26,11 @@ export const SwirlText: React.FC<SwirlTextProps> = ({
   opacity = 1,
   speed = 0.5,
   clockwise = true,
-  color = "#ffffff",
+  color = "#111",
   z = 0,
+  angle = 0,
+  yPercent = 50,
+  frequency = 1,
 }) => {
   const id = useId();
   const pathId = `swirl-path-${id.replace(/[:.]/g, "")}`;
@@ -32,6 +38,21 @@ export const SwirlText: React.FC<SwirlTextProps> = ({
   const { scrollYProgress } = useScroll();
   const deg = (clockwise ? 1 : -1) * 360 * speed;
   const rotate = useTransform(scrollYProgress, [0, 1], [0, deg]);
+
+  // Sine wave undulation for y position
+  const yWave = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, Math.sin(frequency * Math.PI) * 24]
+  );
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [
+      `calc(${yPercent}% + 0px)`,
+      `calc(${yPercent}% + ${Math.sin(frequency * Math.PI) * 24}px)`,
+    ]
+  );
 
   // SVG viewbox sized to fit the largest radius + text size
   const vb = radius * 2 + size * 2;
@@ -41,10 +62,8 @@ export const SwirlText: React.FC<SwirlTextProps> = ({
     <motion.div
       style={{
         x: "-50%",
-        y: "-50%",
+        y,
         rotate,
-        // small 3D tilt to give depth (Apple-like subtle tilt)
-        rotateX: 0,
         zIndex: z,
         pointerEvents: "none",
       }}
@@ -61,7 +80,6 @@ export const SwirlText: React.FC<SwirlTextProps> = ({
         role="img"
       >
         <defs>
-          {/* circular path centered at 0,0 */}
           <path
             id={pathId}
             d={`
@@ -72,92 +90,47 @@ export const SwirlText: React.FC<SwirlTextProps> = ({
             `}
           />
         </defs>
-
-        <g
-          transform="translate(2,4)"
-          style={{ opacity, transformOrigin: "center center" }}
-        >
+        <g style={{ opacity, transformOrigin: "center center" }}>
           {Array.from({ length: count }).map((_, i) => {
-            // offset along path so duplicates are spaced
             const startOffset = `${(i / count) * 100}%`;
             const fontSize = size;
-
-            // when alternate is desired, alternate filled vs outline per item
+            // Alternate filled and outlined text
             const useOutline = outline ? i % 2 === 0 : false;
-
-            /*
-              For a subtle 3D/extruded look we render a faint offset 'shadow' text
-              behind the main text. SVG doesn't support translateZ, so we fake
-              depth by drawing a dark copy slightly offset.
-            */
             return (
-              <g key={i} style={{ transformOrigin: "center center" }}>
-                {/* extrude shadow - slightly offset along the path */}
-                <text
-                  fontFamily="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
-                  fontSize={fontSize}
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  transform="translate(2,4)"
-                  style={{
-                    pointerEvents: "none",
-                    userSelect: "none",
-                    paintOrder: "stroke",
-                  }}
-                  fill="rgba(0,0,0,0.45)"
+              <text
+                key={i}
+                fontFamily="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
+                fontSize={fontSize}
+                fontWeight="700"
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fill={useOutline ? "none" : color}
+                stroke={useOutline ? color : "none"}
+                strokeWidth={
+                  useOutline
+                    ? Math.max(1.5, Math.round(size * 0.035))
+                    : undefined
+                }
+                strokeLinejoin={useOutline ? "round" : undefined}
+                strokeLinecap={useOutline ? "round" : undefined}
+                style={{
+                  pointerEvents: "none",
+                  userSelect: "none",
+                  paintOrder: "stroke",
+                  filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.15))",
+                }}
+              >
+                <textPath
+                  href={`#${pathId}`}
+                  startOffset={startOffset}
+                  method="align"
                 >
-                  <textPath
-                    href={`#${pathId}`}
-                    startOffset={startOffset}
-                    method="align"
-                  >
-                    {text}
-                  </textPath>
-                </text>
-
-                {/* main text: either outline or filled (decided per instance) */}
-                <text
-                  fontFamily="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
-                  fontSize={fontSize}
-                  fontWeight="700"
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  style={{
-                    pointerEvents: "none",
-                    userSelect: "none",
-                    paintOrder: "stroke",
-                    filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.15))",
-                  }}
-                  fill={useOutline ? "none" : color}
-                  stroke={useOutline ? color : "none"}
-                  strokeWidth={
-                    useOutline
-                      ? Math.max(1.5, Math.round(size * 0.035))
-                      : undefined
-                  }
-                  strokeLinejoin={useOutline ? "round" : undefined}
-                  strokeLinecap={useOutline ? "round" : undefined}
-                >
-                  <textPath
-                    href={`#${pathId}`}
-                    startOffset={startOffset}
-                    method="align"
-                  >
-                    {text}
-                  </textPath>
-                </text>
-              </g>
+                  {text}
+                </textPath>
+              </text>
             );
           })}
         </g>
-
-        {/* minimal SVG text styles; per-instance fill/stroke attributes handle visuals */}
-        <style>{`
-          .swirl-svg text {
-            -webkit-font-smoothing: antialiased;
-            mix-blend-mode: normal;
-          }
-        `}</style>
       </svg>
     </motion.div>
   );
