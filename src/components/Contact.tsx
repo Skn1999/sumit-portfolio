@@ -11,19 +11,19 @@ const Contact = () => {
     <section id="contact" className="py-24 px-6">
       <div className="max-w-4xl mx-auto text-center">
         <h2
-          className={`text-5xl md:text-6xl font-bold mb-8 mode-transition ${
+          className={`text-4xl md:text-5xl font-bold mb-6 mode-transition ${
             isEngineer
               ? "font-engineer text-gradient-engineer"
               : "font-designer text-gradient-designer"
           }`}
         >
-          {isEngineer ? "Let's Build Something" : "Let's Create Together"}
+          {isEngineer ? "Coffee? Chat? Let's Talk." : "Your Project Needs This Energy"}
         </h2>
 
-        <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
+        <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
           {isEngineer
-            ? "I'm currently seeking internship opportunities where I can apply my engineering skills and continue learning. Open to challenging projects and collaborative teams."
-            : "Looking for internships to apply my design thinking and create meaningful user experiences. Let's discuss how design can solve real problems."}
+            ? "I bring curiosity, code, and coffee. Let's build something you're proud of."
+            : "I bring empathy, research, and imagination. Let's create experiences people love."}
         </p>
 
         <div className="flex flex-wrap gap-4 justify-center">
