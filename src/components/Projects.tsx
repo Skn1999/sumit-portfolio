@@ -3,6 +3,8 @@ import { ExternalLink, Github, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./ui/button";
 import { useState } from "react";
+import engineeringProjects from "@/data/engineeringProjects";
+import designerProjectsData from "@/data/designProjects";
 
 const Projects = () => {
   const { mode } = useMode();
@@ -10,83 +12,9 @@ const Projects = () => {
   const [featuredIndex, setFeaturedIndex] = useState(0);
   const [expandedProject, setExpandedProject] = useState<number | null>(null);
 
-  const engineerProjects = [
-    {
-      title: "E-Commerce Platform",
-      tagline: "Scalable microservices for 100K+ daily users",
-      description:
-        "Built a scalable microservices architecture handling 100K+ daily users with React, Node.js, and PostgreSQL.",
-      fullDescription:
-        "Architected and deployed a complete e-commerce solution using microservices. Implemented event-driven architecture with message queues, caching layers, and load balancing to ensure 99.9% uptime.",
-      metric: "45% faster checkout",
-      tech: ["React", "Node.js", "PostgreSQL"],
-      github: "#",
-      live: "#",
-    },
-    {
-      title: "Real-Time Analytics Dashboard",
-      tagline: "Live data visualization platform",
-      description:
-        "Developed a real-time data visualization platform with WebSocket integration and custom charting components.",
-      fullDescription:
-        "Created a performant analytics dashboard processing millions of events per day. Optimized rendering pipeline for smooth 60fps updates even with large datasets.",
-      metric: "1M+ events/day",
-      tech: ["TypeScript", "WebSocket", "Redis"],
-      github: "#",
-      live: "#",
-    },
-    {
-      title: "API Gateway & Auth System",
-      tagline: "Secure auth for microservices",
-      description:
-        "Designed and implemented a secure authentication system and API gateway serving multiple microservices.",
-      fullDescription:
-        "Built enterprise-grade authentication and authorization system with OAuth 2.0, JWT tokens, and rate limiting. Implemented API gateway pattern for unified access control.",
-      metric: "99.9% uptime",
-      tech: ["Node.js", "JWT", "OAuth"],
-      github: "#",
-      live: "#",
-    },
-  ];
+  const engineerProjects = engineeringProjects;
 
-  const designerProjects = [
-    {
-      title: "Healthcare App Redesign",
-      tagline: "Improving patient experience",
-      description:
-        "Led UX research and redesign for a patient portal, improving task completion rate by 45% through iterative testing.",
-      fullDescription:
-        "Conducted extensive user research with 50+ patients to identify pain points. Created personas, journey maps, and tested 5 design iterations to achieve measurable improvement in user satisfaction.",
-      metric: "45% better completion",
-      tech: ["User Research", "Figma", "Usability Testing"],
-      behance: "#",
-      case: "#",
-    },
-    {
-      title: "Design System Creation",
-      tagline: "Building consistency at scale",
-      description:
-        "Created a comprehensive design system with 100+ components, ensuring consistency across multiple products.",
-      fullDescription:
-        "Established design principles and built reusable component library adopted across 8 product teams. Documented accessibility guidelines and created Figma plugin for automated consistency checks.",
-      metric: "100+ components",
-      tech: ["Figma", "Documentation", "Accessibility"],
-      behance: "#",
-      case: "#",
-    },
-    {
-      title: "Mobile Banking Experience",
-      tagline: "Accessible banking for all",
-      description:
-        "Designed an intuitive mobile banking interface focused on accessibility and clarity for diverse user groups.",
-      fullDescription:
-        "Designed mobile banking app meeting WCAG 2.1 AAA standards. Simplified complex financial tasks through clear information hierarchy and thoughtful micro-interactions for all user abilities.",
-      metric: "AAA accessible",
-      tech: ["Mobile Design", "Accessibility", "User Flows"],
-      behance: "#",
-      case: "#",
-    },
-  ];
+  const designerProjects = designerProjectsData;
 
   const projects = isEngineer ? engineerProjects : designerProjects;
 
@@ -195,7 +123,9 @@ const Projects = () => {
                   }
                   className="text-sm text-primary font-medium mb-6 flex items-center gap-1 hover:gap-2 transition-all"
                 >
-                  {expandedProject === featuredIndex ? "Show Less" : "Read More"}
+                  {expandedProject === featuredIndex
+                    ? "Show Less"
+                    : "Read More"}
                   <ChevronDown
                     className={`w-4 h-4 transition-transform ${
                       expandedProject === featuredIndex ? "rotate-180" : ""
@@ -313,7 +243,11 @@ const Projects = () => {
                     ))}
                   </div>
 
-                  <Button variant="ghost" size="sm" className="w-full group-hover:bg-primary/10">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-full group-hover:bg-primary/10"
+                  >
                     View Project
                   </Button>
                 </motion.div>
