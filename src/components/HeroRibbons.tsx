@@ -2,6 +2,7 @@ import React, { useMemo, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useMode } from "@/contexts/ModeContext";
 import HeroPhoto from "./HeroPhoto";
+import MagneticButton from "./MagneticButton";
 
 const separators = ["  •  ", "  /  ", "  |  ", "  ~  "];
 
@@ -64,17 +65,17 @@ const HeroRibbons: React.FC = () => {
 
   // Four ribbons with varied properties
   const ribbons = [
-    {
-      x: x1,
-      y: y1,
-      text: lineText[0],
-      rotation: -12,
-      top: "32%",
-      opacity: 0.4,
-      zIndex: 10,
-      fontSize: "text-3xl md:text-5xl lg:text-6xl",
-      style: isDesigner ? "text-foreground/40" : "text-foreground/30",
-    },
+    // {
+    //   x: x1,
+    //   y: y1,
+    //   text: lineText[0],
+    //   rotation: -12,
+    //   top: "32%",
+    //   opacity: 0.4,
+    //   zIndex: 10,
+    //   fontSize: "text-3xl md:text-5xl lg:text-6xl",
+    //   style: isDesigner ? "text-foreground/40" : "text-foreground/30",
+    // },
     {
       x: x2,
       y: y2,
@@ -101,19 +102,19 @@ const HeroRibbons: React.FC = () => {
         ? "text-transparent [-webkit-text-stroke:2px_hsl(var(--foreground)/0.8)]"
         : "text-foreground/70 font-bold",
     },
-    {
-      x: x4,
-      y: y4,
-      text: lineText[3],
-      rotation: 13,
-      top: "68%",
-      opacity: 0.9,
-      zIndex: 35,
-      fontSize: "text-3xl md:text-5xl lg:text-6xl",
-      style: isDesigner
-        ? "text-foreground/90 font-bold"
-        : "text-foreground/80 font-semibold",
-    },
+    // {
+    //   x: x4,
+    //   y: y4,
+    //   text: lineText[3],
+    //   rotation: 13,
+    //   top: "68%",
+    //   opacity: 0.9,
+    //   zIndex: 35,
+    //   fontSize: "text-3xl md:text-5xl lg:text-6xl",
+    //   style: isDesigner
+    //     ? "text-foreground/90 font-bold"
+    //     : "text-foreground/80 font-semibold",
+    // },
   ];
 
   return (
@@ -156,7 +157,7 @@ const HeroRibbons: React.FC = () => {
               rotate: `${ribbon.rotation}deg`,
               zIndex: ribbon.zIndex,
             }}
-            className="absolute left-0 right-0 will-change-transform"
+            className="absolute left-[-350px] right-0 will-change-transform"
             aria-hidden
           >
             <div
@@ -183,6 +184,20 @@ const HeroRibbons: React.FC = () => {
       <h1 className="sr-only">
         Sumit Knayyar — Engineer and Designer Portfolio
       </h1>
+      <div className="absolute bottom-6">
+        <MagneticButton
+          magneticRadius={300}
+          magneticStrength={0.5}
+          size="lg"
+          variant="outline"
+          className={`${
+            !isDesigner ? "font-engineer" : "font-designer neubrutalism-button"
+          }`}
+          asChild
+        >
+          <a href="#projects">See Projects</a>
+        </MagneticButton>
+      </div>
     </section>
   );
 };
