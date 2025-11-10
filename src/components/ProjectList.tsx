@@ -9,7 +9,7 @@ const ProjectList: React.FC = () => {
         <article key={p.slug} className="p-6 bg-card rounded-2xl">
           {p.cover && (
             <img
-              src={p.cover}
+              src={p.cover.filename}
               alt={p.title}
               className="w-full h-48 object-cover rounded-lg mb-4"
             />

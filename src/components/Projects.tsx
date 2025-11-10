@@ -96,7 +96,7 @@ const Projects = () => {
 
                 {/* Expandable description */}
                 <AnimatePresence>
-                  {expandedProject === featuredIndex ? (
+                  {expandedProject === featuredIndex && (
                     <motion.p
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
@@ -104,15 +104,6 @@ const Projects = () => {
                       className="text-muted-foreground mb-6 leading-relaxed overflow-hidden"
                     >
                       {featuredProject.summary}
-                    </motion.p>
-                  ) : (
-                    <motion.p
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="text-muted-foreground mb-6 leading-relaxed overflow-hidden"
-                    >
-                      {featuredProject.description}
                     </motion.p>
                   )}
                 </AnimatePresence>
