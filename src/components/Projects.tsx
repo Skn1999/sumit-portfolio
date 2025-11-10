@@ -5,6 +5,8 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 import engineeringProjects from "@/data/engineeringProjects";
 import designerProjectsData from "@/data/designProjects";
+import { getProjectsByType } from "@/lib/projects";
+import { ProjectImage } from "./ProjectImage";
 
 const Projects = () => {
   const { mode } = useMode();
@@ -12,11 +14,13 @@ const Projects = () => {
   const [featuredIndex, setFeaturedIndex] = useState(0);
   const [expandedProject, setExpandedProject] = useState<number | null>(null);
 
-  const engineerProjects = engineeringProjects;
+  const engineerProjects = getProjectsByType("engineering");
 
-  const designerProjects = designerProjectsData;
+  const designerProjects = getProjectsByType("design");
 
   const projects = isEngineer ? engineerProjects : designerProjects;
+
+  const featuredProject = projects[featuredIndex];
 
   return (
     <section id="projects" className="py-24 px-6 bg-muted/30">
@@ -55,17 +59,15 @@ const Projects = () => {
                 }`}
               >
                 {/* Image placeholder */}
-                <div
+                <ProjectImage
                   className={`w-full h-48 md:h-64 rounded-xl mb-6 flex items-center justify-center mode-transition ${
                     isEngineer
                       ? "bg-[hsl(var(--engineer-surface))]"
                       : "bg-[hsl(var(--designer-surface))]"
                   }`}
-                >
-                  <span className="text-muted-foreground text-sm">
-                    Project Preview
-                  </span>
-                </div>
+                  project={featuredProject.slug}
+                  image={featuredProject.cover}
+                ></ProjectImage>
 
                 {/* Metric Badge */}
                 <div className="inline-block mb-4">
@@ -76,7 +78,7 @@ const Projects = () => {
                         : "bg-[hsl(var(--designer-primary))] text-white"
                     }`}
                   >
-                    {projects[featuredIndex].metric}
+                    {featuredProject.metric}
                   </span>
                 </div>
 
@@ -85,11 +87,11 @@ const Projects = () => {
                     isEngineer ? "font-engineer" : "font-designer"
                   }`}
                 >
-                  {projects[featuredIndex].title}
+                  {featuredProject.title}
                 </h3>
 
                 <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
-                  {projects[featuredIndex].tagline}
+                  {featuredProject.tagline}
                 </p>
 
                 {/* Expandable description */}
@@ -101,7 +103,7 @@ const Projects = () => {
                       exit={{ opacity: 0, height: 0 }}
                       className="text-muted-foreground mb-6 leading-relaxed overflow-hidden"
                     >
-                      {projects[featuredIndex].fullDescription}
+                      {featuredProject.summary}
                     </motion.p>
                   ) : (
                     <motion.p
@@ -110,7 +112,7 @@ const Projects = () => {
                       exit={{ opacity: 0, height: 0 }}
                       className="text-muted-foreground mb-6 leading-relaxed overflow-hidden"
                     >
-                      {projects[featuredIndex].description}
+                      {featuredProject.description}
                     </motion.p>
                   )}
                 </AnimatePresence>
@@ -134,7 +136,7 @@ const Projects = () => {
                 </button>
 
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {projects[featuredIndex].tech.map((tech, techIndex) => (
+                  {featuredProject.tech.map((tech, techIndex) => (
                     <span
                       key={techIndex}
                       className={`px-3 py-1.5 rounded-md text-sm font-medium ${
@@ -153,7 +155,7 @@ const Projects = () => {
                     <>
                       <Button variant="outline" size="lg" asChild>
                         <a
-                          href={(projects[featuredIndex] as any).github}
+                          href={(featuredProject as any).github}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -163,7 +165,7 @@ const Projects = () => {
                       </Button>
                       <Button size="lg" asChild>
                         <a
-                          href={(projects[featuredIndex] as any).live}
+                          href={(featuredProject as any).live}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -174,22 +176,13 @@ const Projects = () => {
                     </>
                   ) : (
                     <>
-                      <Button variant="outline" size="lg" asChild>
-                        <a
-                          href={(projects[featuredIndex] as any).behance}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          View Design
-                        </a>
-                      </Button>
                       <Button size="lg" asChild>
                         <a
-                          href={(projects[featuredIndex] as any).case}
+                          href={"/projects/" + featuredProject.slug}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          Case Study
+                          View Project
                         </a>
                       </Button>
                     </>
