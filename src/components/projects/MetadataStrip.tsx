@@ -6,33 +6,33 @@ interface MetadataStripProps {
 }
 
 export const MetadataStrip: React.FC<MetadataStripProps> = ({ project }) => {
+  const metadata = [
+    { label: "Deliverables", value: project.tags?.join(", "), show: project.tags?.length },
+    { label: "My Role", value: project.roles?.join(", "), show: project.roles?.length },
+    { label: "Type", value: project.type, show: project.type },
+    { label: "Completed", value: project.date ? new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long' }) : null, show: project.date },
+  ].filter(item => item.show);
+
   return (
-    <div className="flex flex-wrap gap-4 py-8 border-b border-border/20">
-      {project.date && (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Calendar className="w-4 h-4" />
-          <span>{new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</span>
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
+      {metadata.map((item, index) => (
+        <div key={index} className="text-center">
+          <div className="text-sm font-semibold text-foreground/60 mb-2 uppercase tracking-wide">
+            {item.label}
+          </div>
+          <div className="text-sm text-foreground/80">
+            {item.value || "—"}
+          </div>
         </div>
-      )}
-      
-      {project.roles && project.roles.length > 0 && (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Users className="w-4 h-4" />
-          <span>{project.roles.join(", ")}</span>
-        </div>
-      )}
-      
-      {project.type && (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Tag className="w-4 h-4" />
-          <span className="capitalize">{project.type}</span>
-        </div>
-      )}
+      ))}
       
       {project.metric && (
-        <div className="flex items-center gap-2 text-sm font-medium text-primary">
-          <TrendingUp className="w-4 h-4" />
-          <span>{project.metric}</span>
+        <div className="col-span-2 md:col-span-4 text-center mt-4">
+          <div className="inline-block px-6 py-3 bg-primary/10 rounded-lg">
+            <div className="text-sm font-semibold text-primary">
+              {project.metric}
+            </div>
+          </div>
         </div>
       )}
     </div>

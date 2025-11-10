@@ -27,44 +27,56 @@ const ProjectPage: React.FC = () => {
   const Component = project.Component;
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
+    <div className="min-h-screen bg-background">
+      {/* Hero Section - Full Width */}
       <ProjectHero project={project} />
 
-      {/* Main Content Container */}
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Metadata Strip */}
+      {/* Main Story Container - Centered, Narrow */}
+      <div className="max-w-4xl mx-auto px-6 md:px-12 py-16">
+        {/* Metadata Boxes - Minimal, Centered */}
         <MetadataStrip project={project} />
 
-        {/* Two Column Layout: Sidebar + Content */}
-        <div className="grid lg:grid-cols-[250px_1fr] gap-12 lg:gap-16 mt-12">
-          {/* Sticky Table of Contents - Left Sidebar */}
-          <TableOfContents project={project} />
+        {/* Main Story Content */}
+        <article className="mt-20 prose prose-lg lg:prose-xl dark:prose-invert max-w-none
+          prose-headings:font-bold 
+          prose-headings:tracking-tight
+          prose-h2:text-4xl 
+          prose-h2:mt-24 
+          prose-h2:mb-8
+          prose-h3:text-2xl 
+          prose-h3:mt-16 
+          prose-h3:mb-6
+          prose-p:leading-loose 
+          prose-p:text-foreground/80
+          prose-p:mb-8
+          prose-a:text-primary 
+          prose-a:no-underline 
+          hover:prose-a:underline
+          prose-img:rounded-none
+          prose-img:w-full
+          prose-img:my-16
+          prose-ul:my-8
+          prose-li:my-2">
+          
+          {Component ? (
+            <Component />
+          ) : (
+            <div>
+              <p className="text-xl leading-relaxed">{project.summary}</p>
+            </div>
+          )}
+        </article>
 
-          {/* Main Content Area */}
-          <main className="min-w-0">
-            <article className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-bold prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4 prose-p:leading-relaxed prose-p:text-muted-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-img:shadow-lg">
-              {Component ? (
-                <Component />
-              ) : (
-                <div>
-                  <p>{project.summary}</p>
-                </div>
-              )}
-            </article>
+        {/* Gallery Section - Full Bleed Within Container */}
+        {project.gallery && project.gallery.length > 0 && (
+          <div className="mt-24 mb-24">
+            <h2 className="text-4xl font-bold mb-12 tracking-tight">Gallery</h2>
+            <ProjectGallery project={project.slug} images={project.gallery} className="gap-8" />
+          </div>
+        )}
 
-            {/* Gallery Section */}
-            {project.gallery && project.gallery.length > 0 && (
-              <div className="mt-16">
-                <h2 className="text-3xl font-bold mb-8">Gallery</h2>
-                <ProjectGallery project={project.slug} images={project.gallery} />
-              </div>
-            )}
-
-            {/* Footer Navigation */}
-            <ProjectFooter project={project} />
-          </main>
-        </div>
+        {/* Footer Navigation */}
+        <ProjectFooter project={project} />
       </div>
     </div>
   );
