@@ -48,17 +48,18 @@ export function ProjectGallery({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6",
+        "grid grid-cols-1 md:grid-cols-2 gap-12",
         className
       )}
     >
       {images.map((image) => (
-        <ProjectImage
-          key={image.filename}
-          project={project}
-          image={image}
-          className="aspect-[4/3]"
-        />
+        <div key={image.filename} className="group transition-all hover:shadow-xl">
+          <ProjectImage
+            project={project}
+            image={image}
+            className="aspect-[4/3]"
+          />
+        </div>
       ))}
     </div>
   );

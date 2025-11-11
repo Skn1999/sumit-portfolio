@@ -1,4 +1,3 @@
-import { Calendar, Users, Tag, TrendingUp } from "lucide-react";
 import { ProjectMeta } from "@/lib/projects";
 
 interface MetadataStripProps {
@@ -6,34 +5,38 @@ interface MetadataStripProps {
 }
 
 export const MetadataStrip: React.FC<MetadataStripProps> = ({ project }) => {
+  const metadataItems = [];
+  
+  if (project.roles && project.roles.length > 0) {
+    metadataItems.push(project.roles.join(", "));
+  }
+  
+  if (project.date) {
+    metadataItems.push(new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long' }));
+  }
+  
+  if (project.type) {
+    metadataItems.push(project.type.charAt(0).toUpperCase() + project.type.slice(1));
+  }
+
   return (
-    <div className="flex flex-wrap gap-4 py-8 border-b border-border/20">
-      {project.date && (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Calendar className="w-4 h-4" />
-          <span>{new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</span>
-        </div>
+    <div className="text-center py-12 border-b border-border/10">
+      {metadataItems.length > 0 && (
+        <p className="text-sm text-muted-foreground mb-4">
+          {metadataItems.join(" • ")}
+        </p>
       )}
       
-      {project.roles && project.roles.length > 0 && (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Users className="w-4 h-4" />
-          <span>{project.roles.join(", ")}</span>
-        </div>
-      )}
-      
-      {project.type && (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Tag className="w-4 h-4" />
-          <span className="capitalize">{project.type}</span>
-        </div>
+      {project.tech && project.tech.length > 0 && (
+        <p className="text-xs text-muted-foreground/70">
+          {project.tech.join(" • ")}
+        </p>
       )}
       
       {project.metric && (
-        <div className="flex items-center gap-2 text-sm font-medium text-primary">
-          <TrendingUp className="w-4 h-4" />
-          <span>{project.metric}</span>
-        </div>
+        <p className="text-sm font-medium text-primary mt-4">
+          {project.metric}
+        </p>
       )}
     </div>
   );
