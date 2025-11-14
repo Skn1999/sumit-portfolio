@@ -67,11 +67,7 @@ const HeroPhoto = () => {
       ref={ref}
       className={`hero-photo ${isDesigner ? "designer-frame" : ""}`}
       style={{
-        position: "absolute",
-        left: "50%",
-        top: "25%",
-        x: "-50%",
-        y: "-50%",
+        position: "relative",
         rotateX,
         rotateY,
         perspective: 1000,
@@ -86,7 +82,7 @@ const HeroPhoto = () => {
       }}
     >
       <motion.div
-        className="relative w-[min(90vw,420px)] h-[min(90vw,420px)] md:w-[420px] md:h-[60vh] rounded-[20px] overflow-hidden"
+        className="relative w-full aspect-[4/5] max-w-[480px] mx-auto rounded-[20px] overflow-hidden shadow-2xl"
         style={{
           transformStyle: "preserve-3d",
           x: positionX,

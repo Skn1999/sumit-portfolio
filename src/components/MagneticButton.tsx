@@ -53,7 +53,7 @@ const MagneticButton = ({
       style={{ x: springX, y: springY }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="inline-block p-10"
+      className="inline-block"
     >
       <Button ref={ref} {...props}>
         {children}
