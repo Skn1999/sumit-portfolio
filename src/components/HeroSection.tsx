@@ -110,7 +110,7 @@ const HeroSection: React.FC = () => {
             </motion.div>
 
             {/* Stats or quick facts */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6 }}
@@ -134,7 +134,7 @@ const HeroSection: React.FC = () => {
                   Problems Solved
                 </div>
               </div>
-            </motion.div>
+            </motion.div> */}
           </motion.div>
 
           {/* Right column - Photo with 3D effects */}

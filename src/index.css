@@ -442,4 +442,79 @@ All colors MUST be HSL.
     );
     background-size: 100% 20px;
   }
+
+  /* ===== TWO-COLUMN ARTICLE LAYOUT ===== */
+  /* Inspired by germanetcheverry.design - headings on left, content on right */
+  .article-two-column {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    .article-two-column {
+      grid-template-columns: 220px 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    /* Each h2 starts a new grid row and stays in left column */
+    .article-two-column > h2 {
+      grid-column: 1;
+      text-align: right;
+      padding: 0.75rem 1.5rem 0.75rem 0;
+      color: hsl(var(--foreground));
+      font-weight: 700;
+      font-size: 1.125rem;
+      letter-spacing: -0.02em;
+      position: sticky;
+      top: 8rem;
+      align-self: start;
+      background: hsl(var(--background) / 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 0.5rem;
+      z-index: 10;
+      /* Subtle shadow for depth */
+      box-shadow: 0 2px 8px hsl(var(--foreground) / 0.03);
+    }
+
+    /* Content after h2 flows in right column */
+    .article-two-column > h2 ~ * {
+      grid-column: 2;
+    }
+
+    /* Reset for next h2 */
+    .article-two-column > h2 ~ h2 {
+      grid-column: 1;
+    }
+
+    /* h3 and below stay in content column */
+    .article-two-column h3,
+    .article-two-column h4,
+    .article-two-column h5,
+    .article-two-column h6 {
+      grid-column: 2;
+    }
+  }
+
+  /* Mobile: stack vertically */
+  @media (max-width: 1023px) {
+    .article-two-column > h2 {
+      text-align: left;
+      padding: 0.5rem 0 0.5rem 1rem;
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid hsl(var(--primary));
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+  }
+
+  /* Dark mode adjustments */
+  .dark .article-two-column > h2 {
+    background: hsl(var(--background) / 0.98);
+    box-shadow: 0 2px 12px hsl(0 0% 0% / 0.15);
+  }
 }

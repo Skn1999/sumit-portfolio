@@ -25,7 +25,9 @@ const IndexContent = () => {
       >
         <ScrollProgress />
         <div className="relative z-10">
-          <HeroSection />
+          <Container>
+            <HeroSection />
+          </Container>
 
           {/* main sections */}
           <Container>

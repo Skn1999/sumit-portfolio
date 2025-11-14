@@ -49,17 +49,16 @@ const ProjectPage: React.FC = () => {
         <ProjectHero project={project} />
 
         {/* Table of Contents - Fixed on large screens */}
-        <TableOfContents />
+        {/* <TableOfContents /> */}
 
-        {/* Main Content Container - 2 Column Layout */}
+        {/* Main Content Container */}
         <div className="max-w-7xl mx-auto px-6">
-          {/* Metadata Strip - Full Width */}
-          <MetadataStrip project={project} />
+          {/* Combined Metadata Strip - Full Width */}
+          <div className="py-12 border-b border-border/20">
+            {/* <MetadataStrip project={project} /> */}
 
-          {/* 2-Column Layout: Sidebar + Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 py-20">
-            {/* Left Sidebar - Project Info (Sticky) */}
-            <aside className="lg:col-span-3 lg:sticky lg:top-32 h-fit space-y-8">
+            {/* Project Info Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 mt-12">
               {/* Client/Company */}
               {project.links?.client && (
                 <div>
@@ -115,7 +114,7 @@ const ProjectPage: React.FC = () => {
 
               {/* Tech Stack */}
               {project.tech && project.tech.length > 0 && (
-                <div>
+                <div className="col-span-2">
                   <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">
                     Technologies
                   </h3>
@@ -137,8 +136,8 @@ const ProjectPage: React.FC = () => {
               )}
 
               {/* External Links */}
-              {project.links && Object.keys(project.links).length > 0 && (
-                <div className="pt-6 border-t border-border/20">
+              {/* {project.links && Object.keys(project.links).length > 0 && (
+                <div>
                   <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">
                     Links
                   </h3>
@@ -158,13 +157,17 @@ const ProjectPage: React.FC = () => {
                       ))}
                   </div>
                 </div>
-              )}
-            </aside>
+              )} */}
+            </div>
+          </div>
 
-            {/* Right Column - Main Content */}
-            <main className="lg:col-span-9">
-              <article
-                className={`prose prose-lg md:prose-xl max-w-none
+          {/* 2-Column Article Layout */}
+          <div className="py-20">
+            <article
+              className={`
+              /* Two-column layout for h2 sections */
+              article-two-column
+              prose prose-lg md:prose-xl max-w-none
               prose-headings:scroll-mt-20
               prose-headings:font-bold
               ${
@@ -172,9 +175,11 @@ const ProjectPage: React.FC = () => {
                   ? "prose-headings:font-designer"
                   : "prose-headings:font-engineer"
               }
-              prose-h2:text-3xl md:prose-h2:text-4xl 
-              prose-h2:mt-16 
-              prose-h2:mb-6
+              prose-h2:text-xl md:prose-h2:text-2xl 
+              prose-h2:mt-0
+              prose-h2:mb-0
+              prose-h2:sticky
+              prose-h2:top-32
               ${
                 isDesigner
                   ? "prose-h2:text-gradient-designer"
@@ -220,35 +225,34 @@ const ProjectPage: React.FC = () => {
               prose-img:my-12
               dark:prose-invert
             `}
-              >
-                {Component ? (
-                  <Component />
-                ) : (
-                  <div>
-                    <p>{project.summary || "No content available."}</p>
-                  </div>
-                )}
-              </article>
-
-              {/* Gallery Section */}
-              {project.gallery && project.gallery.length > 0 && (
-                <div className="mt-24 pt-16 border-t border-border/20">
-                  <h2
-                    className={`heading-primary text-3xl md:text-4xl font-bold mb-12 text-center ${
-                      isDesigner
-                        ? "text-gradient-designer"
-                        : "text-gradient-engineer"
-                    }`}
-                  >
-                    Project Gallery
-                  </h2>
-                  <ProjectGallery
-                    project={project.slug}
-                    images={project.gallery}
-                  />
+            >
+              {Component ? (
+                <Component />
+              ) : (
+                <div>
+                  <p>{project.summary || "No content available."}</p>
                 </div>
               )}
-            </main>
+            </article>
+
+            {/* Gallery Section */}
+            {project.gallery && project.gallery.length > 0 && (
+              <div className="mt-24 pt-16 border-t border-border/20">
+                <h2
+                  className={`heading-primary text-3xl md:text-4xl font-bold mb-12 text-center ${
+                    isDesigner
+                      ? "text-gradient-designer"
+                      : "text-gradient-engineer"
+                  }`}
+                >
+                  Project Gallery
+                </h2>
+                <ProjectGallery
+                  project={project.slug}
+                  images={project.gallery}
+                />
+              </div>
+            )}
           </div>
         </div>
 

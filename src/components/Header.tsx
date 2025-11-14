@@ -34,16 +34,9 @@ const Header = () => {
                 isDesigner ? "font-designer" : "font-engineer"
               }`}
             >
-              <span className="sr-only">Home</span>
-              <span
-                className={
-                  isDesigner
-                    ? "text-gradient-designer"
-                    : "text-gradient-engineer"
-                }
-              >
-                Sumit
-              </span>
+              <div className="w-12 md:w-16 h-auto">
+                <img className="w-full h-full" src="/images/logo.png" alt="" />
+              </div>
             </Link>
 
             <nav
