@@ -15,15 +15,50 @@ const Projects = () => {
   const [expandedProject, setExpandedProject] = useState<number | null>(null);
 
   const engineerProjects = getProjectsByType("engineering");
-
   const designerProjects = getProjectsByType("design");
 
   const projects = isEngineer ? engineerProjects : designerProjects;
 
-  const featuredProject = projects[featuredIndex];
+  // Handle empty projects array
+  if (!projects || projects.length === 0) {
+    return (
+      <section id="projects" className="py-24 px-6 section-alt">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2
+              className={`heading-primary text-4xl md:text-5xl font-bold text-center mb-16 mode-transition ${
+                isEngineer ? "text-gradient-engineer" : "text-gradient-designer"
+              }`}
+            >
+              {isEngineer ? "Building Solutions" : "Solving Problems"}
+            </h2>
+            <div className="card-styled p-12 rounded-2xl text-center">
+              <p className="text-lg text-muted-foreground mb-4">
+                {isEngineer
+                  ? "Engineering projects coming soon! Switch to Designer mode to see available projects."
+                  : "Design projects coming soon! Switch to Engineer mode to see available projects."}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Use the mode toggle in the header to switch between modes.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    );
+  }
+
+  // Ensure featuredIndex is valid
+  const validFeaturedIndex = Math.min(featuredIndex, projects.length - 1);
+  const featuredProject = projects[validFeaturedIndex];
 
   return (
-    <section id="projects" className="py-24 px-6 bg-muted/30">
+    <section id="projects" className="py-24 px-6 section-alt">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -32,10 +67,8 @@ const Projects = () => {
           transition={{ duration: 0.6 }}
         >
           <h2
-            className={`text-4xl md:text-5xl font-bold text-center mb-16 mode-transition ${
-              isEngineer
-                ? "font-engineer text-gradient-engineer"
-                : "font-designer text-gradient-designer"
+            className={`heading-primary text-4xl md:text-5xl font-bold text-center mb-16 mode-transition ${
+              isEngineer ? "text-gradient-engineer" : "text-gradient-designer"
             }`}
           >
             {isEngineer ? "Building Solutions" : "Solving Problems"}
@@ -51,37 +84,37 @@ const Projects = () => {
               transition={{ duration: 0.6 }}
               className="md:col-span-2 md:row-span-2"
             >
-              <div
-                className={`h-full p-8 md:p-10 rounded-2xl bg-card border apple-lift ${
-                  isEngineer
-                    ? "hover:border-[hsl(var(--engineer-primary))]"
-                    : "neubrutalism-card"
-                }`}
-              >
+              <div className="card-styled h-full p-8 md:p-10 rounded-2xl transition-all duration-300">
                 {/* Image placeholder */}
-                <ProjectImage
-                  className={`w-full h-48 md:h-64 rounded-xl mb-6 flex items-center justify-center mode-transition ${
-                    isEngineer
-                      ? "bg-[hsl(var(--engineer-surface))]"
-                      : "bg-[hsl(var(--designer-surface))]"
-                  }`}
-                  project={featuredProject.slug}
-                  image={featuredProject.cover}
-                ></ProjectImage>
-
-                {/* Metric Badge */}
-                <div className="inline-block mb-4">
-                  <span
-                    className={`px-4 py-1.5 rounded-full text-xs font-bold mode-transition ${
+                {featuredProject.cover ? (
+                  <ProjectImage
+                    className={`w-full h-48 md:h-64 rounded-xl mb-6 flex items-center justify-center mode-transition ${
                       isEngineer
-                        ? "bg-[hsl(var(--engineer-primary))] text-white"
-                        : "bg-[hsl(var(--designer-primary))] text-white"
+                        ? "bg-[hsl(var(--engineer-surface))]"
+                        : "bg-[hsl(var(--designer-surface))]"
+                    }`}
+                    project={featuredProject.slug}
+                    image={featuredProject.cover}
+                  />
+                ) : (
+                  <div
+                    className={`w-full h-48 md:h-64 rounded-xl mb-6 flex items-center justify-center mode-transition ${
+                      isEngineer
+                        ? "bg-[hsl(var(--engineer-surface))]"
+                        : "bg-[hsl(var(--designer-surface))]"
                     }`}
                   >
-                    {featuredProject.metric}
-                  </span>
-                </div>
-
+                    <p className="text-muted-foreground">No image available</p>
+                  </div>
+                )}
+                {/* Metric Badge */}
+                {featuredProject.metric && (
+                  <div className="inline-block mb-4">
+                    <span className="badge-styled">
+                      {featuredProject.metric}
+                    </span>
+                  </div>
+                )}
                 <h3
                   className={`text-3xl md:text-4xl font-bold mb-4 mode-transition ${
                     isEngineer ? "font-engineer" : "font-designer"
@@ -89,94 +122,102 @@ const Projects = () => {
                 >
                   {featuredProject.title}
                 </h3>
-
                 <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
                   {featuredProject.tagline}
                 </p>
-
                 {/* Expandable description */}
-                <AnimatePresence>
-                  {expandedProject === featuredIndex && (
-                    <motion.p
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="text-muted-foreground mb-6 leading-relaxed overflow-hidden"
+                {featuredProject.summary && (
+                  <>
+                    <AnimatePresence>
+                      {expandedProject === validFeaturedIndex && (
+                        <motion.p
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="text-muted-foreground mb-6 leading-relaxed overflow-hidden"
+                        >
+                          {featuredProject.summary}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+
+                    <button
+                      onClick={() =>
+                        setExpandedProject(
+                          expandedProject === validFeaturedIndex
+                            ? null
+                            : validFeaturedIndex
+                        )
+                      }
+                      className="text-sm text-primary font-medium mb-6 flex items-center gap-1 hover:gap-2 transition-all"
                     >
-                      {featuredProject.summary}
-                    </motion.p>
-                  )}
-                </AnimatePresence>
-
-                <button
-                  onClick={() =>
-                    setExpandedProject(
-                      expandedProject === featuredIndex ? null : featuredIndex
-                    )
-                  }
-                  className="text-sm text-primary font-medium mb-6 flex items-center gap-1 hover:gap-2 transition-all"
-                >
-                  {expandedProject === featuredIndex
-                    ? "Show Less"
-                    : "Read More"}
-                  <ChevronDown
-                    className={`w-4 h-4 transition-transform ${
-                      expandedProject === featuredIndex ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {featuredProject.tech.map((tech, techIndex) => (
-                    <span
-                      key={techIndex}
-                      className={`px-3 py-1.5 rounded-md text-sm font-medium ${
-                        isEngineer
-                          ? "bg-[hsl(var(--engineer-surface))] text-[hsl(var(--engineer-primary))]"
-                          : "bg-[hsl(var(--designer-surface))] text-[hsl(var(--designer-primary))] border-2 border-[hsl(var(--designer-border))]"
-                      }`}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
+                      {expandedProject === validFeaturedIndex
+                        ? "Show Less"
+                        : "Read More"}
+                      <ChevronDown
+                        className={`w-4 h-4 transition-transform ${
+                          expandedProject === validFeaturedIndex
+                            ? "rotate-180"
+                            : ""
+                        }`}
+                      />
+                    </button>
+                  </>
+                )}{" "}
+                {featuredProject.tech && featuredProject.tech.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {featuredProject.tech.map((tech, techIndex) => (
+                      <span
+                        key={techIndex}
+                        className={`px-3 py-1.5 rounded-md text-sm font-medium ${
+                          isEngineer
+                            ? "bg-[hsl(var(--engineer-surface))] text-[hsl(var(--engineer-primary))]"
+                            : "bg-[hsl(var(--designer-surface))] text-[hsl(var(--designer-primary))] border-2 border-[hsl(var(--designer-border))]"
+                        }`}
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                )}
                 <div className="flex gap-3">
                   {isEngineer ? (
                     <>
-                      <Button variant="outline" size="lg" asChild>
-                        <a
-                          href={(featuredProject as any).github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <Github className="w-5 h-5 mr-2" />
-                          View Code
-                        </a>
-                      </Button>
-                      <Button size="lg" asChild>
-                        <a
-                          href={(featuredProject as any).live}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <ExternalLink className="w-5 h-5 mr-2" />
-                          Live Demo
-                        </a>
-                      </Button>
+                      {featuredProject.links?.github && (
+                        <Button variant="outline" size="lg" asChild>
+                          <a
+                            href={featuredProject.links.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Github className="w-5 h-5 mr-2" />
+                            View Code
+                          </a>
+                        </Button>
+                      )}
+                      {featuredProject.links?.live && (
+                        <Button size="lg" asChild>
+                          <a
+                            href={featuredProject.links.live}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <ExternalLink className="w-5 h-5 mr-2" />
+                            Live Demo
+                          </a>
+                        </Button>
+                      )}
                     </>
                   ) : (
-                    <>
-                      <Button size="lg" asChild>
-                        <a
-                          href={"/projects/" + featuredProject.slug}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          View Project
-                        </a>
-                      </Button>
-                    </>
+                    <Button size="lg" asChild>
+                      <a
+                        href={"/projects/" + featuredProject.slug}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View Project
+                      </a>
+                    </Button>
                   )}
                 </div>
               </div>
@@ -194,11 +235,7 @@ const Projects = () => {
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   onClick={() => setFeaturedIndex(index)}
-                  className={`group cursor-pointer p-6 rounded-2xl bg-card border apple-lift ${
-                    isEngineer
-                      ? "hover:border-[hsl(var(--engineer-primary))]"
-                      : "neubrutalism-card"
-                  }`}
+                  className="card-styled group cursor-pointer p-6 rounded-2xl transition-all duration-300"
                 >
                   <h3
                     className={`text-xl font-bold mb-2 mode-transition ${
@@ -212,20 +249,22 @@ const Projects = () => {
                     {project.tagline}
                   </p>
 
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tech.slice(0, 3).map((tech, techIndex) => (
-                      <span
-                        key={techIndex}
-                        className={`px-2 py-1 rounded text-xs font-medium ${
-                          isEngineer
-                            ? "bg-[hsl(var(--engineer-surface))] text-[hsl(var(--engineer-primary))]"
-                            : "bg-[hsl(var(--designer-surface))] text-[hsl(var(--designer-primary))]"
-                        }`}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+                  {project.tech && project.tech.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {project.tech.slice(0, 3).map((tech, techIndex) => (
+                        <span
+                          key={techIndex}
+                          className={`px-2 py-1 rounded text-xs font-medium ${
+                            isEngineer
+                              ? "bg-[hsl(var(--engineer-surface))] text-[hsl(var(--engineer-primary))]"
+                              : "bg-[hsl(var(--designer-surface))] text-[hsl(var(--designer-primary))]"
+                          }`}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  )}
 
                   <Button
                     variant="ghost"

@@ -50,11 +50,7 @@ const IndexContent = () => {
 };
 
 const Index = () => {
-  return (
-    <ModeProvider>
-      <IndexContent />
-    </ModeProvider>
-  );
+  return <IndexContent />;
 };
 
 export default Index;
