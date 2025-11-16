@@ -107,6 +107,27 @@ const HeroSection: React.FC = () => {
               >
                 <Link to="/projects">See Projects</Link>
               </MagneticButton>
+
+              <MagneticButton
+                magneticStrength={0.3}
+                magneticRadius={100}
+                asChild
+                size="lg"
+                variant="outline"
+                className={`text-base px-8 rounded-xl ${
+                  isDesigner
+                    ? "neubrutalism-button"
+                    : "shadow-[4px_4px_0px_0px_rgba(0,0,0,0.15)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.15)] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all"
+                }`}
+              >
+                <a
+                  href="/portfolio/file.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View Portfolio
+                </a>
+              </MagneticButton>
             </motion.div>
 
             {/* Stats or quick facts */}
