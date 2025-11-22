@@ -113,7 +113,7 @@ const HeroSection: React.FC = () => {
                 magneticRadius={100}
                 asChild
                 size="lg"
-                variant="outline"
+                variant="secondary"
                 className={`text-base px-8 rounded-xl ${
                   isDesigner
                     ? "neubrutalism-button"
