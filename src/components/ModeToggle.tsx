@@ -3,7 +3,7 @@ import { Code2, Palette } from "lucide-react";
 import ModeTransition from "./ModeTransition";
 import { useTransition } from "../contexts/TransitionContext";
 
-const ModeToggle = () => {
+const ModeToggle = ({ inline }: { inline?: boolean } = {}) => {
   const { mode, toggleMode } = useMode();
   const isEngineer = mode === "engineer";
   const { startTransition } = useTransition();
@@ -31,10 +31,18 @@ const ModeToggle = () => {
       <ModeTransition></ModeTransition>
       <button
         onClick={handleModeToggle}
-        className="fixed top-6 left-1/2 -translate-x-1/2 z-50 group"
+        className={
+          inline
+            ? "group relative inline-flex"
+            : "fixed top-6 left-1/2 -translate-x-1/2 z-50 group"
+        }
         aria-label="Toggle between engineer and designer mode"
       >
-        <div className="relative flex items-center gap-2 px-4 py-2 bg-card border-2 border-primary/20 rounded-full shadow-lg hover:shadow-xl mode-transition hover:scale-105">
+        <div
+          className={`relative flex items-center gap-2 px-4 py-2 bg-card border-2 border-primary/20 rounded-full shadow-lg hover:shadow-xl mode-transition hover:scale-105 ${
+            inline ? "inline-flex" : ""
+          }`}
+        >
           <div
             className={`absolute inset-0 rounded-full mode-transition ${
               isEngineer ? "glow-engineer" : "glow-designer"
