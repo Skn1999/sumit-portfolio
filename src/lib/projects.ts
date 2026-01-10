@@ -80,4 +80,46 @@ export function getProjectsByType(type: ProjectMeta["type"]) {
 export const engineeringProjects = getProjectsByType("engineering");
 export const designProjects = getProjectsByType("design");
 
+// Extract all unique skills from projects with counts
+export function getAllSkills(projectType?: ProjectMeta["type"]): {
+  skills: string[];
+  counts: Record<string, number>;
+} {
+  const projectsToAnalyze = projectType
+    ? visibleProjects.filter((p) => p.type === projectType)
+    : visibleProjects;
+
+  const skillCounts: Record<string, number> = {};
+
+  projectsToAnalyze.forEach((project) => {
+    const skills = project.tech || [];
+    skills.forEach((skill) => {
+      skillCounts[skill] = (skillCounts[skill] || 0) + 1;
+    });
+  });
+
+  // Sort by count (descending), then alphabetically
+  const skills = Object.keys(skillCounts).sort((a, b) => {
+    const countDiff = skillCounts[b] - skillCounts[a];
+    if (countDiff !== 0) return countDiff;
+    return a.localeCompare(b);
+  });
+
+  return { skills, counts: skillCounts };
+}
+
+// Filter projects by selected skills
+export function filterProjectsBySkills(
+  projects: (ProjectMeta & { Component: React.ComponentType })[],
+  selectedSkills: string[]
+): (ProjectMeta & { Component: React.ComponentType })[] {
+  if (selectedSkills.length === 0) return projects;
+
+  return projects.filter((project) => {
+    const projectSkills = project.tech || [];
+    // Project must have ALL selected skills
+    return selectedSkills.every((skill) => projectSkills.includes(skill));
+  });
+}
+
 export default projects;

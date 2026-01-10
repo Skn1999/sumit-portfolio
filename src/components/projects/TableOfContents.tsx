@@ -17,10 +17,7 @@ export const TableOfContents: React.FC = () => {
       document.querySelectorAll("article h2, article h3")
     );
     const headingData = elements.map((elem) => ({
-      id:
-        elem.id ||
-        elem.textContent?.toLowerCase().replace(/\s+/g, "-") ||
-        "",
+      id: elem.id || elem.textContent?.toLowerCase().replace(/\s+/g, "-") || "",
       text: elem.textContent || "",
       level: parseInt(elem.tagName[1]),
     }));
@@ -57,13 +54,15 @@ export const TableOfContents: React.FC = () => {
   if (headings.length === 0) return null;
 
   return (
-    <div className="hidden xl:block fixed top-32 right-8 w-64 z-30">
+    <div className="hidden xl:block sticky top-32 right-8 float-right w-64 z-30">
       <motion.div
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
         className={`card-styled p-6 rounded-xl sticky top-32 ${
-          isDesigner ? "bg-card/80 backdrop-blur-sm" : "bg-card/95 backdrop-blur-md"
+          isDesigner
+            ? "bg-card/80 backdrop-blur-sm"
+            : "bg-card/95 backdrop-blur-md"
         }`}
       >
         <div className="flex items-center gap-2 mb-4 pb-3 border-b border-border/20">
