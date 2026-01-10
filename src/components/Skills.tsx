@@ -72,10 +72,8 @@ const Skills = () => {
           transition={{ duration: 0.6 }}
         >
           <h2
-            className={`text-5xl md:text-6xl font-bold text-center mb-16 mode-transition ${
-              isEngineer
-                ? "font-engineer text-gradient-engineer"
-                : "font-designer text-gradient-designer"
+            className={`heading-primary text-5xl md:text-6xl font-bold text-center mb-16 mode-transition ${
+              isEngineer ? "text-gradient-engineer" : "text-gradient-designer"
             }`}
           >
             {isEngineer ? "// Skills & Tech" : "Skills & Expertise"}
@@ -89,11 +87,7 @@ const Skills = () => {
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 key={index}
-                className={`p-8 rounded-2xl bg-card border apple-lift ${
-                  isEngineer
-                    ? "hover:border-[hsl(var(--engineer-primary))]"
-                    : "neubrutalism-card"
-                }`}
+                className="card-styled p-8 rounded-2xl transition-all duration-300"
               >
                 <h3
                   className={`text-2xl font-bold mb-6 text-primary mode-transition ${
@@ -107,22 +101,25 @@ const Skills = () => {
                   {items.map((skill, skillIndex) => (
                     <motion.span
                       key={skillIndex}
-                      initial={{ opacity: 0, scale: 0 }}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{
+                        duration: 0.4,
+                        delay: skillIndex * 0.05,
+                        ease: [0.34, 1.56, 0.64, 1],
+                      }}
                       whileHover={{
-                        opacity: 1,
                         scale: 1.1,
+                        rotate: [0, -2, 2, 0],
                         transition: { duration: 0.3 },
                       }}
                       whileTap={{ scale: 0.95 }}
                       className={`px-4 py-2 rounded-lg text-sm font-medium cursor-default ${
                         isEngineer
-                          ? "bg-[hsl(var(--engineer-surface))] text-[hsl(var(--engineer-primary))] border border-[hsl(var(--engineer-primary))/0.3]"
+                          ? "bg-[hsl(var(--engineer-surface))] text-[hsl(var(--engineer-primary))] border border-[hsl(var(--engineer-primary))/0.3] hover:border-[hsl(var(--engineer-primary))] hover:shadow-lg"
                           : "neubrutalism-button bg-[hsl(var(--designer-surface))] text-[hsl(var(--designer-primary))]"
                       }`}
-                      style={{
-                        transition: `transform 0.3s ease, opacity 0.3s ease`,
-                        display: "inline-block",
-                      }}
                     >
                       {skill}
                     </motion.span>

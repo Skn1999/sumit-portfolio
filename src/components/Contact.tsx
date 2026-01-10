@@ -11,13 +11,13 @@ const Contact = () => {
     <section id="contact" className="py-24 px-6">
       <div className="max-w-4xl mx-auto text-center">
         <h2
-          className={`text-4xl md:text-5xl font-bold mb-6 mode-transition ${
-            isEngineer
-              ? "font-engineer text-gradient-engineer"
-              : "font-designer text-gradient-designer"
+          className={`heading-primary text-4xl md:text-5xl font-bold mb-6 mode-transition ${
+            isEngineer ? "text-gradient-engineer" : "text-gradient-designer"
           }`}
         >
-          {isEngineer ? "Coffee? Chat? Let's Talk." : "Your Project Needs This Energy"}
+          {isEngineer
+            ? "Coffee? Chat? Let's Talk."
+            : "Your Project Needs This Energy"}
         </h2>
 
         <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">

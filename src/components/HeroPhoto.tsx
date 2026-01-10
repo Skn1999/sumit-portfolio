@@ -1,6 +1,6 @@
 import { useMotionValue, motion, useTransform, useSpring } from "framer-motion";
 import { useMode } from "@/contexts/ModeContext";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const HeroPhoto = () => {
   const { mode } = useMode();
@@ -10,6 +10,7 @@ const HeroPhoto = () => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const ref = useRef<HTMLDivElement>(null);
+  const [isInViewport, setIsInViewport] = useState(false);
 
   // --- increased sensitivity: larger angle range ---
   // Transform mouse position into rotation (more sensitive)
@@ -46,32 +47,68 @@ const HeroPhoto = () => {
   });
 
   useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    // Intersection Observer for viewport detection
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInViewport(entry.isIntersecting);
+        // Reset to neutral when out of viewport
+        if (!entry.isIntersecting) {
+          mouseX.set(0);
+          mouseY.set(0);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(element);
+
+    // Mouse move handler with proximity detection
     const handleMouseMove = (e: MouseEvent) => {
-      if (!ref.current) return;
-      const rect = ref.current.getBoundingClientRect();
+      if (!element || !isInViewport) return;
 
-      // Calculate relative mouse position (-0.5 to 0.5)
-      const relativeX = (e.clientX - rect.left) / rect.width - 0.5;
-      const relativeY = (e.clientY - rect.top) / rect.height - 0.5;
+      const rect = element.getBoundingClientRect();
 
-      mouseX.set(relativeX);
-      mouseY.set(relativeY);
+      // Calculate distance from mouse to image center
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const distanceX = e.clientX - centerX;
+      const distanceY = e.clientY - centerY;
+      const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+      // Proximity radius (pixels) - only react if mouse is within this distance
+      const proximityRadius = 600;
+
+      if (distance < proximityRadius) {
+        // Calculate relative mouse position (-0.5 to 0.5)
+        const relativeX = (e.clientX - rect.left) / rect.width - 0.5;
+        const relativeY = (e.clientY - rect.top) / rect.height - 0.5;
+
+        mouseX.set(relativeX);
+        mouseY.set(relativeY);
+      } else {
+        // Reset to neutral position when mouse is far away
+        mouseX.set(0);
+        mouseY.set(0);
+      }
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX, mouseY]);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      observer.disconnect();
+    };
+  }, [mouseX, mouseY, isInViewport]);
 
   return (
     <motion.div
       ref={ref}
       className={`hero-photo ${isDesigner ? "designer-frame" : ""}`}
       style={{
-        position: "absolute",
-        left: "50%",
-        top: "25%",
-        x: "-50%",
-        y: "-50%",
+        position: "relative",
         rotateX,
         rotateY,
         perspective: 1000,
@@ -86,7 +123,7 @@ const HeroPhoto = () => {
       }}
     >
       <motion.div
-        className="relative w-[min(90vw,420px)] h-[min(90vw,420px)] md:w-[420px] md:h-[60vh] rounded-[20px] overflow-hidden"
+        className="relative w-full aspect-[4/5] max-w-[480px] mx-auto rounded-[20px] overflow-hidden shadow-2xl"
         style={{
           transformStyle: "preserve-3d",
           x: positionX,
@@ -94,7 +131,7 @@ const HeroPhoto = () => {
         }}
       >
         <motion.img
-          src="/images//hero.jpg"
+          src="/images/hero-without-bg.webp"
           alt="Profile"
           className="w-full h-full object-cover"
           style={{

@@ -4,62 +4,262 @@ import { getProjectBySlug } from "@/lib/projects";
 import { ProjectHero } from "@/components/projects/ProjectHero";
 import { MetadataStrip } from "@/components/projects/MetadataStrip";
 import { ProjectFooter } from "@/components/projects/ProjectFooter";
+import { TableOfContents } from "@/components/projects/TableOfContents";
 import { ProjectGallery } from "@/components/ProjectImage";
+import { useMode } from "@/contexts/ModeContext";
+import { Layout } from "@/components/Layout";
+import ReadingProgress from "@/components/ReadingProgress";
 
 const ProjectPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const project = getProjectBySlug(slug || "");
+  const { mode } = useMode();
+  const isDesigner = mode === "designer";
 
   if (!project) {
     return (
-      <main className="min-h-screen flex items-center justify-center px-6">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Project not found</h1>
-          <Link to="/" className="text-primary hover:underline">
-            Go home
-          </Link>
-        </div>
-      </main>
+      <Layout>
+        <main className="min-h-screen flex items-center justify-center px-6">
+          <div className="card-styled p-12 rounded-2xl text-center max-w-md">
+            <h1 className="heading-primary text-4xl font-bold mb-4">
+              Project not found
+            </h1>
+            <p className="text-muted-foreground mb-6">
+              The project you're looking for doesn't exist or has been moved.
+            </p>
+            <Link
+              to="/"
+              className="text-primary hover:underline font-medium inline-flex items-center gap-2"
+            >
+              ← Go home
+            </Link>
+          </div>
+        </main>
+      </Layout>
     );
   }
 
   const Component = project.Component;
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <ProjectHero project={project} />
+    <Layout>
+      <ReadingProgress />
+      <div className="min-h-screen relative">
+        {/* Hero Section */}
+        <ProjectHero project={project} />
 
-      {/* Main Content Container */}
-      <div className="max-w-3xl mx-auto px-6">
-        {/* Metadata Strip */}
-        <MetadataStrip project={project} />
+        {/* Table of Contents - Fixed on large screens */}
+        {/* <TableOfContents /> */}
 
-        {/* Main Content Area */}
-        <main className="pt-20">
-          <article className="prose prose-xl dark:prose-invert max-w-none prose-headings:font-bold prose-h2:text-4xl prose-h2:mt-20 prose-h2:mb-6 prose-h3:text-2xl prose-h3:mt-12 prose-h3:mb-4 prose-p:leading-loose prose-p:mb-8 prose-p:text-foreground/90 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-img:shadow-md prose-img:w-full">
-            {Component ? (
-              <Component />
-            ) : (
-              <div>
-                <p>{project.summary}</p>
+        {/* Main Content Container */}
+        <div className="max-w-7xl mx-auto px-6">
+          {/* Combined Metadata Strip - Full Width */}
+          <div className="py-12 border-b border-border/20">
+            {/* <MetadataStrip project={project} /> */}
+
+            {/* Project Info Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 mt-12">
+              {/* Client/Company */}
+              {project.links?.client && (
+                <div>
+                  <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">
+                    Client
+                  </h3>
+                  <p className="text-sm font-medium text-foreground">
+                    {project.links.client}
+                  </p>
+                </div>
+              )}
+
+              {/* Project Type */}
+              {project.type && (
+                <div>
+                  <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">
+                    Project Type
+                  </h3>
+                  <p className="text-sm font-medium text-foreground">
+                    {project.type === "engineering"
+                      ? "Engineering"
+                      : "Design Case Study"}
+                  </p>
+                </div>
+              )}
+
+              {/* Role */}
+              {project.roles && project.roles.length > 0 && (
+                <div>
+                  <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">
+                    Role
+                  </h3>
+                  <p className="text-sm font-medium text-foreground">
+                    {project.roles.join(", ")}
+                  </p>
+                </div>
+              )}
+
+              {/* Timeline */}
+              {project.date && (
+                <div>
+                  <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">
+                    Timeline
+                  </h3>
+                  <p className="text-sm font-medium text-foreground">
+                    {new Date(project.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                    })}
+                  </p>
+                </div>
+              )}
+
+              {/* Tech Stack */}
+              {project.tech && project.tech.length > 0 && (
+                <div className="col-span-2">
+                  <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">
+                    Technologies
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech.map((tech, index) => (
+                      <span
+                        key={index}
+                        className={`px-2 py-1 rounded text-xs font-medium ${
+                          isDesigner
+                            ? "bg-[hsl(var(--designer-surface))] text-[hsl(var(--designer-primary))] border border-[hsl(var(--designer-border))]"
+                            : "bg-muted text-foreground border border-border"
+                        }`}
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* External Links */}
+              {/* {project.links && Object.keys(project.links).length > 0 && (
+                <div>
+                  <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">
+                    Links
+                  </h3>
+                  <div className="space-y-2">
+                    {Object.entries(project.links)
+                      .filter(([key]) => key !== "client")
+                      .map(([key, url]) => (
+                        <a
+                          key={key}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block text-sm text-primary hover:underline font-medium"
+                        >
+                          {key.charAt(0).toUpperCase() + key.slice(1)} →
+                        </a>
+                      ))}
+                  </div>
+                </div>
+              )} */}
+            </div>
+          </div>
+
+          {/* 2-Column Article Layout */}
+          <div className="py-20">
+            <article
+              className={`
+              /* Two-column layout for h2 sections */
+              article-two-column
+              prose prose-lg md:prose-xl max-w-none
+              prose-headings:scroll-mt-20
+              prose-headings:font-bold
+              ${
+                isDesigner
+                  ? "prose-headings:font-designer"
+                  : "prose-headings:font-engineer"
+              }
+              prose-h2:text-xl md:prose-h2:text-2xl 
+              prose-h2:mt-0
+              prose-h2:mb-0
+              prose-h2:sticky
+              prose-h2:top-32
+              ${
+                isDesigner
+                  ? "prose-h2:text-gradient-designer"
+                  : "prose-h2:text-gradient-engineer"
+              }
+              prose-h3:text-2xl 
+              prose-h3:mt-12 
+              prose-h3:mb-4
+              prose-p:leading-relaxed 
+              prose-p:mb-6
+              prose-p:text-foreground/90
+              prose-a:text-primary 
+              prose-a:font-medium
+              prose-a:no-underline 
+              hover:prose-a:underline
+              prose-strong:text-foreground
+              prose-strong:font-semibold
+              prose-code:text-primary
+              prose-code:bg-muted
+              prose-code:px-1.5
+              prose-code:py-0.5
+              prose-code:rounded
+              prose-code:before:content-none
+              prose-code:after:content-none
+              prose-pre:bg-muted
+              prose-pre:border
+              prose-pre:border-border
+              prose-ul:my-6
+              prose-ol:my-6
+              prose-li:my-2
+              prose-blockquote:border-l-4
+              ${
+                isDesigner
+                  ? "prose-blockquote:border-[hsl(var(--designer-primary))]"
+                  : "prose-blockquote:border-primary"
+              }
+              prose-blockquote:pl-6
+              prose-blockquote:italic
+              prose-blockquote:text-muted-foreground
+              prose-img:rounded-xl
+              prose-img:shadow-lg
+              prose-img:w-full
+              prose-img:my-12
+              dark:prose-invert
+            `}
+            >
+              {Component ? (
+                <Component />
+              ) : (
+                <div>
+                  <p>{project.summary || "No content available."}</p>
+                </div>
+              )}
+            </article>
+
+            {/* Gallery Section */}
+            {project.gallery && project.gallery.length > 0 && (
+              <div className="mt-24 pt-16 border-t border-border/20">
+                <h2
+                  className={`heading-primary text-3xl md:text-4xl font-bold mb-12 text-center ${
+                    isDesigner
+                      ? "text-gradient-designer"
+                      : "text-gradient-engineer"
+                  }`}
+                >
+                  Project Gallery
+                </h2>
+                <ProjectGallery
+                  project={project.slug}
+                  images={project.gallery}
+                />
               </div>
             )}
-          </article>
+          </div>
+        </div>
 
-          {/* Gallery Section */}
-          {project.gallery && project.gallery.length > 0 && (
-            <div className="mt-24">
-              <h2 className="text-4xl font-bold mb-12 text-center">Gallery</h2>
-              <ProjectGallery project={project.slug} images={project.gallery} />
-            </div>
-          )}
-
-          {/* Footer Navigation */}
-          <ProjectFooter project={project} />
-        </main>
+        {/* Footer Navigation */}
+        <ProjectFooter project={project} />
       </div>
-    </div>
+    </Layout>
   );
 };
 
