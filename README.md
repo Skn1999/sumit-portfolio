@@ -6,11 +6,11 @@ This is my portfolio – where design meets code, and both get along surprisingl
 
 I'm one of those weird people who can't decide between Figma and VS Code, so I just... do both. This portfolio literally has a toggle that switches between my **designer mode** and **engineer mode** because why choose when you can have an identity crisis in real-time?
 
-Hit that mode toggle and watch the whole site shift personalities. It's like a mood ring, but for professional skills.
+Hit that mode toggle and watch the whole site shift personalities.
 
 ## 🛠 What's Under the Hood
 
-This thing runs on:
+If you have already visited the website, then this should give you an overview, what this thing runs on:
 
 - **React + TypeScript** – because any is not a type, fight me
 - **Vite** – for that sweet, sweet hot reload
@@ -18,25 +18,6 @@ This thing runs on:
 - **Framer Motion** – making things go _whoosh_ since 2018
 - **MDX** – writing content with components, as one does
 - **@tailwindcss/typography** – for that Medium-article aesthetic
-
-## 🚀 Running This Locally
-
-```bash
-# Clone it
-git clone <this-repo>
-cd portfolio
-
-# Install stuff
-npm install
-
-# Fire it up
-npm run dev
-
-# Create a new project (because I made a CLI for it)
-npm run new-project
-```
-
-Open `localhost:8080` and you're in.
 
 ## 📁 The Architecture
 
@@ -49,7 +30,7 @@ src/
 └── lib/                  # Helper functions and project loading logic
 ```
 
-**Pro tip:** Don't manually create project folders. Use `npm run new-project` or the file structure gods will be displeased.
+**Scripting Time:** Don't manually create project folders. Use `npm run new-project` or the file structure gods will be displeased. Over-engineering I know, but it shows that I know stuff.
 
 ## 🎨 The Mode System
 
@@ -98,16 +79,6 @@ This portfolio is designed to show, not tell. Both modes present the same projec
 
 Also, I believe READMEs should be readable, so here we are.
 
-## 📝 License
-
-Do whatever you want with this code. Build something cool and send me a link.
-
----
-
-Built with ☕️, late nights, and an unhealthy relationship with CSS animations.
-
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
 ## What technologies are used for this project?
 
 This project is built with:
@@ -117,15 +88,3 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/4b40ae8e-16a9-493b-bb2b-e82b9d890085) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
