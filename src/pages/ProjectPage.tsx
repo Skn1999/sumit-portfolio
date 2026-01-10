@@ -48,11 +48,10 @@ const ProjectPage: React.FC = () => {
         {/* Hero Section */}
         <ProjectHero project={project} />
 
-        {/* Table of Contents - Fixed on large screens */}
-        {/* <TableOfContents /> */}
-
         {/* Main Content Container */}
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-6 relative">
+          {/* Table of Contents - Fixed on large screens */}
+          <TableOfContents />
           {/* Combined Metadata Strip - Full Width */}
           <div className="py-12 border-b border-border/20">
             {/* <MetadataStrip project={project} /> */}
@@ -161,68 +160,30 @@ const ProjectPage: React.FC = () => {
             </div>
           </div>
 
-          {/* 2-Column Article Layout */}
-          <div className="py-20">
+          {/* Article Content */}
+          <div className="py-16 xl:pr-80">
             <article
               className={`
-              /* Two-column layout for h2 sections */
-              article-two-column
-              prose prose-lg md:prose-xl max-w-none
-              prose-headings:scroll-mt-20
-              prose-headings:font-bold
+              mx-auto max-w-3xl
+              prose prose-lg
+              prose-headings:font-semibold
               ${
                 isDesigner
                   ? "prose-headings:font-designer"
                   : "prose-headings:font-engineer"
               }
-              prose-h2:text-xl md:prose-h2:text-2xl 
-              prose-h2:mt-0
-              prose-h2:mb-0
-              prose-h2:sticky
-              prose-h2:top-32
               ${
                 isDesigner
                   ? "prose-h2:text-gradient-designer"
                   : "prose-h2:text-gradient-engineer"
               }
-              prose-h3:text-2xl 
-              prose-h3:mt-12 
-              prose-h3:mb-4
-              prose-p:leading-relaxed 
-              prose-p:mb-6
-              prose-p:text-foreground/90
-              prose-a:text-primary 
-              prose-a:font-medium
-              prose-a:no-underline 
-              hover:prose-a:underline
-              prose-strong:text-foreground
-              prose-strong:font-semibold
-              prose-code:text-primary
-              prose-code:bg-muted
-              prose-code:px-1.5
-              prose-code:py-0.5
-              prose-code:rounded
-              prose-code:before:content-none
-              prose-code:after:content-none
-              prose-pre:bg-muted
-              prose-pre:border
-              prose-pre:border-border
-              prose-ul:my-6
-              prose-ol:my-6
-              prose-li:my-2
-              prose-blockquote:border-l-4
               ${
                 isDesigner
                   ? "prose-blockquote:border-[hsl(var(--designer-primary))]"
                   : "prose-blockquote:border-primary"
               }
-              prose-blockquote:pl-6
-              prose-blockquote:italic
-              prose-blockquote:text-muted-foreground
-              prose-img:rounded-xl
-              prose-img:shadow-lg
-              prose-img:w-full
-              prose-img:my-12
+              prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+              prose-img:rounded-lg prose-img:shadow-md
               dark:prose-invert
             `}
             >

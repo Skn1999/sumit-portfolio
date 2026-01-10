@@ -3,7 +3,6 @@ import ModeToggle from "@/components/ModeToggle";
 import { Layout, Container } from "@/components/Layout";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
-import SkillConstellation from "@/components/SkillConstellation";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import FloatingShapes3D from "@/components/FloatingShapes3D";
@@ -32,10 +31,6 @@ const IndexContent = () => {
           {/* main sections */}
           <Container>
             <About />
-          </Container>
-
-          <Container>
-            <SkillConstellation />
           </Container>
 
           <Container>
