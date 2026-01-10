@@ -1,0 +1,218 @@
+---
+slug: "super-ego-app"
+title: "YOU - SuperEgo App"
+tagline: "Act upon the preconscious habits that silently misalign your life"
+date: "2026-01-05"
+type: "design"
+featured: true
+cover:
+  filename: "cover.jpg"
+  alt: "SuperEgo app mockups on mobile screens"
+gallery: []
+tech:
+  - "Behavioral Design"
+  - "Persona Creation"
+  - "Habit Formation"
+  - "Prototyping"
+  - "Social Psychology"
+metric: "Defined and prototyped an operating-system-level assistant that adapts nudges to emotional awareness"
+summary: "Designed YOU, an OS-level assistant that reads preconscious patterns and emotional awareness to help people align everyday actions with long-term values."
+links:
+  case: "https://www.figma.com/deck/AqArCYTjQP7qPRJZlKJHxN/Social-interaction---Final-presentation?node-id=6-2733"
+roles:
+  - "User Research"
+  - "Concept & Interaction Design"
+  - "Prototyping"
+order:
+draft: true
+---
+
+import { ProjectImageAsset } from "@/components/ui/project-image-asset";
+
+## Overview
+
+YOU (SuperEgo) is a speculative iOS-level assistant that sits closer to the operating system than a typical app. It observes subtle, preconscious patterns - like app switching, typing speed, and drift moments and combines them with short emotional-awareness checks to gently steer people back toward the goals and values they care about most.
+
+Instead of only helping people plan (to-dos, calendars), YOU focuses on the gap between intention and action. It adapts its nudges based on each person's emotional awareness, switching between low-effort “System 1” interventions (ambient friction, delays) and reflective “System 2” prompts (mini check-ins, journaling, goal reviews).
+
+> _Role:_ I led the research synthesis, behavioral framing, system logic, and interaction design, and built the high-fidelity prototype.
+
+---
+
+## Challenge
+
+Most digital tools live purely at the conscious planning layer. They help people create tasks and schedules, but not to notice when their **habits, stress, and automatic responses** pull them away from those plans.
+
+From early framing and desk research, we saw four recurring issues:
+
+- **Difficulty in organization & perceived lack of time**: People felt “always busy” yet struggled to point to meaningful progress. 
+- **Lack of awareness of actions**: Users often realized *afterward* that they had scrolled or context-switched through valuable time.  
+- **Habit rigidity & misalignment**: Once habits formed (e.g., late-night scrolling), they ran on autopilot, often against long-term goals.  
+- **Tools ignoring emotional states**: Current assistants and calendars work at the conscious level and do not adapt to motivation, stress, or emotional awareness.
+
+**Design question**
+
+> How might an OS-level assistant act on preconscious cues and emotional awareness to help people realign their behavior with long-term goals, without taking away control?
+
+---
+
+## Process
+
+### 1. Assumptions & desk research
+
+I started by explicitly listing assumptions about behavior change and digital support, then stress-tested each with literature.
+
+Some key assumptions:
+- People are **more motivated when they can choose their own goals and direction**, not when goals are imposed.  
+- After failing a goal, it is hard to recover motivation; **alternative behaviors** (small backup actions) help people stay on track.  
+- Users often avoid heavy, open-ended self-reflection, but **short guided prompts with emotion labels** are more acceptable than long free-text journaling.  
+- **High-level phone patterns** (app use, screen time, calendar load) are reliable enough to detect potential habit cues, but the system should stay at the behavioral level, not content.  
+- Gamified representations and small-wins feedback can motivate, but **intrinsic alignment** (living closer to one's values) should remain the core reward.
+
+Desk research and theory review helped me:
+
+- Validate the importance of user-owned goals, autonomy, and transparency.  
+- Refine the role of avatars from “gamified pet” toward **personalizable, but grounded**, representations of the inner system.  
+- Challenge naive data assumptions (e.g., “exercise in the morning means X”) and instead design for **pattern-level feedback plus user interpretation**.
+
+> **Screenshot placeholder:**  
+> `![Screenshot: Assumptions and research wall](assumptions-research.jpg)`
+
+---
+
+### 2. System logic - how YOU works
+
+Using the research, I mapped a clear “how it works” loop to keep the concept coherent and implementable.
+
+1. **Step 1 - Understand the user's starting point**  
+   - Ask the user to either pick a goal or tap **“Help me decide”**.  
+   - In both cases, YOU reads high-level data from the OS and health context: app usage, screen time, and calendar structure (e.g., how packed and ad-hoc the day is).  
+   - Based on this, the system asks, “What would an ideal day look like?” and offers goal templates: more work-life balance, more exercise, focused work/study blocks, or more time with family and friends.
+
+2. **Step 2 - Evaluate emotional awareness (LEAS-inspired)**  
+   - Over the first week, YOU runs a lightweight **LEAS-style questionnaire**:  
+     - Agreement statements about describing emotions, feeling blended emotions, and reading others' emotions.  
+     - Short vignettes (missed deadline, friend canceling plans) where users describe how they and another person would feel.  
+   - This helps the system roughly estimate the user's emotional awareness level and decide how deep or simple its language and reflections should be.
+
+3. **Step 3 - Ask for level of intervention**  
+   - Users select how involved YOU should be: **Observer, Gentle Helper, or Active Coach.**  
+   - Each mode sets defaults for how often YOU nudges, how visible the avatar is, and how much friction it can add (e.g., only summaries vs. subtle delays vs. direct prompts).
+
+4. **Step 4 - Summarize & adapt**  
+   - At the end of the week, YOU presents a clear summary:  
+     - What it observed (patterns, drift moments).  
+     - What it understands about the user's emotional style.  
+     - Which goal, focus area, and intervention level are currently set—and how to change them.  
+   - Users can confirm or adjust this configuration, keeping agency over both goals and how the system intervenes.
+
+> **Screenshot placeholder:**  
+> `![Screenshot: “How this works” flow with 4 steps](how-it-works-flow.jpg)`
+
+---
+
+### 3. Personas & journeys
+
+To stress-test the system, I developed two complementary personas:
+
+- **Grace** - 30-year-old analyst, motivated by mastery and meaning. Wants to “use time wisely” and protect deep work.  
+- **Phil** - 24-year-old CS student, driven by social connection and vulnerable to stress and comparison. Wants to “reduce stress” and understand his emotional patterns.
+
+For each persona, I sketched end-to-end journeys:
+- Onboarding and goal definition.  
+- Emotional awareness evaluation (LEAS-inspired).  
+- Everyday interventions (System 1 and System 2).  
+- Progress views, goal adaptation, and when YOU recommends external support.
+
+<ProjectImageAsset src="super-ego-app/personas.jpg" alt="Screenshot: Persona overview - Grace and Phil" />
+
+---
+
+## Solution
+
+### Concept: an inner “SuperEgo” at OS level
+
+Based on Freud's structural model and dual-process theories, YOU acts as an inner operating system that:
+
+- Lives close to the OS rather than as a standalone wellness app.  
+- Monitors **lightweight behavioral signals** (app switching, usage rhythms, error-prone typing, late-night screen time, long immobile periods) as *possible* cues of autopilot or stress, never as diagnoses.  
+- Periodically measures emotional awareness and adapts the **depth and style** of support accordingly.
+
+<ProjectImageAsset src="super-ego-app/integration.jpg" alt="Screenshot: System overview - data inputs, emotional awareness, interventions" />
+
+### Onboarding as a contract
+
+The onboarding flow for a user includes:
+
+- A **single-goal focus**: when they pick more than one, YOU gently explains that people progress better with one focus and asks which goal matters “right now.”  
+- “Help me decide” mode: YOU observes patterns for a week, runs the emotional-awareness questions, then suggests a realistic starting goal.  
+- Role selection (Observer / Gentle Helper / Active Coach) with short, concrete descriptions of what each mode will and won't do.  
+- A summary screen that mirrors back: chosen goal, patterns YOU will watch, current intervention level, and how to pause or adjust.
+
+<ProjectImageAsset src="super-ego-app/onboarding.jpg" alt="Screenshot: Goal selection and ‘Help me decide' flow" />
+
+### Emotional awareness micro-exercises
+
+To implement the **LEAS insights**, I designed short “Help me understand you” exercises:
+
+<details>
+<summary>How the exercises work</summary>
+
+- Users see a social situation (e.g., missed deadline with a colleague, friend canceling for the third time) and answer:  
+  - "How would *you* feel?"  
+  - "How would the *other person* feel?"  
+- Additional Likert statements capture their meta-skills: describing emotions in words, noticing mixed emotions, and reading others' feelings in everyday life.
+
+</details>
+
+Internally, YOU uses this to classify emotional awareness into bands and adapt language complexity accordingly. Some other parameters it adjusts are depth of reflection and frequency of prompts.
+
+<ProjectImageAsset src="super-ego-app/emotional-awareness-LEAS.jpg" alt="Screenshot: Emotional awareness vignette - ‘Help me understand you'" />
+
+### System 1 & System 2 interventions
+
+For **Grace - focus & alignment**:
+
+- **System 1**: during focus blocks, low-value apps are gently hidden or delayed with a small message (“This is your high-value time”). She can still open them if she chooses. 
+<ProjectImageAsset src="super-ego-app/system1-grace.jpg" alt="Screenshot: System 1 intervention - app delay during focus time" />
+- **System 2**: if repeated drift is detected, YOU surfaces a reflective dialog, asking whether focus blocks need adjusting and suggesting micro-changes to plan or environment.
+<ProjectImageAsset src="super-ego-app/system2-grace.jpg" alt="Screenshot: System 2 intervention - reflective dialog after drift" />
+
+For **Phil - stress & emotional understanding**:
+
+- **System 1**: subtle haptic cues mimic calm breathing when patterns associated with stress appear (fast typing, intense app switching, late-night screen time).  
+<ProjectImageAsset src="super-ego-app/system1-phil.jpg" alt="Screenshot: System 1 intervention - haptic cue for calm breathing" />
+- **System 2**: check-ins where he rates emotion families, tags contributing factors (work, relationships, body, thoughts) and writes short notes to “Future Phil” that are later resurfaced when patterns repeat.
+<ProjectImageAsset src="super-ego-app/system2-phil.jpg" alt="Screenshot: System 2 intervention - emotional check-in and note to Future Phil" />
+
+### Adapting goals and involvement
+
+YOU continuously evaluates whether its support is helping:
+
+- If Phil's stress scores remain high for many days, YOU reframes success as **understanding** stress patterns instead of lowering stress immediately, suggests fewer check-ins, and offers options for external support.  
+- Users can adjust involvement level, pause plans (without losing streaks), or change goals as life circumstances shift.
+
+<ProjectImageAsset src="super-ego-app/goal-adaptation.jpg" alt="Screenshot: Goal adaptation and involvement level settings" />
+
+---
+
+## Outcome
+
+The outcome of the project was a **high-fidelity OS-level prototype** and a clear behavioral system. The key outputs were:
+- A coherent, validated system model showing how goal selection, emotional awareness, data observation, and intervention level fit into one loop.  
+- Interaction flows and UI for two personas, demonstrating how YOU personalizes support for focus vs. stress.  
+- A set of System 1 / System 2 interventions that respect user autonomy while influencing behavior at the right moments.  
+- A documented set of limitations and future directions (e.g., long-term habit retention without nudges, richer avatar personalization, planning ahead for likely impulse moments).
+
+---
+
+## Learnings
+
+Working on YOU changed how I think about designing for behavior change and emotional skills:
+
+- **Make assumptions explicit early.** Listing and validating assumptions (about goals, reflection, data, gamification) helped avoid magical thinking and anchored design choices in evidence.  
+- **Design with the preconscious, not just for it.** Small frictions, ambient cues, and timing matter as much as what the user consciously sees on screen.  
+- **Emotional awareness is a design parameter.** LEAS-inspired checks made it clear that not everyone benefits from the same depth of emotional reflection; the system must adapt tone and complexity.  
+- **Autonomy and transparency are non-negotiable.** From “choose your goal” to “pick my role” to clear summaries of what YOU observed, user control was treated as a core feature, not an afterthought. 
+
+**YOU** now sits in my portfolio as an example of combining behavioral science, emotional-awareness theory, and OS-level interaction design to explore how digital systems might support more aligned, self-aware lives.
