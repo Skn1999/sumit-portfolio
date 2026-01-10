@@ -28,19 +28,23 @@ const AnimatedRoutes = () => {
   );
 };
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Sonner />
-      <TransitionProvider>
-        <ModeProvider>
-          <BrowserRouter>
-            <AnimatedRoutes />
-          </BrowserRouter>
-        </ModeProvider>
-      </TransitionProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  const basename = import.meta.env.BASE_URL;
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Sonner />
+        <TransitionProvider>
+          <ModeProvider>
+            <BrowserRouter basename={basename}>
+              <AnimatedRoutes />
+            </BrowserRouter>
+          </ModeProvider>
+        </TransitionProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
