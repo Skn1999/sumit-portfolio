@@ -105,7 +105,7 @@ const HeroSection: React.FC = () => {
                   isDesigner ? "neubrutalism-button" : ""
                 }`}
               >
-                <Link to="/projects">See Projects</Link>
+                <Link to="/#projects">See Projects</Link>
               </MagneticButton>
 
               <MagneticButton

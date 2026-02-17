@@ -2,6 +2,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ProjectPage from "./pages/ProjectPage";
@@ -13,6 +14,23 @@ import PageTransition from "./components/PageTransition";
 import { AnimatePresence } from "framer-motion";
 
 const queryClient = new QueryClient();
+
+/** Scrolls to the element matching the URL hash after navigation. */
+const ScrollToHash = () => {
+  const { hash, pathname } = useLocation();
+
+  useEffect(() => {
+    if (!hash) return;
+    // Small delay so the target page has time to render its DOM
+    const timer = setTimeout(() => {
+      const id = hash.replace("#", "");
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [hash, pathname]);
+
+  return null;
+};
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -40,6 +58,7 @@ const App = () => {
         <TransitionProvider>
           <ModeProvider>
             <BrowserRouter basename={basename}>
+              <ScrollToHash />
               <AnimatedRoutes />
             </BrowserRouter>
           </ModeProvider>
