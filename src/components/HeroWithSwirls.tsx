@@ -184,7 +184,7 @@ const HeroWithSwirls: React.FC = () => {
         }}
       >
         <img
-          src="/images/hero.jpg"
+          src={`${import.meta.env.BASE_URL}images/hero.jpg`}
           alt="Profile"
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />

@@ -121,7 +121,7 @@ const HeroSection: React.FC = () => {
                 }`}
               >
                 <a
-                  href="/portfolio/file.pdf"
+                  href={`${import.meta.env.BASE_URL}portfolio/file.pdf`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

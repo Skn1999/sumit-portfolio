@@ -9,7 +9,7 @@ const separators = ["  •  ", "  /  ", "  |  ", "  ~  "];
 const makeMarquee = (
   text: string,
   repeat: number,
-  separatorIndex: number = 0
+  separatorIndex: number = 0,
 ) =>
   Array.from({ length: repeat })
     .map(() => text)
@@ -46,7 +46,7 @@ const HeroRibbons: React.FC = () => {
   const ribbonsOpacity = useTransform(
     scrollYProgress,
     [0, 0.12, 0.85, 1],
-    [0, 1, 1, 0]
+    [0, 1, 1, 0],
   );
 
   // Text content with more instances for seamless loop
@@ -57,7 +57,7 @@ const HeroRibbons: React.FC = () => {
       makeMarquee("SUMIT NAYYAR", 32, 2),
       makeMarquee("SUMIT NAYYAR", 32, 3),
     ],
-    []
+    [],
   );
 
   const isDesigner = mode === "designer";
@@ -134,7 +134,7 @@ const HeroRibbons: React.FC = () => {
           } w-full h-full rounded-2xl overflow-hidden bg-card transition-transform duration-500 hover:scale-105`}
         >
           <img
-            src="/images/hero.jpg"
+            src={`${import.meta.env.BASE_URL}images/hero.jpg`}
             alt="Portrait of Sumit Knayyar"
             loading="eager"
             className="w-full h-full object-cover select-none"

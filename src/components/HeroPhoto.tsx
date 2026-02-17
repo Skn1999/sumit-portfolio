@@ -60,7 +60,7 @@ const HeroPhoto = () => {
           mouseY.set(0);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     observer.observe(element);
@@ -131,7 +131,7 @@ const HeroPhoto = () => {
         }}
       >
         <motion.img
-          src="/images/hero-without-bg.webp"
+          src={`${import.meta.env.BASE_URL}images/hero-without-bg.webp`}
           alt="Profile"
           className="w-full h-full object-cover"
           style={{

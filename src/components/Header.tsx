@@ -35,7 +35,11 @@ const Header = () => {
               }`}
             >
               <div className="w-12 md:w-16 h-auto">
-                <img className="w-full h-full" src="/images/logo.png" alt="" />
+                <img
+                  className="w-full h-full"
+                  src={`${import.meta.env.BASE_URL}images/logo.png`}
+                  alt=""
+                />
               </div>
             </Link>
 
