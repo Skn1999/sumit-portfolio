@@ -76,6 +76,28 @@ const Contact = () => {
           </MagneticButton>
         </div>
 
+        {/* ── Substack Subscribe ── */}
+        <div className="mt-16 mx-auto text-center">
+          {/* <p className="text-sm text-muted-foreground font-body mb-1">
+            I also write about the quiet, unfiltered side of life.
+          </p>
+          <p className="text-base font-heading font-semibold text-foreground mb-4">
+            awkward silences, unspoken kindnesses, and moments we replay in our
+            heads.
+          </p> */}
+          <div className="rounded-2xl overflow-hidden border border-border shadow-sm">
+            <iframe
+              src="https://sumit6131.substack.com/embed"
+              width="100%"
+              height="320"
+              style={{ border: "none", background: "white" }}
+              frameBorder="0"
+              scrolling="no"
+              title="Subscribe to Unsaid Moments on Substack"
+            />
+          </div>
+        </div>
+
         <div className="mt-16 pt-8 border-t">
           <p className="text-sm text-muted-foreground">
             © 2025 Sumit Knayyar. Designed & Built with dual personality.
