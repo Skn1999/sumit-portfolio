@@ -1,6 +1,7 @@
 import { useMode } from "@/contexts/ModeContext";
 import { Mail, Linkedin, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import MagneticButton from "./MagneticButton";
 
 const Contact = () => {
@@ -68,10 +69,10 @@ const Contact = () => {
             }`}
             asChild
           >
-            <a href="#" download>
+            <Link to="/resume">
               <FileText className="w-5 h-5 mr-2" />
               Resume
-            </a>
+            </Link>
           </MagneticButton>
         </div>
 
