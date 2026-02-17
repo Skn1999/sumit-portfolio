@@ -1,5 +1,6 @@
 import React, { useMemo, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { Link } from "react-router-dom";
 import { useMode } from "@/contexts/ModeContext";
 import HeroPhoto from "./HeroPhoto";
 import MagneticButton from "./MagneticButton";
@@ -195,7 +196,7 @@ const HeroRibbons: React.FC = () => {
           }`}
           asChild
         >
-          <a href="#projects">See Projects</a>
+          <Link to="/#projects">See Projects</Link>
         </MagneticButton>
       </div>
     </section>

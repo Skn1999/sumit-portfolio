@@ -47,9 +47,9 @@ const Header = () => {
               className="hidden md:flex items-center gap-6"
               aria-label="Primary navigation"
             >
-              <NavLink to="#projects">Projects</NavLink>
-              <NavLink to="#about">About</NavLink>
-              <NavLink to="#contact">Contact</NavLink>
+              <NavLink to="/#projects">Projects</NavLink>
+              <NavLink to="/#about">About</NavLink>
+              <NavLink to="/#contact">Contact</NavLink>
             </nav>
           </div>
 
