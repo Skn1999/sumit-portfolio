@@ -54,7 +54,7 @@ const Header = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            {isHomePage && <ModeToggle inline />}
+            {/* Mode toggle hidden for now — defaulting to designer mode */}
           </div>
         </div>
       </div>
