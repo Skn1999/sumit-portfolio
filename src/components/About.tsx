@@ -21,7 +21,7 @@ const tile = {
 
 const About = () => {
   return (
-    <section id="about" className="py-24 px-6 section-alt">
+    <section id="about" className="py-24 md:px-6 section-alt">
       <div className="max-w-6xl mx-auto">
         {/* Section header */}
         <motion.div

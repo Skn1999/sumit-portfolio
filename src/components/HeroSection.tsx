@@ -32,10 +32,10 @@ const HeroSection: React.FC = () => {
       ref={sectionRef}
       id="about"
       aria-label="Hero"
-      className="relative min-h-[100svh] flex flex-col justify-center py-20 overflow-hidden"
+      className="relative min-h-[100svh] flex flex-col justify-center py-12 md:py-20 overflow-hidden"
     >
       {/* ─── Masthead ─── */}
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container px-3 mx-auto relative z-10">
         {/* Eyebrow */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -86,7 +86,7 @@ const HeroSection: React.FC = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6 }}
-          className="flex flex-wrap justify-center gap-4 mb-16 md:mb-20"
+          className="flex flex-wrap justify-center gap-4 mb-10 md:mb-20"
         >
           <MagneticButton
             magneticStrength={0.35}

@@ -25,19 +25,19 @@ const Projects = () => {
   // Get all skills and counts for current mode
   const { skills: availableSkills, counts: projectCounts } = useMemo(
     () => getAllSkills(isEngineer ? "engineering" : "design"),
-    [isEngineer]
+    [isEngineer],
   );
 
   // Filter projects based on selected skills
   const projects = useMemo(
     () => filterProjectsBySkills(allProjects, selectedFilters),
-    [allProjects, selectedFilters]
+    [allProjects, selectedFilters],
   );
 
   // Filter handlers
   const handleFilterToggle = (skill: string) => {
     setSelectedFilters((prev) =>
-      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]
+      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill],
     );
   };
 
@@ -48,7 +48,7 @@ const Projects = () => {
   // Handle empty projects array
   if (!projects || projects.length === 0) {
     return (
-      <section id="projects" className="py-24 px-6 section-alt">
+      <section id="projects" className="py-12 md:py-24 section-alt">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -57,7 +57,7 @@ const Projects = () => {
             transition={{ duration: 0.6 }}
           >
             <h2
-              className={`heading-primary text-4xl md:text-5xl font-bold text-center mb-16 mode-transition ${
+              className={`heading-primary text-4xl md:text-5xl font-bold text-center mb-10 md:mb-16 mode-transition ${
                 isEngineer ? "text-gradient-engineer" : "text-gradient-designer"
               }`}
             >
@@ -84,7 +84,7 @@ const Projects = () => {
   const featuredProject = projects[validFeaturedIndex];
 
   return (
-    <section id="projects" className="py-24 px-6 section-alt">
+    <section id="projects" className="py-12 md:py-24 section-alt">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -93,15 +93,15 @@ const Projects = () => {
           transition={{ duration: 0.6 }}
         >
           <h2
-            className={`heading-primary text-4xl md:text-5xl font-bold text-center mb-8 mode-transition ${
+            className={`heading-primary text-4xl md:text-5xl font-bold text-center mb-10 md:mb-16 mode-transition ${
               isEngineer ? "text-gradient-engineer" : "text-gradient-designer"
             }`}
           >
             {isEngineer ? "Building Solutions" : "Solving Problems"}
           </h2>
 
-          {/* Filter Bar */}
-          {availableSkills.length > 0 && (
+          {/* Filter Bar — commented out for now (only 2 projects) */}
+          {/* {availableSkills.length > 0 && (
             <FilterBar
               skills={availableSkills}
               selectedFilters={selectedFilters}
@@ -109,7 +109,7 @@ const Projects = () => {
               onClearAll={handleClearFilters}
               projectCounts={projectCounts}
             />
-          )}
+          )} */}
 
           {/* No Results Message */}
           {projects.length === 0 && selectedFilters.length > 0 && (

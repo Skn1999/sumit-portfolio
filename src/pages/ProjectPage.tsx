@@ -52,16 +52,16 @@ const ProjectPage: React.FC = () => {
         <TableOfContents />
 
         {/* Main Content Container */}
-        <div className="max-w-7xl mx-auto px-6 relative">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 relative">
           {/* Combined Metadata Strip - Full Width */}
-          <div className="py-12 border-b border-border/20">
+          <div className="py-6 md:py-12 border-b border-border/20">
             {/* <MetadataStrip project={project} /> */}
 
             {/* Project Info Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 mt-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-0 sm:gap-6">
               {/* Client/Company */}
               {project.links?.client && (
-                <div>
+                <div className="py-4 sm:py-0 border-b sm:border-b-0 border-border/15">
                   <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">
                     Client
                   </h3>
@@ -73,7 +73,7 @@ const ProjectPage: React.FC = () => {
 
               {/* Project Type */}
               {project.type && (
-                <div>
+                <div className="py-4 sm:py-0 border-b sm:border-b-0 border-border/15">
                   <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">
                     Project Type
                   </h3>
@@ -87,7 +87,7 @@ const ProjectPage: React.FC = () => {
 
               {/* Role */}
               {project.roles && project.roles.length > 0 && (
-                <div>
+                <div className="py-4 sm:py-0 border-b sm:border-b-0 border-border/15">
                   <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">
                     Role
                   </h3>
@@ -99,7 +99,7 @@ const ProjectPage: React.FC = () => {
 
               {/* Timeline */}
               {project.date && (
-                <div>
+                <div className="py-4 sm:py-0 border-b sm:border-b-0 border-border/15">
                   <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">
                     Timeline
                   </h3>
@@ -114,7 +114,7 @@ const ProjectPage: React.FC = () => {
 
               {/* Tech Stack */}
               {project.tech && project.tech.length > 0 && (
-                <div className="col-span-2">
+                <div className="col-span-1 sm:col-span-2 pt-4 sm:pt-0">
                   <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">
                     Technologies
                   </h3>
@@ -161,8 +161,7 @@ const ProjectPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Article Content */}
-          <div className="py-12">
+          <div className="py-8 md:py-12">
             <article
               className={`
               mx-auto max-w-4xl
@@ -199,7 +198,7 @@ const ProjectPage: React.FC = () => {
 
             {/* Gallery Section */}
             {project.gallery && project.gallery.length > 0 && (
-              <div className="mt-24 pt-16 border-t border-border/20">
+              <div className="mt-16 md:mt-24 pt-10 md:pt-16 border-t border-border/20">
                 <h2
                   className={`heading-primary text-3xl md:text-4xl font-bold mb-12 text-center ${
                     isDesigner

@@ -9,7 +9,7 @@ const Contact = () => {
   const isEngineer = mode === "engineer";
 
   return (
-    <section id="contact" className="py-24 px-6">
+    <section id="contact" className="py-12 md:py-24">
       <div className="max-w-4xl mx-auto text-center">
         <h2
           className={`heading-primary text-4xl md:text-5xl font-bold mb-6 mode-transition ${
@@ -21,7 +21,7 @@ const Contact = () => {
             : "Your Project Needs This Energy"}
         </h2>
 
-        <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-lg md:text-xl text-muted-foreground mb-8 md:mb-12 max-w-2xl mx-auto leading-relaxed">
           {isEngineer
             ? "I bring curiosity, code, and coffee. Let's build something you're proud of."
             : "I bring empathy, research, and imagination. Let's create experiences people love."}
