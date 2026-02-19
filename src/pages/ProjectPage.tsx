@@ -48,10 +48,11 @@ const ProjectPage: React.FC = () => {
         {/* Hero Section */}
         <ProjectHero project={project} />
 
+        {/* Table of Contents - Fixed position, outside flow */}
+        <TableOfContents />
+
         {/* Main Content Container */}
         <div className="max-w-7xl mx-auto px-6 relative">
-          {/* Table of Contents - Fixed on large screens */}
-          <TableOfContents />
           {/* Combined Metadata Strip - Full Width */}
           <div className="py-12 border-b border-border/20">
             {/* <MetadataStrip project={project} /> */}
@@ -161,10 +162,10 @@ const ProjectPage: React.FC = () => {
           </div>
 
           {/* Article Content */}
-          <div className="py-16 xl:pr-80">
+          <div className="py-12">
             <article
               className={`
-              mx-auto max-w-3xl
+              mx-auto max-w-4xl
               prose prose-lg
               prose-headings:font-semibold
               ${

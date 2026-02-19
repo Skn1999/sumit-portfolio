@@ -13,7 +13,7 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
   const isDesigner = mode === "designer";
 
   return (
-    <header className="relative pt-32 pb-16 px-6 overflow-hidden">
+    <header className="relative pt-16 pb-16 px-6 overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-muted/30 to-background -z-10" />
 

@@ -31,187 +31,229 @@ import { ProjectImageAsset } from "@/components/ui/project-image-asset";
 
 ## Overview
 
-YOU (SuperEgo) is a speculative iOS-level assistant that sits closer to the operating system than a typical app. It observes subtle, preconscious patterns - like app switching, typing speed, and drift moments and combines them with short emotional-awareness checks to gently steer people back toward the goals and values they care about most.
+Have you ever opened your phone to check the weather and, twenty minutes later, found yourself deep in Instagram with no memory of the detour? That gap between what we *intend* to do and what we *actually* do is what this project is about.
 
-Instead of only helping people plan (to-dos, calendars), YOU focuses on the gap between intention and action. It adapts its nudges based on each person's emotional awareness, switching between low-effort “System 1” interventions (ambient friction, delays) and reflective “System 2” prompts (mini check-ins, journaling, goal reviews).
+YOU (SuperEgo) is an assistant that doesn't live inside an app. It lives inside the operating system itself, watching the quiet signals we don't notice, for example how fast we switch between apps, how late we're still scrolling. It pairs those signals with a gentle understanding of how emotionally self-aware each person is, then nudges accordingly (sometimes with friction, sometimes with a reflective question that stops you mid-scroll).
 
-> _Role:_ I led the research synthesis, behavioral framing, system logic, and interaction design, and built the high-fidelity prototype.
-
----
-
-## Challenge
-
-Most digital tools live purely at the conscious planning layer. They help people create tasks and schedules, but not to notice when their **habits, stress, and automatic responses** pull them away from those plans.
-
-From early framing and desk research, we saw four recurring issues:
-
-- **Difficulty in organization & perceived lack of time**: People felt “always busy” yet struggled to point to meaningful progress. 
-- **Lack of awareness of actions**: Users often realized *afterward* that they had scrolled or context-switched through valuable time.  
-- **Habit rigidity & misalignment**: Once habits formed (e.g., late-night scrolling), they ran on autopilot, often against long-term goals.  
-- **Tools ignoring emotional states**: Current assistants and calendars work at the conscious level and do not adapt to motivation, stress, or emotional awareness.
-
-**Design question**
-
-> How might an OS-level assistant act on preconscious cues and emotional awareness to help people realign their behavior with long-term goals, without taking away control?
+> _I led the research synthesis, behavioral framing, system logic, and interaction design, and built the hi-fi prototype._
 
 ---
 
-## Process
+## The question that started it all
 
-### 1. Assumptions & desk research
+I kept coming back to something that bothered me. Every productivity app I'd tried assumed I was a rational planner who just needed a better to-do list. But the real problem was never the list, it was the **autopilot**.
 
-I started by explicitly listing assumptions about behavior change and digital support, then stress-tested each with literature.
+When I dug into research, four patterns kept showing up:
 
-Some key assumptions:
-- People are **more motivated when they can choose their own goals and direction**, not when goals are imposed.  
-- After failing a goal, it is hard to recover motivation; **alternative behaviors** (small backup actions) help people stay on track.  
-- Users often avoid heavy, open-ended self-reflection, but **short guided prompts with emotion labels** are more acceptable than long free-text journaling.  
-- **High-level phone patterns** (app use, screen time, calendar load) are reliable enough to detect potential habit cues, but the system should stay at the behavioral level, not content.  
-- Gamified representations and small-wins feedback can motivate, but **intrinsic alignment** (living closer to one's values) should remain the core reward.
+<section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', margin: '2rem 0' }}>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '1rem', padding: '1.5rem' }}>
+    <p style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🫥</p>
+    <strong style={{ display: 'block' }}>Invisible drift</strong>
+    <p style={{ fontSize: '1rem', color: 'hsl(var(--muted-foreground))', margin: 0, lineHeight: '1.5' }}>People feel disorganized, but the real issue is they don't notice when they drift off course.</p>
+  </article>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '1rem', padding: '1.5rem' }}>
+    <p style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🔁</p>
+    <strong style={{ display: 'block' }}>Autopilot habits</strong>
+    <p style={{ fontSize: '1rem', color: 'hsl(var(--muted-foreground))', margin: 0, lineHeight: '1.5' }}>Habits are rigid and run on autopilot and by the time you catch yourself, the moment has passed.</p>
+  </article>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '1rem', padding: '1.5rem' }}>
+    <p style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>😶‍🌫️</p>
+    <strong style={{ display: 'block'  }}>Emotions ignored</strong>
+    <p style={{ fontSize: '1rem', color: 'hsl(var(--muted-foreground))', margin: 0, lineHeight: '1.5' }}>Most tools completely ignore your emotional state, as if stress and mood don't shape every decision.</p>
+  </article>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '1rem', padding: '1.5rem' }}>
+    <p style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✋🏽</p>
+    <strong style={{ display: 'block' }}>Intention vs. Action gap</strong>
+    <p style={{ fontSize: '1rem', color: 'hsl(var(--muted-foreground))', margin: 0, lineHeight: '1.5' }}>There's a gap between what people plan to do and what their hands actually do on the phone.</p>
+  </article>
+</section>
 
-Desk research and theory review helped me:
+All of this pointed to one question:
 
-- Validate the importance of user-owned goals, autonomy, and transparency.  
-- Refine the role of avatars from “gamified pet” toward **personalizable, but grounded**, representations of the inner system.  
-- Challenge naive data assumptions (e.g., “exercise in the morning means X”) and instead design for **pattern-level feedback plus user interpretation**.
+> What if your phone could notice you drifting before you do and gently bring you back, without taking away your freedom to choose?
+
+---
+
+## How I got there
+
+### 1. Starting with what I assumed (and what the research said back)
+
+Before sketching anything, I wrote down every assumption I was carrying. Then I went looking for evidence to prove myself wrong.
+
+<section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', margin: '1.5rem 0' }}>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
+    <strong style={{ }}>🎯 Own your goals</strong>
+    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>People do better when they choose their direction, not when an app tells them what to fix.</p>
+  </article>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
+    <strong style={{ }}>🪜 Small backup actions</strong>
+    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>After failure, "get back on track" doesn't help. A walk instead of the gym does.</p>
+  </article>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
+    <strong style={{ }}>💬 Short prompts win</strong>
+    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>Nobody journals for ten minutes. But they'll answer one specific prompt about how they feel.</p>
+  </article>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
+    <strong style={{ }}>👁️ Rhythms, not content</strong>
+    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>Your phone knows your patterns. Never spy. Just notice.</p>
+  </article>
+</section>
+
+> Exercising in the morning doesn't mean someone is "doing well".
 
 <ProjectImageAsset src="super-ego-app/assumptions-research.jpg" alt="Screenshot: Assumptions and research sources" />
 
 ---
 
-### 2. System logic - how YOU works
+### 2. Designing the loop — how YOU actually works
 
-Using the research, I mapped a clear “how it works” loop to keep the concept coherent and implementable.
+The core is a four-step loop -> figure out where you are, understand your emotions, set the rules for how the system speaks up, and mirror back what it learned. This keeps repeating and getting smarter each time. Each cycle tightens the fit between what you want and what you actually do.
 
-1. **Step 1 - Understand the user's starting point**  
-   - Ask the user to either pick a goal or tap **“Help me decide”**.  
-   - In both cases, YOU reads high-level data from the OS and health context: app usage, screen time, and calendar structure (e.g., how packed and ad-hoc the day is).  
-   - Based on this, the system asks, “What would an ideal day look like?” and offers goal templates: more work-life balance, more exercise, focused work/study blocks, or more time with family and friends.
-
-2. **Step 2 - Evaluate emotional awareness (LEAS-inspired)**  
-   - Over the first week, YOU runs a lightweight **LEAS-style questionnaire**:  
-     - Agreement statements about describing emotions, feeling blended emotions, and reading others' emotions.  
-     - Short vignettes (missed deadline, friend canceling plans) where users describe how they and another person would feel.  
-   - This helps the system roughly estimate the user's emotional awareness level and decide how deep or simple its language and reflections should be.
-
-3. **Step 3 - Ask for level of intervention**  
-   - Users select how involved YOU should be: **Observer, Gentle Helper, or Active Coach.**  
-   - Each mode sets defaults for how often YOU nudges, how visible the avatar is, and how much friction it can add (e.g., only summaries vs. subtle delays vs. direct prompts).
-
-4. **Step 4 - Summarize & adapt**  
-   - At the end of the week, YOU presents a clear summary:  
-     - What it observed (patterns, drift moments).  
-     - What it understands about the user's emotional style.  
-     - Which goal, focus area, and intervention level are currently set—and how to change them.  
-   - Users can confirm or adjust this configuration, keeping agency over both goals and how the system intervenes.
-
-> **Screenshot placeholder:**  
-> `![Screenshot: “How this works” flow with 4 steps](how-it-works-flow.jpg)`
+<ProjectImageAsset src="super-ego-app/how-this-works.jpg" alt="Screenshot: Explaining the four-step loop" />
 
 ---
 
-### 3. Personas & journeys
+### 3. Two people I designed for
 
-To stress-test the system, I developed two complementary personas:
+I stress-tested the system with two very different fictional lives:
 
-- **Grace** - 30-year-old analyst, motivated by mastery and meaning. Wants to “use time wisely” and protect deep work.  
-- **Phil** - 24-year-old CS student, driven by social connection and vulnerable to stress and comparison. Wants to “reduce stress” and understand his emotional patterns.
-
-For each persona, I sketched end-to-end journeys:
-- Onboarding and goal definition.  
-- Emotional awareness evaluation (LEAS-inspired).  
-- Everyday interventions (System 1 and System 2).  
-- Progress views, goal adaptation, and when YOU recommends external support.
+<section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', margin: '1.5rem 0' }}>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
+    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>👩🏻‍💻</p>
+    <strong style={{  }}>Grace, 30, Analyst</strong>
+    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>Motivated by mastery. Cares about <em>too many things</em> and ends up scattered. Wants to protect deep work and family time and stop feeling guilty about what she didn't finish.</p>
+  </article>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
+    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>👨🏽‍🎓</p>
+    <strong style={{  }}>Phil, 24, CS Student</strong>
+    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>Driven by connection, vulnerable to comparison. Opens social media to feel connected, closes it feeling worse. Wants to understand his emotional patterns, not suppress them.</p>
+  </article>
+</section>
 
 <ProjectImageAsset src="super-ego-app/personas.jpg" alt="Screenshot: Persona overview - Grace and Phil" />
 
 ---
 
-## Solution
+## What I designed
 
-### Concept: an inner “SuperEgo” at OS level
+### The big idea: your phone's quiet conscience
 
-Based on Freud's structural model and dual-process theories, YOU acts as an inner operating system that:
-
-- Lives close to the OS rather than as a standalone wellness app.  
-- Monitors **lightweight behavioral signals** (app switching, usage rhythms, error-prone typing, late-night screen time, long immobile periods) as *possible* cues of autopilot or stress, never as diagnoses.  
-- Periodically measures emotional awareness and adapts the **depth and style** of support accordingly.
+Think of Freud's SuperEgo concept. Not as a strict parent, but as a thoughtful inner voice that notices when you're on autopilot. That's YOU. It doesn't live in an app you have to remember to open. It lives at the OS level, present in the background, watching patterns (never content), and stepping in at the moments that matter.
 
 <ProjectImageAsset src="super-ego-app/integration.jpg" alt="Screenshot: System overview - data inputs, emotional awareness, interventions" />
 
-### Onboarding as a contract
+### Onboarding that feels like a conversation
 
-The onboarding flow for a user includes:
+Most apps dump you into a settings screen. YOU starts with a conversation. Pick a goal, but only one. Try to pick three? YOU gently explains that focus works better than ambition. Not sure? Tap "Help me decide" and YOU observes your patterns for a week before suggesting anything.
 
-- A **single-goal focus**: when they pick more than one, YOU gently explains that people progress better with one focus and asks which goal matters “right now.”  
-- “Help me decide” mode: YOU observes patterns for a week, runs the emotional-awareness questions, then suggests a realistic starting goal.  
-- Role selection (Observer / Gentle Helper / Active Coach) with short, concrete descriptions of what each mode will and won't do.  
-- A summary screen that mirrors back: chosen goal, patterns YOU will watch, current intervention level, and how to pause or adjust.
+Then choose your role for the system — how much do you want it to speak up? At the end, it summarizes everything: your goal, what YOU will watch for, how it'll intervene, and exactly how to change any of it.
 
-<ProjectImageAsset src="super-ego-app/onboarding.jpg" alt="Screenshot: Goal selection and ‘Help me decide' flow" />
+<ProjectImageAsset src="super-ego-app/onboarding.jpg" alt="Screenshot: Goal selection and 'Help me decide' flow" />
 
-### Emotional awareness micro-exercises
+### Getting to know your emotional landscape
 
-To implement the **LEAS insights**, I designed short “Help me understand you” exercises:
+Inspired by the **LEAS framework**, I created short "Help me understand you" exercises. You read a social scenario, answer how you'd feel and how the other person might feel, then rate a few statements about how easily you process emotions.
 
-<details>
-<summary>How the exercises work</summary>
+Based on responses, YOU calibrates everything. <br/> 
+**High emotional awareness → nuanced, layered prompts**. <br/>
+**Still building that vocabulary → simpler, warmer ones.**
 
-- Users see a social situation (e.g., missed deadline with a colleague, friend canceling for the third time) and answer:  
-  - "How would *you* feel?"  
-  - "How would the *other person* feel?"  
-- Additional Likert statements capture their meta-skills: describing emotions in words, noticing mixed emotions, and reading others' feelings in everyday life.
+<ProjectImageAsset src="super-ego-app/emotional-awareness-LEAS.jpg" alt="Screenshot: Emotional awareness vignette - 'Help me understand you'" />
 
-</details>
+### Two kinds of nudges for two kinds of minds
 
-Internally, YOU uses this to classify emotional awareness into bands and adapt language complexity accordingly. Some other parameters it adjusts are depth of reflection and frequency of prompts.
+Here's where dual-process theory comes alive. Each persona gets a subtle nudge (System 1) and a reflective moment (System 2):
 
-<ProjectImageAsset src="super-ego-app/emotional-awareness-LEAS.jpg" alt="Screenshot: Emotional awareness vignette - ‘Help me understand you'" />
+<aside style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', }}>
+  <strong style={{ }}>👩🏻‍💻 Grace — Protecting focus</strong>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginTop: '0.5rem' }}>
+    <div>
+      <p style={{ fontSize: '1rem', color: 'hsl(var(--muted-foreground))', margin: 0 }}><strong>Subtle nudge:</strong> During focus blocks, low-value apps don't disappear, they just slow down. A small delay, a gentle message: <em>"This is your high-value time."</em></p>
+    </div>
+    <div>
+      <p style={{ fontSize: '1rem', color: 'hsl(var(--muted-foreground))', margin: 0 }}><strong>Reflective moment:</strong> If she keeps drifting, YOU asks: <em>"Your focus blocks haven't been working. Want to adjust when they happen?"</em> Micro-changes, not lectures.</p>
+    </div>
+  </div>
+</aside>
 
-### System 1 & System 2 interventions
-
-For **Grace - focus & alignment**:
-
-- **System 1**: during focus blocks, low-value apps are gently hidden or delayed with a small message (“This is your high-value time”). She can still open them if she chooses. 
 <ProjectImageAsset src="super-ego-app/system1-grace.jpg" alt="Screenshot: System 1 intervention - app delay during focus time" />
-- **System 2**: if repeated drift is detected, YOU surfaces a reflective dialog, asking whether focus blocks need adjusting and suggesting micro-changes to plan or environment.
 <ProjectImageAsset src="super-ego-app/system2-grace.jpg" alt="Screenshot: System 2 intervention - reflective dialog after drift" />
 
-For **Phil - stress & emotional understanding**:
+<aside style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem', margin: '1.5rem 0' }}>
+  <strong style={{  }}>👨🏽‍🎓 Phil — Understanding stress</strong>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginTop: '0.5rem' }}>
+    <div>
+      <p style={{ fontSize: '1rem', color: 'hsl(var(--muted-foreground))', margin: 0 }}><strong>Subtle nudge:</strong> When stress patterns appear, such as fast typing, rapid switching, a gentle haptic pulse mimics slow breathing. No notification. Just a rhythm in your hand.</p>
+    </div>
+    <div>
+      <p style={{ fontSize: '1rem', color: 'hsl(var(--muted-foreground))', margin: 0 }}><strong>Reflective moment:</strong> Pick from emotion categories, tag what's contributing, write a note to "Future Phil." When the pattern recurs, YOU resurfaces it. A letter from your past self.</p>
+    </div>
+  </div>
+</aside>
 
-- **System 1**: subtle haptic cues mimic calm breathing when patterns associated with stress appear (fast typing, intense app switching, late-night screen time).  
 <ProjectImageAsset src="super-ego-app/system1-phil.jpg" alt="Screenshot: System 1 intervention - haptic cue for calm breathing" />
-- **System 2**: check-ins where he rates emotion families, tags contributing factors (work, relationships, body, thoughts) and writes short notes to “Future Phil” that are later resurfaced when patterns repeat.
 <ProjectImageAsset src="super-ego-app/system2-phil.jpg" alt="Screenshot: System 2 intervention - emotional check-in and note to Future Phil" />
 
-### Adapting goals and involvement
+### When the system should step back
 
-YOU continuously evaluates whether its support is helping:
+YOU isn't a therapist. If Phil's stress stays high for days, it doesn't double down — it reframes: *"Maybe the goal right now isn't to lower stress. It's to understand it."*. And gently asking, *"Would it help to talk to someone who isn't an app?"*
 
-- If Phil's stress scores remain high for many days, YOU reframes success as **understanding** stress patterns instead of lowering stress immediately, suggests fewer check-ins, and offers options for external support.  
-- Users can adjust involvement level, pause plans (without losing streaks), or change goals as life circumstances shift.
+Users can always adjust their level, pause goals without losing progress, or change direction.
 
 <ProjectImageAsset src="super-ego-app/goal-adaptation.jpg" alt="Screenshot: Goal adaptation and involvement level settings" />
 
 ---
 
-## Outcome
+## What came out of it
 
-The outcome of the project was a **high-fidelity OS-level prototype** and a clear behavioral system. The key outputs were:
-- A coherent, validated system model showing how goal selection, emotional awareness, data observation, and intervention level fit into one loop.  
-- Interaction flows and UI for two personas, demonstrating how YOU personalizes support for focus vs. stress.  
-- A set of System 1 / System 2 interventions that respect user autonomy while influencing behavior at the right moments.  
-- A documented set of limitations and future directions (e.g., long-term habit retention without nudges, richer avatar personalization, planning ahead for likely impulse moments).
+A high-fidelity prototype and a system I was proud of believing in:
+
+<section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', margin: '1.5rem 0' }}>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
+    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>🔄</p>
+    <strong style={{  }}>Complete behavioral loop</strong>
+    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>Goal selection → emotional awareness → pattern observation → adaptive intervention, all connected.</p>
+  </article>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
+    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>👥</p>
+    <strong style={{  }}>Personalized flows</strong>
+    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>Full interaction flows for two very different people, showing how the same system feels personal to each.</p>
+  </article>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
+    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>🎚️</p>
+    <strong style={{  }}>Spectrum of interventions</strong>
+    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>From barely-there friction to deep reflective prompts with autonomy built-in.</p>
+  </article>
+  
+</section>
 
 ---
 
-## Learnings
+## What it taught me
 
-Working on YOU changed how I think about designing for behavior change and emotional skills:
+This project changed how I think — not just about design, but about people.
 
-- **Make assumptions explicit early.** Listing and validating assumptions (about goals, reflection, data, gamification) helped avoid magical thinking and anchored design choices in evidence.  
-- **Design with the preconscious, not just for it.** Small frictions, ambient cues, and timing matter as much as what the user consciously sees on screen.  
-- **Emotional awareness is a design parameter.** LEAS-inspired checks made it clear that not everyone benefits from the same depth of emotional reflection; the system must adapt tone and complexity.  
-- **Autonomy and transparency are non-negotiable.** From “choose your goal” to “pick my role” to clear summaries of what YOU observed, user control was treated as a core feature, not an afterthought. 
+<section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', margin: '1.5rem 0' }}>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
+    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>📝</p>
+    <strong style={{  }}>Write down beliefs first</strong>
+    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>I listed every assumption about behavior, motivation, and data. Half were wrong. The right ones became the system's foundation.</p>
+  </article>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
+    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>👻</p>
+    <strong style={{  }}>Invisible stuff matters most</strong>
+    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>A two-second delay. A vibration matching breathing. These "invisible" moments shaped behavior more than any screen I designed.</p>
+  </article>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
+    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>🎭</p>
+    <strong style={{  }}>People feel differently — literally</strong>
+    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>Some name twelve feelings in a moment; others genuinely experience "fine" or "not fine." Ignor this and you can really miss out on an experience that adapts to users.</p>
+  </article>
+  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
+    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>🤲</p>
+    <strong style={{  }}>Never take control away</strong>
+    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>From choosing your goal to choosing how loudly the system speaks — autonomy wasn built-in.</p>
+  </article>
+</section>
 
-**YOU** now sits in my portfolio as an example of combining behavioral science, emotional-awareness theory, and OS-level interaction design to explore how digital systems might support more aligned, self-aware lives.
+YOU is the project that made me believe technology can do more than track and remind. It can notice the preconscious, the drift and ask: *"Is this what you wanted to be doing right now?"*

@@ -15,7 +15,7 @@ export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
   const { mode } = useMode();
   const isDesigner = mode === "designer";
   const currentIndex = visibleProjects.findIndex(
-    (p) => p.slug === project.slug
+    (p) => p.slug === project.slug,
   );
   const prevProject =
     currentIndex > 0 ? visibleProjects[currentIndex - 1] : null;
@@ -25,7 +25,7 @@ export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
       : null;
 
   return (
-    <footer className="mt-32 pt-24 pb-16">
+    <footer className="pt-24 pb-16 max-w-7xl mx-auto">
       {/* Links Section */}
       {project.links && Object.keys(project.links).length > 0 && (
         <motion.div
