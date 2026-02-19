@@ -45,26 +45,26 @@ I kept coming back to something that bothered me. Every productivity app I'd tri
 
 When I dug into research, four patterns kept showing up:
 
-<section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', margin: '2rem 0' }}>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '1rem', padding: '1.5rem' }}>
-    <p style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🫥</p>
-    <strong style={{ display: 'block' }}>Invisible drift</strong>
-    <p style={{ fontSize: '1rem', color: 'hsl(var(--muted-foreground))', margin: 0, lineHeight: '1.5' }}>People feel disorganized, but the real issue is they don't notice when they drift off course.</p>
+<section className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-8 not-prose">
+  <article className="bg-muted rounded-2xl p-5 border border-border/10">
+    <p className="text-2xl mb-1">🫥</p>
+    <strong className="block">Invisible drift</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">People feel disorganized, but the real issue is they don't notice when they drift off course.</p>
   </article>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '1rem', padding: '1.5rem' }}>
-    <p style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🔁</p>
-    <strong style={{ display: 'block' }}>Autopilot habits</strong>
-    <p style={{ fontSize: '1rem', color: 'hsl(var(--muted-foreground))', margin: 0, lineHeight: '1.5' }}>Habits are rigid and run on autopilot and by the time you catch yourself, the moment has passed.</p>
+  <article className="bg-muted rounded-2xl p-5 border border-border/10">
+    <p className="text-2xl mb-1">🔁</p>
+    <strong className="block">Autopilot habits</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Habits are rigid and run on autopilot and by the time you catch yourself, the moment has passed.</p>
   </article>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '1rem', padding: '1.5rem' }}>
-    <p style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>😶‍🌫️</p>
-    <strong style={{ display: 'block'  }}>Emotions ignored</strong>
-    <p style={{ fontSize: '1rem', color: 'hsl(var(--muted-foreground))', margin: 0, lineHeight: '1.5' }}>Most tools completely ignore your emotional state, as if stress and mood don't shape every decision.</p>
+  <article className="bg-muted rounded-2xl p-5 border border-border/10">
+    <p className="text-2xl mb-1">😶‍🌫️</p>
+    <strong className="block">Emotions ignored</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Most tools completely ignore your emotional state, as if stress and mood don't shape every decision.</p>
   </article>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '1rem', padding: '1.5rem' }}>
-    <p style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✋🏽</p>
-    <strong style={{ display: 'block' }}>Intention vs. Action gap</strong>
-    <p style={{ fontSize: '1rem', color: 'hsl(var(--muted-foreground))', margin: 0, lineHeight: '1.5' }}>There's a gap between what people plan to do and what their hands actually do on the phone.</p>
+  <article className="bg-muted rounded-2xl p-5 border border-border/10">
+    <p className="text-2xl mb-1">✋🏽</p>
+    <strong className="block">Intention vs. Action gap</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">There's a gap between what people plan to do and what their hands actually do on the phone.</p>
   </article>
 </section>
 
@@ -80,22 +80,22 @@ All of this pointed to one question:
 
 Before sketching anything, I wrote down every assumption I was carrying. Then I went looking for evidence to prove myself wrong.
 
-<section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', margin: '1.5rem 0' }}>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
-    <strong style={{ }}>🎯 Own your goals</strong>
-    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>People do better when they choose their direction, not when an app tells them what to fix.</p>
+<section className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6 not-prose">
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <strong>🎯 Own your goals</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">People do better when they choose their direction, not when an app tells them what to fix.</p>
   </article>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
-    <strong style={{ }}>🪜 Small backup actions</strong>
-    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>After failure, "get back on track" doesn't help. A walk instead of the gym does.</p>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <strong>🪜 Small backup actions</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">After failure, "get back on track" doesn't help. A walk instead of the gym does.</p>
   </article>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
-    <strong style={{ }}>💬 Short prompts win</strong>
-    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>Nobody journals for ten minutes. But they'll answer one specific prompt about how they feel.</p>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <strong>💬 Short prompts win</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Nobody journals for ten minutes. But they'll answer one specific prompt about how they feel.</p>
   </article>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
-    <strong style={{ }}>👁️ Rhythms, not content</strong>
-    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>Your phone knows your patterns. Never spy. Just notice.</p>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <strong>👁️ Rhythms, not content</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Your phone knows your patterns. Never spy. Just notice.</p>
   </article>
 </section>
 
@@ -117,16 +117,16 @@ The core is a four-step loop -> figure out where you are, understand your emotio
 
 I stress-tested the system with two very different fictional lives:
 
-<section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', margin: '1.5rem 0' }}>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
-    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>👩🏻‍💻</p>
-    <strong style={{  }}>Grace, 30, Analyst</strong>
-    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>Motivated by mastery. Cares about <em>too many things</em> and ends up scattered. Wants to protect deep work and family time and stop feeling guilty about what she didn't finish.</p>
+<section className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6 not-prose">
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <p className="text-lg mb-1">👩🏻‍💻</p>
+    <strong>Grace, 30, Analyst</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Motivated by mastery. Cares about <em>too many things</em> and ends up scattered. Wants to protect deep work and family time and stop feeling guilty about what she didn't finish.</p>
   </article>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
-    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>👨🏽‍🎓</p>
-    <strong style={{  }}>Phil, 24, CS Student</strong>
-    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>Driven by connection, vulnerable to comparison. Opens social media to feel connected, closes it feeling worse. Wants to understand his emotional patterns, not suppress them.</p>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <p className="text-lg mb-1">👨🏽‍🎓</p>
+    <strong>Phil, 24, CS Student</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Driven by connection, vulnerable to comparison. Opens social media to feel connected, closes it feeling worse. Wants to understand his emotional patterns, not suppress them.</p>
   </article>
 </section>
 
@@ -164,14 +164,14 @@ Based on responses, YOU calibrates everything. <br/>
 
 Here's where dual-process theory comes alive. Each persona gets a subtle nudge (System 1) and a reflective moment (System 2):
 
-<aside style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', }}>
-  <strong style={{ }}>👩🏻‍💻 Grace — Protecting focus</strong>
-  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginTop: '0.5rem' }}>
+<aside className="bg-muted rounded-xl p-5 border border-border/10 not-prose my-6">
+  <strong>👩🏻‍💻 Grace — Protecting focus</strong>
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
     <div>
-      <p style={{ fontSize: '1rem', color: 'hsl(var(--muted-foreground))', margin: 0 }}><strong>Subtle nudge:</strong> During focus blocks, low-value apps don't disappear, they just slow down. A small delay, a gentle message: <em>"This is your high-value time."</em></p>
+      <p className="text-sm text-muted-foreground"><strong>Subtle nudge:</strong> During focus blocks, low-value apps don't disappear, they just slow down. A small delay, a gentle message: <em>"This is your high-value time."</em></p>
     </div>
     <div>
-      <p style={{ fontSize: '1rem', color: 'hsl(var(--muted-foreground))', margin: 0 }}><strong>Reflective moment:</strong> If she keeps drifting, YOU asks: <em>"Your focus blocks haven't been working. Want to adjust when they happen?"</em> Micro-changes, not lectures.</p>
+      <p className="text-sm text-muted-foreground"><strong>Reflective moment:</strong> If she keeps drifting, YOU asks: <em>"Your focus blocks haven't been working. Want to adjust when they happen?"</em> Micro-changes, not lectures.</p>
     </div>
   </div>
 </aside>
@@ -179,14 +179,14 @@ Here's where dual-process theory comes alive. Each persona gets a subtle nudge (
 <ProjectImageAsset src="super-ego-app/system1-grace.jpg" alt="Screenshot: System 1 intervention - app delay during focus time" />
 <ProjectImageAsset src="super-ego-app/system2-grace.jpg" alt="Screenshot: System 2 intervention - reflective dialog after drift" />
 
-<aside style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem', margin: '1.5rem 0' }}>
-  <strong style={{  }}>👨🏽‍🎓 Phil — Understanding stress</strong>
-  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', marginTop: '0.5rem' }}>
+<aside className="bg-muted rounded-xl p-5 border border-border/10 not-prose my-6">
+  <strong>👨🏽‍🎓 Phil — Understanding stress</strong>
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
     <div>
-      <p style={{ fontSize: '1rem', color: 'hsl(var(--muted-foreground))', margin: 0 }}><strong>Subtle nudge:</strong> When stress patterns appear, such as fast typing, rapid switching, a gentle haptic pulse mimics slow breathing. No notification. Just a rhythm in your hand.</p>
+      <p className="text-sm text-muted-foreground"><strong>Subtle nudge:</strong> When stress patterns appear, such as fast typing, rapid switching, a gentle haptic pulse mimics slow breathing. No notification. Just a rhythm in your hand.</p>
     </div>
     <div>
-      <p style={{ fontSize: '1rem', color: 'hsl(var(--muted-foreground))', margin: 0 }}><strong>Reflective moment:</strong> Pick from emotion categories, tag what's contributing, write a note to "Future Phil." When the pattern recurs, YOU resurfaces it. A letter from your past self.</p>
+      <p className="text-sm text-muted-foreground"><strong>Reflective moment:</strong> Pick from emotion categories, tag what's contributing, write a note to "Future Phil." When the pattern recurs, YOU resurfaces it. A letter from your past self.</p>
     </div>
   </div>
 </aside>
@@ -208,23 +208,22 @@ Users can always adjust their level, pause goals without losing progress, or cha
 
 A high-fidelity prototype and a system I was proud of believing in:
 
-<section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', margin: '1.5rem 0' }}>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
-    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>🔄</p>
-    <strong style={{  }}>Complete behavioral loop</strong>
-    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>Goal selection → emotional awareness → pattern observation → adaptive intervention, all connected.</p>
+<section className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6 not-prose">
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <p className="text-lg mb-1">🔄</p>
+    <strong>Complete behavioral loop</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Goal selection → emotional awareness → pattern observation → adaptive intervention, all connected.</p>
   </article>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
-    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>👥</p>
-    <strong style={{  }}>Personalized flows</strong>
-    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>Full interaction flows for two very different people, showing how the same system feels personal to each.</p>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <p className="text-lg mb-1">👥</p>
+    <strong>Personalized flows</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Full interaction flows for two very different people, showing how the same system feels personal to each.</p>
   </article>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
-    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>🎚️</p>
-    <strong style={{  }}>Spectrum of interventions</strong>
-    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>From barely-there friction to deep reflective prompts with autonomy built-in.</p>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <p className="text-lg mb-1">🎚️</p>
+    <strong>Spectrum of interventions</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">From barely-there friction to deep reflective prompts with autonomy built-in.</p>
   </article>
-  
 </section>
 
 ---
@@ -233,26 +232,26 @@ A high-fidelity prototype and a system I was proud of believing in:
 
 This project changed how I think — not just about design, but about people.
 
-<section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', margin: '1.5rem 0' }}>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
-    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>📝</p>
-    <strong style={{  }}>Write down beliefs first</strong>
-    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>I listed every assumption about behavior, motivation, and data. Half were wrong. The right ones became the system's foundation.</p>
+<section className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6 not-prose">
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <p className="text-lg mb-1">📝</p>
+    <strong>Write down beliefs first</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">I listed every assumption about behavior, motivation, and data. Half were wrong. The right ones became the system's foundation.</p>
   </article>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
-    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>👻</p>
-    <strong style={{  }}>Invisible stuff matters most</strong>
-    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>A two-second delay. A vibration matching breathing. These "invisible" moments shaped behavior more than any screen I designed.</p>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <p className="text-lg mb-1">👻</p>
+    <strong>Invisible stuff matters most</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">A two-second delay. A vibration matching breathing. These "invisible" moments shaped behavior more than any screen I designed.</p>
   </article>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
-    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>🎭</p>
-    <strong style={{  }}>People feel differently — literally</strong>
-    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>Some name twelve feelings in a moment; others genuinely experience "fine" or "not fine." Ignor this and you can really miss out on an experience that adapts to users.</p>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <p className="text-lg mb-1">🎭</p>
+    <strong>People feel differently — literally</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Some name twelve feelings in a moment; others genuinely experience "fine" or "not fine." Ignor this and you can really miss out on an experience that adapts to users.</p>
   </article>
-  <article style={{ background: 'hsl(var(--muted))', borderRadius: '0.75rem', padding: '1.25rem' }}>
-    <p style={{ fontSize: '1.1rem', margin: '0 0 0.25rem' }}>🤲</p>
-    <strong style={{  }}>Never take control away</strong>
-    <p style={{ fontSize: '1rem', margin: 0, lineHeight: '1.5', color: 'hsl(var(--muted-foreground))', margin: '0.25rem 0 0' }}>From choosing your goal to choosing how loudly the system speaks — autonomy wasn built-in.</p>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <p className="text-lg mb-1">🤲</p>
+    <strong>Never take control away</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">From choosing your goal to choosing how loudly the system speaks — autonomy wasn built-in.</p>
   </article>
 </section>
 

@@ -13,7 +13,7 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
   const isDesigner = mode === "designer";
 
   return (
-    <header className="relative pt-16 pb-16 px-6 overflow-hidden">
+    <header className="relative pt-16 pb-16 px-4 md:px-6 overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-muted/30 to-background -z-10" />
 
@@ -37,7 +37,7 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-center mb-16 max-w-4xl mx-auto"
+          className="text-center mb-10 md:mb-16 max-w-4xl mx-auto"
         >
           <h1
             className={`heading-primary text-4xl md:text-5xl lg:text-6xl font-bold mb-6 ${

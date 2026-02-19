@@ -25,7 +25,7 @@ export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
       : null;
 
   return (
-    <footer className="pt-24 pb-16 max-w-7xl mx-auto">
+    <footer className="pt-12 md:pt-24 pb-12 md:pb-16 max-w-7xl mx-auto">
       {/* Links Section */}
       {project.links && Object.keys(project.links).length > 0 && (
         <motion.div
@@ -33,7 +33,7 @@ export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-20 text-center"
+          className="mb-12 md:mb-20 text-center"
         >
           <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-6">
             View Live Project
@@ -62,7 +62,7 @@ export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
       )}
 
       {/* Divider */}
-      <div className="border-t border-border/20 mb-16" />
+      <div className="border-t border-border/20 mb-10 md:mb-16" />
 
       {/* Navigation */}
       <motion.div
