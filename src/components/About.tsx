@@ -1,5 +1,12 @@
 import { motion } from "framer-motion";
-import { Pen, Dumbbell, Mountain, BookOpen, ArrowUpRight } from "lucide-react";
+import {
+  Pen,
+  Dumbbell,
+  Mountain,
+  BookOpen,
+  ArrowUpRight,
+  FileText,
+} from "lucide-react";
 
 const container = {
   hidden: { opacity: 0 },
@@ -197,6 +204,80 @@ const About = () => {
                 Hiking resets my default mode network. Some of my best design
                 ideas arrive on the trail, not at the desk.
               </p>
+            </div>
+          </motion.div>
+
+          {/* ── Design Portfolios tile ── */}
+          <motion.div
+            variants={tile}
+            className="sm:col-span-2 lg:col-span-2 neubrutalism-card bg-[hsl(var(--designer-primary))]/5 p-6 rounded-2xl flex flex-col justify-between group"
+          >
+            <div className="mb-4">
+              <h3 className="font-heading font-bold text-lg text-foreground mb-1">
+                Design Work
+              </h3>
+              <p className="text-sm text-muted-foreground font-body">
+                Selected UI &amp; visual design across platforms.
+              </p>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              {/* Portfolio PDF */}
+              <a
+                href="/portfolio/file.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-foreground/[0.04] hover:bg-foreground/[0.08] transition-colors group/link"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[hsl(var(--designer-primary))]/10 flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-[hsl(var(--designer-primary))]" />
+                </div>
+                <span className="text-xs font-medium text-foreground font-body flex items-center gap-1">
+                  Portfolio
+                  <ArrowUpRight className="w-3 h-3 opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                </span>
+              </a>
+              {/* Behance */}
+              <a
+                href="https://www.behance.net/desman_designer"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-foreground/[0.04] hover:bg-foreground/[0.08] transition-colors group/link"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#1769ff]/10 flex items-center justify-center">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-5 h-5 fill-[#1769ff]"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988H0V5.021h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zM3 11h3.584c2.508 0 2.906-3-.312-3H3v3zm3.391 3H3v3.016h3.341c3.055 0 2.868-3.016.05-3.016z" />
+                  </svg>
+                </div>
+                <span className="text-xs font-medium text-foreground font-body flex items-center gap-1">
+                  Behance
+                  <ArrowUpRight className="w-3 h-3 opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                </span>
+              </a>
+              {/* Dribbble */}
+              <a
+                href="https://dribbble.com/desman_designer"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center gap-2 p-4 rounded-xl bg-foreground/[0.04] hover:bg-foreground/[0.08] transition-colors group/link"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#ea4c89]/10 flex items-center justify-center">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-5 h-5 fill-[#ea4c89]"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M12 24C5.385 24 0 18.615 0 12S5.385 0 12 0s12 5.385 12 12-5.385 12-12 12zm10.12-10.358c-.35-.11-3.17-.953-6.384-.438 1.34 3.684 1.887 6.684 1.992 7.308 2.3-1.555 3.936-4.02 4.395-6.87zm-6.115 7.808c-.153-.9-.75-4.032-2.19-7.77l-.066.02c-5.79 2.015-7.86 6.025-8.04 6.4 1.73 1.358 3.92 2.166 6.29 2.166 1.42 0 2.77-.29 4-.81zm-11.62-2.58c.232-.4 3.045-5.055 8.332-6.765.135-.045.27-.084.405-.12-.26-.585-.54-1.167-.832-1.74C7.17 11.775 2.206 11.71 1.756 11.7l-.004.312c0 2.633.998 5.037 2.634 6.855zm-2.42-8.955c.46.008 4.683.026 9.477-1.248-1.698-3.018-3.53-5.558-3.8-5.928-2.868 1.35-5.01 3.99-5.676 7.17zM9.6 2.052c.282.38 2.145 2.914 3.822 6 3.645-1.365 5.19-3.44 5.373-3.702C16.86 2.61 14.545 1.62 12 1.62c-.83 0-1.634.1-2.4.285v.146zm10.14 3.2c-.21.29-1.9 2.49-5.69 4.02.24.49.47.99.68 1.49.075.18.15.36.22.53 3.41-.43 6.8.26 7.14.33-.02-2.42-.88-4.64-2.35-6.38z" />
+                  </svg>
+                </div>
+                <span className="text-xs font-medium text-foreground font-body flex items-center gap-1">
+                  Dribbble
+                  <ArrowUpRight className="w-3 h-3 opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                </span>
+              </a>
             </div>
           </motion.div>
 
