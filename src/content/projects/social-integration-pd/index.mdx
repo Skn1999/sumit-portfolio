@@ -1,7 +1,7 @@
 ---
 slug: "social-integration-pd"
-title: "Social Integration Participatory Design"
-tagline: "Designing for social inclusion in Chilean housing communities"
+title: "Mesa Te Club: Co-Designing Common Spaces for Social Integration"
+tagline: "Using participatory design to turn DS19 social housing common areas into shared, lived spaces."
 date: "2023-09-12"
 type: "design"
 featured: false
@@ -20,42 +20,258 @@ gallery:
   #   caption: "Presenting the co-created solutions to stakeholders"
 tech:
   - "Participatory Design"
-  - "User Research"
   - "Co-design Workshops"
   - "Figma"
   - "Miro"
+  - "Workshop Design"
 metric: "Improved community engagement and shared space usability"
 links:
   case: "https://drive.google.com/file/d/1CY0eJk9NE1xTOhLDLWOJgP_xtaGxVlD_/view?usp=sharing"
-summary: "Co-designed community spaces in Chilean social housing through participatory workshops, enhancing social interaction and inclusivity among residents."
+summary: "A participatory design proposal that uses tea gatherings and playful co-design tools to help residents, municipalities and developers collaboratively shape common areas in Chilean DS19 social housing, fighting urban segregation by designing for everyday encounters and long-term community ownership."
 roles:
-  - "Research"
-  - "UX"
-  - "Facilitation"
+  - "Workshop Design"
+  - "UX & Service Design"
+  - "Co-design Tool Creation"
+  - "Research & Synthesis"
 order: 10
 draft: false
 ---
 
+import { ProjectImageAsset } from "@/components/ui/project-image-asset";
+
 ## Overview
 
-This project focused on improving **social integration and shared living experiences** in Chilean social housing developments. The goal was to explore how **participatory design methods** can empower residents to co-create solutions that foster belonging, collaboration, and mutual support within their communities.
+You move into a new apartment. There's a courtyard downstairs, a couple of benches, a patch of grass. On paper it's a "common area." In practice, nobody uses it. The kids from the subsidized units play on one side. The families who bought at market price stay on the other. Everyone nods politely and goes inside.
 
-## My Role
+That gap, between a space that *exists* and a space that *belongs to people*, is what this project is about.
 
-I led the **research and facilitation** of participatory workshops with residents, local stakeholders, and design students. My responsibilities included defining research goals, planning co-design activities, synthesizing insights, and visualizing design outcomes using **Figma** and **Miro**.
+Mesa Te Club is a participatory design framework that turns awkward shared spaces in Chilean social housing into places people actually want to be in. Not by handing residents a finished blueprint, but by sitting them down with tea, snacks, and a set of playful tools and letting them design the spaces themselves, alongside developers, municipalities, and the housing ministry.
 
-## Process
+> _I led workshop design, research synthesis, and co-design tool creation across the full DS19 project timeline._
 
-The design process followed a **user-centered and participatory framework**, structured around three stages:
+---
 
-1. **Contextual Research** – Conducted ethnographic observations and semi-structured interviews to understand residents’ daily routines, shared space usage, and social barriers.
-2. **Co-Design Workshops** – Facilitated ideation sessions where residents reimagined their shared spaces through storytelling, sketching, and collaborative mapping.
-3. **Synthesis & Prototyping** – Clustered insights into themes of _safety, inclusion, and shared identity_, leading to concept proposals for spatial and programmatic interventions that encourage community engagement.
+## The problem nobody was designing for
 
-## Outcome
+Chile has a housing program called DS19. On the surface, it's progressive, that is, private developers must reserve a percentage of units for vulnerable families, mixed in with market-rate buyers. The idea is reducing the socio-economic segregation that happens between people living in the same building.
 
-The project resulted in actionable design guidelines and spatial concepts that enhanced the usability of shared areas and **strengthened residents’ sense of ownership**. Through active participation, residents reported **higher engagement and a stronger perception of community belonging**.
+But here's what actually happens:
 
-## Reflection
+<section className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-8 not-prose">
+  <article className="bg-muted rounded-2xl p-5 border border-border/10">
+    <p className="text-2xl mb-1">🏗️</p>
+    <strong className="block">Spaces designed top-down</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Common areas are optimized for cost and maintenance, not for social life. Architects decide what goes where. Residents show up after it's built.</p>
+  </article>
+  <article className="bg-muted rounded-2xl p-5 border border-border/10">
+    <p className="text-2xl mb-1">🤝</p>
+    <strong className="block">Integration only on paper</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">The Social Integration Plan mandates activities, but never touches the design of shared spaces. Integration is treated as a checklist, not a spatial practice.</p>
+  </article>
+  <article className="bg-muted rounded-2xl p-5 border border-border/10">
+    <p className="text-2xl mb-1">🫖</p>
+    <strong className="block">A missed opportunity</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">DS19 already has a practice called "Mesa Te Club" — tea gatherings for communication. But they're used to talk at people, not with them.</p>
+  </article>
+</section>
 
-This project deepened my understanding of **design as a social mediator** — not just a problem-solving tool. It reinforced the value of empathy, inclusion, and co-creation in shaping design solutions that have real human and cultural impact.
+That last one is what changed everything for me. There was already a table. Already tea. Already a name. What if we turned that table into a design studio?
+
+> What if the common areas of social housing were co-designed by the people who will actually live there, through something as simple as sharing tea?
+
+---
+
+## How I got there
+
+### 1. Mapping the ecosystem
+
+Before designing anything, I needed to understand the forces at play. DS19 isn't just residents and architects, it's a system of different actors with different interests and unequal power dynamics.
+
+I mapped four key actors and what drives (and blocks) each one:
+
+<section className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6 not-prose">
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <strong>🏛️ Housing Ministry</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Sets guidelines, balances budget with integration goals. Interested in better outcomes but distant from residents' everyday life.</p>
+  </article>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <strong>🏘️ Municipalities</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Closest to urban challenges. Genuinely want better tools to support residents, but lack resources and design methods.</p>
+  </article>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <strong>🏢 Developers</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Experts in construction and cost. Reluctant to take on "social" responsibilities or hand future residents any design power.</p>
+  </article>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <strong>👨‍👩‍👧‍👦 Residents</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Seeking affordable housing, safe spaces for children, places for community. They have the most at stake and the least say.</p>
+  </article>
+</section>
+
+{/* TODO: Add image — stakeholder ecosystem map showing actors, tensions, and opportunities */}
+<ProjectImageAsset src="social-integration-pd/stakeholder-ecosystem.png" alt="Description" />
+
+The pattern was clear: everyone wanted better common areas, but nobody had a process for designing them *together*. The system was stuck in a loop of top-down decisions and bottom-up frustration.
+
+---
+
+### 2. The reframe that unlocked everything
+
+The original brief was broad: "design a participatory process for DS19 common areas." That could mean anything. Workshops, surveys, apps, committees.
+
+But when I looked at what already existed — the Mesa Te Club tea gatherings — I realized I didn't need to invent a new format. I needed to **redesign an existing one**.
+
+> Mesa Te Club was already a ritual. It had trust, familiarity, a name. All it needed was design power.
+
+---
+
+## What I designed
+
+### A participation ladder, disguised as tea time
+
+The framework has six activities, each designed for a different moment and a different kind of input. Together, they form a ladder — from early idea crowdsourcing to post-occupancy learning.
+{/* TODO: Add image — overview of the Mesa Te Club framework across the DS19 timeline */}
+<ProjectImageAsset src="social-integration-pd/co-design-activities-overview.png" alt="Description" />
+
+---
+
+### Tree of Dreams — surfacing what people hope for
+
+Before any design happens, we need to know what people care about. "Tree of Dreams" is a low-barrier activity. Residents attach notes to a physical tree in the sales room or contribute digitally, sharing what they wish for in their future home and shared spaces.
+
+Safety. Nature. A place for kids to play. Somewhere to sit and read. A garden.
+
+The goal here isn't consensus but to understand the variety of needs of the residents.
+
+{/* TODO: Add image — Tree of Dreams activity, physical tree with notes attached */}
+
+---
+
+### Build-A-Space Lab — translating dreams into requirements
+
+Once we have a rich picture of needs, I designed a 2.5-hour expert workshop. Architects, planners, municipal social workers, and developers sit together and work through a **Common Area Canvas** I created.
+
+They collaboratively define components (play, sport, relax, nature, culture), constraints (cost, maintenance, geography), and how each element supports social integration. The output is a set of clear requirements but grounded in feasibility.
+
+> This is where dreams meet reality. But the point isn't to kill dreams — it's to make them buildable.
+
+{/* TODO: Add image — Build-A-Space Lab workshop and Common Area Canvas */}
+<ProjectImageAsset src="social-integration-pd/common-area-canvas.png" alt="Description" />
+
+
+---
+
+### Playing Sims — residents design the layout
+
+This is the heart of the project. A 2-hour Mesa Te Club session where groups of residents receive a blank plan of their future building with highlighted common areas, and a set of **pre-priced modular pieces** — playground, benches, gardens, courts, a barbecue area.
+
+Each group negotiates how to fill the plan within spatial and budget constraints. Then everyone votes on their favorite configuration using stickers. For example, if someone votes for a bigger playground, they have to vote against a garden or a seating area. The trade-offs become visible, and priorities become shared.
+
+{/* TODO: Add image — Playing Sims workshop, residents arranging modular pieces on a building plan */}
+<ProjectImageAsset src="social-integration-pd/playing-sims.png" alt="Description" />
+
+
+---
+
+### Design Reveal — closing the loop
+
+After integrating expert and resident inputs, I designed a "Design Reveal" moment. Through email, website, and WhatsApp, residents see the final chosen common areas, what was possible, what wasn't, and why.
+
+This step is about managing expectations and reinforcing that **participation led to concrete outcomes**. People gave input. The design reflects it. Here's the proof.
+
+{/* TODO: Add image — Design Reveal communication materials */}
+<ProjectImageAsset src="social-integration-pd/design-reveal.png" alt="Description" />
+
+---
+
+### "Never Have I Ever" — learning after move-in
+
+Months after delivery, residents, administrators and developers sit in the built common areas and play a custom version of "Never Have I Ever." Cards prompt stories about safety, events, maintenance, and inclusivity. Designated note-takers capture insights.
+
+The session closes the feedback loop of "what we designed, how it's actually being used, and what the next building should do differently". 
+
+> The most important design moment isn't the workshop. It's six months after everyone moves in.
+
+{/* TODO: Add image — Never Have I Ever game in a common area, residents and note-takers */}
+<ProjectImageAsset src="social-integration-pd/never-have-i-ever.png" alt="Description" />
+
+---
+
+## How it all fits together
+
+Every activity is intentionally alignedwith the DS19 Social Integration Plan's two year horizon:
+
+<section className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6 not-prose">
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <strong>📅 Months 0-36</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Tree of Dreams + ongoing Mesa Te Club awareness sessions. Building trust, collecting input.</p>
+  </article>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <strong>📅 Month 25</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Build-A-Space Lab — experts translate needs into feasible requirements.</p>
+  </article>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <strong>📅 Month 30</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Playing Sims — residents co-design the layout using modular pieces.</p>
+  </article>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <strong>📅 Months 34-48+</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Design Reveal, then post-occupancy "Never Have I Ever" sessions to learn and adjust.</p>
+  </article>
+</section>
+
+Mesa Te Club isn't a one-off event. It's a **recurring rhythm** — the same table, the same format, appearing at every decision point across the project lifecycle.
+
+{/* TODO: Add image — full timeline visualization showing all touchpoints */}
+<ProjectImageAsset src="social-integration-pd/how-it-fits-together.png" alt="Description" />
+
+
+---
+
+## What came out of it
+
+The proposal was developed as part of a design-for-social-change studio, so the main output is a deployable framework rather than a built pilot. But through iterative prototyping of tools, canvases, and session scripts, we demonstrated that:
+
+<section className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6 not-prose">
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <p className="text-lg mb-1">⚖️</p>
+    <strong>Participation can fit developer budgets</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Structured well, co-design doesn't blow up timelines or costs. It fits within existing DS19 milestones while giving residents real influence.</p>
+  </article>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <p className="text-lg mb-1">🫖</p>
+    <strong>Simple rituals lower the barrier</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Tea, modular pieces, games. These aren't gimmicks — they make abstract topics like "social integration" tangible and approachable for everyone.</p>
+  </article>
+</section>
+
+---
+
+## What it taught me
+
+This project fundamentally shaped how I think about design in systems where power is unequal and stakes are deeply personal.
+
+<section className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6 not-prose">
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <p className="text-lg mb-1">🪑</p>
+    <strong>Don't invent a new table</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Mesa Te Club already existed. I didn't need to create a new format. All that needed was to give an existing one design power.</p>
+  </article>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <p className="text-lg mb-1">🎲</p>
+    <strong>Play makes power visible</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">When residents negotiate over modular pieces, they're also negotiating priorities, values, and what "shared" actually means. The game surface makes invisible dynamics tangible.</p>
+  </article>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <p className="text-lg mb-1">🏛️</p>
+    <strong>Design for the system, not just the user</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Residents are important but so are developers, municipalities, and ministries. A solution only works if it fits everyone's constraints, not just one group's needs.</p>
+  </article>
+  <article className="bg-muted rounded-xl p-5 border border-border/10">
+    <p className="text-lg mb-1">🫂</p>
+    <strong>Integration is a practice, not a program</strong>
+    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">You can't make people feel belonging. But you can create the environment in terms of rituals, shared decisions, moments of negotiation, where belonging starts to grow on its own.</p>
+  </article>
+</section>
+
+Mesa Te Club is the project that made me realize design isn't always about screens, flows, or interfaces. Sometimes the most powerful design tool is a table, a pot of tea, and the courage to let people shape what's theirs.
