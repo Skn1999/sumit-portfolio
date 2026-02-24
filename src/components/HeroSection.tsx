@@ -316,7 +316,7 @@ const HeroSection: React.FC = () => {
                 </span>
               </a>
               <a
-                href="https://dribbble.com/desman_designer"
+                href="https://dribbble.com/Skn99"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-foreground/[0.04] hover:bg-foreground/[0.08] transition-colors group/link"
