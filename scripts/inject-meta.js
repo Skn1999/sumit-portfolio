@@ -33,6 +33,33 @@ const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.png`;
 const BASE_PATH = process.env.VITE_BASE_PATH || "/sumit-portfolio/";
 const DIST = path.join(ROOT, "dist");
 
+// ── Vite manifest (maps source files → hashed output) ─────────────────
+let manifest = {};
+const manifestPath = path.join(DIST, ".vite", "manifest.json");
+if (fs.existsSync(manifestPath)) {
+  manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"));
+  console.log(
+    `📋 Loaded Vite manifest (${Object.keys(manifest).length} entries)`,
+  );
+} else {
+  console.warn(
+    "⚠️  No .vite/manifest.json found — OG images will use default.",
+  );
+}
+
+/**
+ * Look up the hashed output path for a source file via the Vite manifest.
+ * Returns an absolute URL or null if not found.
+ * @param {string} srcPath - relative to project root, e.g. "src/content/projects/super-ego-app/cover.jpg"
+ */
+function resolveAssetUrl(srcPath) {
+  const entry = manifest[srcPath];
+  if (entry?.file) {
+    return `${SITE_URL}/${entry.file}`;
+  }
+  return null;
+}
+
 // ── Helpers ────────────────────────────────────────────────────────────
 
 /** Read the built index.html as the template */
@@ -189,6 +216,7 @@ function getProjectRoutes() {
       if (fm.draft && process.env.NODE_ENV !== "development") return null;
 
       const slug = fm.slug || path.basename(path.dirname(file));
+      const projectDir = path.basename(path.dirname(file));
       const title = fm.title ? `${fm.title} | ${SITE_NAME}` : SITE_NAME;
       const description =
         fm.summary || fm.tagline || `${fm.title} — a project by ${SITE_NAME}`;
@@ -198,6 +226,14 @@ function getProjectRoutes() {
         fm.type === "engineering" ? "engineering" : "design",
       ];
 
+      // Resolve cover image from Vite manifest
+      const coverFilename = fm.cover?.filename;
+      const coverSrcPath = coverFilename
+        ? `src/content/projects/${projectDir}/${coverFilename}`
+        : null;
+      const ogImage =
+        (coverSrcPath && resolveAssetUrl(coverSrcPath)) || DEFAULT_OG_IMAGE;
+
       return {
         route: `/projects/${slug}`,
         meta: {
@@ -205,7 +241,7 @@ function getProjectRoutes() {
           description,
           url: `${SITE_URL}/projects/${slug}`,
           type: "article",
-          ogImage: DEFAULT_OG_IMAGE, // TODO: generate per-project OG images
+          ogImage,
           publishedDate: fm.date || null,
           keywords,
         },
