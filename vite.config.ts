@@ -43,6 +43,9 @@ export default defineConfig(({ mode, command }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    manifest: true, // generates dist/.vite/manifest.json for inject-meta.js
+  },
   base:
     process.env.VITE_BASE_PATH ||
     (command === "build" ? "/sumit-portfolio/" : "/"),
