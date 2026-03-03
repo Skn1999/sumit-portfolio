@@ -9,6 +9,7 @@ import { ProjectGallery } from "@/components/ProjectImage";
 import { useMode } from "@/contexts/ModeContext";
 import { Layout } from "@/components/Layout";
 import ReadingProgress from "@/components/ReadingProgress";
+import SEO from "@/components/SEO";
 
 const ProjectPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -41,8 +42,27 @@ const ProjectPage: React.FC = () => {
 
   const Component = project.Component;
 
+  // Build SEO props from frontmatter
+  const seoDescription =
+    project.summary ||
+    project.tagline ||
+    `${project.title} — a project by Sumit Knayyar`;
+  const seoKeywords = [
+    ...(project.tech || []),
+    ...(project.tags || []),
+    project.type === "engineering" ? "engineering" : "design",
+  ];
+
   return (
     <Layout>
+      <SEO
+        title={project.title}
+        description={seoDescription}
+        path={`/projects/${project.slug}`}
+        type="article"
+        keywords={seoKeywords}
+        publishedDate={project.date}
+      />
       <ReadingProgress />
       <div className="min-h-screen relative">
         {/* Hero Section */}

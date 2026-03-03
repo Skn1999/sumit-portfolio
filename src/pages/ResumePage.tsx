@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
+import SEO from "@/components/SEO";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -55,6 +56,11 @@ const ResumePage: React.FC = () => {
 
   return (
     <Layout>
+      <SEO
+        title="Resume"
+        description="View or download Sumit Knayyar's resume — Full-stack Engineer & UX Designer."
+        path="/resume"
+      />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
