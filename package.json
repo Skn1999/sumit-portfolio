@@ -10,7 +10,11 @@
     "build:preview": "VITE_BASE_PATH=/ vite build && node scripts/inject-meta.js",
     "lint": "eslint .",
     "preview": "npm run build:preview && vite preview",
-    "new-project": "node scripts/create-project.js"
+    "new-project": "node scripts/create-project.js",
+    "optimize-images": "node scripts/optimize-images.js",
+    "optimize-images:webp": "node scripts/optimize-images.js --webp",
+    "optimize-images:dry": "node scripts/optimize-images.js --dry-run",
+    "prebuild": "node scripts/optimize-images.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -91,6 +95,7 @@
     "prompts": "^2.4.2",
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^5.2.0",
+    "sharp": "^0.34.5",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
