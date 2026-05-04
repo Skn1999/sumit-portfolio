@@ -11,6 +11,7 @@ All colors MUST be HSL.
 @layer base {
   :root {
     --mode-transition-delay: 0s;
+    /* Light Mode - Default */
     --background: 0 0% 100%;
     --foreground: 220 15% 15%;
 
@@ -77,6 +78,97 @@ All colors MUST be HSL.
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* ===== DARK MODE COLOR TOKENS ===== */
+    /* Base layers for dark mode */
+    --dark-bg: 220 15% 11%;
+    --dark-bg-secondary: 220 14% 15%;
+    --dark-surface-1: 220 13% 20%;
+    --dark-surface-2: 220 12% 25%;
+    --dark-surface-3: 220 11% 30%;
+    
+    /* Text colors for dark mode */
+    --dark-text: 220 8% 93%;
+    --dark-text-secondary: 220 8% 73%;
+    --dark-text-muted: 220 8% 53%;
+    
+    /* Borders and dividers */
+    --dark-border: 220 12% 28%;
+    --dark-border-subtle: 220 12% 22%;
+    
+    /* Shadows (subtle, layered) */
+    --dark-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --dark-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+    --dark-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.6);
+    
+    /* Engineer mode dark colors */
+    --engineer-primary-dark: 215 85% 65%;
+    --engineer-accent-dark: 200 95% 70%;
+    --engineer-surface-dark: 220 13% 20%;
+    --engineer-glow-dark: 215 85% 70%;
+    
+    /* Designer mode dark colors */
+    --designer-primary-dark: 260 75% 70%;
+    --designer-accent-dark: 340 85% 75%;
+    --designer-surface-dark: 220 13% 20%;
+    --designer-glow-dark: 260 75% 75%;
+    --designer-border-dark: 220 10% 40%;
+  }
+
+  /* Dark mode overrides */
+  .dark {
+    --background: var(--dark-bg);
+    --foreground: var(--dark-text);
+
+    --card: var(--dark-surface-1);
+    --card-foreground: var(--dark-text);
+
+    --popover: var(--dark-surface-1);
+    --popover-foreground: var(--dark-text);
+
+    --primary: var(--engineer-primary-dark);
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: var(--dark-surface-2);
+    --secondary-foreground: var(--dark-text);
+
+    --muted: var(--dark-surface-2);
+    --muted-foreground: var(--dark-text-secondary);
+
+    --accent: var(--engineer-accent-dark);
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: var(--dark-border);
+    --input: var(--dark-surface-2);
+    --ring: var(--engineer-primary-dark);
+
+    --sidebar-background: var(--dark-surface-1);
+    --sidebar-foreground: var(--dark-text);
+    --sidebar-primary: var(--dark-surface-2);
+    --sidebar-primary-foreground: var(--dark-text);
+    --sidebar-accent: var(--engineer-primary-dark);
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: var(--dark-border);
+    --sidebar-ring: var(--engineer-primary-dark);
+  }
+
+  /* Dark mode + engineer mode */
+  .dark[data-mode="engineer"] {
+    --primary: var(--engineer-primary-dark);
+    --accent: var(--engineer-accent-dark);
+    --muted: var(--dark-surface-1);
+    --ring: var(--engineer-glow-dark);
+  }
+
+  /* Dark mode + designer mode */
+  .dark[data-mode="designer"] {
+    --primary: var(--designer-primary-dark);
+    --accent: var(--designer-accent-dark);
+    --muted: var(--dark-surface-1);
+    --ring: var(--designer-glow-dark);
   }
 
   /* Engineer mode active */
@@ -138,10 +230,21 @@ All colors MUST be HSL.
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.25));
   }
 
+  .dark .outline-text {
+    -webkit-text-stroke-color: rgba(220, 230, 250, 0.95);
+    text-stroke: 2px rgba(220, 230, 250, 0.95);
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+  }
+
   /* filled variant */
   .filled-text {
     color: rgba(255, 255, 255, 0.9);
     text-shadow: 0 6px 30px rgba(5, 10, 20, 0.6);
+  }
+
+  .dark .filled-text {
+    color: rgba(220, 230, 250, 0.9);
+    text-shadow: 0 6px 30px rgba(0, 0, 0, 0.8);
   }
 
   /* small hero photo frame style for designer mode */
@@ -197,6 +300,10 @@ All colors MUST be HSL.
     transition: border 0.3s ease, box-shadow 0.3s ease;
   }
 
+  .dark .hero-photo {
+    border-color: hsl(var(--dark-border));
+  }
+
   /* Smooth transition between modes */
   .hero-photo > div::after {
     content: "";
@@ -215,9 +322,18 @@ All colors MUST be HSL.
     transition: all 0.3s ease;
   }
 
+  .dark .hero-photo > div::after {
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0.25;
+  }
+
   .designer-frame > div::after {
     background: rgba(0, 0, 0, 0.12);
     filter: blur(35px);
+  }
+
+  .dark .designer-frame > div::after {
+    background: rgba(0, 0, 0, 0.3);
   }
 
   /* responsive adjustments */
@@ -240,6 +356,26 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground font-body antialiased;
+  }
+
+  a {
+    @apply text-primary hover:text-primary/80 transition-colors;
+  }
+
+  .dark a {
+    @apply text-[hsl(var(--engineer-primary-dark))] hover:text-[hsl(var(--engineer-primary-dark)/0.8)] transition-colors;
+  }
+
+  input,
+  textarea,
+  select {
+    @apply bg-input border-border transition-all;
+  }
+
+  .dark input,
+  .dark textarea,
+  .dark select {
+    @apply bg-[hsl(var(--dark-surface-2))] border-[hsl(var(--dark-border))] text-foreground;
   }
 
   h1,
@@ -346,6 +482,16 @@ All colors MUST be HSL.
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 
+  .dark[data-mode="engineer"] .card-styled {
+    @apply bg-[hsl(var(--dark-surface-1))] border border-[hsl(var(--dark-border))] rounded-xl;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .dark[data-mode="engineer"] .card-styled:hover {
+    @apply border-[hsl(var(--engineer-primary-dark)/0.6)];
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+
   /* Designer mode: Bold neubrutalism cards */
   [data-mode="designer"] .card-styled {
     @apply bg-card border-4 border-[hsl(var(--designer-border))] rounded-xl;
@@ -357,13 +503,31 @@ All colors MUST be HSL.
     box-shadow: 4px 4px 0px hsl(var(--designer-border));
   }
 
+  .dark[data-mode="designer"] .card-styled {
+    @apply bg-[hsl(var(--dark-surface-1))] border-4 border-[hsl(var(--designer-border-dark))] rounded-xl;
+    box-shadow: 6px 6px 0px hsl(var(--designer-border-dark));
+  }
+
+  .dark[data-mode="designer"] .card-styled:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 4px 4px 0px hsl(var(--designer-border-dark));
+  }
+
   /* ===== GLOWS & EFFECTS ===== */
   .glow-engineer {
     box-shadow: 0 0 40px -10px hsl(var(--engineer-glow) / 0.5);
   }
 
+  .dark .glow-engineer {
+    box-shadow: 0 0 40px -10px hsl(var(--engineer-primary-dark) / 0.3);
+  }
+
   .glow-designer {
     box-shadow: 6px 6px 0px hsl(var(--designer-border));
+  }
+
+  .dark .glow-designer {
+    box-shadow: 6px 6px 0px hsl(var(--designer-border-dark));
   }
 
   /* ===== NEUBRUTALISM (Designer Mode) ===== */
@@ -372,10 +536,20 @@ All colors MUST be HSL.
     box-shadow: 8px 8px 0px hsl(var(--designer-border));
   }
 
+  .dark .neubrutalism-card {
+    @apply border-4 border-[hsl(var(--designer-border-dark))] rounded-lg;
+    box-shadow: 8px 8px 0px hsl(var(--designer-border-dark));
+  }
+
   .neubrutalism-button {
     @apply border-[3px] border-[hsl(var(--designer-border))];
     box-shadow: 4px 4px 0px hsl(var(--designer-border));
     transition: all 0.2s ease;
+  }
+
+  .dark .neubrutalism-button {
+    @apply border-[3px] border-[hsl(var(--designer-border-dark))];
+    box-shadow: 4px 4px 0px hsl(var(--designer-border-dark));
   }
 
   .neubrutalism-button:hover {
@@ -383,9 +557,19 @@ All colors MUST be HSL.
     box-shadow: 2px 2px 0px hsl(var(--designer-border));
   }
 
+  .dark .neubrutalism-button:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px hsl(var(--designer-border-dark));
+  }
+
   .neubrutalism-button:active {
     transform: translate(4px, 4px);
     box-shadow: 0px 0px 0px hsl(var(--designer-border));
+  }
+
+  .dark .neubrutalism-button:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px hsl(var(--designer-border-dark));
   }
 
   /* ===== BADGES & TAGS ===== */
@@ -395,11 +579,24 @@ All colors MUST be HSL.
     box-shadow: 0 2px 8px hsl(var(--engineer-primary) / 0.25);
   }
 
+  .dark[data-mode="engineer"] .badge-styled {
+    @apply px-3 py-1 rounded-full text-xs font-semibold;
+    @apply bg-[hsl(var(--engineer-primary-dark))] text-white;
+    box-shadow: 0 2px 8px hsl(var(--engineer-primary-dark) / 0.3);
+  }
+
   [data-mode="designer"] .badge-styled {
     @apply px-3 py-1 rounded-lg text-xs font-bold;
     @apply bg-[hsl(var(--designer-primary))] text-white;
     @apply border-2 border-[hsl(var(--designer-border))];
     box-shadow: 3px 3px 0px hsl(var(--designer-border));
+  }
+
+  .dark[data-mode="designer"] .badge-styled {
+    @apply px-3 py-1 rounded-lg text-xs font-bold;
+    @apply bg-[hsl(var(--designer-primary-dark))] text-white;
+    @apply border-2 border-[hsl(var(--designer-border-dark))];
+    box-shadow: 3px 3px 0px hsl(var(--designer-border-dark));
   }
 
   /* ===== APPLE-LIKE HOVER EFFECTS (Engineer Mode) ===== */

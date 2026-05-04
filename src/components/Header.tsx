@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ModeToggle from "./ModeToggle";
+import { ThemeToggle } from "./ThemeToggle";
 import { useMode } from "@/contexts/ModeContext";
 
 /* ── Desktop nav link ── */
@@ -143,6 +144,9 @@ const Header = () => {
 
           {/* Right side: hamburger on mobile */}
           <div className="flex items-center gap-3">
+            {/* Theme toggle */}
+            <ThemeToggle />
+
             {/* Mode toggle hidden for now — defaulting to designer mode */}
 
             {/* Hamburger button – mobile only */}
@@ -166,14 +170,14 @@ const Header = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 top-16 z-40 md:hidden shadow-xl"
+            className="fixed inset-0 top-16 z-40 md:hidden shadow-xl bg-background"
           >
             <motion.nav
               variants={blindsContainer}
               initial="hidden"
               animate="show"
               exit="exit"
-              className="flex flex-col px-6 pt-8 gap-1 bg-white"
+              className="flex flex-col px-6 pt-8 gap-1 bg-background"
               aria-label="Mobile navigation"
             >
               {NAV_ITEMS.map((item, i) => (
