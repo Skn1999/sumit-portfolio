@@ -14,7 +14,7 @@ const pdfjsDistPath = path.dirname(require.resolve("pdfjs-dist/package.json"));
 const cMapsDir = normalizePath(path.join(pdfjsDistPath, "cmaps"));
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode, command }) => ({
   server: {
     host: "::",
     port: 8080,
@@ -46,5 +46,7 @@ export default defineConfig(({ mode }) => ({
   build: {
     manifest: true, // generates dist/.vite/manifest.json for inject-meta.js
   },
-  base: "/",
+  base:
+    process.env.VITE_BASE_PATH ||
+    (command === "build" ? "/sumit-portfolio/" : "/"),
 }));
