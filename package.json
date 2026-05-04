@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build && node scripts/inject-meta.js",
     "build:dev": "vite build --mode development && node scripts/inject-meta.js",
-    "build:preview": "VITE_BASE_PATH=/ vite build && node scripts/inject-meta.js",
+    "build:preview": "vite build && node scripts/inject-meta.js",
     "lint": "eslint .",
     "preview": "npm run build:preview && vite preview",
     "new-project": "node scripts/create-project.js",

@@ -24,13 +24,13 @@ const ROOT = path.resolve(__dirname, "..");
 
 // ── Configuration ──────────────────────────────────────────────────────
 const SITE_NAME = "Sumit Knayyar";
-const SITE_URL = "https://skn1999.github.io/sumit-portfolio"; // deployed URL
+const SITE_URL = "https://sumit-portfolio-nine-xi.vercel.app"; // deployed URL
 const DEFAULT_DESCRIPTION =
   "Full-stack Engineer & UX Designer with 4+ years of experience crafting delightful digital experiences. Masters in Human-Computer Interaction.";
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.png`;
 
 // Base path must match vite.config.ts (`base` option in production)
-const BASE_PATH = process.env.VITE_BASE_PATH || "/sumit-portfolio/";
+const BASE_PATH = "/";
 const DIST = path.join(ROOT, "dist");
 
 // ── Vite manifest (maps source files → hashed output) ─────────────────
