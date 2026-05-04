@@ -2,6 +2,7 @@ import { ModeProvider, useMode } from "@/contexts/ModeContext";
 import ModeToggle from "@/components/ModeToggle";
 import { Layout, Container } from "@/components/Layout";
 import Projects from "@/components/Projects";
+import BentoGrid from "@/components/BentoGrid";
 import Contact from "@/components/Contact";
 import HeroSection from "@/components/HeroSection";
 import ScrollProgress from "@/components/ScrollProgress";
@@ -42,6 +43,10 @@ const IndexContent = () => {
           {/* main sections */}
           <Container>
             <Projects />
+          </Container>
+
+          <Container>
+            <BentoGrid />
           </Container>
 
           <Container>
