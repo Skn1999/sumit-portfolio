@@ -30,7 +30,7 @@ const ResumePage: React.FC = () => {
   const { mode } = useMode();
   const isEngineer = mode === "engineer";
   const isMobile = useIsMobile();
-  const pdfUrl = `${import.meta.env.BASE_URL}CV_2026.pdf`;
+  const pdfUrl = `${import.meta.env.BASE_URL}CV.pdf`;
 
   const [numPages, setNumPages] = useState<number>(0);
   const [containerWidth, setContainerWidth] = useState<number>(800);

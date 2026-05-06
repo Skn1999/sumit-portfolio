@@ -405,6 +405,19 @@ All colors MUST be HSL.
     transition: var(--transition-mode);
   }
 
+  /* ===== DARK MODE BUTTON OVERRIDES ===== */
+  .dark [variant="outline"] {
+    @apply border-[hsl(var(--dark-border))] bg-card;
+  }
+
+  .dark [variant="secondary"] {
+    @apply bg-[hsl(var(--dark-surface-2))] text-foreground;
+  }
+
+  .dark [variant="ghost"] {
+    @apply text-foreground hover:bg-[hsl(var(--dark-surface-2))];
+  }
+
   /* ===== ANIMATION UTILITIES ===== */
   .animate-in {
     animation: animate-in 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
