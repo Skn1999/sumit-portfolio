@@ -80,39 +80,39 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
 
     /* ===== DARK MODE COLOR TOKENS ===== */
-    /* Base layers for dark mode */
-    --dark-bg: 220 15% 11%;
-    --dark-bg-secondary: 220 14% 15%;
-    --dark-surface-1: 220 13% 20%;
-    --dark-surface-2: 220 12% 25%;
-    --dark-surface-3: 220 11% 30%;
+    /* Base layers for dark mode - Pure black/near-black */
+    --dark-bg: 0 0% 5%;
+    --dark-bg-secondary: 0 0% 8%;
+    --dark-surface-1: 0 0% 10%;
+    --dark-surface-2: 0 0% 15%;
+    --dark-surface-3: 0 0% 20%;
     
-    /* Text colors for dark mode */
-    --dark-text: 220 8% 93%;
-    --dark-text-secondary: 220 8% 73%;
-    --dark-text-muted: 220 8% 53%;
+    /* Text colors for dark mode - Grayscale hierarchy */
+    --dark-text: 0 0% 95%;
+    --dark-text-secondary: 0 0% 70%;
+    --dark-text-muted: 0 0% 45%;
     
-    /* Borders and dividers */
-    --dark-border: 220 12% 28%;
-    --dark-border-subtle: 220 12% 22%;
+    /* Borders and dividers - Grayscale */
+    --dark-border: 0 0% 25%;
+    --dark-border-subtle: 0 0% 18%;
     
-    /* Shadows (subtle, layered) */
-    --dark-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --dark-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
-    --dark-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.6);
+    /* Shadows (darker than surfaces) */
+    --dark-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.8);
+    --dark-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.9);
+    --dark-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.95);
     
     /* Engineer mode dark colors */
     --engineer-primary-dark: 215 85% 65%;
     --engineer-accent-dark: 200 95% 70%;
-    --engineer-surface-dark: 220 13% 20%;
+    --engineer-surface-dark: 0 0% 10%;
     --engineer-glow-dark: 215 85% 70%;
     
     /* Designer mode dark colors */
     --designer-primary-dark: 260 75% 70%;
     --designer-accent-dark: 340 85% 75%;
-    --designer-surface-dark: 220 13% 20%;
+    --designer-surface-dark: 0 0% 10%;
     --designer-glow-dark: 260 75% 75%;
-    --designer-border-dark: 220 10% 40%;
+    --designer-border-dark: 0 0% 30%;
   }
 
   /* Dark mode overrides */
