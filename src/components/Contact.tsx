@@ -30,10 +30,10 @@ const Contact = () => {
         <div className="flex flex-wrap gap-4 justify-center">
           <MagneticButton
             size="lg"
-            className={`${
+            className={`mode-transition ${
               isEngineer
                 ? "font-engineer"
-                : "font-designer neubrutalism-button bg-[hsl(var(--designer-primary))] text-white"
+                : "font-designer neubrutalism-button"
             }`}
             asChild
           >
@@ -85,12 +85,12 @@ const Contact = () => {
             awkward silences, unspoken kindnesses, and moments we replay in our
             heads.
           </p> */}
-          <div className="rounded-2xl overflow-hidden border border-border shadow-sm">
+          <div className="rounded-2xl overflow-hidden border border-border shadow-sm bg-background">
             <iframe
               src="https://sumit6131.substack.com/embed"
               width="100%"
               height="320"
-              style={{ border: "none", background: "white" }}
+              style={{ border: "none", background: "transparent" }}
               frameBorder="0"
               scrolling="no"
               title="Subscribe to Unsaid Moments on Substack"

@@ -155,9 +155,9 @@ const HeroSection: React.FC = () => {
             variants={tile}
             initial="hidden"
             animate="show"
-            className="sm:col-span-2 neubrutalism-card bg-foreground/[0.03] p-8 rounded-2xl flex flex-col justify-center group"
+            className="sm:col-span-2 neubrutalism-card bg-card p-8 rounded-2xl flex flex-col justify-center group mode-transition"
           >
-            <blockquote className="font-heading text-xl md:text-2xl text-foreground/90 italic leading-relaxed">
+            <blockquote className="font-heading text-xl md:text-2xl text-foreground italic leading-relaxed">
               "The real problem with the interface is that it is an interface."
             </blockquote>
             <p className="mt-4 text-sm text-muted-foreground font-body leading-relaxed">
@@ -275,7 +275,7 @@ const HeroSection: React.FC = () => {
             variants={tile}
             initial="hidden"
             animate="show"
-            className="sm:col-span-2 sm:col-start-2 neubrutalism-card bg-[hsl(var(--designer-surface))] p-5 rounded-2xl flex flex-col justify-between group"
+            className="sm:col-span-2 sm:col-start-2 neubrutalism-card bg-card p-5 rounded-2xl flex flex-col justify-between group mode-transition"
           >
             <h3 className="font-heading font-bold text-sm text-foreground">
               Design Work
@@ -285,7 +285,7 @@ const HeroSection: React.FC = () => {
                 href="/portfolio/file.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-foreground/[0.04] hover:bg-foreground/[0.08] transition-colors group/link"
+                className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-muted hover:bg-muted/80 transition-colors group/link mode-transition"
               >
                 <div className="w-9 h-9 rounded-lg bg-[hsl(var(--designer-primary))]/10 flex items-center justify-center">
                   <FileText className="w-4 h-4 text-[hsl(var(--designer-primary))]" />
@@ -299,7 +299,7 @@ const HeroSection: React.FC = () => {
                 href="https://www.behance.net/desman_designer"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-foreground/[0.04] hover:bg-foreground/[0.08] transition-colors group/link"
+                className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-muted hover:bg-muted/80 transition-colors group/link mode-transition"
               >
                 <div className="w-9 h-9 rounded-lg bg-[#1769ff]/10 flex items-center justify-center">
                   <svg
@@ -319,7 +319,7 @@ const HeroSection: React.FC = () => {
                 href="https://dribbble.com/Skn99"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-foreground/[0.04] hover:bg-foreground/[0.08] transition-colors group/link"
+                className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-muted hover:bg-muted/80 transition-colors group/link mode-transition"
               >
                 <div className="w-9 h-9 rounded-lg bg-[#ea4c89]/10 flex items-center justify-center">
                   <svg
