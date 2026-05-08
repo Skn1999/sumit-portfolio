@@ -11,6 +11,7 @@ import ResumePage from "./pages/ResumePage";
 import ProjectList from "./components/ProjectList";
 import { TransitionProvider } from "./contexts/TransitionContext";
 import { ModeProvider } from "./contexts/ModeContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import PageTransition from "./components/PageTransition";
 import { AnimatePresence } from "framer-motion";
 
@@ -57,14 +58,16 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <Sonner />
-          <TransitionProvider>
-            <ModeProvider>
-              <BrowserRouter basename={basename}>
-                <ScrollToHash />
-                <AnimatedRoutes />
-              </BrowserRouter>
-            </ModeProvider>
-          </TransitionProvider>
+          <ThemeProvider>
+            <TransitionProvider>
+              <ModeProvider>
+                <BrowserRouter basename={basename}>
+                  <ScrollToHash />
+                  <AnimatedRoutes />
+                </BrowserRouter>
+              </ModeProvider>
+            </TransitionProvider>
+          </ThemeProvider>
         </TooltipProvider>
       </QueryClientProvider>
     </HelmetProvider>
