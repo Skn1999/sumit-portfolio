@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import ModeToggle from "./ModeToggle";
 import ThemeToggle from "./ThemeToggle";
 import { useMode } from "@/contexts/ModeContext";
