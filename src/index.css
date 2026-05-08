@@ -81,22 +81,22 @@ All colors MUST be HSL.
 
   /* ===== DARK MODE — easy on the eyes (warm neutral) ===== */
   .dark {
-    --background: 220 11% 12%;
+    --background: 220 12% 9%;
     --foreground: 40 15% 92%;
 
-    --card: 220 10% 15%;
+    --card: 220 11% 12%;
     --card-foreground: 40 15% 92%;
 
-    --popover: 220 10% 15%;
+    --popover: 220 11% 12%;
     --popover-foreground: 40 15% 92%;
 
     --primary: 215 70% 65%;
     --primary-foreground: 220 15% 10%;
 
-    --secondary: 220 9% 18%;
+    --secondary: 220 10% 16%;
     --secondary-foreground: 40 15% 92%;
 
-    --muted: 220 9% 18%;
+    --muted: 220 10% 16%;
     --muted-foreground: 220 8% 65%;
 
     --accent: 215 65% 60%;
@@ -105,21 +105,21 @@ All colors MUST be HSL.
     --destructive: 0 65% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 8% 23%;
-    --input: 220 8% 23%;
+    --border: 220 8% 20%;
+    --input: 220 8% 20%;
     --ring: 215 70% 60%;
 
     --engineer-primary: 215 70% 65%;
     --engineer-accent: 200 75% 65%;
-    --engineer-surface: 220 10% 15%;
+    --engineer-surface: 220 11% 12%;
     --engineer-glow: 215 70% 60%;
 
     --designer-primary: 260 60% 70%;
     --designer-accent: 340 70% 70%;
-    --designer-surface: 220 10% 15%;
+    --designer-surface: 220 11% 12%;
     --designer-glow: 260 60% 70%;
     --designer-border: 40 10% 80%;
-    --designer-shadow: 220 30% 3%;
+    --designer-shadow: 40 10% 80%;
 
     --sidebar-background: 220 12% 10%;
     --sidebar-foreground: 40 15% 88%;
@@ -408,12 +408,12 @@ All colors MUST be HSL.
   /* Designer mode: Bold neubrutalism cards */
   [data-mode="designer"] .card-styled {
     @apply bg-card border-4 border-[hsl(var(--designer-border))] rounded-xl;
-    box-shadow: 6px 6px 0px hsl(var(--designer-shadow));
+    box-shadow: 6px 6px 0px hsl(var(--designer-border));
   }
 
   [data-mode="designer"] .card-styled:hover {
     transform: translate(2px, 2px);
-    box-shadow: 4px 4px 0px hsl(var(--designer-shadow));
+    box-shadow: 4px 4px 0px hsl(var(--designer-border));
   }
 
   /* ===== GLOWS & EFFECTS ===== */
@@ -422,29 +422,29 @@ All colors MUST be HSL.
   }
 
   .glow-designer {
-    box-shadow: 6px 6px 0px hsl(var(--designer-shadow));
+    box-shadow: 6px 6px 0px hsl(var(--designer-border));
   }
 
   /* ===== NEUBRUTALISM (Designer Mode) ===== */
   .neubrutalism-card {
     @apply border-4 border-[hsl(var(--designer-border))] rounded-lg;
-    box-shadow: 8px 8px 0px hsl(var(--designer-shadow));
+    box-shadow: 8px 8px 0px hsl(var(--designer-border));
   }
 
   .neubrutalism-button {
     @apply border-[3px] border-[hsl(var(--designer-border))];
-    box-shadow: 4px 4px 0px hsl(var(--designer-shadow));
+    box-shadow: 4px 4px 0px hsl(var(--designer-border));
     transition: all 0.2s ease;
   }
 
   .neubrutalism-button:hover {
     transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px hsl(var(--designer-shadow));
+    box-shadow: 2px 2px 0px hsl(var(--designer-border));
   }
 
   .neubrutalism-button:active {
     transform: translate(4px, 4px);
-    box-shadow: 0px 0px 0px hsl(var(--designer-shadow));
+    box-shadow: 0px 0px 0px hsl(var(--designer-border));
   }
 
   /* ===== BADGES & TAGS ===== */
@@ -458,7 +458,7 @@ All colors MUST be HSL.
     @apply px-3 py-1 rounded-lg text-xs font-bold;
     @apply bg-[hsl(var(--designer-primary))] text-white;
     @apply border-2 border-[hsl(var(--designer-border))];
-    box-shadow: 3px 3px 0px hsl(var(--designer-shadow));
+    box-shadow: 3px 3px 0px hsl(var(--designer-border));
   }
 
   /* ===== APPLE-LIKE HOVER EFFECTS (Engineer Mode) ===== */

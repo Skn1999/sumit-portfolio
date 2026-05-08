@@ -1,4 +1,4 @@
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Pen,
   Dumbbell,
@@ -16,7 +16,7 @@ const container = {
   },
 };
 
-const tile: Variants = {
+const tile = {
   hidden: { opacity: 0, y: 20, scale: 0.97 },
   show: {
     opacity: 1,

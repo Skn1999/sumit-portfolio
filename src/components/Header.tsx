@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import ModeToggle from "./ModeToggle";
 import ThemeToggle from "./ThemeToggle";
 import { useMode } from "@/contexts/ModeContext";
@@ -50,7 +50,7 @@ const MenuIcon = ({ open }: { open: boolean }) => (
 );
 
 /* ── Blinds-slat animation variants ── */
-const blindsContainer: Variants = {
+const blindsContainer = {
   hidden: {},
   show: {
     transition: { staggerChildren: 0.07, delayChildren: 0.05 },
@@ -60,7 +60,7 @@ const blindsContainer: Variants = {
   },
 };
 
-const slatVariant: Variants = {
+const slatVariant = {
   hidden: {
     rotateX: -90,
     opacity: 0,
