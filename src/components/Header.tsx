@@ -50,7 +50,7 @@ const MenuIcon = ({ open }: { open: boolean }) => (
 );
 
 /* ── Blinds-slat animation variants ── */
-const blindsContainer = {
+const blindsContainer: Variants = {
   hidden: {},
   show: {
     transition: { staggerChildren: 0.07, delayChildren: 0.05 },
@@ -60,7 +60,7 @@ const blindsContainer = {
   },
 };
 
-const slatVariant = {
+const slatVariant: Variants = {
   hidden: {
     rotateX: -90,
     opacity: 0,
