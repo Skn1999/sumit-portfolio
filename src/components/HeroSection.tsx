@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, Variants } from "framer-motion";
 import { useMode } from "@/contexts/ModeContext";
 import { Link } from "react-router-dom";
 import MagneticButton from "./MagneticButton";
