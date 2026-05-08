@@ -60,7 +60,7 @@ const blindsContainer = {
   },
 };
 
-const slatVariant = {
+const slatVariant: Variants = {
   hidden: {
     rotateX: -90,
     opacity: 0,
