@@ -12,7 +12,7 @@ import {
   FileText,
 } from "lucide-react";
 
-const tile = {
+const tile: Variants = {
   hidden: { opacity: 0, y: 24, scale: 0.97 },
   show: (i: number) => ({
     opacity: 1,
