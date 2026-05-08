@@ -8,7 +8,7 @@ import {
   FileText,
 } from "lucide-react";
 
-const container = {
+const container: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -16,13 +16,13 @@ const container = {
   },
 };
 
-const tile = {
+const tile: Variants = {
   hidden: { opacity: 0, y: 20, scale: 0.97 },
   show: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] },
+    transition: { duration: 0.5, ease: "easeOut" },
   },
 };
 
