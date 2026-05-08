@@ -52,7 +52,7 @@ export const projects = Object.entries(modules).map(([path, mod]) => {
 
 export const visibleProjects = projects
   .filter((p) =>
-    ["production", "staging"].includes(process.env.NODE_ENV) ? !p.draft : true
+    ["production", "staging"].includes(import.meta.env.MODE) ? !p.draft : true
   )
   .sort((a, b) => {
     // featured first
