@@ -81,22 +81,22 @@ All colors MUST be HSL.
 
   /* ===== DARK MODE — easy on the eyes (warm neutral) ===== */
   .dark {
-    --background: 220 12% 9%;
+    --background: 220 11% 12%;
     --foreground: 40 15% 92%;
 
-    --card: 220 11% 12%;
+    --card: 220 10% 15%;
     --card-foreground: 40 15% 92%;
 
-    --popover: 220 11% 12%;
+    --popover: 220 10% 15%;
     --popover-foreground: 40 15% 92%;
 
     --primary: 215 70% 65%;
     --primary-foreground: 220 15% 10%;
 
-    --secondary: 220 10% 16%;
+    --secondary: 220 9% 18%;
     --secondary-foreground: 40 15% 92%;
 
-    --muted: 220 10% 16%;
+    --muted: 220 9% 18%;
     --muted-foreground: 220 8% 65%;
 
     --accent: 215 65% 60%;
@@ -105,21 +105,21 @@ All colors MUST be HSL.
     --destructive: 0 65% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 8% 20%;
-    --input: 220 8% 20%;
+    --border: 220 8% 23%;
+    --input: 220 8% 23%;
     --ring: 215 70% 60%;
 
     --engineer-primary: 215 70% 65%;
     --engineer-accent: 200 75% 65%;
-    --engineer-surface: 220 11% 12%;
+    --engineer-surface: 220 10% 15%;
     --engineer-glow: 215 70% 60%;
 
     --designer-primary: 260 60% 70%;
     --designer-accent: 340 70% 70%;
-    --designer-surface: 220 11% 12%;
+    --designer-surface: 220 10% 15%;
     --designer-glow: 260 60% 70%;
     --designer-border: 40 10% 80%;
-    --designer-shadow: 40 10% 80%;
+    --designer-shadow: 220 30% 3%;
 
     --sidebar-background: 220 12% 10%;
     --sidebar-foreground: 40 15% 88%;
