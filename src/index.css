@@ -408,12 +408,12 @@ All colors MUST be HSL.
   /* Designer mode: Bold neubrutalism cards */
   [data-mode="designer"] .card-styled {
     @apply bg-card border-4 border-[hsl(var(--designer-border))] rounded-xl;
-    box-shadow: 6px 6px 0px hsl(var(--designer-border));
+    box-shadow: 6px 6px 0px hsl(var(--designer-shadow));
   }
 
   [data-mode="designer"] .card-styled:hover {
     transform: translate(2px, 2px);
-    box-shadow: 4px 4px 0px hsl(var(--designer-border));
+    box-shadow: 4px 4px 0px hsl(var(--designer-shadow));
   }
 
   /* ===== GLOWS & EFFECTS ===== */
@@ -422,29 +422,29 @@ All colors MUST be HSL.
   }
 
   .glow-designer {
-    box-shadow: 6px 6px 0px hsl(var(--designer-border));
+    box-shadow: 6px 6px 0px hsl(var(--designer-shadow));
   }
 
   /* ===== NEUBRUTALISM (Designer Mode) ===== */
   .neubrutalism-card {
     @apply border-4 border-[hsl(var(--designer-border))] rounded-lg;
-    box-shadow: 8px 8px 0px hsl(var(--designer-border));
+    box-shadow: 8px 8px 0px hsl(var(--designer-shadow));
   }
 
   .neubrutalism-button {
     @apply border-[3px] border-[hsl(var(--designer-border))];
-    box-shadow: 4px 4px 0px hsl(var(--designer-border));
+    box-shadow: 4px 4px 0px hsl(var(--designer-shadow));
     transition: all 0.2s ease;
   }
 
   .neubrutalism-button:hover {
     transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px hsl(var(--designer-border));
+    box-shadow: 2px 2px 0px hsl(var(--designer-shadow));
   }
 
   .neubrutalism-button:active {
     transform: translate(4px, 4px);
-    box-shadow: 0px 0px 0px hsl(var(--designer-border));
+    box-shadow: 0px 0px 0px hsl(var(--designer-shadow));
   }
 
   /* ===== BADGES & TAGS ===== */
@@ -458,7 +458,7 @@ All colors MUST be HSL.
     @apply px-3 py-1 rounded-lg text-xs font-bold;
     @apply bg-[hsl(var(--designer-primary))] text-white;
     @apply border-2 border-[hsl(var(--designer-border))];
-    box-shadow: 3px 3px 0px hsl(var(--designer-border));
+    box-shadow: 3px 3px 0px hsl(var(--designer-shadow));
   }
 
   /* ===== APPLE-LIKE HOVER EFFECTS (Engineer Mode) ===== */
