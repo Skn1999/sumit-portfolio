@@ -37,6 +37,18 @@
   </head>
 
   <body>
+    <script>
+      // Pre-hydration theme to prevent flash
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          var systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          var resolved = stored === "dark" || (stored !== "light" && systemDark) ? "dark" : "light";
+          if (resolved === "dark") document.documentElement.classList.add("dark");
+          document.documentElement.style.colorScheme = resolved;
+        } catch (e) {}
+      })();
+    </script>
     <div id="root"></div>
     <script
       src="https://mcp.figma.com/mcp/html-to-design/capture.js"

@@ -133,7 +133,7 @@ I structured the project around **five falsifiable research hypotheses** linking
   </tbody>
 </table>
 
-<details className="border rounded-lg p-4 mb-6 bg-slate-50 group">
+<details className="border rounded-lg p-4 mb-6 bg-slate-50 group px-[16px] py-0">
   <summary className="cursor-pointer font-semibold text-sm hover:text-blue-700 inline flex items-center gap-3 transition-colors">
     <span className="inline-block text-lg group-open:scale-110 transition-transform duration-300 origin-center">
       💡
@@ -158,7 +158,7 @@ I structured the project around **five falsifiable research hypotheses** linking
 ## Key Design Decisions
 
 <section class="grid grid-cols-2 grid-rows-2 gap-6 mt-6">
-  <article class="border col-span-2 rounded-lg p-6 shadow-sm bg-white">
+  <article class="border col-span-2 rounded-lg p-6 shadow-sm bg-neutral-800">
     <h4 class="text-lg font-semibold mb-3">Role Separation is Non-Negotiable</h4>
     <p class="mb-3 text-sm">The most consequential structural decision was splitting the interface into two distinct views:</p>
     <ul class="list-disc pl-5 mb-3 text-sm">
@@ -168,7 +168,7 @@ I structured the project around **five falsifiable research hypotheses** linking
     <p class="text-sm">Conflating these user groups produces cognitive overload for occupants and information loss for technical staff. The split is enforced at the information architecture level, not just as a toggle.</p>
   </article>
 
-  <article class="border col-span-1 rounded-lg p-6 shadow-sm bg-white">
+  <article class="border col-span-1 rounded-lg p-6 shadow-sm bg-neutral-800">
     <h4 class="text-lg font-semibold mb-3">The Action Protocol Layer</h4>
     <p class="mb-3 text-sm">Drawing from the Boston Public Schools IAQ Response Action Plan precedent, I designed an explicit action protocol layer that sits between the sensor reading and the user. For each parameter threshold breach, the system surfaces:</p>
     <ol class="list-decimal pl-5 space-y-2 text-sm">
@@ -179,7 +179,7 @@ I structured the project around **five falsifiable research hypotheses** linking
     </ol>
   </article>
 
-  <article class="border col-span-1 rounded-lg p-6 shadow-sm bg-white">
+  <article class="border col-span-1 rounded-lg p-6 shadow-sm bg-neutral-800">
     <h4 class="text-lg font-semibold mb-3">Wall-Mounted Tablet Display</h4>
     <p class="mb-3 text-sm">A secondary surface — a tablet mounted in classrooms and office spaces — needed to communicate ambient air quality status <em>passively</em>, without requiring active engagement. I designed five contextual display states:</p>
     <ul class="list-disc pl-5 space-y-2 text-sm">
@@ -232,4 +232,4 @@ Working in Italian, within Italian law, for Italian public sector users, as some
  
 ---
  
-> *This project is ongoing. Case study and prototype links will be added upon completion of the internship and thesis.*
+> <span className="text-inherit">*This project is ongoing. Case study and prototype links will be added upon completion of the internship and thesis.*</span>

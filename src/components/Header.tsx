@@ -1,7 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import ModeToggle from "./ModeToggle";
+import ThemeToggle from "./ThemeToggle";
 import { useMode } from "@/contexts/ModeContext";
 
 /* ── Desktop nav link ── */
@@ -59,7 +60,7 @@ const blindsContainer = {
   },
 };
 
-const slatVariant = {
+const slatVariant: Variants = {
   hidden: {
     rotateX: -90,
     opacity: 0,
@@ -141,11 +142,10 @@ const Header = () => {
             </nav>
           </div>
 
-          {/* Right side: hamburger on mobile */}
+          {/* Right side: theme + hamburger */}
           <div className="flex items-center gap-3">
-            {/* Mode toggle hidden for now — defaulting to designer mode */}
+            <ThemeToggle />
 
-            {/* Hamburger button – mobile only */}
             <button
               onClick={toggleMenu}
               aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -173,7 +173,7 @@ const Header = () => {
               initial="hidden"
               animate="show"
               exit="exit"
-              className="flex flex-col px-6 pt-8 gap-1 bg-white"
+              className="flex flex-col px-6 pt-8 gap-1 bg-background"
               aria-label="Mobile navigation"
             >
               {NAV_ITEMS.map((item, i) => (
