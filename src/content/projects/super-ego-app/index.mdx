@@ -31,9 +31,13 @@ import { ProjectImageAsset } from "@/components/ui/project-image-asset";
 
 ## Overview
 
+YOU (SuperEgo) is a speculative OS-level assistant that reads preconscious patterns and emotional awareness to nudge people back toward their own intentions.
+
+> _This is a speculative design exploration. The system logic was prototyped end-to-end but not validated with users — what follows is the reasoning, the design decisions, and what I'd test next._
+
 Have you ever opened your phone to check the weather and, twenty minutes later, found yourself deep in Instagram with no memory of the detour? That gap between what we *intend* to do and what we *actually* do is what this project is about.
 
-YOU (SuperEgo) is an assistant that doesn't live inside an app. It lives inside the operating system itself, watching the quiet signals we don't notice, for example how fast we switch between apps, how late we're still scrolling. It pairs those signals with a gentle understanding of how emotionally self-aware each person is, then nudges accordingly (sometimes with friction, sometimes with a reflective question that stops you mid-scroll).
+YOU is an assistant that doesn't live inside an app. It lives inside the operating system itself, watching the quiet signals we don't notice, for example how fast we switch between apps, how late we're still scrolling. It pairs those signals with a gentle understanding of how emotionally self-aware each person is, then nudges accordingly (sometimes with friction, sometimes with a reflective question that stops you mid-scroll).
 
 > _I led the research synthesis, behavioral framing, system logic, and interaction design, and built the hi-fi prototype._
 
@@ -142,6 +146,26 @@ Think of Freud's SuperEgo concept. Not as a strict parent, but as a thoughtful i
 
 <ProjectImageAsset src="super-ego-app/integration.jpg" alt="Screenshot: System overview - data inputs, emotional awareness, interventions" />
 
+<aside className="bg-muted rounded-2xl p-6 border border-border/10 not-prose my-8">
+  <p className="text-xs uppercase tracking-wider text-muted-foreground mb-3">Design system decisions</p>
+  <div className="space-y-4">
+    <div>
+      <strong className="block">Friction as a design material</strong>
+      <p className="text-sm text-muted-foreground mt-1 leading-relaxed">The 30-second app block surfaces a choice, not a wall. Copy stays neutral ("This delay is added because this is your high-value time") and the user keeps an "Open the app" exit. Friction is treated as a System-2 interrupt, not a punishment.</p>
+    </div>
+    <div>
+      <strong className="block">First-person persona</strong>
+      <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Naming the assistant <em>"You"</em> collapses the user/tool distinction so the system reads as a quieter version of the user, not an external coach. Onboarding speaks in first person ("I work best when I know what you want to improve first") to set that tone before any data is shown.</p>
+    </div>
+    <div>
+      <strong className="block">Involvement spectrum, picked up front</strong>
+      <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Observer / Gentle Helper / Active Coach is the very first contract: the user decides intensity before the system earns the right to escalate. This avoids the silent-creep that most behavioural apps fall into and gives the user a defensible "off-ramp" at any moment.</p>
+    </div>
+  </div>
+</aside>
+
+
+
 ### Onboarding that feels like a conversation
 
 Most apps dump you into a settings screen. YOU starts with a conversation. Pick a goal, but only one. Try to pick three? YOU gently explains that focus works better than ambition. Not sure? Tap "Help me decide" and YOU observes your patterns for a week before suggesting anything.
@@ -225,6 +249,16 @@ A high-fidelity prototype and a system I was proud of believing in:
     <p className="text-sm text-muted-foreground mt-1 leading-relaxed">From barely-there friction to deep reflective prompts with autonomy built-in.</p>
   </article>
 </section>
+
+---
+
+## What I'd test next
+
+Because this was speculative, the most honest next step is naming the questions I'd actually put to users:
+
+1. **Do people adjust the involvement setting after onboarding, or set-and-forget?** If nobody ever moves off "Gentle Helper", the spectrum is decorative rather than meaningful.
+2. **Does the 30-second app block reduce session entry, or just delay it?** Friction that only postpones the scroll is friction that trains tolerance, not behaviour change.
+3. **When a user picks more than one onboarding goal, does the "focus on one" nudge improve adherence — or feel paternalistic?** The boundary between supportive and presumptuous is exactly where this product lives or dies.
 
 ---
 
