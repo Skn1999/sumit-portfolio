@@ -34,6 +34,11 @@
       content="Full-stack Engineer & UX Designer with 4+ years of experience crafting delightful digital experiences."
     />
     <meta name="twitter:image" content="/og-default.png" />
+    <script
+      defer
+      src="https://cloud.umami.is/script.js"
+      data-website-id="12002011-80b2-40dd-a19d-f506fbf38688"
+    ></script>
   </head>
 
   <body>
@@ -42,9 +47,15 @@
       (function () {
         try {
           var stored = localStorage.getItem("theme");
-          var systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-          var resolved = stored === "dark" || (stored !== "light" && systemDark) ? "dark" : "light";
-          if (resolved === "dark") document.documentElement.classList.add("dark");
+          var systemDark = window.matchMedia(
+            "(prefers-color-scheme: dark)",
+          ).matches;
+          var resolved =
+            stored === "dark" || (stored !== "light" && systemDark)
+              ? "dark"
+              : "light";
+          if (resolved === "dark")
+            document.documentElement.classList.add("dark");
           document.documentElement.style.colorScheme = resolved;
         } catch (e) {}
       })();
