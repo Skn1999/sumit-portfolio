@@ -50,7 +50,7 @@ const HeroSection: React.FC = () => {
           transition={{ delay: 0.1, duration: 0.5 }}
           className="text-sm font-semibold text-muted-foreground uppercase tracking-[0.2em] mb-6 font-body text-center"
         >
-          Product Designer × Software Engineer
+          Product Designer & UX Strategist
         </motion.div>
 
         {/* Giant name */}
@@ -82,10 +82,11 @@ const HeroSection: React.FC = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed mb-8 font-body"
+          className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed mb-8 font-body text-center"
         >
-          Crafting delightful digital experiences at the intersection of design
-          and engineering. A designer who sketches, writes, and moves.
+          I design products that solve real problems. Through research,
+          strategy, and thoughtful craft. I also code, which helps me bridge
+          design and implementation.
         </motion.p>
 
         {/* CTAs */}

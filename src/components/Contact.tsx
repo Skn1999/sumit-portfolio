@@ -100,7 +100,7 @@ const Contact = () => {
 
         <div className="mt-16 pt-8 border-t">
           <p className="text-sm text-muted-foreground">
-            © 2025 Sumit Knayyar. Designed & Built with dual personality.
+            © 2026 Sumit Knayyar. Designed with intention, built with care.
           </p>
         </div>
       </div>

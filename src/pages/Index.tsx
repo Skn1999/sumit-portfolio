@@ -14,17 +14,18 @@ const IndexContent = () => {
   return (
     <Layout>
       <SEO
-        title="Sumit Knayyar — Engineer & Designer"
+        title="Sumit Knayyar — Product Designer & UX Strategist"
         rawTitle
-        description="Full-stack Engineer & UX Designer with 4+ years of experience crafting delightful digital experiences at the intersection of design and engineering."
+        description="Product Designer & UX Strategist with 4+ years of experience designing digital products that solve real problems. Research-driven, systems-thinking, and design-focused."
         path="/"
         keywords={[
           "portfolio",
-          "full-stack engineer",
+          "product designer",
           "UX designer",
+          "UX strategist",
+          "design systems",
           "HCI",
           "React",
-          "product design",
         ]}
       />
       <motion.div
