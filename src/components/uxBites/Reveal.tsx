@@ -29,10 +29,10 @@ export const Reveal: React.FC<Props> = ({ children, className, delay = 0 }) => {
             className="inline-block"
             initial={{ y: "110%" }}
             whileInView={{ y: 0 }}
-            viewport={{ once: true, margin: "-5% 0px" }}
+            viewport={{ once: true, margin: "0px 0px -40% 0px" }}
             transition={{
-              duration: 0.7,
-              delay: delay + i * 0.06,
+              duration: 0.6,
+              delay: delay + i * 0.05,
               ease: [0.22, 1, 0.36, 1],
             }}
           >

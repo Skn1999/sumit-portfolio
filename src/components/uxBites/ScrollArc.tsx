@@ -11,9 +11,9 @@ export const ScrollArc: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 80%", "end 30%"],
+    offset: ["start 90%", "start 40%"],
   });
-  const progress = useSpring(scrollYProgress, { stiffness: 80, damping: 20 });
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 22 });
   const length = useTransform(progress, [0, 1], [0, 1]);
 
   const stages = ["Browse", "Choose", "Amount", "Personalize", "Payment", "Confirm"];

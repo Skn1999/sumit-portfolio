@@ -17,7 +17,7 @@ export const BeforeAfter: React.FC<Props> = ({ before, after }) => {
       <motion.figure
         initial={reduced ? false : { opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-10% 0px" }}
+        viewport={{ once: true, margin: "0px 0px -50% 0px" }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="space-y-2"
       >
@@ -32,7 +32,7 @@ export const BeforeAfter: React.FC<Props> = ({ before, after }) => {
       <motion.figure
         initial={reduced ? false : { opacity: 0, y: 20, scale: 0.98 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: true, margin: "-10% 0px" }}
+        viewport={{ once: true, margin: "0px 0px -50% 0px" }}
         transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         className="relative space-y-2"
       >
@@ -52,7 +52,7 @@ export const BeforeAfter: React.FC<Props> = ({ before, after }) => {
                     opacity: [0, 1, 0],
                     rotate: [0, 180, 360],
                   }}
-                  viewport={{ once: true, margin: "-10% 0px" }}
+                  viewport={{ once: true, margin: "0px 0px -50% 0px" }}
                   transition={{
                     duration: 1.6,
                     delay: 0.5 + i * 0.05,
