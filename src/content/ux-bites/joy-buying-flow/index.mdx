@@ -1,0 +1,99 @@
+---
+slug: "joy-buying-flow"
+title: "Two Moments Worth Redesigning"
+hook: "Joy_'s buying flow is polished and modern. But it misses the feeling that makes gifting feel like gifting."
+product: "Joy_ · givingjoy.de"
+surface: "Buying flow"
+date: "2026-06-01"
+readingTime: "3 min"
+cover:
+  filename: "cover.jpg"
+  alt: "Two Moments Worth Redesigning — UX audit cover"
+tags:
+  - "E-commerce"
+  - "Emotional design"
+  - "Checkout"
+findings: 2
+draft: false
+---
+
+import BiteSection from "@/components/uxBites/BiteSection";
+import Reveal from "@/components/uxBites/Reveal";
+import BeforeAfter from "@/components/uxBites/BeforeAfter";
+import PullQuote from "@/components/uxBites/PullQuote";
+import ScrollArc from "@/components/uxBites/ScrollArc";
+import BiteImage from "@/components/uxBites/BiteImage";
+
+<BiteSection>
+
+Joy_ promises that gifting should feel personal, playful, and full of surprise. The buying flow delivers on *efficient*: a gift card is ready in two minutes. But efficiency and emotion aren't the same thing. I walked the complete purchase experience and found **two moments** where the interface works perfectly but the feeling falls flat.
+
+<ScrollArc />
+
+</BiteSection>
+
+<BiteSection id="finding-01">
+
+<p className="text-xs uppercase tracking-[0.25em] text-primary mb-3">Finding 01</p>
+
+<Reveal as="h2" className="text-3xl md:text-5xl font-semibold leading-tight">
+The gift vanishes after checkout
+</Reveal>
+
+The buying flow ends the way any e-commerce transaction does: with a receipt. Order number, amount, delivery method, done. But this isn't a product purchase. Someone just spent money and creative energy on a person they care about. The emotional climax — *seeing what they created* — is replaced by a transaction confirmation.
+
+<BeforeAfter
+  before={{
+    src: "joy-buying-flow/finding-1-before.jpg",
+    alt: "Current confirmation screen showing an order receipt",
+    caption: "Receipt-style confirmation",
+  }}
+  after={{
+    src: "joy-buying-flow/finding-1-after.jpg",
+    alt: "Proposed confirmation showing the gift preview with a 'Preview as Sarah' button",
+    caption: "Empathy moment",
+  }}
+/>
+
+<PullQuote>
+The moment after payment is the highest-intent moment in the entire flow. Meeting that peak with a receipt instead of a celebration is the biggest emotional design miss — and the easiest to fix.
+</PullQuote>
+
+</BiteSection>
+
+<BiteSection id="finding-02">
+
+<p className="text-xs uppercase tracking-[0.25em] text-primary mb-3">Finding 02</p>
+
+<Reveal as="h2" className="text-3xl md:text-5xl font-semibold leading-tight">
+Personalization feels like paperwork
+</Reveal>
+
+Adding a personal message, photo, or video is what separates a Joy_ gift card from a bank transfer. It's the soul of the product. But in the buying flow, it's a checkout step with form labels and an *"optional"* tag. That single word undercuts the entire value proposition. The moment that should feel like *crafting a gift* instead feels like filling in a form.
+
+<BeforeAfter
+  before={{
+    src: "joy-buying-flow/finding-2-before.jpg",
+    alt: "Current personalization step shown as a form with an 'optional' message field",
+    caption: "Form-style personalization",
+  }}
+  after={{
+    src: "joy-buying-flow/finding-2-after.jpg",
+    alt: "Proposed personalization shown as a live preview with prompts and warm copy",
+    caption: "Creative-canvas personalization",
+  }}
+/>
+
+When personalization shifts from data entry to creative expression, two things change. Givers complete their messages more often, which means recipients get warmer, more meaningful gifts. And givers feel ownership over the experience, which turns them from customers into **advocates**.
+
+</BiteSection>
+
+<BiteSection id="approach">
+
+<p className="text-xs uppercase tracking-[0.25em] text-muted-foreground mb-3">Approach</p>
+
+### How I got here
+
+These proposals came from walking the complete buying flow as a user, then mapping each screen against Joy_'s brand promise: *aesthetics*, *efficiency*, and *joy*. Both changes require only front-end work — no new infrastructure. The emotional payoff is disproportionate to the engineering effort.
+
+</BiteSection>

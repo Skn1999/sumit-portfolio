@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ProjectPage from "./pages/ProjectPage";
 import ResumePage from "./pages/ResumePage";
+import UxBitesList from "./pages/UxBitesList";
+import UxBitePage from "./pages/UxBitePage";
 import ProjectList from "./components/ProjectList";
 import { TransitionProvider } from "./contexts/TransitionContext";
 import { ModeProvider } from "./contexts/ModeContext";
@@ -44,6 +46,8 @@ const AnimatedRoutes = () => {
         <Route path="/resume" element={<ResumePage />} />
         <Route path="/projects" element={<ProjectList />} />
         <Route path="/projects/:slug" element={<ProjectPage />} />
+        <Route path="/ux-bites" element={<UxBitesList />} />
+        <Route path="/ux-bites/:slug" element={<UxBitePage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>
