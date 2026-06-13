@@ -47,9 +47,9 @@ const UxBitePage: React.FC = () => {
       <ReadingProgress />
 
       <article className="min-h-screen">
-        {/* Compact hero */}
-        <header className="container mx-auto px-4 md:px-6 pt-12 md:pt-20 pb-8 md:pb-12">
-          <div className="max-w-3xl mx-auto">
+        <div className="mx-auto w-full max-w-3xl px-5 md:px-6">
+          {/* Compact hero */}
+          <header className="pt-10 md:pt-16 pb-6 md:pb-8">
             <Link
               to="/ux-bites"
               className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-muted-foreground hover:text-primary transition-colors mb-8"
@@ -73,7 +73,7 @@ const UxBitePage: React.FC = () => {
                 initial={reduced ? false : { opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl"
+                className="text-lg md:text-xl text-muted-foreground leading-relaxed"
               >
                 {bite.hook}
               </motion.p>
@@ -89,15 +89,23 @@ const UxBitePage: React.FC = () => {
               )}
               {bite.readingTime && <span>· {bite.readingTime} read</span>}
             </div>
-          </div>
-        </header>
+          </header>
 
-        {/* MDX body */}
-        <div className="container mx-auto px-4 md:px-6 pb-16 md:pb-24">
-          <div className="prose prose-lg dark:prose-invert max-w-3xl mx-auto prose-headings:font-semibold prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl">
+          {/* MDX body */}
+          <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-semibold prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl pb-10 md:pb-14">
             {Component ? <Component /> : <p>{bite.hook}</p>}
           </div>
+
+          {/* Back to all CTA */}
+          <div className="pb-12 md:pb-16 flex justify-center">
+            <MagneticButton asChild variant="outline" size="lg" className="rounded-full">
+              <Link to="/ux-bites">
+                <ArrowLeft className="w-4 h-4 mr-2" /> All UX Bites
+              </Link>
+            </MagneticButton>
+          </div>
         </div>
+
 
         {/* More bites */}
         {(prev || next) && (
