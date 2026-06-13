@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import SEO from "@/components/SEO";
 import ReadingProgress from "@/components/ReadingProgress";
+import MagneticButton from "@/components/MagneticButton";
 import { getBiteBySlug, visibleBites } from "@/lib/uxBites";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
