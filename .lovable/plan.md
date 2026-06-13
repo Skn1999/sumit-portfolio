@@ -1,74 +1,97 @@
-## Dark Mode — Easy on the Eyes
+# Plan: UX Bites section
 
-### Design philosophy
+A new content track parallel to Projects. Same MDX-driven architecture, lighter detail layout, joyful scroll-based animations. Seeded with the Joy_ buying-flow case study from the uploaded PDF.
 
-Avoid the two common mistakes:
-- Pure black (#000) on pure white text — too high contrast, causes eye strain and halation
-- Saturated brand colors at full strength — vibrate against dark backgrounds
+## 1. Navigation
 
-Instead, use a **soft warm-neutral dark theme** inspired by Notion/Linear/iA Writer:
-- Background: deep warm charcoal (not black), slight warm tint to avoid clinical feel
-- Foreground: soft off-white (around 90% lightness), never pure white
-- Reduced saturation on accent colors (~15–20% less than light mode)
-- Layered surfaces: card slightly lighter than background to create depth without borders
+Add `UX Bites → /ux-bites` to `NAV_ITEMS` in `src/components/Header.tsx` (desktop + mobile blinds menu). Order: Projects, UX Bites, About, Contact.
 
-```text
-Background  ──  hsl(220 10% 9%)    deep warm charcoal
-Card        ──  hsl(220 10% 12%)   one step lighter
-Muted       ──  hsl(220 8% 16%)    surfaces / hovers
-Border      ──  hsl(220 8% 20%)    subtle separators
-Foreground  ──  hsl(40 10% 92%)    soft warm off-white
-Muted text  ──  hsl(220 8% 65%)    secondary text
-Primary     ──  desaturated mode color (engineer/designer)
+## 2. Content model
+
+New folder `src/content/ux-bites/<slug>/index.mdx`, mirroring the projects convention so MDX + frontmatter + co-located images work out of the box.
+
+Frontmatter shape (lean, optimized for "hook the reader"):
+
+```yaml
+slug: "joy-buying-flow"
+title: "Two Moments Worth Redesigning"
+hook: "Joy_'s buying flow is polished and modern. But it misses the feeling that makes gifting feel like gifting."
+product: "Joy_ · givingjoy.de"
+surface: "Buying flow"
+date: "2026-06-01"
+readingTime: "3 min"
+cover: { filename: "cover.jpg", alt: "..." }
+tags: ["E-commerce", "Emotional design", "Checkout"]
+findings: 2              # small numeric badge on the list card
+draft: false
 ```
 
-### Implementation steps
+New `src/lib/uxBites.ts` mirroring `src/lib/projects.ts`: `import.meta.glob` over `../content/ux-bites/*/index.mdx`, sort by date desc, expose `visibleBites` and `getBiteBySlug`.
 
-**1. Add dark color tokens in `src/index.css`**
-- Add a `.dark` block mirroring `:root` with the eye-friendly values above
-- Add dark variants for `--engineer-*` and `--designer-*` tokens (lower saturation, higher lightness for accents so they pop without burning)
-- Adjust `--designer-border` to a softer light shade for neubrutalism shadows in dark mode
-- Tweak `--shadow-elegant` and any custom shadows so they remain visible on dark surfaces
+## 3. List page — `/ux-bites`
 
-**2. Theme provider**
-- Create `src/contexts/ThemeContext.tsx` with `theme: 'light' | 'dark' | 'system'`
-- Persist to `localStorage` under key `theme`
-- On mount: read storage → fall back to `prefers-color-scheme`
-- Toggle adds/removes `dark` class on `document.documentElement`
-- Listen to `matchMedia('(prefers-color-scheme: dark)')` changes when in `system` mode
-- Wrap app in `App.tsx` (outside ModeProvider so engineer/designer accents respect theme)
+New `src/pages/UxBitesList.tsx`. Substack/Medium feel:
 
-**3. Theme toggle UI**
-- New `src/components/ThemeToggle.tsx`: small icon button (Sun / Moon / Monitor) using shadcn `DropdownMenu`
-- Three options: Light, Dark, System
-- Place it in `Header.tsx` next to the hamburger / mode toggle area
+- Page header: "UX Bites" + one-line subtitle ("Small audits. Sharp observations. Joyful fixes.").
+- Vertical stack of cards on top of each other, kind of like tinder cards. With arrows below to click and navigate. Also navigable using keyboard arrows keys. The card animate when next or previous is pressed.
+- Each card: small product label + date, large title, the `hook` line as dek, tag chips, `↪ X findings · Y min read`, hover lifts subtly. Optional small cover thumbnail on the right at md+.
+- Entire card is a `<Link to={/ux-bites/:slug}>`.
 
-**4. Component audit pass**
-- Replace any hardcoded `bg-white`, `text-black`, `bg-stone-50`, etc. with semantic tokens
-- Specifically check: `Header` mobile menu (`bg-white`), `MetadataStrip`, `ProjectFooter`, `HeroRibbons`, gallery cards, prose styles
-- Update `prose` classes to include `dark:prose-invert` where missing
+## 4. Detail page — `/ux-bites/:slug`
 
-**5. Image and visual tweaks for dark mode**
-- Slightly dim hero photo and gallery images via `dark:opacity-90` to reduce glare
-- Add subtle `dark:` variants to neubrutalism shadows so they stay visible
-- Ensure 3D shapes / gradients reduce intensity in dark mode
+New `src/pages/UxBitePage.tsx`. Reuses `Layout`, `ReadingProgress`, `SEO`, `TableOfContents` from the projects page, but with a slimmer shell:
 
-**6. Smooth transition**
-- Add `transition-colors duration-300` on body so theme switch feels gentle, not flash
-- Disable transition on initial load (no flash of wrong theme) by setting theme class before React hydrates — inline script in `index.html`
+- Compact hero (no big `ProjectHero`): eyebrow (`product · surface`), large title, hook as lead, date + reading time.
+- No metadata strip (overkill for bite-sized).
+- Same `prose` MDX article container as `ProjectPage`, narrower (`max-w-3xl`) to feel essay-like.
+- Footer: small "More UX Bites" strip linking to 2 sibling bites.
 
-**7. Accessibility & polish**
-- Verify contrast: body text ≥ 7:1, secondary ≥ 4.5:1 (WCAG AAA where possible)
-- Respect `prefers-reduced-motion` (already handled globally)
-- Test both engineer and designer modes in dark theme
+### Joyful scroll animations (the differentiator)
 
-### Files to create
-- `src/contexts/ThemeContext.tsx`
-- `src/components/ThemeToggle.tsx`
+New `src/components/uxBites/` primitives, built on Framer Motion (already in deps) and `useInView`. All respect `useReducedMotion`:
 
-### Files to modify
-- `src/index.css` (add `.dark` token block, transition)
-- `index.html` (inline pre-hydration theme script)
-- `src/App.tsx` (wrap in ThemeProvider)
-- `src/components/Header.tsx` (add ThemeToggle)
-- Component audit: `Header`, `MetadataStrip`, `ProjectFooter`, prose styles, any `bg-white` / `text-black` usages
+- `<BiteSection>` — fades + slides up on enter, with a soft scale (0.98→1).
+- `<Reveal>` — word- or line-level staggered reveal for hero title and section openers.
+- `<BeforeAfter>` — two stacked screenshots; second one slides in with a confetti-style burst (lightweight CSS, no library) when scrolled to.
+- `<PullQuote>` — large quote that gently parallaxes; subtle color wash on enter.
+- `<ScrollArc>` — a small SVG arc/line at the top of the page that draws itself as the reader scrolls (mirrors the "emotional arc" diagram from the PDF).
+
+Routes registered in `src/App.tsx`: `/ux-bites` and `/ux-bites/:slug`.
+
+## 5. Seed content — Joy_ case study
+
+`src/content/ux-bites/joy-buying-flow/index.mdx`. Structure follows the PDF:
+
+1. Hook + emotional-arc diagram (rendered via `<ScrollArc>` showing current vs. proposed curve).
+2. **Finding 01 — The gift vanishes after checkout**: before/after with `<BeforeAfter>`, callout "Empathy moment: step into the recipient's shoes", `<PullQuote>` with the "highest-intent moment" quote.
+3. **Finding 02 — Personalization feels like paperwork**: before/after, callout on the word "optional", closing reflection on advocacy.
+4. **Approach** outro — short, signature-style.
+
+Images: copy the 5 parsed PDF pages into the bite folder as `arc.jpg`, `finding-1-before.jpg`, `finding-1-after.jpg`, `finding-2-before.jpg`, `finding-2-after.jpg`. Use page 1 as `cover.jpg`.
+
+## 6. SEO & polish
+
+- `<SEO>` on both pages with `type="article"` for detail.
+- Single H1 per page, semantic `<article>`, alt text on every image.
+- Mobile check at ~375px (single column already).
+- No backend, no schema, no new deps.
+
+## Files touched
+
+Create:
+
+- `src/lib/uxBites.ts`
+- `src/pages/UxBitesList.tsx`
+- `src/pages/UxBitePage.tsx`
+- `src/components/uxBites/{BiteSection,Reveal,BeforeAfter,PullQuote,ScrollArc}.tsx`
+- `src/content/ux-bites/joy-buying-flow/index.mdx` + 5 images + cover
+
+Edit:
+
+- `src/components/Header.tsx` — add nav item
+- `src/App.tsx` — add routes
+- `src/lib/projects.ts` glob is untouched; UX Bites are a separate glob
+
+## Open question
+
+Should UX Bites also appear as a teaser section on the homepage (e.g. below Projects: "Latest UX Bites — 3 cards"), or live only behind the nav link for now? Default in this plan: nav-only. Let me know if you want the homepage teaser too.
