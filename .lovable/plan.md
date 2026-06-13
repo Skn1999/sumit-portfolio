@@ -1,97 +1,86 @@
-# Plan: UX Bites section
+# UX Bites — polish pass + second case study
 
-A new content track parallel to Projects. Same MDX-driven architecture, lighter detail layout, joyful scroll-based animations. Seeded with the Joy_ buying-flow case study from the uploaded PDF.
+## 1. Fix whitespace on individual bite page (`UxBitePage.tsx`)
+Current issues:
+- The hero header uses `max-w-3xl` but lives in a `container` with no `max-w-` cap, so on wide screens it floats left of a wide empty band.
+- Section gaps (`my-16 md:my-24` in `BiteSection`) compound with `prose` paragraph spacing, producing big vertical gulps.
+- The MDX H2s use raw `<h2 className="...">` instead of prose-styled headings, breaking the rhythm.
 
-## 1. Navigation
+Fixes:
+- Wrap hero + body in a shared `max-w-3xl mx-auto` shell (single column, properly centered).
+- Tighten `BiteSection` vertical spacing from `my-16 md:my-24` → `my-10 md:my-16`.
+- Reduce hero top/bottom padding (`pt-12 md:pt-20 pb-8 md:pb-12` → `pt-10 md:pt-16 pb-6 md:pb-8`).
+- Constrain the `BeforeAfter`, `ScrollArc`, and `PullQuote` blocks so they breathe inside the column instead of relying on prose padding.
 
-Add `UX Bites → /ux-bites` to `NAV_ITEMS` in `src/components/Header.tsx` (desktop + mobile blinds menu). Order: Projects, UX Bites, About, Contact.
+## 2. Animations complete by mid-viewport
+Today the scroll-linked animations (`ScrollArc`, `PullQuote`) and `whileInView` reveals (`BiteSection`, `Reveal`, `BeforeAfter`) fire only when the element is well into view, so users scroll past before they finish.
 
-## 2. Content model
+Changes:
+- `ScrollArc`: change `useScroll` offset from `["start 80%", "end 30%"]` → `["start 90%", "start 40%"]` so the SVG `pathLength` reaches 1 once the chart's top hits ~40% of viewport (above the midline). Bump spring stiffness for snappier completion.
+- `PullQuote`: scroll offset `["start end", "end start"]` → `["start 90%", "start 40%"]` for the parallax `y`, plus fade-in `viewport` margin `-15%` → `-40% 0px -40% 0px` so it lands before mid-screen.
+- `BiteSection`, `Reveal`, `BeforeAfter`: change `viewport={{ once: true, margin: "-10% 0px" }}` → `viewport={{ once: true, margin: "0px 0px -50% 0px" }}`. This triggers as soon as the element's top crosses the 50% viewport line. Keep durations the same (0.6–0.7s) so they finish quickly after triggering.
 
-New folder `src/content/ux-bites/<slug>/index.mdx`, mirroring the projects convention so MDX + frontmatter + co-located images work out of the box.
+## 3. "Back to UX Bites" CTA at the bottom of the detail page
+Add a centered pill button just above the `More UX Bites` strip (or as standalone when there's no prev/next):
 
-Frontmatter shape (lean, optimized for "hook the reader"):
-
-```yaml
-slug: "joy-buying-flow"
-title: "Two Moments Worth Redesigning"
-hook: "Joy_'s buying flow is polished and modern. But it misses the feeling that makes gifting feel like gifting."
-product: "Joy_ · givingjoy.de"
-surface: "Buying flow"
-date: "2026-06-01"
-readingTime: "3 min"
-cover: { filename: "cover.jpg", alt: "..." }
-tags: ["E-commerce", "Emotional design", "Checkout"]
-findings: 2              # small numeric badge on the list card
-draft: false
+```tsx
+<div className="container mx-auto px-4 md:px-6 pb-10 max-w-3xl text-center">
+  <MagneticButton asChild>
+    <Link to="/ux-bites">← All UX Bites</Link>
+  </MagneticButton>
+</div>
 ```
 
-New `src/lib/uxBites.ts` mirroring `src/lib/projects.ts`: `import.meta.glob` over `../content/ux-bites/*/index.mdx`, sort by date desc, expose `visibleBites` and `getBiteBySlug`.
+Uses the existing `MagneticButton` to keep the magnetic-interaction memory rule consistent.
 
-## 3. List page — `/ux-bites`
+## 4. Second UX Bite — Urakkamaailma renovation pricing gap
+New folder: `src/content/ux-bites/urakkamaailma-pricing-gap/`
 
-New `src/pages/UxBitesList.tsx`. Substack/Medium feel:
+Frontmatter:
+- slug: `urakkamaailma-pricing-gap`
+- title: "Where 132,000 Price Records Get Lost"
+- product: "Urakkamaailma · urakkamaailma.fi"
+- surface: "Pricing pages"
+- hook: "Finland's largest renovation marketplace publishes every project price — then makes you scroll 318 pages to find yours."
+- date: "2026-06-11"
+- readingTime: "4 min"
+- tags: `["Marketplace", "Data UX", "Prototype"]`
+- findings: 3
+- cover: extracted hero-style image generated for the bite
 
-- Page header: "UX Bites" + one-line subtitle ("Small audits. Sharp observations. Joyful fixes.").
-- Vertical stack of cards on top of each other, kind of like tinder cards. With arrows below to click and navigate. Also navigable using keyboard arrows keys. The card animate when next or previous is pressed.
-- Each card: small product label + date, large title, the `hook` line as dek, tag chips, `↪ X findings · Y min read`, hover lifts subtly. Optional small cover thumbnail on the right at md+.
-- Entire card is a `<Link to={/ux-bites/:slug}>`.
+Body structure (using existing components):
+1. **Hook + stat strip** — four-stat row (132,704 records / 0 summary stats / 8,847 pages / ~3 hrs prototype) rendered as a small inline grid (no new component needed; plain Tailwind inside the MDX).
+2. **Finding 01 — Rich data, flat presentation** with `BeforeAfter` (current paginated list vs. proposed summary view).
+3. **`PullQuote`** — "The fix isn't more data. It's a presentation layer on top of what already exists."
+4. **Finding 02 — Scale of the gap** with a `BeforeAfter` of the kitchen/bathroom volume chart vs. the explorer view.
+5. **Finding 03 — The homeowner's three questions** answered by an interactive cost explorer (median, range, distribution).
+6. **Approach** section noting the ~3 hr Lovable build and linking out to `urakka-hinturi-fi.lovable.app`.
 
-## 4. Detail page — `/ux-bites/:slug`
+Assets (generated/sourced):
+- `cover.jpg` — calm editorial cover (data + Finnish home cues)
+- `finding-1-before.jpg`, `finding-1-after.jpg`
+- `finding-2-before.jpg`, `finding-2-after.jpg`
+- `finding-3-prototype.jpg`
 
-New `src/pages/UxBitePage.tsx`. Reuses `Layout`, `ReadingProgress`, `SEO`, `TableOfContents` from the projects page, but with a slimmer shell:
+All generated with `imagegen` at standard quality, then uploaded via `lovable-assets`-style flow — actually we'll keep them as local jpgs in the bite folder to mirror the joy-buying-flow setup. Source material: PDF page screenshots already extracted to `parsed-documents://` will be copied as the "before" frames where they directly represent the live site.
 
-- Compact hero (no big `ProjectHero`): eyebrow (`product · surface`), large title, hook as lead, date + reading time.
-- No metadata strip (overkill for bite-sized).
-- Same `prose` MDX article container as `ProjectPage`, narrower (`max-w-3xl`) to feel essay-like.
-- Footer: small "More UX Bites" strip linking to 2 sibling bites.
+## Files
 
-### Joyful scroll animations (the differentiator)
+**Edit**
+- `src/components/uxBites/BiteSection.tsx` — viewport margin + spacing
+- `src/components/uxBites/Reveal.tsx` — viewport margin
+- `src/components/uxBites/BeforeAfter.tsx` — viewport margin
+- `src/components/uxBites/PullQuote.tsx` — scroll offset + viewport margin
+- `src/components/uxBites/ScrollArc.tsx` — scroll offset + spring
+- `src/pages/UxBitePage.tsx` — single-column shell, tighter padding, "All UX Bites" CTA
 
-New `src/components/uxBites/` primitives, built on Framer Motion (already in deps) and `useInView`. All respect `useReducedMotion`:
+**Create**
+- `src/content/ux-bites/urakkamaailma-pricing-gap/index.mdx`
+- `src/content/ux-bites/urakkamaailma-pricing-gap/cover.jpg`
+- `src/content/ux-bites/urakkamaailma-pricing-gap/finding-1-before.jpg`
+- `src/content/ux-bites/urakkamaailma-pricing-gap/finding-1-after.jpg`
+- `src/content/ux-bites/urakkamaailma-pricing-gap/finding-2-before.jpg`
+- `src/content/ux-bites/urakkamaailma-pricing-gap/finding-2-after.jpg`
+- `src/content/ux-bites/urakkamaailma-pricing-gap/finding-3-prototype.jpg`
 
-- `<BiteSection>` — fades + slides up on enter, with a soft scale (0.98→1).
-- `<Reveal>` — word- or line-level staggered reveal for hero title and section openers.
-- `<BeforeAfter>` — two stacked screenshots; second one slides in with a confetti-style burst (lightweight CSS, no library) when scrolled to.
-- `<PullQuote>` — large quote that gently parallaxes; subtle color wash on enter.
-- `<ScrollArc>` — a small SVG arc/line at the top of the page that draws itself as the reader scrolls (mirrors the "emotional arc" diagram from the PDF).
-
-Routes registered in `src/App.tsx`: `/ux-bites` and `/ux-bites/:slug`.
-
-## 5. Seed content — Joy_ case study
-
-`src/content/ux-bites/joy-buying-flow/index.mdx`. Structure follows the PDF:
-
-1. Hook + emotional-arc diagram (rendered via `<ScrollArc>` showing current vs. proposed curve).
-2. **Finding 01 — The gift vanishes after checkout**: before/after with `<BeforeAfter>`, callout "Empathy moment: step into the recipient's shoes", `<PullQuote>` with the "highest-intent moment" quote.
-3. **Finding 02 — Personalization feels like paperwork**: before/after, callout on the word "optional", closing reflection on advocacy.
-4. **Approach** outro — short, signature-style.
-
-Images: copy the 5 parsed PDF pages into the bite folder as `arc.jpg`, `finding-1-before.jpg`, `finding-1-after.jpg`, `finding-2-before.jpg`, `finding-2-after.jpg`. Use page 1 as `cover.jpg`.
-
-## 6. SEO & polish
-
-- `<SEO>` on both pages with `type="article"` for detail.
-- Single H1 per page, semantic `<article>`, alt text on every image.
-- Mobile check at ~375px (single column already).
-- No backend, no schema, no new deps.
-
-## Files touched
-
-Create:
-
-- `src/lib/uxBites.ts`
-- `src/pages/UxBitesList.tsx`
-- `src/pages/UxBitePage.tsx`
-- `src/components/uxBites/{BiteSection,Reveal,BeforeAfter,PullQuote,ScrollArc}.tsx`
-- `src/content/ux-bites/joy-buying-flow/index.mdx` + 5 images + cover
-
-Edit:
-
-- `src/components/Header.tsx` — add nav item
-- `src/App.tsx` — add routes
-- `src/lib/projects.ts` glob is untouched; UX Bites are a separate glob
-
-## Open question
-
-Should UX Bites also appear as a teaser section on the homepage (e.g. below Projects: "Latest UX Bites — 3 cards"), or live only behind the nav link for now? Default in this plan: nav-only. Let me know if you want the homepage teaser too.
+No new dependencies. No route or nav changes — second bite picks up automatically via `import.meta.glob`.
