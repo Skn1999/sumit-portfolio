@@ -4,27 +4,21 @@ import { cn } from "@/lib/utils";
 
 interface Props {
   children: string;
-  as?: keyof JSX.IntrinsicElements;
   className?: string;
   delay?: number;
 }
 
-/** Word-by-word stagger reveal for headings and openers. */
-export const Reveal: React.FC<Props> = ({
-  children,
-  as: Tag = "h2",
-  className,
-  delay = 0,
-}) => {
+/** Word-by-word stagger reveal. Renders an inline span; wrap in your own heading tag. */
+export const Reveal: React.FC<Props> = ({ children, className, delay = 0 }) => {
   const reduced = useReducedMotion();
   const words = children.split(" ");
 
   if (reduced) {
-    return <Tag className={className}>{children}</Tag>;
+    return <span className={className}>{children}</span>;
   }
 
   return (
-    <Tag className={cn("inline-block", className)}>
+    <span className={cn("inline-block", className)}>
       {words.map((w, i) => (
         <span
           key={i}
@@ -46,7 +40,7 @@ export const Reveal: React.FC<Props> = ({
           </motion.span>
         </span>
       ))}
-    </Tag>
+    </span>
   );
 };
 
