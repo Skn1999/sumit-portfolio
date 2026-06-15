@@ -18,6 +18,7 @@ draft: false
 ---
 
 import BiteSection from "@/components/uxBites/BiteSection";
+import FindingHeader from "@/components/uxBites/FindingHeader";
 import Reveal from "@/components/uxBites/Reveal";
 import BeforeAfter from "@/components/uxBites/BeforeAfter";
 import PullQuote from "@/components/uxBites/PullQuote";
@@ -34,16 +35,9 @@ Joy_ promises that gifting should feel personal, playful, and full of surprise. 
 
 <BiteSection id="finding-01">
 
-<p className="text-xs uppercase tracking-[0.25em] text-primary mb-3">Finding 01</p>
-
-<h2 className="text-3xl md:text-5xl font-semibold leading-tight">
-  <Reveal>The gift vanishes after checkout</Reveal>
-</h2>
+<FindingHeader eyebrow="Finding 01" title="The gift vanishes after checkout" />
 
 The buying flow ends the way any e-commerce transaction does: with a receipt. Order number, amount, delivery method, done. But this isn't a product purchase. Someone just spent money and creative energy on a person they care about. The emotional climax *seeing what they created* is replaced by a transaction confirmation.
-
-
-
 
 <PullQuote>
 The moment after payment is the highest-intent moment in the entire flow. Meeting that peak with a receipt instead of a celebration is the biggest emotional design miss and the easiest to fix.
@@ -53,16 +47,9 @@ The moment after payment is the highest-intent moment in the entire flow. Meetin
 
 <BiteSection id="finding-02">
 
-<p className="text-xs uppercase tracking-[0.25em] text-primary mb-3">Finding 02</p>
-
-<h2 className="text-3xl md:text-5xl font-semibold leading-tight">
-  <Reveal>Personalization feels like paperwork</Reveal>
-</h2>
+<FindingHeader eyebrow="Finding 02" title="Personalization feels like paperwork" />
 
 Adding a personal message, photo, or video is what separates a Joy_ gift card from a bank transfer. It's the soul of the product. But in the buying flow, it's a checkout step with form labels and an *"optional"* tag. That single word undercuts the entire value proposition. The moment that should feel like *crafting a gift* instead feels like filling in a form.
-
-
-
 
 When personalization shifts from data entry to creative expression, two things change. Givers complete their messages more often, which means recipients get warmer, more meaningful gifts. And givers feel ownership over the experience, which turns them from customers into **advocates**.
 
@@ -70,9 +57,7 @@ When personalization shifts from data entry to creative expression, two things c
 
 <BiteSection id="approach">
 
-<p className="text-xs uppercase tracking-[0.25em] text-muted-foreground mb-3">Approach</p>
-
-### How I got here
+<FindingHeader eyebrow="Approach" title="How I got here" tone="muted" as="h3" />
 
 These proposals came from walking the complete buying flow as a user, then mapping each screen against Joy_'s brand promise: *aesthetics*, *efficiency*, and *joy*. Both changes require only front-end work no new infrastructure. The emotional payoff is disproportionate to the engineering effort.
 
