@@ -1,14 +1,14 @@
 ---
 slug: "urakkamaailma-pricing-gap"
 title: "Where 132,000 Price Records Get Lost"
-hook: "Finland's largest renovation marketplace publishes every project price — then makes you scroll 318 pages to find yours."
+hook: "Finland's largest renovation marketplace publishes every project price then makes you scroll 318 pages to find yours."
 product: "Urakkamaailma · urakkamaailma.fi"
 surface: "Pricing pages"
 date: "2026-06-11"
 readingTime: "4 min"
 cover:
   filename: "cover.jpg"
-  alt: "Urakkamaailma renovation pricing UX gap — case study cover"
+  alt: "Urakkamaailma renovation pricing UX gap case study cover"
 tags:
   - "Marketplace"
   - "Data UX"
@@ -25,7 +25,7 @@ import BiteImage from "@/components/uxBites/BiteImage";
 
 <BiteSection>
 
-Urakkamaailma is Finland's largest renovation marketplace. Every completed project is published with its final price, city, building type, and square meters — 132,000+ structured records, all consistent across 20+ categories. Then the site presents them as a flat paginated list. A homeowner planning a kitchen renovation in Helsinki has to scroll 318 pages to piece together what their project might cost.
+Urakkamaailma is Finland's largest renovation marketplace. Every completed project is published with its final price, city, building type, and square meters 132,000+ structured records, all consistent across 20+ categories. Then the site presents them as a flat paginated list. A homeowner planning a kitchen renovation in Helsinki has to scroll 318 pages to piece together what their project might cost.
 
 <div className="not-prose my-10 grid grid-cols-2 md:grid-cols-4 gap-3">
   {[
@@ -53,18 +53,7 @@ Urakkamaailma is Finland's largest renovation marketplace. Every completed proje
 
 Every record already carries the fields needed for aggregation: city, building type, m², price, work description. None of that structure reaches the user. The page renders 15 cards at a time and asks them to do the math.
 
-<BeforeAfter
-  before={{
-    src: "urakkamaailma-pricing-gap/finding-1-before.jpg",
-    alt: "Current paginated list of pricing cards",
-    caption: "Today · 318 pages of cards",
-  }}
-  after={{
-    src: "urakkamaailma-pricing-gap/finding-1-after.jpg",
-    alt: "Proposed summary view with median, range, and distribution",
-    caption: "Median · range · distribution",
-  }}
-/>
+{/* TODO: Insert before/after images for Finding 01 (paginated list vs. summary view). */}
 
 <PullQuote>
 The fix isn't more data. It's a presentation layer on top of what already exists.
@@ -80,20 +69,9 @@ The fix isn't more data. It's a presentation layer on top of what already exists
   <Reveal>The scale of the gap is invisible</Reveal>
 </h2>
 
-Kitchens and bathrooms alone account for tens of thousands of records spread across hundreds of pages. The variance — €100 to €65,000 for a Helsinki kitchen — is exactly what makes summary statistics valuable. Raw listings hide the typical case behind outliers.
+Kitchens and bathrooms alone account for tens of thousands of records spread across hundreds of pages. The variance €100 to €65,000 for a Helsinki kitchen is exactly what makes summary statistics valuable. Raw listings hide the typical case behind outliers.
 
-<BeforeAfter
-  before={{
-    src: "urakkamaailma-pricing-gap/finding-2-before.jpg",
-    alt: "Bar chart showing record volume for the two largest categories",
-    caption: "Volume the user must scroll past",
-  }}
-  after={{
-    src: "urakkamaailma-pricing-gap/finding-2-after.jpg",
-    alt: "Interactive explorer with filters, distribution, and city comparison",
-    caption: "Aggregated, filterable view",
-  }}
-/>
+{/* TODO: Insert before/after images for Finding 02 (volume bar chart vs. interactive explorer). */}
 
 </BiteSection>
 
@@ -105,20 +83,9 @@ Kitchens and bathrooms alone account for tens of thousands of records spread acr
   <Reveal>Three questions, one screen</Reveal>
 </h2>
 
-A homeowner researching a renovation wants three things: *what does this typically cost in my city*, *what's the realistic range*, and *what drives the price up or down*. I prototyped an interactive cost explorer that answers all three from the existing data — no new collection needed.
+A homeowner researching a renovation wants three things: *what does this typically cost in my city*, *what's the realistic range*, and *what drives the price up or down*. I prototyped an interactive cost explorer that answers all three from the existing data no new collection needed.
 
-<figure className="not-prose my-10">
-  <div className="rounded-2xl overflow-hidden border-2 border-primary/40 bg-card shadow-lg">
-    <BiteImage
-      src="urakkamaailma-pricing-gap/finding-3-prototype.jpg"
-      alt="Prototype of the interactive renovation cost explorer"
-      className="w-full h-auto block"
-    />
-  </div>
-  <figcaption className="text-xs uppercase tracking-wider text-primary mt-2">
-    Live prototype · built in ~3 hours
-  </figcaption>
-</figure>
+{/* TODO: Insert prototype screenshot for Finding 03 (interactive cost explorer). */}
 
 Select renovation type, city, building type, and project size. The tool returns the median price, the 10th–90th percentile range, a distribution chart, a city-by-city comparison, and the cost factors that move the price. Everything updates live. Full Finnish UI.
 
@@ -134,6 +101,6 @@ Select renovation type, city, building type, and project size. The tool returns 
 
 ### How I got here
 
-I walked the live site across multiple categories and cities, documenting the data structure on each card. The same schema repeats everywhere. I collected price ranges and city distributions to build a representative mock dataset, then designed and built the explorer with AI-assisted tooling in about three hours. The prototype sits *on top of* the existing page — the cards still provide detail for users who want to browse. The new layer just answers the homeowner's first question before they commit to scrolling.
+I walked the live site across multiple categories and cities, documenting the data structure on each card. The same schema repeats everywhere. I collected price ranges and city distributions to build a representative mock dataset, then designed and built the explorer with AI-assisted tooling in about three hours. The prototype sits *on top of* the existing page the cards still provide detail for users who want to browse. The new layer just answers the homeowner's first question before they commit to scrolling.
 
 </BiteSection>

@@ -79,7 +79,7 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  /* ===== DARK MODE — easy on the eyes (warm neutral) ===== */
+  /* ===== DARK MODE easy on the eyes (warm neutral) ===== */
   .dark {
     --background: 220 12% 9%;
     --foreground: 40 15% 92%;

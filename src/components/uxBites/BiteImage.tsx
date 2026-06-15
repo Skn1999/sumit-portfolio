@@ -2,7 +2,7 @@ import { memo, useMemo } from "react";
 import { cn } from "@/lib/utils";
 
 interface BiteImageProps {
-  /** Path relative to src/content/ux-bites/ — e.g. "joy-buying-flow/cover.jpg" */
+  /** Path relative to src/content/ux-bites/ e.g. "joy-buying-flow/cover.jpg" */
   src: string;
   alt: string;
   className?: string;

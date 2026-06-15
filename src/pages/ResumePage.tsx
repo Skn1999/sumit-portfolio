@@ -58,7 +58,7 @@ const ResumePage: React.FC = () => {
     <Layout>
       <SEO
         title="Resume"
-        description="View or download Sumit Knayyar's resume — Full-stack Engineer & UX Designer."
+        description="View or download Sumit Knayyar's resume Full-stack Engineer & UX Designer."
         path="/resume"
       />
       <motion.div
@@ -110,7 +110,7 @@ const ResumePage: React.FC = () => {
                   : "border-2 border-foreground shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
               }`}
             >
-              {/* PDF thumbnail preview — render first page small */}
+              {/* PDF thumbnail preview render first page small */}
               <div className="bg-muted/30 p-6 flex justify-center border-b border-border/20">
                 <div className="w-48 rounded-lg overflow-hidden shadow-md bg-white">
                   <Document

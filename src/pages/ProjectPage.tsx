@@ -46,7 +46,7 @@ const ProjectPage: React.FC = () => {
   const seoDescription =
     project.summary ||
     project.tagline ||
-    `${project.title} — a project by Sumit Knayyar`;
+    `${project.title} a project by Sumit Knayyar`;
   const seoKeywords = [
     ...(project.tech || []),
     ...(project.tags || []),

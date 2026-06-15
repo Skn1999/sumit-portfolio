@@ -35,7 +35,7 @@ export const ScrollArc: React.FC = () => {
             strokeOpacity="0.15"
             strokeDasharray="4 4"
           />
-          {/* current — climbs then crashes at confirm */}
+          {/* current climbs then crashes at confirm */}
           <motion.path
             d="M 20 130 Q 120 110, 220 100 T 420 90 Q 480 100, 580 160"
             fill="none"
@@ -45,7 +45,7 @@ export const ScrollArc: React.FC = () => {
             strokeLinecap="round"
             style={{ pathLength: reduced ? 1 : length }}
           />
-          {/* proposed — climbs to a celebratory peak */}
+          {/* proposed climbs to a celebratory peak */}
           <motion.path
             d="M 20 140 Q 140 120, 240 100 T 440 60 Q 510 40, 580 30"
             fill="none"

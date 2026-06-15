@@ -36,7 +36,7 @@ metric: "30 usability issues identified; role-separated DSS prototype in progres
 links:
   # case: ""
   # live: ""
-summary: "A work-in-progress master's internship project designing a Decision Support System (DSS) on top of an existing IoT sensor dashboard for the EU Horizon Europe EDIAQI project. The system translates 12+ air quality parameters into prioritized, role-appropriate guidance for facility staff, teachers, and civil workers — navigating Italian regulatory constraints and cross-lingual UX challenges along the way."
+summary: "A work-in-progress master's internship project designing a Decision Support System (DSS) on top of an existing IoT sensor dashboard for the EU Horizon Europe EDIAQI project. The system translates 12+ air quality parameters into prioritized, role-appropriate guidance for facility staff, teachers, and civil workers navigating Italian regulatory constraints and cross-lingual UX challenges along the way."
 roles:
   - "UX & Service Design"
   - "UX Research"
@@ -143,9 +143,9 @@ I structured the project around **five falsifiable research hypotheses** linking
   <div className="mt-4 space-y-3 text-sm">
     <p>The hypotheses look clean written down. They weren't.</p>
     
-    <p><strong>H1</strong> started as a vague intuition: teachers probably don't know what to do when an alarm goes off. That's almost unfalsifiable — too broad. I had to narrow it: is the gap about <em>awareness</em> (they don't see the alert), <em>interpretation</em> (they see it but don't understand it), or <em>protocol</em> (they understand it but have no guidance on what action to take)? Comparable projects like the BPS case study and SAMHE pointed consistently to the third — the protocol gap. That specificity was what made H1 designable.</p>
+    <p><strong>H1</strong> started as a vague intuition: teachers probably don't know what to do when an alarm goes off. That's almost unfalsifiable too broad. I had to narrow it: is the gap about <em>awareness</em> (they don't see the alert), <em>interpretation</em> (they see it but don't understand it), or <em>protocol</em> (they understand it but have no guidance on what action to take)? Comparable projects like the BPS case study and SAMHE pointed consistently to the third the protocol gap. That specificity was what made H1 designable.</p>
     
-    <p><strong>H2 and H3</strong> came from mapping facility staff workflows against Italian occupational health law (D.Lgs. 81/2008). The compliance documentation requirement exists in law. The dashboard had no logging feature. The gap wasn't a design oversight so much as a scoping one — the original dashboard was built to visualize data, not to produce an audit trail. But for facility staff operating within an RSPP approval chain, an undocumented response is nearly as problematic as no response. That became H2.</p>
+    <p><strong>H2 and H3</strong> came from mapping facility staff workflows against Italian occupational health law (D.Lgs. 81/2008). The compliance documentation requirement exists in law. The dashboard had no logging feature. The gap wasn't a design oversight so much as a scoping one the original dashboard was built to visualize data, not to produce an audit trail. But for facility staff operating within an RSPP approval chain, an undocumented response is nearly as problematic as no response. That became H2.</p>
     
     <p><strong>H5</strong> was the most speculative. It emerged from noticing that CO₂ sensors in classrooms were generating data that, if explained in plain language, could actually be used as a live teaching aid about ventilation, health, and the built environment. Whether teachers would actually use it this way is unvalidated. It's the hypothesis I hold most loosely.</p>
     
@@ -162,8 +162,8 @@ I structured the project around **five falsifiable research hypotheses** linking
     <h4 class="text-lg font-semibold mb-3">Role Separation is Non-Negotiable</h4>
     <p class="mb-3 text-sm">The most consequential structural decision was splitting the interface into two distinct views:</p>
     <ul class="list-disc pl-5 mb-3 text-sm">
-      <li><strong>Basic View</strong> — for teachers and office workers: minimal parameters, plain-language action guidance, single-location context</li>
-      <li><strong>Advanced View</strong> — for facility staff: multi-location monitoring, severity-ranked alerts, compliance documentation flows</li>
+      <li><strong>Basic View</strong> for teachers and office workers: minimal parameters, plain-language action guidance, single-location context</li>
+      <li><strong>Advanced View</strong> for facility staff: multi-location monitoring, severity-ranked alerts, compliance documentation flows</li>
     </ul>
     <p class="text-sm">Conflating these user groups produces cognitive overload for occupants and information loss for technical staff. The split is enforced at the information architecture level, not just as a toggle.</p>
   </article>
@@ -173,7 +173,7 @@ I structured the project around **five falsifiable research hypotheses** linking
     <p class="mb-3 text-sm">Drawing from the Boston Public Schools IAQ Response Action Plan precedent, I designed an explicit action protocol layer that sits between the sensor reading and the user. For each parameter threshold breach, the system surfaces:</p>
     <ol class="list-decimal pl-5 space-y-2 text-sm">
       <li>A plain-language severity label</li>
-      <li>A context-specific action prompt (e.g., "Open two windows — cross-ventilation recommended")</li>
+      <li>A context-specific action prompt (e.g., "Open two windows cross-ventilation recommended")</li>
       <li>A one-tap logging action for compliance documentation</li>
       <li>A recovery status indicator to close the feedback loop</li>
     </ol>
@@ -181,13 +181,13 @@ I structured the project around **five falsifiable research hypotheses** linking
 
   <article class="border col-span-1 rounded-lg p-6 shadow-sm bg-neutral-800">
     <h4 class="text-lg font-semibold mb-3">Wall-Mounted Tablet Display</h4>
-    <p class="mb-3 text-sm">A secondary surface — a tablet mounted in classrooms and office spaces — needed to communicate ambient air quality status <em>passively</em>, without requiring active engagement. I designed five contextual display states:</p>
+    <p class="mb-3 text-sm">A secondary surface a tablet mounted in classrooms and office spaces needed to communicate ambient air quality status <em>passively</em>, without requiring active engagement. I designed five contextual display states:</p>
     <ul class="list-disc pl-5 space-y-2 text-sm">
-      <li><strong>Ambient / Passive</strong> — ambient quality visible at a glance, no action required</li>
-      <li><strong>Alert</strong> — threshold exceeded, action prompt displayed prominently</li>
-      <li><strong>Action Taken / Recovery Tracking</strong> — confirms action logged, tracks parameter recovery</li>
-      <li><strong>Reporting</strong> — allows occupants to submit a qualitative concern (H4)</li>
-      <li><strong>Educational Context</strong> — surfaces contextual health information when parameters are near threshold (H5)</li>
+      <li><strong>Ambient / Passive</strong> ambient quality visible at a glance, no action required</li>
+      <li><strong>Alert</strong> threshold exceeded, action prompt displayed prominently</li>
+      <li><strong>Action Taken / Recovery Tracking</strong> confirms action logged, tracks parameter recovery</li>
+      <li><strong>Reporting</strong> allows occupants to submit a qualitative concern (H4)</li>
+      <li><strong>Educational Context</strong> surfaces contextual health information when parameters are near threshold (H5)</li>
     </ul>
   </article>
 </section>
@@ -228,7 +228,7 @@ The clearest thing this project has taught me is the difference between a design
  
 The sensor data is real, the thresholds are real, the regulatory requirements are real, but what I was asked to design was the layer that makes all of it usable by people who didn't ask for it and won't have time to learn it. That's a different kind of design challenge than building a product from a blank brief. You're working downstream of decisions you didn't make, and the constraints are often invisible until you run into them.
  
-Working in Italian, within Italian law, for Italian public sector users, as someone who came to this project from outside that context — that gap has been as much a design constraint as any technical one. It has also, I think, made the work more honest about what it can and cannot do.
+Working in Italian, within Italian law, for Italian public sector users, as someone who came to this project from outside that context that gap has been as much a design constraint as any technical one. It has also, I think, made the work more honest about what it can and cannot do.
  
 ---
  

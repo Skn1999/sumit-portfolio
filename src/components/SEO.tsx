@@ -1,8 +1,8 @@
 import { Helmet } from "react-helmet-async";
 
-/** Site-wide defaults — keep in sync with index.html fallback tags. */
+/** Site-wide defaults keep in sync with index.html fallback tags. */
 const SITE_NAME = "Sumit Knayyar";
-const DEFAULT_TITLE = "Sumit Knayyar — Engineer & Designer";
+const DEFAULT_TITLE = "Sumit Knayyar Engineer & Designer";
 const DEFAULT_DESCRIPTION =
   "Full-stack Engineer & UX Designer with 4+ years of experience crafting delightful digital experiences. Masters in Human-Computer Interaction.";
 const DEFAULT_OG_IMAGE = "/og-default.png"; // place a real OG image in public/
@@ -21,7 +21,7 @@ export interface SEOProps {
   type?: string;
   /** Additional keywords for the keywords meta tag */
   keywords?: string[];
-  /** Publish date (ISO string) — used for article tags */
+  /** Publish date (ISO string) used for article tags */
   publishedDate?: string;
   /** Author override */
   author?: string;
