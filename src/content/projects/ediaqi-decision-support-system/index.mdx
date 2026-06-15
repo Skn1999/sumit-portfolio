@@ -35,7 +35,8 @@ tech:
 metric: "30 usability issues identified; role-separated DSS prototype in progress for 3 stakeholder groups across public schools and municipal offices"
 links:
   # case: ""
-  # live: ""
+  prototype: https://www.figma.com/make/NMaJtePg9r2moSJt4pxSZr/Indoor-Air-Quality-Display?fullscreen=1&t=8ZFJ14PVlixDqryN-1&code-node-id=0-9
+  dashboard_prototype: https://www.figma.com/make/rGy3EC5u9Kv5cjRtsqL3Nx/Low-Fidelity-Wireframes-for-Dashboard?fullscreen=1&t=TnOHy22IdTdxUu9z-1&code-node-id=0-9
 summary: "A work-in-progress master's internship project designing a Decision Support System (DSS) on top of an existing IoT sensor dashboard for the EU Horizon Europe EDIAQI project. The system translates 12+ air quality parameters into prioritized, role-appropriate guidance for facility staff, teachers, and civil workers — navigating Italian regulatory constraints and cross-lingual UX challenges along the way."
 roles:
   - "UX & Service Design"
@@ -56,6 +57,8 @@ This is a **work in progress**, active across an internship and concurrently fee
 ---
 
 import { ProjectImageAsset } from "@/components/ui/project-image-asset";
+import { Link } from "react-router-dom";
+import MagneticButton from "@/components/MagneticButton";
 
 ## The Problem
 
@@ -68,7 +71,7 @@ The existing dashboard surfaced data well. It did not close the loop to action.
 <ProjectImageAsset src="ediaqi-decision-support-system/problem-hypo.jpg" alt="Description" />
 
 ---
-
+{/* 
 ## My Role
 
 I joined as a **UX and service design researcher** within Deda Next's innovation team, working alongside colleagues in product strategy, development, and project management. My scope:
@@ -76,7 +79,7 @@ I joined as a **UX and service design researcher** within Deda Next's innovation
 - Lead all UX research, hypothesis development, and interaction design for the DSS layer
 - Evaluate the existing dashboard against usability and regulatory standards
 - Design two role-separated dashboard views and a wall-mounted classroom/office display
-- Surface design-resistant issues requiring institutional resolution and prepare them for stakeholder validation
+- Surface design-resistant issues requiring institutional resolution and prepare them for stakeholder validation */}
 
 ---
 
@@ -85,10 +88,8 @@ I joined as a **UX and service design researcher** within Deda Next's innovation
 The first few weeks were less about designing and more about figuring out what kind of problem this actually was. The brief was open-ended: **make it useful for non-technical users.**
  
 That framing hid a lot. "Non-technical users" turned out to be three very different people with almost nothing in common: **a teacher** who cares about their class and has maybe 90 seconds to act before a lesson starts; **a facility manager** juggling maintenance across five buildings simultaneously; and **a civil worker** who notices something feels off but has no formal channel to report it. Building one system for all three seemed increasingly wrong the more I mapped out their day-to-day contexts.
- 
-The early temptation was to reach for existing IAQ dashboard precedents like SAMHE in the UK and adapt them. These were useful reference points, but they all shared a common assumption: *that the person reading the dashboard has some baseline literacy about what PM2.5 or TVOC means and what to do about it*. That assumption did not hold here.
 
-The clearer framing came from a different question: *at what moment does a user need to act, and what do they need to know to act confidently?* That reframe shifted the design problem from "how do we display data" to "how do we produce a decision."
+The clearer framing shifted the design problem from "how do we display data" to "how do we produce a decision."
 
 ---
 
@@ -157,15 +158,13 @@ I structured the project around **five falsifiable research hypotheses** linking
 
 ## Key Design Decisions
 
-<section class="grid grid-cols-2 grid-rows-2 gap-6 mt-6">
-  <article class="border col-span-2 rounded-lg p-6 shadow-sm bg-neutral-800">
+<section class="grid grid-cols-3 gap-6 mt-6">
+  <article class="border col-span-1 rounded-lg p-6 shadow-sm bg-neutral-800">
     <h4 class="text-lg font-semibold mb-3">Role Separation is Non-Negotiable</h4>
-    <p class="mb-3 text-sm">The most consequential structural decision was splitting the interface into two distinct views:</p>
     <ul class="list-disc pl-5 mb-3 text-sm">
-      <li><strong>Basic View</strong> — for teachers and office workers: minimal parameters, plain-language action guidance, single-location context</li>
-      <li><strong>Advanced View</strong> — for facility staff: multi-location monitoring, severity-ranked alerts, compliance documentation flows</li>
+      <li><strong>Basic View</strong>: for teachers and office workers: minimal parameters, plain-language action guidance, single-location context</li>
+      <li><strong>Advanced View</strong>: for facility staff: multi-location monitoring, severity-ranked alerts, compliance documentation flows</li>
     </ul>
-    <p class="text-sm">Conflating these user groups produces cognitive overload for occupants and information loss for technical staff. The split is enforced at the information architecture level, not just as a toggle.</p>
   </article>
 
   <article class="border col-span-1 rounded-lg p-6 shadow-sm bg-neutral-800">
@@ -181,48 +180,82 @@ I structured the project around **five falsifiable research hypotheses** linking
 
   <article class="border col-span-1 rounded-lg p-6 shadow-sm bg-neutral-800">
     <h4 class="text-lg font-semibold mb-3">Wall-Mounted Tablet Display</h4>
-    <p class="mb-3 text-sm">A secondary surface — a tablet mounted in classrooms and office spaces — needed to communicate ambient air quality status <em>passively</em>, without requiring active engagement. I designed five contextual display states:</p>
+    <p class="mb-3 text-sm">I designed four contextual display states:</p>
     <ul class="list-disc pl-5 space-y-2 text-sm">
       <li><strong>Ambient / Passive</strong> — ambient quality visible at a glance, no action required</li>
       <li><strong>Alert</strong> — threshold exceeded, action prompt displayed prominently</li>
       <li><strong>Action Taken / Recovery Tracking</strong> — confirms action logged, tracks parameter recovery</li>
       <li><strong>Reporting</strong> — allows occupants to submit a qualitative concern (H4)</li>
-      <li><strong>Educational Context</strong> — surfaces contextual health information when parameters are near threshold (H5)</li>
     </ul>
   </article>
 </section>
 
 ---
 
+## Concept Design
+
+Based on the qualitative analysis and user journeys created, next step natually was to do some concepts validation. The concept scenarios cover 3 cases, first CO2 spike in the room (Occupant focused), second sustained high PM2.5 level (facility-staff focused) and third CO deteced inside a room (Emergency case). The concept scenarios are designed to validate the role separation, the action protocol layer and the wall-mounted tablet display.
+
+<ProjectImageAsset src="ediaqi-decision-support-system/scenarios.png" alt="Description" />
+
+---
+
+## In-room Tablet display prototype
+
+I designed a wall-mounted tablet display prototype that visualizes the five contextual states (Ambient, Alert, Action Taken, Reporting, Educational) and the transitions between them. The prototype is built in Figma with interactive components to simulate real-time sensor data changes and user interactions.
+
+<MagneticButton
+    size="lg"
+    className={`${
+      "font-designer neubrutalism-button bg-[hsl(var(--designer-primary))] text-white"
+    }`}
+    asChild
+    magneticRadius={300}
+    onClick={() => window.open('https://www.figma.com/make/NMaJtePg9r2moSJt4pxSZr/Indoor-Air-Quality-Display?fullscreen=1&t=8ZFJ14PVlixDqryN-1&code-node-id=0-9', '_blank')}
+>
+  <span className="text-white no-underline cursor-pointer">
+    View the Interactive Prototype
+  </span>
+</MagneticButton>
+
+---
 
 ## Heuristic Evaluation
 
 Before designing V2, I conducted a full **Nielsen Heuristic Evaluation** of the existing dashboard prototype, producing 30 documented issues:
 
-- 2 Catastrophic
-- 14 Major
-- 11 Minor
-- 3 Cosmetic
-
 <ProjectImageAsset src="ediaqi-decision-support-system/heuristics-evaluation.jpg" alt="Description" />
 
 A recurring critical finding: the dashboard applies **Classe II thresholds** uniformly across all building types, which may be legally inappropriate for school environments under Italian occupational health standards. This is flagged as a **design-resistant issue** requiring legal/institutional resolution, not a UI fix.
 
+After the evaluation, a V2 version of the dashboard was created which can be accessed below:
+
+<MagneticButton
+    size="lg"
+    className={`${
+      "font-designer neubrutalism-button bg-[hsl(var(--designer-primary))] text-white"
+    }`}
+    asChild
+    magneticRadius={300}
+    onClick={() => window.open('https://www.figma.com/make/rGy3EC5u9Kv5cjRtsqL3Nx/Low-Fidelity-Wireframes-for-Dashboard?fullscreen=1&t=TnOHy22IdTdxUu9z-1&code-node-id=0-9', '_blank')}
+>
+  <span className="text-white no-underline cursor-pointer">
+    View the Dashboard Prototype
+  </span>   
+</MagneticButton>
+
 ---
 
-## Artifacts Produced (In Progress)
+## Artifacts Produced
 
 - Nielsen Heuristic Evaluation report (30 issues, severity-rated)
 - Research hypothesis framework (H1–H5) with supporting evidence
 - Lo-fi Figma wireframes: Dashboard V2 Basic View and Advanced View
-- Figma AI prompt blocks for both dashboard views
-- Screen-by-screen alert scenario workflows (CO₂ spike, PM2.5 elevated)
 - Wall-mounted tablet display: 5-state interaction flow (in progress)
-- Issue registry for Deda Internal Validation session (2 design-resistant items)
 
 ---
 
-## What I'm Learning
+## What I Learnt
 
 The clearest thing this project has taught me is the difference between a design problem and a problem that design gets handed.
  
@@ -231,5 +264,3 @@ The sensor data is real, the thresholds are real, the regulatory requirements ar
 Working in Italian, within Italian law, for Italian public sector users, as someone who came to this project from outside that context — that gap has been as much a design constraint as any technical one. It has also, I think, made the work more honest about what it can and cannot do.
  
 ---
- 
-> <span className="text-inherit">*This project is ongoing. Case study and prototype links will be added upon completion of the internship and thesis.*</span>
