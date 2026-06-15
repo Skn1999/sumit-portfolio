@@ -52,7 +52,7 @@ export const BiteCardBackground = memo(function BiteCardBackground({
 
   return (
     <div aria-hidden className="absolute inset-0 overflow-hidden rounded-3xl">
-      {/* Base wash — very light, low saturation to preserve contrast */}
+      {/* Base wash very light, low saturation to preserve contrast */}
       <div
         className="absolute inset-0"
         style={{
@@ -62,7 +62,7 @@ export const BiteCardBackground = memo(function BiteCardBackground({
             hsl(${cfg.hueC} 18% 92%) 100%)`,
         }}
       />
-      {/* Soft, low-opacity blobs — subtle color hint only */}
+      {/* Soft, low-opacity blobs subtle color hint only */}
       <div
         className="absolute w-[55%] h-[55%] rounded-full blur-2xl opacity-40"
         style={{
@@ -89,7 +89,7 @@ export const BiteCardBackground = memo(function BiteCardBackground({
       />
       {/* Light veil to guarantee text contrast over blobs */}
       <div className="absolute inset-0 bg-background/55 dark:bg-background/70" />
-      {/* Fine grain — very subtle */}
+      {/* Fine grain very subtle */}
       <div
         className="absolute inset-0 mix-blend-multiply opacity-[0.12] dark:mix-blend-overlay dark:opacity-[0.18]"
         style={{

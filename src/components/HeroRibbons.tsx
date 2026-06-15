@@ -183,7 +183,7 @@ const HeroRibbons: React.FC = () => {
       </motion.div>
       {/* Visually hidden H1 for SEO */}
       <h1 className="sr-only">
-        Sumit Knayyar — Engineer and Designer Portfolio
+        Sumit Knayyar Engineer and Designer Portfolio
       </h1>
       <div className="absolute bottom-6">
         <MagneticButton

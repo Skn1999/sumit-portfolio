@@ -38,7 +38,7 @@ const UxBitePage: React.FC = () => {
     <Layout>
       <SEO
         title={bite.title}
-        description={bite.hook ?? `${bite.title} — a UX bite by Sumit Knayyar`}
+        description={bite.hook ?? `${bite.title} a UX bite by Sumit Knayyar`}
         path={`/ux-bites/${bite.slug}`}
         type="article"
         keywords={bite.tags}

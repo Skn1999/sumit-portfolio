@@ -162,7 +162,7 @@ const HeroSection: React.FC = () => {
               "The real problem with the interface is that it is an interface."
             </blockquote>
             <p className="mt-4 text-sm text-muted-foreground font-body leading-relaxed">
-              — Don Norman, <i>Our beloved design guru</i>
+              Don Norman, <i>Our beloved design guru</i>
             </p>
           </motion.div>
 

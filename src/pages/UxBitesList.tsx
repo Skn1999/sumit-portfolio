@@ -59,7 +59,7 @@ const UxBitesList: React.FC = () => {
 
         {total === 0 ? (
           <p className="text-center text-muted-foreground">
-            No bites yet — stay tuned.
+            No bites yet stay tuned.
           </p>
         ) : (
           <div className="max-w-md mx-auto">

@@ -14,7 +14,7 @@ const IndexContent = () => {
   return (
     <Layout>
       <SEO
-        title="Sumit Knayyar — Product Designer & UX Strategist"
+        title="Sumit Knayyar Product Designer & UX Strategist"
         rawTitle
         description="Product Designer & UX Strategist with 4+ years of experience designing digital products that solve real problems. Research-driven, systems-thinking, and design-focused."
         path="/"

@@ -42,7 +42,7 @@ const About = () => {
             Beyond the Screen
           </h2>
           <p className="mt-3 text-lg text-muted-foreground font-body max-w-xl">
-            Design doesn't live in a vacuum — here's what fuels my perspective.
+            Design doesn't live in a vacuum here's what fuels my perspective.
           </p>
         </motion.div>
 
@@ -64,7 +64,7 @@ const About = () => {
                 Hello!
               </span>
               <h3 className="text-2xl md:text-3xl font-heading font-bold text-foreground leading-snug">
-                I'm Sumit — a designer
+                I'm Sumit a designer
                 <br />
                 who sketches, writes,
                 <br />
@@ -74,7 +74,7 @@ const About = () => {
             <p className="text-muted-foreground font-body mt-6 text-base leading-relaxed max-w-md">
               I believe the best design work comes from a life lived with
               curiosity. Whether I'm inking a portrait, writing an essay, or
-              hanging from a bar — each practice sharpens how I see and solve
+              hanging from a bar each practice sharpens how I see and solve
               problems.
             </p>
           </motion.div>
@@ -94,7 +94,7 @@ const About = () => {
                 </h3>
               </div>
               <p className="text-sm text-muted-foreground font-body leading-relaxed max-w-xs">
-                Pen sketching is my meditation. There's no undo — each stroke is
+                Pen sketching is my meditation. There's no undo each stroke is
                 a commitment. It's taught me to embrace imperfection and find
                 beauty in deliberate marks.
               </p>
@@ -133,7 +133,7 @@ const About = () => {
               </h3>
               <p className="text-sm text-muted-foreground font-body leading-relaxed">
                 Bodyweight training grounds me in patience and progressive
-                overload. Every skill — from a handstand to a muscle-up — is a
+                overload. Every skill from a handstand to a muscle-up is a
                 design problem: break it into components, iterate, and trust the
                 process.
               </p>
@@ -182,7 +182,7 @@ const About = () => {
               </div>
               <p className="text-sm text-muted-foreground font-body leading-relaxed max-w-md">
                 I write about design, technology, and the human experience. My
-                publication is where half-formed thoughts become frameworks — a
+                publication is where half-formed thoughts become frameworks a
                 space for slow thinking in a fast world.
               </p>
             </div>
@@ -289,7 +289,7 @@ const About = () => {
             <blockquote className="font-heading text-lg md:text-xl text-foreground/80 italic leading-relaxed">
               "The details are not the details. They make the design."
               <footer className="mt-2 text-sm text-muted-foreground not-italic font-body">
-                — Charles Eames
+                Charles Eames
               </footer>
             </blockquote>
           </motion.div>
