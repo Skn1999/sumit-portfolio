@@ -106,7 +106,7 @@ const UxBitesList: React.FC = () => {
                     <BiteCardBackground seed={current.slug} />
 
                     <div className="relative h-full p-8 md:p-10 flex flex-col">
-                      <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.25em] text-foreground/60">
+                      <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
                         <span>
                           {current.date
                             ? new Date(current.date).toLocaleDateString("en-US", {
@@ -119,7 +119,7 @@ const UxBitesList: React.FC = () => {
                       </div>
 
                       <div className="mt-10 md:mt-14">
-                        <p className="text-xs uppercase tracking-[0.3em] text-foreground/70 mb-4">
+                        <p className="text-xs uppercase tracking-[0.3em] text-foreground/80 mb-4">
                           {current.product}
                         </p>
                         <h2 className="text-3xl md:text-4xl font-semibold leading-[1.1] tracking-tight text-foreground group-hover:text-primary transition-colors">
@@ -128,7 +128,7 @@ const UxBitesList: React.FC = () => {
                       </div>
 
                       {current.hook && (
-                        <p className="mt-6 text-sm md:text-base text-foreground/75 leading-relaxed line-clamp-3">
+                        <p className="mt-6 text-sm md:text-base text-foreground/90 leading-relaxed line-clamp-3">
                           {current.hook}
                         </p>
                       )}
@@ -137,13 +137,13 @@ const UxBitesList: React.FC = () => {
                         {current.tags?.slice(0, 3).map((t) => (
                           <span
                             key={t}
-                            className="text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-full bg-foreground/10 text-foreground/80 backdrop-blur-sm"
+                            className="text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-full bg-foreground/10 text-foreground backdrop-blur-sm"
                           >
                             {t}
                           </span>
                         ))}
                         {current.findings && (
-                          <span className="ml-auto text-[10px] uppercase tracking-wider text-foreground/60">
+                          <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
                             {current.findings} findings
                           </span>
                         )}
