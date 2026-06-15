@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import SEO from "@/components/SEO";
-import BiteImage from "@/components/uxBites/BiteImage";
+import BiteCardBackground from "@/components/uxBites/BiteCardBackground";
 import { visibleBites } from "@/lib/uxBites";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { cn } from "@/lib/utils";
