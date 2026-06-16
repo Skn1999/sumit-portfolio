@@ -7,6 +7,7 @@ import ReadingProgress from "@/components/ReadingProgress";
 import MagneticButton from "@/components/MagneticButton";
 import UxBitesSkin from "@/components/uxBites/UxBitesSkin";
 import PrototypeChip from "@/components/uxBites/PrototypeChip";
+import BiteThemeToggle from "@/components/uxBites/BiteThemeToggle";
 import { getBiteBySlug, visibleBites } from "@/lib/uxBites";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
@@ -63,12 +64,15 @@ const UxBitePage: React.FC = () => {
           <div className="mx-auto w-full max-w-3xl px-5 md:px-6">
             {/* Hero */}
             <header className="pt-10 md:pt-16 pb-8 md:pb-12">
-              <Link
-                to="/ux-bites"
-                className="inline-flex items-center gap-2 font-bite-display text-[11px] uppercase tracking-[0.28em] bite-ink-soft hover:text-[hsl(var(--bite-accent))] transition-colors mb-10"
-              >
-                <ArrowLeft className="w-3 h-3" /> UX Bites
-              </Link>
+              <div className="flex items-center justify-between mb-10">
+                <Link
+                  to="/ux-bites"
+                  className="inline-flex items-center gap-2 font-bite-display text-[11px] uppercase tracking-[0.28em] bite-ink-soft hover:text-[hsl(var(--bite-accent))] transition-colors"
+                >
+                  <ArrowLeft className="w-3 h-3" /> UX Bites
+                </Link>
+                <BiteThemeToggle />
+              </div>
 
               {/* Issue marker line */}
               <div className="flex items-center gap-3 mb-6 font-bite-display text-[11px] uppercase tracking-[0.28em] bite-ink-soft">
