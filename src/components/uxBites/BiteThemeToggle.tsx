@@ -7,24 +7,23 @@ interface Props {
 }
 
 /**
- * Site-wide Day / Night toggle.
- * Two-segment pill — same visual language used across the portfolio and UX Bites.
- * Syncs with the global ThemeContext.
+ * Zine-styled two-segment Day / Night toggle.
+ * Syncs with the global ThemeContext — flipping here updates the whole site.
  */
-const ThemeToggle: React.FC<Props> = ({ className }) => {
+export const BiteThemeToggle: React.FC<Props> = ({ className }) => {
   const { resolvedTheme, setTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
   const segBase =
-    "inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] transition-colors duration-300";
+    "inline-flex items-center gap-1.5 px-2.5 py-1 font-bite-display text-[10px] uppercase tracking-[0.24em] transition-colors duration-300";
 
   return (
     <div
       role="group"
       aria-label="Theme"
       className={cn(
-        "inline-flex items-center rounded-sm border border-border overflow-hidden",
-        "bg-background/60 backdrop-blur-sm",
+        "inline-flex items-center rounded-sm border bite-rule overflow-hidden",
+        "bg-[hsl(var(--bite-paper-raised,var(--bite-paper))/0.6)] backdrop-blur-sm",
         className
       )}
     >
@@ -36,14 +35,14 @@ const ThemeToggle: React.FC<Props> = ({ className }) => {
         className={cn(
           segBase,
           !isDark
-            ? "bg-foreground text-background"
-            : "text-muted-foreground hover:text-foreground"
+            ? "bg-[hsl(var(--bite-accent))] text-[hsl(var(--bite-paper))]"
+            : "bite-ink-soft hover:text-[hsl(var(--bite-accent))]"
         )}
       >
         <Sun className="w-3 h-3" aria-hidden />
         <span>Day</span>
       </button>
-      <span aria-hidden className="w-px h-4 bg-border" />
+      <span aria-hidden className="w-px h-4 bg-[hsl(var(--bite-rule))]" />
       <button
         type="button"
         aria-pressed={isDark}
@@ -52,8 +51,8 @@ const ThemeToggle: React.FC<Props> = ({ className }) => {
         className={cn(
           segBase,
           isDark
-            ? "bg-foreground text-background"
-            : "text-muted-foreground hover:text-foreground"
+            ? "bg-[hsl(var(--bite-accent))] text-[hsl(var(--bite-paper))]"
+            : "bite-ink-soft hover:text-[hsl(var(--bite-accent))]"
         )}
       >
         <Moon className="w-3 h-3" aria-hidden />
@@ -63,4 +62,4 @@ const ThemeToggle: React.FC<Props> = ({ className }) => {
   );
 };
 
-export default ThemeToggle;
+export default BiteThemeToggle;
