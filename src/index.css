@@ -79,55 +79,55 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  /* ===== DARK MODE easy on the eyes (warm neutral) ===== */
+  /* ===== DARK MODE — Tea Ceremony (warm charcoal, aligned with UX Bites) ===== */
   .dark {
-    --background: 220 12% 9%;
-    --foreground: 40 15% 92%;
+    --background: 28 12% 9%;
+    --foreground: 36 28% 86%;
 
-    --card: 220 11% 12%;
-    --card-foreground: 40 15% 92%;
+    --card: 28 10% 13%;
+    --card-foreground: 36 28% 86%;
 
-    --popover: 220 11% 12%;
-    --popover-foreground: 40 15% 92%;
+    --popover: 28 10% 13%;
+    --popover-foreground: 36 28% 86%;
 
     --primary: 215 70% 65%;
-    --primary-foreground: 220 15% 10%;
+    --primary-foreground: 28 15% 10%;
 
-    --secondary: 220 10% 16%;
-    --secondary-foreground: 40 15% 92%;
+    --secondary: 28 10% 16%;
+    --secondary-foreground: 36 28% 86%;
 
-    --muted: 220 10% 16%;
-    --muted-foreground: 220 8% 65%;
+    --muted: 28 10% 15%;
+    --muted-foreground: 36 14% 64%;
 
-    --accent: 215 65% 60%;
-    --accent-foreground: 220 15% 10%;
+    --accent: 12 78% 56%;
+    --accent-foreground: 28 15% 10%;
 
     --destructive: 0 65% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 8% 20%;
-    --input: 220 8% 20%;
+    --border: 30 10% 22%;
+    --input: 30 10% 22%;
     --ring: 215 70% 60%;
 
     --engineer-primary: 215 70% 65%;
     --engineer-accent: 200 75% 65%;
-    --engineer-surface: 220 11% 12%;
+    --engineer-surface: 28 10% 13%;
     --engineer-glow: 215 70% 60%;
 
     --designer-primary: 260 60% 70%;
     --designer-accent: 340 70% 70%;
-    --designer-surface: 220 11% 12%;
+    --designer-surface: 28 10% 13%;
     --designer-glow: 260 60% 70%;
-    --designer-border: 40 10% 80%;
-    --designer-shadow: 40 10% 80%;
+    --designer-border: 36 28% 86%;
+    --designer-shadow: 36 28% 86%;
 
-    --sidebar-background: 220 12% 10%;
-    --sidebar-foreground: 40 15% 88%;
+    --sidebar-background: 28 12% 10%;
+    --sidebar-foreground: 36 28% 84%;
     --sidebar-primary: 215 70% 65%;
-    --sidebar-primary-foreground: 220 15% 10%;
-    --sidebar-accent: 220 10% 16%;
-    --sidebar-accent-foreground: 40 15% 92%;
-    --sidebar-border: 220 8% 20%;
+    --sidebar-primary-foreground: 28 15% 10%;
+    --sidebar-accent: 28 10% 16%;
+    --sidebar-accent-foreground: 36 28% 86%;
+    --sidebar-border: 30 10% 22%;
     --sidebar-ring: 215 70% 60%;
 
     color-scheme: dark;

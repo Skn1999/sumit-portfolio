@@ -1,37 +1,65 @@
-import { Moon, Sun, Monitor } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
-const ThemeToggle = () => {
-  const { theme, setTheme, resolvedTheme } = useTheme();
+interface Props {
+  className?: string;
+}
+
+/**
+ * Site-wide Day / Night toggle.
+ * Two-segment pill — same visual language used across the portfolio and UX Bites.
+ * Syncs with the global ThemeContext.
+ */
+const ThemeToggle: React.FC<Props> = ({ className }) => {
+  const { resolvedTheme, setTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
+  const segBase =
+    "inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] transition-colors duration-300";
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger
-        aria-label="Toggle theme"
-        className="relative inline-flex items-center justify-center w-9 h-9 rounded-full border border-border bg-background/60 hover:bg-muted transition-colors"
+    <div
+      role="group"
+      aria-label="Theme"
+      className={cn(
+        "inline-flex items-center rounded-sm border border-border overflow-hidden",
+        "bg-background/60 backdrop-blur-sm",
+        className
+      )}
+    >
+      <button
+        type="button"
+        aria-pressed={!isDark}
+        aria-label="Day mode"
+        onClick={() => setTheme("light")}
+        className={cn(
+          segBase,
+          !isDark
+            ? "bg-foreground text-background"
+            : "text-muted-foreground hover:text-foreground"
+        )}
       >
-        <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-        <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-        <span className="sr-only">Toggle theme (current: {resolvedTheme})</span>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[8rem]">
-        <DropdownMenuItem onClick={() => setTheme("light")} className={theme === "light" ? "font-semibold" : ""}>
-          <Sun className="mr-2 h-4 w-4" /> Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")} className={theme === "dark" ? "font-semibold" : ""}>
-          <Moon className="mr-2 h-4 w-4" /> Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")} className={theme === "system" ? "font-semibold" : ""}>
-          <Monitor className="mr-2 h-4 w-4" /> System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        <Sun className="w-3 h-3" aria-hidden />
+        <span>Day</span>
+      </button>
+      <span aria-hidden className="w-px h-4 bg-border" />
+      <button
+        type="button"
+        aria-pressed={isDark}
+        aria-label="Night mode"
+        onClick={() => setTheme("dark")}
+        className={cn(
+          segBase,
+          isDark
+            ? "bg-foreground text-background"
+            : "text-muted-foreground hover:text-foreground"
+        )}
+      >
+        <Moon className="w-3 h-3" aria-hidden />
+        <span>Night</span>
+      </button>
+    </div>
   );
 };
 

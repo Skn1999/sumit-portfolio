@@ -6,7 +6,7 @@ import { Layout } from "@/components/Layout";
 import SEO from "@/components/SEO";
 import BiteCardBackground from "@/components/uxBites/BiteCardBackground";
 import UxBitesSkin from "@/components/uxBites/UxBitesSkin";
-import BiteThemeToggle from "@/components/uxBites/BiteThemeToggle";
+
 import { visibleBites } from "@/lib/uxBites";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { cn } from "@/lib/utils";
@@ -60,9 +60,6 @@ const UxBitesList: React.FC = () => {
             <p className="font-bite-body text-lg md:text-xl bite-ink-soft leading-relaxed">
               Small audits. Sharp observations. Joyful fixes.
             </p>
-            <div className="mt-6 flex justify-center">
-              <BiteThemeToggle />
-            </div>
           </header>
 
           {total === 0 ? (
