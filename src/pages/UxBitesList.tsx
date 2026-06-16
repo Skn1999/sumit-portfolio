@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import SEO from "@/components/SEO";
-import BiteImage from "@/components/uxBites/BiteImage";
+import BiteCardBackground from "@/components/uxBites/BiteCardBackground";
 import { visibleBites } from "@/lib/uxBites";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { cn } from "@/lib/utils";
@@ -59,12 +59,12 @@ const UxBitesList: React.FC = () => {
 
         {total === 0 ? (
           <p className="text-center text-muted-foreground">
-            No bites yet — stay tuned.
+            No bites yet stay tuned.
           </p>
         ) : (
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-md mx-auto">
             {/* Card stack */}
-            <div className="relative h-[480px] md:h-[440px]">
+            <div className="relative h-[520px] md:h-[560px]">
               {/* Background ghost cards for stack effect */}
               {bites.length > 1 && (
                 <>
@@ -101,58 +101,59 @@ const UxBitesList: React.FC = () => {
                 >
                   <Link
                     to={`/ux-bites/${current.slug}`}
-                    className="group block h-full rounded-3xl border border-border bg-card shadow-xl hover:shadow-2xl transition-shadow overflow-hidden"
+                    className="group relative block h-full rounded-3xl border border-border shadow-xl hover:shadow-2xl transition-shadow overflow-hidden"
                   >
-                    {current.cover && (
-                      <div className="h-40 md:h-48 overflow-hidden bg-muted">
-                        <BiteImage
-                          src={`${current.slug}/${current.cover.filename}`}
-                          alt={current.cover.alt}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                          priority
-                        />
+                    <BiteCardBackground seed={current.slug} />
+
+                    <div className="relative h-full p-8 md:p-10 flex flex-col">
+                      <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                        <span>
+                          {current.date
+                            ? new Date(current.date).toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "short",
+                              })
+                            : ""}
+                        </span>
+                        <span>{current.readingTime ?? ""}</span>
                       </div>
-                    )}
-                    <div className="p-6 md:p-8 flex flex-col gap-4">
-                      <div className="flex items-center justify-between text-xs uppercase tracking-wider text-muted-foreground">
-                        <span>{current.product}</span>
-                        {current.date && (
-                          <span>
-                            {new Date(current.date).toLocaleDateString("en-US", {
-                              year: "numeric",
-                              month: "short",
-                            })}
-                          </span>
-                        )}
+
+                      <div className="mt-10 md:mt-14">
+                        <p className="text-xs uppercase tracking-[0.3em] text-foreground/80 mb-4">
+                          {current.product}
+                        </p>
+                        <h2 className="text-3xl md:text-4xl font-semibold leading-[1.1] tracking-tight text-foreground group-hover:text-primary transition-colors">
+                          {current.title}
+                        </h2>
                       </div>
-                      <h2 className="text-2xl md:text-3xl font-semibold leading-tight group-hover:text-primary transition-colors">
-                        {current.title}
-                      </h2>
+
                       {current.hook && (
-                        <p className="text-base text-muted-foreground leading-relaxed line-clamp-3">
+                        <p className="mt-6 text-sm md:text-base text-foreground/90 leading-relaxed line-clamp-3">
                           {current.hook}
                         </p>
                       )}
-                      <div className="flex flex-wrap items-center gap-2 mt-auto pt-2">
+
+                      <div className="mt-auto pt-8 flex flex-wrap items-center gap-2">
                         {current.tags?.slice(0, 3).map((t) => (
                           <span
                             key={t}
-                            className="text-xs px-2 py-1 rounded-full bg-muted text-foreground/80"
+                            className="text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-full bg-foreground/10 text-foreground backdrop-blur-sm"
                           >
                             {t}
                           </span>
                         ))}
-                        <span className="ml-auto text-xs text-muted-foreground">
-                          {current.findings ? `${current.findings} findings` : ""}
-                          {current.findings && current.readingTime ? " · " : ""}
-                          {current.readingTime ?? ""}
-                        </span>
+                        {current.findings && (
+                          <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
+                            {current.findings} findings
+                          </span>
+                        )}
                       </div>
                     </div>
                   </Link>
                 </motion.article>
               </AnimatePresence>
             </div>
+
 
             {/* Controls */}
             <div className="flex items-center justify-center gap-4 mt-8">

@@ -100,7 +100,7 @@ const Projects = () => {
             {isEngineer ? "Building Solutions" : "Solving Problems"}
           </h2>
 
-          {/* Filter Bar — commented out for now (only 2 projects) */}
+          {/* Filter Bar commented out for now (only 2 projects) */}
           {/* {availableSkills.length > 0 && (
             <FilterBar
               skills={availableSkills}
