@@ -584,6 +584,7 @@ All colors MUST be HSL.
 .ux-bites-skin {
   /* Warm paper background + ink ink */
   --bite-paper: 38 28% 96%;
+  --bite-paper-raised: 36 30% 99%;
   --bite-ink: 30 14% 14%;
   --bite-ink-soft: 30 10% 32%;
   --bite-rule: 30 12% 80%;
@@ -594,11 +595,13 @@ All colors MUST be HSL.
   font-family: "IBM Plex Mono", ui-monospace, monospace;
 }
 .dark .ux-bites-skin {
-  --bite-paper: 30 8% 10%;
-  --bite-ink: 36 22% 90%;
-  --bite-ink-soft: 36 12% 68%;
-  --bite-rule: 36 8% 24%;
-  --bite-accent: 8 75% 62%;
+  /* Tea ceremony — deep warm charcoal */
+  --bite-paper: 28 12% 9%;
+  --bite-paper-raised: 28 10% 13%;
+  --bite-ink: 36 28% 86%;
+  --bite-ink-soft: 36 14% 64%;
+  --bite-rule: 30 10% 22%;
+  --bite-accent: 12 78% 56%; /* lacquer vermilion */
 }
 
 .ux-bites-skin h1,
@@ -625,7 +628,7 @@ All colors MUST be HSL.
   background-size: 240px 240px;
   animation: bite-grain-drift 22s steps(8) infinite;
 }
-.dark .bite-paper-grain { opacity: 0.22; mix-blend-mode: overlay; }
+.dark .bite-paper-grain { opacity: 0.18; mix-blend-mode: overlay; }
 
 @keyframes bite-grain-drift {
   0%   { background-position: 0 0; }
