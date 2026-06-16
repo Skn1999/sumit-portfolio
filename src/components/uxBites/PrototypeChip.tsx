@@ -44,7 +44,7 @@ export const PrototypeChip: React.FC<Props> = ({
         "group inline-flex items-center gap-2 rounded-full px-4 py-2",
         "font-bite-display text-[11px] uppercase tracking-[0.22em]",
         "border border-[hsl(var(--bite-accent)/0.5)] text-[hsl(var(--bite-accent))]",
-        "bg-[hsl(var(--bite-paper))]/80 backdrop-blur-sm",
+        "bg-[hsl(var(--bite-paper-raised,var(--bite-paper))/0.85)] backdrop-blur-sm",
         "hover:bg-[hsl(var(--bite-accent))] hover:text-[hsl(var(--bite-paper))]",
         "transition-colors duration-300 shadow-sm",
         className
