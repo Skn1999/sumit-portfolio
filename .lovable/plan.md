@@ -1,74 +1,86 @@
-## Dark mode for UX Bites — plan
+# Site-wide Dark Mode (Tea Ceremony)
 
-The infrastructure already exists: `ThemeContext` drives `.dark` on `<html>`, and `.ux-bites-skin` already declares a `.dark` token block. This is a tuning + coverage pass to make dark mode feel intentionally zine-like rather than auto-inverted.
+Bring the same warm, calm dark aesthetic from the UX Bites zine to the entire portfolio. Existing `.dark` plumbing (ThemeProvider, ThemeToggle, `.dark` class on `<html>`) stays — we retune tokens, sweep hardcoded colors, and adapt the decorative hero/project layers.
 
-### 1. Retune the "paper" tokens — Tea Ceremony
+## 1. Retune dark tokens in `src/index.css`
 
-In `src/index.css`, under `.dark .ux-bites-skin`:
+Replace the current cool dark palette with warm tea-ceremony values (aligned with the UX Bites skin so the whole site feels of one piece):
 
-- `--bite-paper: 28 12% 9%` (deep warm charcoal, ~#191512)
-- `--bite-paper-raised: 28 10% 13%` (~#241f1a, used for card surfaces / sticky chip)
-- `--bite-ink: 36 28% 86%` (soft off-white #e2d6c2, never pure white)
-- `--bite-ink-soft: 36 14% 64%`
-- `--bite-rule: 30 10% 22%` (hairlines remain visible but quiet)
-- `--bite-accent: 12 78% 56%` (lacquer vermilion #d94a26 — slightly brighter than light mode for contrast on dark)
+- `--background: 28 12% 9%` (deep warm charcoal ~#191512)
+- `--card / --popover: 28 10% 13%` (raised paper ~#241f1a)
+- `--foreground: 36 28% 86%` (warm off-white ~#e2d6c2)
+- `--muted: 28 10% 15%` / `--muted-foreground: 36 14% 64%`
+- `--border / --input: 30 10% 22%` (warm hairline)
+- `--secondary: 28 10% 16%`
+- `--primary`: keep a cool accent (`215 70% 65%`) so brand identity reads in dark — this is the "theme overrides mode tints" decision: the same `--primary` applies regardless of any legacy mode attribute
+- `--accent`: vermilion `12 78% 56%` for warmth on CTAs/highlights (optional, sparing)
+- `--ring`: match `--primary`
+- Sidebar tokens follow the same family.
+- Add a smooth `transition: background-color .3s, color .3s, border-color .3s` to body for graceful theme switch (already partially present).
 
-Add a light-mode counterpart `--bite-paper-raised: 36 30% 99%` so components can use one token in both modes.
+Light mode tokens untouched.
 
-### 2. Dark-tuned cover gradients
+## 2. Sweep hardcoded colors
 
-`BiteCardBackground.tsx` currently uses one pastel palette set (L 78–86%). Add a parallel dark palette array:
+Found via audit. Replace with semantic tokens / dark-aware variants:
 
-- Same 8 duotone pairings, but shifted to L 22–34% and S +5–10% (e.g. plum/ochre → wine/amber, ink/sky → midnight/teal, moss/clay → forest/rust).
-- Pick from light or dark array based on `useTheme().resolvedTheme`.
-- Lower per-blob `opacity` from 0.7/0.65/0.55 → 0.55/0.5/0.4 in dark so blobs read as moody ambient glows.
-- Veil: switch from `bg-background/70` to `bg-[hsl(var(--bite-paper)/0.55)]` in dark so the warm paper hue bleeds through instead of the global background.
-- Grain in dark: keep `mix-blend-overlay` but drop opacity 0.22 → 0.18 to avoid muddiness on top of darker blobs.
 
-Maintains WCAG AA: foreground ink #e2d6c2 over the veiled paper #191512 stays >7:1.
+| File                                                                                                            | Issue                                                                                 | Fix                                                                                                                                                           |
+| --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ResumePage.tsx`                                                                                                | `bg-white` photo frame, `shadow-[…rgba(0,0,0,1)]`, `text-white` on buttons            | `bg-card`, shadow uses `hsl(var(--foreground))`, button uses `text-primary-foreground`                                                                        |
+| `ProjectImage.tsx`                                                                                              | `bg-black/0→/10` hover, `bg-black/90` lightbox, `bg-white/10`, `text-white`           | Lightbox stays dark (intentional overlay) but use `bg-foreground/90`; hover dim uses `bg-foreground/10`                                                       |
+| `About.tsx`                                                                                                     | `bg-[#1769ff]/10` (Behance), `fill-[#1769ff]`, Dribbble `#ea4c89`                     | Keep brand hex for social-brand icons (Behance/Dribbble); these are legit brand colors. Add `dark:bg-[#1769ff]/15` for visibility. Leave a memory note.       |
+| `About.tsx`, `HeroSection.tsx`, `Contact.tsx`, `Projects.tsx`, `FilterBar.tsx`, `MetadataStrip.tsx`, `Hero.tsx` | `bg-[hsl(var(--designer-primary))] text-white`, neubrutalism `text-white`, `bg-white` | Replace `text-white` with `text-primary-foreground`; `bg-white` cards become `bg-card`; neubrutalism shadows use `hsl(var(--foreground))` not `rgba(0,0,0,1)` |
+| `HeroSection.tsx`                                                                                               | hero side cards have `text-white`/`bg-white/20` inside colored gradient tiles         | These sit on saturated gradient backgrounds — keep `text-white` (it's correct against the gradient, not theme-dependent). Document as exception.              |
+| `SwirlText.tsx`                                                                                                 | default `color="#111"`                                                                | Pass theme-aware color from caller; default to `currentColor`                                                                                                 |
+| `HeroWithSwirls.tsx`                                                                                            | inline `color: "#111"` for designer mode                                              | Use `currentColor` + parent `text-foreground`                                                                                                                 |
+| `FloatingShapes3D.tsx`                                                                                          | pastel material colors `#b794f4` etc.                                                 | Add dark-mode color set (deepened) chosen via `useTheme()`                                                                                                    |
 
-### 3. Zine-styled in-page toggle
 
-New component `src/components/uxBites/BiteThemeToggle.tsx`:
+We will not chase truly-decorative gradient fills (hero swirls when on dark gradient background) — only fix where a hardcoded color breaks legibility in dark.
 
-- Two-segment pill, JetBrains Mono uppercase: `[ ☀ DAY ] [ ☾ NIGHT ]`.
-- Active segment fills with `--bite-accent`, inactive is `--bite-ink-soft` on transparent.
-- 1px `--bite-rule` border, no shadow, no rounded-full (use `rounded-sm` to keep editorial feel).
-- Reads/writes via existing `useTheme()` — stays in sync with the global header toggle.
-- Respects `prefers-reduced-motion` (no crossfade animation when reduced).
+## 3. Hero & decorative layers
 
-Placement:
-- `UxBitesList`: in the centered header row, just under the issue marker line.
-- `UxBitePage`: top of the article, opposite the `← UX Bites` back link (same row as the issue No. marker line, right side).
+- `**HeroPhoto` / `HeroRibbons` / `HeroWithSwirls**`: read `useTheme()`; in dark, swap ribbon stroke/fill from near-black to `hsl(var(--foreground)/0.85)`; reduce ribbon opacity to ~0.6 to keep them calm on warm charcoal.
+- `**FloatingShapes3D**`: theme-aware palette — dark uses deeper jewel tones (amethyst `#5b3a8a`, amber `#a07520`, teal `#2d6a6a`) at ~70% opacity.
+- `**ScrollProgress` / `ReadingProgress**`: already use tokens; verify track contrast in dark (bump from `bg-muted` to `bg-muted/60` if needed).
+- `**Projects` filter pills, About badges**: re-verify against new dark background.
 
-The existing global `ThemeToggle` in `Header` stays untouched.
+## 4. Project & Resume pages
 
-### 4. Component-level polish for dark
+- `ProjectHero`: ensure overlay gradient (likely `from-black/60`) becomes `from-background/80` for token-driven dim.
+- `MetadataStrip`: replace hardcoded shadows; ensure dividers use `border-border`.
+- `TableOfContents`: active state uses `text-primary`, inactive `text-muted-foreground` — verify.
+- `ResumePage`: photo frame `bg-white` → `bg-card`; neubrutalism shadow uses `hsl(var(--foreground))`; download button `text-white` → `text-primary-foreground`.
+- `ProjectFooter`, `BeforeAfter`, `PullQuote`: spot-check, expect minor token swaps.
 
-- **`PrototypeChip`** (sticky variant): currently likely uses `bg-background/X`. Switch to `bg-[hsl(var(--bite-paper-raised)/0.85)] backdrop-blur` with `--bite-rule` border and `--bite-accent` arrow icon so it reads on dark.
-- **`FindingHeader`**: oversized mono number uses `--bite-ink-soft` — verify it doesn't disappear; bump opacity slightly in dark via the token (already handled by token bump).
-- **`BiteSection` / hairline rules**: confirm they use `bite-rule` token, not hardcoded `border-foreground/10`.
-- **Tategaki marker**: already token-driven; verify opacity reads at the new ink-soft value.
-- **MDX images**: add `dark:opacity-90` utility on `BiteImage` to take the edge off bright screenshots on dark paper (optional — only if a screenshot pass shows them glaring).
+## 5. Default & toggle
 
-### 5. Verification
+- Keep `ThemeProvider` default `"system"` (no change).
+- `ThemeToggle` in header stays the canonical control for the rest of the site. UX Bites pages keep their own zine-styled mini toggle (already shipped) which writes the same `theme` value.
 
-After the edits:
-- `browser--view_preview` at `/ux-bites` and `/ux-bites/urakkamaailma-pricing-gap` in both themes.
-- Screenshot at 1280 and 390 widths in dark mode; check: paper warmth, blob saturation, chip legibility, toggle alignment, tategaki visibility.
-- Reduced-motion: confirm grain/blob/dot animations halt.
+## 6. Verification
 
-### Out of scope
+For each route — `/`, `/projects`, `/projects/:slug` (pick one), `/resume`, `/ux-bites`, `/ux-bites/:slug` — preview in both themes:
 
-- Changing global site dark tokens (only `.ux-bites-skin` scope).
-- New bites, new MDX components, layout restructure.
-- Storing a per-section theme override (toggle remains globally synced).
+- Text contrast (WCAG AA on body, AAA on long-form)
+- Hero decorative layers don't blow out
+- Cards, borders, hover states have enough separation from background
+- No stark white panels or pitch-black overlays
+- Theme switch is smooth (no flash, no layout shift)
 
-### Files touched
+## 7.  Extra Instructions
 
-- `src/index.css` — retune `.dark .ux-bites-skin` tokens, add `--bite-paper-raised`, grain/veil tweaks.
-- `src/components/uxBites/BiteCardBackground.tsx` — dark palette array + `useTheme` selection + dark veil.
-- `src/components/uxBites/PrototypeChip.tsx` — token-based surface for dark.
-- `src/components/uxBites/BiteThemeToggle.tsx` — new.
-- `src/pages/UxBitesList.tsx`, `src/pages/UxBitePage.tsx` — mount toggle.
-- (Conditional) `src/components/uxBites/BiteImage.tsx` — dark opacity tweak.
+1. Implement the same Day/Night toggle as done in the UX bites in the header and keep it same across the site. After that remove the toggle from the UX bites subheader
+2. Make sure to commit everything in sensible commits so that it is easier for me to decide what to commit to main branch and what to wait on
+
+## Out of scope
+
+- New pages, copy, or layout changes
+- Replacing third-party brand hex (Behance/Dribbble icons)
+- UX Bites skin tokens (already tuned in prior pass)
+- Light-mode token changes
+
+## Files likely touched
+
+`src/index.css`, `src/components/HeroSection.tsx`, `Hero.tsx`, `HeroWithSwirls.tsx`, `HeroPhoto.tsx`, `HeroRibbons.tsx`, `FloatingShapes3D.tsx`, `SwirlText.tsx`, `About.tsx`, `Contact.tsx`, `Projects.tsx`, `FilterBar.tsx`, `ProjectImage.tsx`, `ScrollProgress.tsx`, `ReadingProgress.tsx`, `projects/MetadataStrip.tsx`, `projects/ProjectHero.tsx`, `projects/ProjectFooter.tsx`, `pages/ResumePage.tsx`. Memory updated: Core notes site-wide warm dark palette aligned with UX Bites.
