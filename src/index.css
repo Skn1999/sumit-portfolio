@@ -576,3 +576,120 @@ All colors MUST be HSL.
     box-shadow: 0 2px 12px hsl(0 0% 0% / 0.15);
   }
 }
+
+/* ============================================================
+   UX BITES SKIN — scoped Japanese-zine identity
+   Applied only when an ancestor has .ux-bites-skin
+============================================================ */
+.ux-bites-skin {
+  /* Warm paper background + ink ink */
+  --bite-paper: 38 28% 96%;
+  --bite-ink: 30 14% 14%;
+  --bite-ink-soft: 30 10% 32%;
+  --bite-rule: 30 12% 80%;
+  --bite-accent: 8 70% 48%; /* vermilion / yen-stamp red */
+
+  background-color: hsl(var(--bite-paper));
+  color: hsl(var(--bite-ink));
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+}
+.dark .ux-bites-skin {
+  --bite-paper: 30 8% 10%;
+  --bite-ink: 36 22% 90%;
+  --bite-ink-soft: 36 12% 68%;
+  --bite-rule: 36 8% 24%;
+  --bite-accent: 8 75% 62%;
+}
+
+.ux-bites-skin h1,
+.ux-bites-skin h2,
+.ux-bites-skin h3,
+.ux-bites-skin h4 {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  letter-spacing: -0.01em;
+}
+
+.ux-bites-skin .bite-accent { color: hsl(var(--bite-accent)); }
+.ux-bites-skin .bite-rule { border-color: hsl(var(--bite-rule)); }
+.ux-bites-skin .bite-ink-soft { color: hsl(var(--bite-ink-soft)); }
+
+/* Paper grain overlay (full viewport, ambient) */
+.bite-paper-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.28 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 240px 240px;
+  animation: bite-grain-drift 22s steps(8) infinite;
+}
+.dark .bite-paper-grain { opacity: 0.22; mix-blend-mode: overlay; }
+
+@keyframes bite-grain-drift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 240px 240px; }
+}
+
+/* Slow drifting gradient layers used inside BiteCardBackground */
+@keyframes bite-blob-drift-a {
+  0%   { transform: translate3d(0%, 0%, 0) rotate(0deg) scale(1); }
+  50%  { transform: translate3d(6%, -4%, 0) rotate(8deg) scale(1.08); }
+  100% { transform: translate3d(0%, 0%, 0) rotate(0deg) scale(1); }
+}
+@keyframes bite-blob-drift-b {
+  0%   { transform: translate3d(0%, 0%, 0) rotate(0deg) scale(1); }
+  50%  { transform: translate3d(-5%, 5%, 0) rotate(-10deg) scale(1.05); }
+  100% { transform: translate3d(0%, 0%, 0) rotate(0deg) scale(1); }
+}
+@keyframes bite-blob-drift-c {
+  0%   { transform: translate3d(0%, 0%, 0) rotate(0deg) scale(1); }
+  50%  { transform: translate3d(4%, 6%, 0) rotate(14deg) scale(1.1); }
+  100% { transform: translate3d(0%, 0%, 0) rotate(0deg) scale(1); }
+}
+
+/* Breathing accent dot */
+@keyframes bite-breathe {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.25); }
+}
+.bite-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: hsl(var(--bite-accent));
+  animation: bite-breathe 3s ease-in-out infinite;
+}
+
+/* Tategaki vertical marker */
+.bite-tategaki {
+  position: fixed;
+  top: 50%;
+  right: 1.25rem;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: hsl(var(--bite-ink-soft));
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 2;
+  animation: bite-breathe-opacity 6s ease-in-out infinite;
+}
+@keyframes bite-breathe-opacity {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 0.7; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bite-paper-grain,
+  .bite-dot,
+  .bite-tategaki,
+  .bite-blob-a,
+  .bite-blob-b,
+  .bite-blob-c { animation: none !important; }
+}
