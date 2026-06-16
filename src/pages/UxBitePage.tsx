@@ -65,7 +65,7 @@ const UxBitePage: React.FC = () => {
             <header className="pt-10 md:pt-16 pb-8 md:pb-12">
               <Link
                 to="/ux-bites"
-                className="inline-flex items-center gap-2 font-bite-display text-[11px] uppercase tracking-[0.28em] bite-ink-soft hover:bite-accent transition-colors mb-10"
+                className="inline-flex items-center gap-2 font-bite-display text-[11px] uppercase tracking-[0.28em] bite-ink-soft hover:text-[hsl(var(--bite-accent))] transition-colors mb-10"
               >
                 <ArrowLeft className="w-3 h-3" /> UX Bites
               </Link>
@@ -161,7 +161,7 @@ const UxBitePage: React.FC = () => {
                       <p className="font-bite-display text-[10px] uppercase tracking-[0.28em] bite-ink-soft inline-flex items-center gap-2 mb-2">
                         <ArrowLeft className="w-3 h-3" /> Previous
                       </p>
-                      <h3 className="font-bite-display font-semibold group-hover:bite-accent transition-colors">
+                      <h3 className="font-bite-display font-semibold group-hover:text-[hsl(var(--bite-accent))] transition-colors">
                         {prev.title}
                       </h3>
                     </Link>
@@ -174,7 +174,7 @@ const UxBitePage: React.FC = () => {
                       <p className="font-bite-display text-[10px] uppercase tracking-[0.28em] bite-ink-soft inline-flex items-center gap-2 mb-2 md:justify-end">
                         Next <ArrowRight className="w-3 h-3" />
                       </p>
-                      <h3 className="font-bite-display font-semibold group-hover:bite-accent transition-colors">
+                      <h3 className="font-bite-display font-semibold group-hover:text-[hsl(var(--bite-accent))] transition-colors">
                         {next.title}
                       </h3>
                     </Link>
