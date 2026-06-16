@@ -1,75 +1,84 @@
-## Problem
+## UX Bites refresh — three-part plan
 
-In both UX Bite MDX files, each "Finding 0X" block currently looks like:
+### 1. Prototype link as a sticky chip
 
-```mdx
-<p className="text-xs uppercase tracking-[0.25em] text-primary mb-3">Finding 01</p>
-
-<h2 className="text-3xl md:text-5xl font-semibold leading-tight">
-  <Reveal>Rich data, flat presentation</Reveal>
-</h2>
+**Frontmatter (per bite)** — add optional fields in `src/lib/uxBites.ts` and the MDX files:
 ```
-
-MDX treats the blank line + the newlines inside the `<h2>` tag as significant whitespace. Because `<Reveal>` renders an inline `<span>`, MDX promotes the surrounding whitespace into an extra paragraph/inline wrapper, so the rendered DOM ends up with a stray `<span>` (and inherited block margins) right before the real `<h2>`. That's the "weird spacing" you're seeing.
-
-`BiteSection` itself is fine — it's purely the MDX whitespace-handling around inline children of block JSX.
-
-## Fix
-
-Introduce a small dedicated component so MDX never has to parse mixed block/inline JSX with blank lines.
-
-### 1. New component: `src/components/uxBites/FindingHeader.tsx`
-
-A single component that renders the eyebrow + animated heading in one shot:
-
-```tsx
-interface Props {
-  eyebrow: string;          // e.g. "Finding 01"
-  title: string;            // e.g. "Rich data, flat presentation"
-  tone?: "primary" | "muted"; // default "primary"
-  as?: "h2" | "h3";         // default "h2"
-}
+prototype:
+  url: "https://urakka-hinturi-fi.lovable.app"
+  label: "Live prototype"
 ```
+Only bites with a prototype show the chip.
 
-Internally it renders:
+**New component** `src/components/uxBites/PrototypeChip.tsx`
+- Pill-shaped chip rendered inside `UxBitePage` hero area, just under the eyebrow line.
+- On scroll past hero, it detaches and becomes a small fixed chip in the top-right of the viewport (below the site header), with a subtle slide-in. Hidden on the list page.
+- Magnetic hover (reuse existing magnetic primitive), arrow-up-right icon, mono label.
+- `aria-label="Open live prototype in new tab"`, `target="_blank" rel="noreferrer"`.
+- Inline anchor in MDX (`urakka-hinturi-fi.lovable.app` paragraph) gets removed in favor of the chip to avoid duplication.
 
-```tsx
-<header className="mb-4">
-  <p className="text-xs uppercase tracking-[0.25em] text-primary mb-3">{eyebrow}</p>
-  <Tag className="text-3xl md:text-5xl font-semibold leading-tight">
-    <Reveal>{title}</Reveal>
-  </Tag>
-</header>
-```
+Reduced-motion: skip slide animation, render chip statically.
 
-This keeps the existing visual design and the word-stagger Reveal animation, but emits a single, tightly-controlled DOM subtree with no MDX whitespace ambiguity.
+---
 
-### 2. Update both MDX files
+### 2. Animated living cover gradients
 
-In `src/content/ux-bites/joy-buying-flow/index.mdx` and `src/content/ux-bites/urakkamaailma-pricing-gap/index.mdx`:
+Rewrite `src/components/uxBites/BiteCardBackground.tsx`:
 
-- Add `import FindingHeader from "@/components/uxBites/FindingHeader";`
-- Replace every:
-  ```mdx
-  <p className="...">Finding 0X</p>
+- Replace static blobs with **3 seeded conic + radial gradient layers** that slowly drift using CSS keyframes (`@keyframes biteDrift` translating + rotating each layer 30–60s loop, different phases per layer).
+- Bump saturation: base wash from `28% 96%` → richer `45% 88%` light / `55% 22%` dark. Pick palettes from a curated set of 8 duotone seeds (plum/ochre, ink/sand, moss/clay, indigo/peach, etc.) — seed picks a palette deterministically rather than random HSL, fixing the "dull" complaint.
+- Grain stays but is animated via a slow `background-position` shift (subtle, ~20s loop).
+- WCAG: keep the inner `bg-background/55` veil so foreground text contrast ratio stays ≥ 4.5:1 over the most saturated point. Verify with a contrast assertion comment in the file.
+- Pause animations under `prefers-reduced-motion`.
 
-  <h2 ...>
-    <Reveal>Title</Reveal>
-  </h2>
-  ```
-  with:
-  ```mdx
-  <FindingHeader eyebrow="Finding 01" title="Rich data, flat presentation" />
-  ```
-- Do the same for the "Approach" section, passing `tone="muted"` and `as="h3"` so the existing `### How I got here` styling is preserved (the eyebrow becomes the muted "Approach" line; the h3 keeps the same look as today).
+Used on both list cards and (new) bite-page hero banner.
 
-### 3. No changes to `BiteSection` or `Reveal`
+---
 
-`BiteSection`'s animation stays exactly as is, and `Reveal` is unchanged. The fix is purely about how MDX parses the section header markup.
+### 3. Distinct "Japanese zine" identity for UX Bites only
 
-## Verification
+Scope: `/ux-bites` and `/ux-bites/:slug` only. Rest of portfolio untouched.
 
-- Open `/ux-bites/joy-buying-flow` and `/ux-bites/urakkamaailma-pricing-gap`.
-- Inspect the DOM between the Finding eyebrow and h2 — there should be no stray `<span>` or empty `<p>` between them.
-- Confirm vertical spacing now reads as a single tight header block.
-- Confirm the word-stagger Reveal animation still fires on each heading.
+**Typography**
+- Add Google Fonts: `JetBrains Mono` (headings + eyebrows) and `IBM Plex Mono` (body) — already partly used. Load only on UX Bites routes via a small `<UxBitesFontLoader />` mounted in `UxBitePage` and `UxBitesList`.
+- New Tailwind families: `font-bite-display` (JetBrains Mono) and `font-bite-body` (IBM Plex Mono), added in `tailwind.config.ts`.
+
+**Surface & color (scoped via a `.ux-bites-skin` class on `<Layout>` children)**
+- Warm paper background: `--bite-bg: 38 28% 96%` light / `30 8% 10%` dark.
+- Ink foreground: `30 14% 14%` light / `36 22% 90%` dark (no pure black/white — respects core memory).
+- Single muted accent: `vermilion 8 70% 48%` (yen-stamp red) for the prototype chip, finding eyebrows, and link hover.
+- Hairline rules (1px, `foreground/15`) replacing card borders within bite pages.
+
+**Texture & motion (ambient, level 4/5)**
+- Page-level grainy paper overlay (fixed, full-viewport, `pointer-events:none`, low opacity, animated `background-position` drift).
+- Vertical right-edge tategaki marker (rotated mono text showing "UX BITE · 01" or product name), gently breathing opacity.
+- "Breathing dot" next to the eyebrow row — small accent dot pulsing 3s.
+- Finding numbers rendered as oversized mono "01 / 02" with hairline rule.
+- All ambient motion respects `prefers-reduced-motion`.
+
+**Layout tweaks**
+- List page: keep card stack but swap typography to mono and apply new gradient backgrounds; add a small "Issue 01 · Summer 2026" zine label.
+- Bite page: tighten hero (single-column, mono eyebrow, large display heading), add hairline meta strip (product · surface · reading time · date) instead of inline spans, sticky prototype chip as in §1, finding sections gain the mono numeral + hairline.
+
+**No global token changes** — the skin is additive CSS scoped under `.ux-bites-skin`, so Designer/Engineer modes and the rest of the portfolio remain unaffected.
+
+---
+
+### Technical notes
+
+- New/edited files (build phase):
+  - `src/components/uxBites/BiteCardBackground.tsx` (rewrite)
+  - `src/components/uxBites/PrototypeChip.tsx` (new)
+  - `src/components/uxBites/UxBitesSkin.tsx` (new — wraps page, injects fonts + paper bg + tategaki marker)
+  - `src/lib/uxBites.ts` (add `prototype` to `UxBiteMeta`)
+  - `src/pages/UxBitePage.tsx` and `src/pages/UxBitesList.tsx` (apply skin, mount chip, restructure hero)
+  - `src/content/ux-bites/*/index.mdx` (add `prototype:` frontmatter where applicable, remove duplicate inline link in urakkamaailma)
+  - `src/index.css` (scoped `.ux-bites-skin` tokens + grain keyframes + paper texture)
+  - `tailwind.config.ts` (mono font families)
+- No business-logic changes. All edits are presentation-layer.
+- Verification: build, then `browser--view_preview` on `/ux-bites` and both bite slugs; confirm chip behavior on scroll, contrast ≥ 4.5:1 over animated covers, reduced-motion fallback.
+
+### Out of scope
+- Adding new bites or imagery.
+- Changing portfolio-wide typography or tokens.
+- Backend / data work.

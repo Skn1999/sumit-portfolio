@@ -5,6 +5,11 @@ export interface UxBiteImage {
   alt: string;
 }
 
+export interface UxBitePrototype {
+  url: string;
+  label?: string;
+}
+
 export interface UxBiteMeta {
   slug: string;
   title: string;
@@ -17,6 +22,7 @@ export interface UxBiteMeta {
   tags?: string[];
   findings?: number;
   draft?: boolean;
+  prototype?: UxBitePrototype;
 }
 
 const modules = import.meta.glob("../content/ux-bites/*/index.mdx", {

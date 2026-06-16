@@ -24,6 +24,8 @@ export default {
         body: ["Inter", "sans-serif"],
         engineer: ["Space Mono", "monospace"],
         designer: ["Space Grotesk", "sans-serif"],
+        "bite-display": ["JetBrains Mono", "ui-monospace", "monospace"],
+        "bite-body": ["IBM Plex Mono", "ui-monospace", "monospace"],
       },
       colors: {
         border: "hsl(var(--border))",
