@@ -21,7 +21,10 @@ export const FindingHeader: React.FC<Props> = ({
   as: Tag = "h2",
   className,
 }) => {
-  const eyebrowColor = tone === "muted" ? "text-muted-foreground" : "text-primary";
+  const eyebrowColor =
+    tone === "muted"
+      ? "text-[hsl(var(--bite-ink-soft,var(--muted-foreground)))]"
+      : "text-[hsl(var(--bite-accent,var(--primary)))]";
   const headingSize =
     Tag === "h2"
       ? "text-3xl md:text-5xl font-semibold leading-tight"
@@ -29,8 +32,9 @@ export const FindingHeader: React.FC<Props> = ({
 
   return (
     <header className={cn("mb-4", className)}>
-      <p className={cn("text-xs uppercase tracking-[0.25em] mb-3", eyebrowColor)}>
-        {eyebrow}
+      <p className={cn("flex items-center gap-2 font-bite-display text-[11px] uppercase tracking-[0.28em] mb-3", eyebrowColor)}>
+        <span className="bite-dot" aria-hidden />
+        <span>{eyebrow}</span>
       </p>
       <Tag className={headingSize}>
         <Reveal>{title}</Reveal>
