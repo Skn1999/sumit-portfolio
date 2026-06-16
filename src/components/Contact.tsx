@@ -33,7 +33,7 @@ const Contact = () => {
             className={`${
               isEngineer
                 ? "font-engineer"
-                : "font-designer neubrutalism-button bg-[hsl(var(--designer-primary))] text-white"
+                : "font-designer neubrutalism-button bg-[hsl(var(--designer-primary))] text-primary-foreground"
             }`}
             asChild
           >

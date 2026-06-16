@@ -107,12 +107,12 @@ const ResumePage: React.FC = () => {
               className={`w-full max-w-sm rounded-2xl overflow-hidden ${
                 isEngineer
                   ? "border border-border shadow-lg"
-                  : "border-2 border-foreground shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+                  : "border-2 border-foreground shadow-[6px_6px_0px_0px_hsl(var(--foreground))]"
               }`}
             >
               {/* PDF thumbnail preview render first page small */}
               <div className="bg-muted/30 p-6 flex justify-center border-b border-border/20">
-                <div className="w-48 rounded-lg overflow-hidden shadow-md bg-white">
+                <div className="w-48 rounded-lg overflow-hidden shadow-md bg-card">
                   <Document
                     file={pdfUrl}
                     options={options}
@@ -146,7 +146,7 @@ const ResumePage: React.FC = () => {
                     className={`w-full ${
                       isEngineer
                         ? ""
-                        : "neubrutalism-button bg-[hsl(var(--designer-primary))] text-white"
+                        : "neubrutalism-button bg-[hsl(var(--designer-primary))] text-primary-foreground"
                     }`}
                     asChild
                   >
@@ -206,7 +206,7 @@ const ResumePage: React.FC = () => {
                   className={`mb-8 rounded-lg overflow-hidden shadow-md ${
                     isEngineer
                       ? "border border-border"
-                      : "border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                      : "border-2 border-foreground shadow-[4px_4px_0px_0px_hsl(var(--foreground))]"
                   }`}
                 >
                   <Page
