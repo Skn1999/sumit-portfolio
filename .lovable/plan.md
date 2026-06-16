@@ -1,84 +1,74 @@
-## UX Bites refresh — three-part plan
+## Dark mode for UX Bites — plan
 
-### 1. Prototype link as a sticky chip
+The infrastructure already exists: `ThemeContext` drives `.dark` on `<html>`, and `.ux-bites-skin` already declares a `.dark` token block. This is a tuning + coverage pass to make dark mode feel intentionally zine-like rather than auto-inverted.
 
-**Frontmatter (per bite)** — add optional fields in `src/lib/uxBites.ts` and the MDX files:
-```
-prototype:
-  url: "https://urakka-hinturi-fi.lovable.app"
-  label: "Live prototype"
-```
-Only bites with a prototype show the chip.
+### 1. Retune the "paper" tokens — Tea Ceremony
 
-**New component** `src/components/uxBites/PrototypeChip.tsx`
-- Pill-shaped chip rendered inside `UxBitePage` hero area, just under the eyebrow line.
-- On scroll past hero, it detaches and becomes a small fixed chip in the top-right of the viewport (below the site header), with a subtle slide-in. Hidden on the list page.
-- Magnetic hover (reuse existing magnetic primitive), arrow-up-right icon, mono label.
-- `aria-label="Open live prototype in new tab"`, `target="_blank" rel="noreferrer"`.
-- Inline anchor in MDX (`urakka-hinturi-fi.lovable.app` paragraph) gets removed in favor of the chip to avoid duplication.
+In `src/index.css`, under `.dark .ux-bites-skin`:
 
-Reduced-motion: skip slide animation, render chip statically.
+- `--bite-paper: 28 12% 9%` (deep warm charcoal, ~#191512)
+- `--bite-paper-raised: 28 10% 13%` (~#241f1a, used for card surfaces / sticky chip)
+- `--bite-ink: 36 28% 86%` (soft off-white #e2d6c2, never pure white)
+- `--bite-ink-soft: 36 14% 64%`
+- `--bite-rule: 30 10% 22%` (hairlines remain visible but quiet)
+- `--bite-accent: 12 78% 56%` (lacquer vermilion #d94a26 — slightly brighter than light mode for contrast on dark)
 
----
+Add a light-mode counterpart `--bite-paper-raised: 36 30% 99%` so components can use one token in both modes.
 
-### 2. Animated living cover gradients
+### 2. Dark-tuned cover gradients
 
-Rewrite `src/components/uxBites/BiteCardBackground.tsx`:
+`BiteCardBackground.tsx` currently uses one pastel palette set (L 78–86%). Add a parallel dark palette array:
 
-- Replace static blobs with **3 seeded conic + radial gradient layers** that slowly drift using CSS keyframes (`@keyframes biteDrift` translating + rotating each layer 30–60s loop, different phases per layer).
-- Bump saturation: base wash from `28% 96%` → richer `45% 88%` light / `55% 22%` dark. Pick palettes from a curated set of 8 duotone seeds (plum/ochre, ink/sand, moss/clay, indigo/peach, etc.) — seed picks a palette deterministically rather than random HSL, fixing the "dull" complaint.
-- Grain stays but is animated via a slow `background-position` shift (subtle, ~20s loop).
-- WCAG: keep the inner `bg-background/55` veil so foreground text contrast ratio stays ≥ 4.5:1 over the most saturated point. Verify with a contrast assertion comment in the file.
-- Pause animations under `prefers-reduced-motion`.
+- Same 8 duotone pairings, but shifted to L 22–34% and S +5–10% (e.g. plum/ochre → wine/amber, ink/sky → midnight/teal, moss/clay → forest/rust).
+- Pick from light or dark array based on `useTheme().resolvedTheme`.
+- Lower per-blob `opacity` from 0.7/0.65/0.55 → 0.55/0.5/0.4 in dark so blobs read as moody ambient glows.
+- Veil: switch from `bg-background/70` to `bg-[hsl(var(--bite-paper)/0.55)]` in dark so the warm paper hue bleeds through instead of the global background.
+- Grain in dark: keep `mix-blend-overlay` but drop opacity 0.22 → 0.18 to avoid muddiness on top of darker blobs.
 
-Used on both list cards and (new) bite-page hero banner.
+Maintains WCAG AA: foreground ink #e2d6c2 over the veiled paper #191512 stays >7:1.
 
----
+### 3. Zine-styled in-page toggle
 
-### 3. Distinct "Japanese zine" identity for UX Bites only
+New component `src/components/uxBites/BiteThemeToggle.tsx`:
 
-Scope: `/ux-bites` and `/ux-bites/:slug` only. Rest of portfolio untouched.
+- Two-segment pill, JetBrains Mono uppercase: `[ ☀ DAY ] [ ☾ NIGHT ]`.
+- Active segment fills with `--bite-accent`, inactive is `--bite-ink-soft` on transparent.
+- 1px `--bite-rule` border, no shadow, no rounded-full (use `rounded-sm` to keep editorial feel).
+- Reads/writes via existing `useTheme()` — stays in sync with the global header toggle.
+- Respects `prefers-reduced-motion` (no crossfade animation when reduced).
 
-**Typography**
-- Add Google Fonts: `JetBrains Mono` (headings + eyebrows) and `IBM Plex Mono` (body) — already partly used. Load only on UX Bites routes via a small `<UxBitesFontLoader />` mounted in `UxBitePage` and `UxBitesList`.
-- New Tailwind families: `font-bite-display` (JetBrains Mono) and `font-bite-body` (IBM Plex Mono), added in `tailwind.config.ts`.
+Placement:
+- `UxBitesList`: in the centered header row, just under the issue marker line.
+- `UxBitePage`: top of the article, opposite the `← UX Bites` back link (same row as the issue No. marker line, right side).
 
-**Surface & color (scoped via a `.ux-bites-skin` class on `<Layout>` children)**
-- Warm paper background: `--bite-bg: 38 28% 96%` light / `30 8% 10%` dark.
-- Ink foreground: `30 14% 14%` light / `36 22% 90%` dark (no pure black/white — respects core memory).
-- Single muted accent: `vermilion 8 70% 48%` (yen-stamp red) for the prototype chip, finding eyebrows, and link hover.
-- Hairline rules (1px, `foreground/15`) replacing card borders within bite pages.
+The existing global `ThemeToggle` in `Header` stays untouched.
 
-**Texture & motion (ambient, level 4/5)**
-- Page-level grainy paper overlay (fixed, full-viewport, `pointer-events:none`, low opacity, animated `background-position` drift).
-- Vertical right-edge tategaki marker (rotated mono text showing "UX BITE · 01" or product name), gently breathing opacity.
-- "Breathing dot" next to the eyebrow row — small accent dot pulsing 3s.
-- Finding numbers rendered as oversized mono "01 / 02" with hairline rule.
-- All ambient motion respects `prefers-reduced-motion`.
+### 4. Component-level polish for dark
 
-**Layout tweaks**
-- List page: keep card stack but swap typography to mono and apply new gradient backgrounds; add a small "Issue 01 · Summer 2026" zine label.
-- Bite page: tighten hero (single-column, mono eyebrow, large display heading), add hairline meta strip (product · surface · reading time · date) instead of inline spans, sticky prototype chip as in §1, finding sections gain the mono numeral + hairline.
+- **`PrototypeChip`** (sticky variant): currently likely uses `bg-background/X`. Switch to `bg-[hsl(var(--bite-paper-raised)/0.85)] backdrop-blur` with `--bite-rule` border and `--bite-accent` arrow icon so it reads on dark.
+- **`FindingHeader`**: oversized mono number uses `--bite-ink-soft` — verify it doesn't disappear; bump opacity slightly in dark via the token (already handled by token bump).
+- **`BiteSection` / hairline rules**: confirm they use `bite-rule` token, not hardcoded `border-foreground/10`.
+- **Tategaki marker**: already token-driven; verify opacity reads at the new ink-soft value.
+- **MDX images**: add `dark:opacity-90` utility on `BiteImage` to take the edge off bright screenshots on dark paper (optional — only if a screenshot pass shows them glaring).
 
-**No global token changes** — the skin is additive CSS scoped under `.ux-bites-skin`, so Designer/Engineer modes and the rest of the portfolio remain unaffected.
+### 5. Verification
 
----
-
-### Technical notes
-
-- New/edited files (build phase):
-  - `src/components/uxBites/BiteCardBackground.tsx` (rewrite)
-  - `src/components/uxBites/PrototypeChip.tsx` (new)
-  - `src/components/uxBites/UxBitesSkin.tsx` (new — wraps page, injects fonts + paper bg + tategaki marker)
-  - `src/lib/uxBites.ts` (add `prototype` to `UxBiteMeta`)
-  - `src/pages/UxBitePage.tsx` and `src/pages/UxBitesList.tsx` (apply skin, mount chip, restructure hero)
-  - `src/content/ux-bites/*/index.mdx` (add `prototype:` frontmatter where applicable, remove duplicate inline link in urakkamaailma)
-  - `src/index.css` (scoped `.ux-bites-skin` tokens + grain keyframes + paper texture)
-  - `tailwind.config.ts` (mono font families)
-- No business-logic changes. All edits are presentation-layer.
-- Verification: build, then `browser--view_preview` on `/ux-bites` and both bite slugs; confirm chip behavior on scroll, contrast ≥ 4.5:1 over animated covers, reduced-motion fallback.
+After the edits:
+- `browser--view_preview` at `/ux-bites` and `/ux-bites/urakkamaailma-pricing-gap` in both themes.
+- Screenshot at 1280 and 390 widths in dark mode; check: paper warmth, blob saturation, chip legibility, toggle alignment, tategaki visibility.
+- Reduced-motion: confirm grain/blob/dot animations halt.
 
 ### Out of scope
-- Adding new bites or imagery.
-- Changing portfolio-wide typography or tokens.
-- Backend / data work.
+
+- Changing global site dark tokens (only `.ux-bites-skin` scope).
+- New bites, new MDX components, layout restructure.
+- Storing a per-section theme override (toggle remains globally synced).
+
+### Files touched
+
+- `src/index.css` — retune `.dark .ux-bites-skin` tokens, add `--bite-paper-raised`, grain/veil tweaks.
+- `src/components/uxBites/BiteCardBackground.tsx` — dark palette array + `useTheme` selection + dark veil.
+- `src/components/uxBites/PrototypeChip.tsx` — token-based surface for dark.
+- `src/components/uxBites/BiteThemeToggle.tsx` — new.
+- `src/pages/UxBitesList.tsx`, `src/pages/UxBitePage.tsx` — mount toggle.
+- (Conditional) `src/components/uxBites/BiteImage.tsx` — dark opacity tweak.
