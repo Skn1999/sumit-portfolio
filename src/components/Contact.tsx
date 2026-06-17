@@ -52,7 +52,7 @@ const Contact = () => {
             asChild
           >
             <a
-              href="https://linkedin.com/in/sumit-knayyar"
+              href="https://www.linkedin.com/in/sumitnayyar-ux/"
               target="_blank"
               rel="noopener noreferrer"
             >
