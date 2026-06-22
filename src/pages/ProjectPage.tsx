@@ -75,10 +75,10 @@ const ProjectPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 md:px-6 relative">
           {/* Combined Metadata Strip - Full Width */}
           <div className="py-6 md:py-12 border-b border-border/20">
-            {/* <MetadataStrip project={project} /> */}
-
             {/* Project Info Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-0 sm:gap-6">
+            <div
+              className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-0 sm:gap-6 rounded-2xl border border-border bg-muted p-6 ${project.links && Object.keys(project?.links)?.length > 0 ? "lg:grid-cols-5" : "lg:grid-cols-4"}`}
+            >
               {/* Client/Company */}
               {project.links?.client && (
                 <div className="py-4 sm:py-0 border-b sm:border-b-0 border-border/15">
@@ -92,7 +92,7 @@ const ProjectPage: React.FC = () => {
               )}
 
               {/* Project Type */}
-              {project.type && (
+              {/* {project.type && (
                 <div className="py-4 sm:py-0 border-b sm:border-b-0 border-border/15">
                   <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">
                     Project Type
@@ -103,7 +103,7 @@ const ProjectPage: React.FC = () => {
                       : "Design Case Study"}
                   </p>
                 </div>
-              )}
+              )} */}
 
               {/* Role */}
               {project.roles && project.roles.length > 0 && (
@@ -156,7 +156,7 @@ const ProjectPage: React.FC = () => {
               )}
 
               {/* External Links */}
-              {/* {project.links && Object.keys(project.links).length > 0 && (
+              {project.links && Object.keys(project.links).length > 0 && (
                 <div>
                   <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">
                     Links
@@ -177,7 +177,7 @@ const ProjectPage: React.FC = () => {
                       ))}
                   </div>
                 </div>
-              )} */}
+              )}
             </div>
           </div>
 

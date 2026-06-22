@@ -19,7 +19,7 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
 
       <div className="max-w-6xl mx-auto">
         {/* Eyebrow - Project Type/Category */}
-        {project.type && (
+        {/* {project.type && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -30,8 +30,7 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
               {project.type === "engineering" ? "Engineering" : "Design"}
             </span>
           </motion.div>
-        )}
-
+        )} */}
         {/* Title and Tagline */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -52,7 +51,6 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
             </p>
           )}
         </motion.div>
-
         {/* Cover Image */}
         {project.cover && (
           <motion.div
