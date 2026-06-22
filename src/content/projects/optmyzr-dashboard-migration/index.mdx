@@ -1,0 +1,112 @@
+---
+slug: "optmyzr-dashboard-migration"
+title: "Optmyzr: Migrating Legacy Ad Analytics to a Config-Driven React Architecture"
+tagline: "Replacing a legacy Backbone.js and jQuery stack with a modular component architecture to eliminate critical UI rendering bottlenecks."
+date: "2026-01-15"
+type: "design"
+featured: true
+cover:
+  filename: "cover.png"
+  alt: "Migrated React dashboard showing core widget architecture layout"
+tech:
+  - "React"
+  - "TypeScript"
+  - "Redux Toolkit"
+  - "Firebase"
+  - "Performance Engineering"
+  - "Component Design"
+metric: "Dashboard load times reduced from 8-10s to <1s; zero core state changes required to support new ad platforms"
+links:
+  # prototype: "https://github.com/skn1999/sumit-portfolio"
+summary: "A production migration of Optmyzr's two highest-traffic, data-dense analytics applications. Rebuilt legacy corporate dashboards into an optimized React configuration pipeline that handles complex state propagation and multi-platform scaling cleanly."
+roles:
+  - "Frontend Engineering"
+  - "UI Architecture"
+order: 2
+draft: true
+---
+import { ProjectImageAsset } from "@/components/ui/project-image-asset"
+
+## Overview
+
+Optmyzr is a PPC management SaaS platform serving digital advertising agencies handling high-volume accounts across Google, Microsoft, and Amazon Ads. As part of the Core team, I owned the frontend migration of the platform's two highest-traffic, data-dense applications, the **Account Dashboard** and the **PPC Comparison Tool**.
+
+The goal was simple but mandatory: replace a high-debt, legacy tech stack with a performant architecture where adding support for new ad account types required zero core code changes.
+
+---
+
+## The Problem
+
+The existing dashboard stack was built on Backbone.js with heavy jQuery orchestration and server-side templating. For enterprise accounts pulling massive datasets from external advertising APIs, the interface collapsed under its own weight. 
+
+* **Severe Performance Deficit:** High-spend account dashboards took between **8 to 10 seconds** to become fully interactive, driving down user retention.
+* **Cascade Re-rendering:** Changing parameters or timeline ranges within a single UI module triggered an un-scoped DOM updates loop across every sibling component on the page.
+* **Rigid Scaling:** Adding a new ad network format (such as Amazon Ads) required manual modifications to the base data layer, view controllers, and styling layouts.
+
+<ProjectImageAsset src="optmyzr-dashboard-migration/legacy-dashboard.svg" alt="Conceptual layout map showing how un-scoped jQuery state updates caused systemic page lag" />
+
+---
+
+## Engineering & Architecture Decisions
+
+Instead of a generic template rewrite, the solution required separating UI rendering orchestration from data source models through three foundational architectural adjustments.
+
+### 1. Domain State Isolation via Scoped Redux Slices
+To halt cascade re-rendering across complex multi-widget interfaces, I implemented a strict boundaries framework:
+
+* **Slice Scoping:** Isolated separate data domains into dedicated Redux slices. Dashboard-wide data notifications were restricted to protect independent widget states.
+* **Memoized Selectors:** Components subscribed exclusively to the precise dataset property needed for execution, reducing unnecessary sibling evaluation passes to zero.
+* **Reference Stability:** Wrapped complex layout modules in `React.memo` and stabilized functional triggers using `useMemo` and `useCallback` to control referential equality leaks.
+
+### 2. Progressive, Viewport-Driven Data Hydration
+Enterprise clients routinely fetch hundreds of metric segments, warnings lists, and visualization nodes simultaneously. Flooding the browser main thread with this data instantly froze the tab view.
+
+I restructured the layer into a progressive asset delivery model:
+1. Core frame skeletons render immediately on mount.
+2. High-priority alert structures paint initial visible text chunks immediately.
+3. Complex line charts and comprehensive metric breakdowns load background payloads asynchronously as their bounding containers enter the viewport.
+
+### 3. Config-Driven Dynamic Rendering
+To isolate layout generation from core feature code entirely, I designed a configuration engine that instantiates components dynamically based on structural JSON rules.
+
+```typescript
+// Abstracted representation of the plug-and-render interface mapping
+import React from 'react';
+import { widgetRegistry } from './registry';
+
+interface WidgetConfig {
+  componentPath: string;
+  title: string;
+  props: Record<string, any>;
+}
+
+export const WidgetRenderer: React.FC<{ config: WidgetConfig[] }> = ({ config }) => {
+  return (
+    <>
+      {config.map(({ componentPath, props, title }) => {
+        const TargetWidget = widgetRegistry[componentPath];
+        if (!TargetWidget) return null;
+        
+        return <TargetWidget key={title} {...props} />;
+      })}
+    </>
+  );
+};
+```
+
+<ProjectImageAsset src="optmyzr-dashboard-migration/migrated-dashboard.jpg" alt="Migrated version of account dashboard optimised using React and redux. Image showcases different widgets like account summary, top performing campaigns and ad, alerts, and quick optimisations. There are more widgets shown below the fold in the image but are hidden." />
+
+On dashboard initialization, the account type is parsed dynamically from the application routing URL. The orchestrator fetches the mapped configuration map, loops through the metadata structure, and executes instantiation safely without core workflow intervention.
+
+## Results & Impact
+- 90% Load Acceleration: Core application load and time-to-interactive benchmarks dropped reliably to under 1 second, matching modern UX expectations.
+- Zero-Engine Maintenance: Introducing new advertising network integrations migrated from a multi-day core development workflow to a basic configuration-authoring checklist.
+- Systemic Blueprints: The dynamic rendering structure was formally adopted by engineering leads as the reference codebase architecture blueprint for upcoming platform tools.
+- Knowledge Sharing: Invited by engineering management to lead a technical framework session teaching advanced React reconciliation mechanics and state isolation architecture to junior developers.
+
+## Implementation Stack
+**Languages & State**: React, TypeScript, Redux Toolkit, React.memo
+
+**Data & Core Integration**: Firebase Realtime Database, Google Ads API, Microsoft Advertising API
+
+**Engineering Tools**: Chrome DevTools (Performance Profiling), Webpack Setup Optimization
