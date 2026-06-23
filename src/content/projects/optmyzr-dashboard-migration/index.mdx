@@ -43,7 +43,7 @@ The existing dashboard stack was built on Backbone.js with heavy jQuery orchestr
 * **Cascade Re-rendering:** Changing parameters or timeline ranges within a single UI module triggered an un-scoped DOM updates loop across every sibling component on the page.
 * **Rigid Scaling:** Adding a new ad network format (such as Amazon Ads) required manual modifications to the base data layer, view controllers, and styling layouts.
 
-<ProjectImageAsset src="optmyzr-dashboard-migration/legacy-dashboard.svg" alt="Conceptual layout map showing how un-scoped jQuery state updates caused systemic page lag" />
+<ProjectImageAsset src="optmyzr-dashboard-migration/legacy-dashboard.svg" alt="Conceptual layout map showing how un-scoped jQuery state updates caused systemic page lag" maxWidth={720} />
 
 ---
 
@@ -94,7 +94,7 @@ export const WidgetRenderer: React.FC<{ config: WidgetConfig[] }> = ({ config })
 };
 ```
 
-<ProjectImageAsset src="optmyzr-dashboard-migration/migrated-dashboard.jpg" alt="Migrated version of account dashboard optimised using React and redux. Image showcases different widgets like account summary, top performing campaigns and ad, alerts, and quick optimisations. There are more widgets shown below the fold in the image but are hidden." />
+<ProjectImageAsset src="optmyzr-dashboard-migration/migrated-dashboard.jpg" alt="Migrated version of account dashboard optimised using React and redux. Image showcases different widgets like account summary, top performing campaigns and ad, alerts, and quick optimisations. There are more widgets shown below the fold in the image but are hidden." maxWidth={720} />
 
 On dashboard initialization, the account type is parsed dynamically from the application routing URL. The orchestrator fetches the mapped configuration map, loops through the metadata structure, and executes instantiation safely without core workflow intervention.
 
