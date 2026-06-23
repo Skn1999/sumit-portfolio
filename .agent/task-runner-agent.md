@@ -39,7 +39,7 @@ Use `architecture.md` to understand how the app is wired, `tech-stack.md` to cho
 2. Read the required context files.
 3. Before modifying any files, check the current git status.
 4. If the working tree is not clean, ask the user what to do before you proceed with the task and wait for the prompt from user.
-5. if working tree is clean, then create a new branch from the current branch with name convention as `<impr/feature/bug-fix>-<current-task-name>`.
+5. if working tree is clean, then create a new branch from the current branch with name convention as `<impr/feature/bug-fix>-<current-task-name>` and switch to this newly created branch before proceeding further.
 6. Inspect the relevant source files mentioned or implied by the task.
 7. Restate the implementation target internally as:
    - what behavior/UI/content must change
