@@ -28,3 +28,10 @@ This file is updated by AI agents after each task is attempted or completed. It 
 - Errors or surprises: The full lint script currently scans unrelated generated/reference and shadcn-style files with pre-existing rule violations, so a new clean component can still be hidden behind repo-wide lint failures.
 - Resolution: Ran a targeted ESLint check against `src/components/projects/CaseStudyLayout.tsx` to confirm the new file is clean, then ran `npm run build` to verify TypeScript/Vite/MDX compilation.
 - Future instruction: When a task requires `npm run build`, check `git status` afterward because `prebuild` runs image optimization and may rewrite source images unrelated to the task.
+
+### 2026-06-23 - tasks/task_003_update_optmyzr_mdx_structure.md
+
+- Lessons learned: The CaseStudyLayout components provide a clean, responsive pattern for splitting content and media, and the ImpactMetricBanner creates an excellent way to surface key metrics prominently. The split layout works well for technical content where code examples need visual pairing with explanatory text.
+- Errors or surprises: None encountered. The MDX compilation and build process handled the new component imports smoothly.
+- Resolution: Successfully imported all required CaseStudyLayout components and structured the MDX content to use them effectively, maintaining the technical accuracy while improving scannability.
+- Future instruction: Use CaseStudySplit for technical explanations that benefit from text/media pairing, and ImpactMetricBanner for key metrics that should stand out from the main content flow.

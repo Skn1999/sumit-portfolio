@@ -26,6 +26,14 @@ order: 2
 draft: true
 ---
 import { ProjectImageAsset } from "@/components/ui/project-image-asset"
+import {
+  ImpactMetricBanner,
+  ImpactMetric,
+  CaseStudySplit,
+  CaseStudyText,
+  CaseStudyMedia,
+  EngineeringCallout
+} from "@/components/projects/CaseStudyLayout";
 
 ## Overview
 
@@ -33,17 +41,28 @@ Optmyzr is a PPC management SaaS platform serving digital advertising agencies h
 
 The goal was simple but mandatory: replace a high-debt, legacy tech stack with a performant architecture where adding support for new ad account types required zero core code changes.
 
+<ImpactMetricBanner>
+  <ImpactMetric value="<1s" label="Load Time" />
+  <ImpactMetric value="90%" label="Acceleration" />
+  <ImpactMetric value="0" label="Core Changes" />
+</ImpactMetricBanner>
+
 ---
 
 ## The Problem
 
-The existing dashboard stack was built on Backbone.js with heavy jQuery orchestration and server-side templating. For enterprise accounts pulling massive datasets from external advertising APIs, the interface collapsed under its own weight. 
+<CaseStudySplit>
+  <CaseStudyText>
+    The existing dashboard stack was built on Backbone.js with heavy jQuery orchestration and server-side templating. For enterprise accounts pulling massive datasets from external advertising APIs, the interface collapsed under its own weight. 
 
-* **Severe Performance Deficit:** High-spend account dashboards took between **8 to 10 seconds** to become fully interactive, driving down user retention.
-* **Cascade Re-rendering:** Changing parameters or timeline ranges within a single UI module triggered an un-scoped DOM updates loop across every sibling component on the page.
-* **Rigid Scaling:** Adding a new ad network format (such as Amazon Ads) required manual modifications to the base data layer, view controllers, and styling layouts.
-
-<ProjectImageAsset src="optmyzr-dashboard-migration/legacy-dashboard.svg" alt="Conceptual layout map showing how un-scoped jQuery state updates caused systemic page lag" />
+    * **Severe Performance Deficit:** High-spend account dashboards took between **8 to 10 seconds** to become fully interactive, driving down user retention.
+    * **Cascade Re-rendering:** Changing parameters or timeline ranges within a single UI module triggered an un-scoped DOM updates loop across every sibling component on the page.
+    * **Rigid Scaling:** Adding a new ad network format (such as Amazon Ads) required manual modifications to the base data layer, view controllers, and styling layouts.
+  </CaseStudyText>
+  <CaseStudyMedia>
+    <ProjectImageAsset src="optmyzr-dashboard-migration/legacy-dashboard.svg" alt="Conceptual layout map showing how un-scoped jQuery state updates caused systemic page lag" />
+  </CaseStudyMedia>
+</CaseStudySplit>
 
 ---
 
@@ -67,42 +86,57 @@ I restructured the layer into a progressive asset delivery model:
 3. Complex line charts and comprehensive metric breakdowns load background payloads asynchronously as their bounding containers enter the viewport.
 
 ### 3. Config-Driven Dynamic Rendering
-To isolate layout generation from core feature code entirely, I designed a configuration engine that instantiates components dynamically based on structural JSON rules.
+<CaseStudySplit>
+  <CaseStudyText>
+    To isolate layout generation from core feature code entirely, I designed a configuration engine that instantiates components dynamically based on structural JSON rules.
 
-```typescript
-// Abstracted representation of the plug-and-render interface mapping
-import React from 'react';
-import { widgetRegistry } from './registry';
+    ```typescript
+    // Abstracted representation of the plug-and-render interface mapping
+    import React from 'react';
+    import { widgetRegistry } from './registry';
 
-interface WidgetConfig {
-  componentPath: string;
-  title: string;
-  props: Record<string, any>;
-}
+    interface WidgetConfig {
+      componentPath: string;
+      title: string;
+      props: Record<string, any>;
+    }
 
-export const WidgetRenderer: React.FC<{ config: WidgetConfig[] }> = ({ config }) => {
-  return (
-    <>
-      {config.map(({ componentPath, props, title }) => {
-        const TargetWidget = widgetRegistry[componentPath];
-        if (!TargetWidget) return null;
-        
-        return <TargetWidget key={title} {...props} />;
-      })}
-    </>
-  );
-};
-```
+    export const WidgetRenderer: React.FC<{ config: WidgetConfig[] }> = ({ config }) => {
+      return (
+        <>
+          {config.map(({ componentPath, props, title }) => {
+            const TargetWidget = widgetRegistry[componentPath];
+            if (!TargetWidget) return null;
+            
+            return <TargetWidget key={title} {...props} />;
+          })}
+        </>
+      );
+    };
+    ```
 
-<ProjectImageAsset src="optmyzr-dashboard-migration/migrated-dashboard.jpg" alt="Migrated version of account dashboard optimised using React and redux. Image showcases different widgets like account summary, top performing campaigns and ad, alerts, and quick optimisations. There are more widgets shown below the fold in the image but are hidden." />
-
-On dashboard initialization, the account type is parsed dynamically from the application routing URL. The orchestrator fetches the mapped configuration map, loops through the metadata structure, and executes instantiation safely without core workflow intervention.
+    On dashboard initialization, the account type is parsed dynamically from the application routing URL. The orchestrator fetches the mapped configuration map, loops through the metadata structure, and executes instantiation safely without core workflow intervention.
+  </CaseStudyText>
+  <CaseStudyMedia>
+    <ProjectImageAsset src="optmyzr-dashboard-migration/migrated-dashboard.jpg" alt="Migrated version of account dashboard optimised using React and redux. Image showcases different widgets like account summary, top performing campaigns and ad, alerts, and quick optimisations. There are more widgets shown below the fold in the image but are hidden." />
+  </CaseStudyMedia>
+</CaseStudySplit>
 
 ## Results & Impact
-- 90% Load Acceleration: Core application load and time-to-interactive benchmarks dropped reliably to under 1 second, matching modern UX expectations.
-- Zero-Engine Maintenance: Introducing new advertising network integrations migrated from a multi-day core development workflow to a basic configuration-authoring checklist.
-- Systemic Blueprints: The dynamic rendering structure was formally adopted by engineering leads as the reference codebase architecture blueprint for upcoming platform tools.
-- Knowledge Sharing: Invited by engineering management to lead a technical framework session teaching advanced React reconciliation mechanics and state isolation architecture to junior developers.
+
+<ImpactMetricBanner>
+  <ImpactMetric value="90%" label="Acceleration" />
+  <ImpactMetric value="0" label="Core Changes" />
+  <ImpactMetric value="100%" label="Blueprints" />
+  <ImpactMetric value="1" label="Session" />
+</ImpactMetricBanner>
+
+The migration delivered measurable business impact:
+
+* Core application load and time-to-interactive benchmarks dropped reliably to under 1 second, matching modern UX expectations.
+* New advertising network integrations migrated from a multi-day core development workflow to a basic configuration-authoring checklist.
+* The dynamic rendering structure was formally adopted by engineering leads as the reference codebase architecture blueprint for upcoming platform tools.
+* Engineering management invited me to lead a technical framework session teaching advanced React reconciliation mechanics and state isolation architecture to junior developers.
 
 ## Implementation Stack
 **Languages & State**: React, TypeScript, Redux Toolkit, React.memo
