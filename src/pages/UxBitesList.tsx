@@ -25,7 +25,7 @@ const UxBitesList: React.FC = () => {
       setDirection(delta);
       setIndex((i) => (i + delta + total) % total);
     },
-    [total]
+    [total],
   );
 
   useEffect(() => {
@@ -46,14 +46,14 @@ const UxBitesList: React.FC = () => {
         description="Short, bite-sized UX audits and joyful redesign proposals for real products."
         path="/ux-bites"
       />
-      <UxBitesSkin marker="UX BITES · ISSUE 01 · SUMMER 2026">
+      <UxBitesSkin marker="UX BITES">
         <main className="min-h-[calc(100vh-4rem)] container mx-auto px-4 md:px-6 py-12 md:py-20">
           <header className="max-w-2xl mx-auto text-center mb-12 md:mb-16">
-            <div className="flex items-center justify-center gap-3 mb-5 font-bite-display text-[11px] uppercase tracking-[0.28em] bite-ink-soft">
+            {/* <div className="flex items-center justify-center gap-3 mb-5 font-bite-display text-[11px] uppercase tracking-[0.28em] bite-ink-soft">
               <span aria-hidden className="w-8 border-t bite-rule" />
               <span className="bite-accent">Issue 01 · Summer 2026</span>
               <span aria-hidden className="w-8 border-t bite-rule" />
-            </div>
+            </div> */}
             <h1 className="font-bite-display text-4xl md:text-6xl font-semibold tracking-tight mb-4">
               UX Bites
             </h1>
@@ -75,12 +75,18 @@ const UxBitesList: React.FC = () => {
                     <div
                       aria-hidden
                       className="absolute inset-x-6 top-6 bottom-0 rounded-3xl bg-[hsl(var(--bite-paper))] border bite-rule shadow-sm"
-                      style={{ transform: "translateY(20px) scale(0.95)", opacity: 0.5 }}
+                      style={{
+                        transform: "translateY(20px) scale(0.95)",
+                        opacity: 0.5,
+                      }}
                     />
                     <div
                       aria-hidden
                       className="absolute inset-x-3 top-3 bottom-0 rounded-3xl bg-[hsl(var(--bite-paper))] border bite-rule shadow-md"
-                      style={{ transform: "translateY(10px) scale(0.975)", opacity: 0.75 }}
+                      style={{
+                        transform: "translateY(10px) scale(0.975)",
+                        opacity: 0.75,
+                      }}
                     />
                   </>
                 )}
@@ -92,13 +98,23 @@ const UxBitesList: React.FC = () => {
                     initial={
                       reduced
                         ? { opacity: 0 }
-                        : { opacity: 0, x: direction * 80, rotate: direction * 4, scale: 0.95 }
+                        : {
+                            opacity: 0,
+                            x: direction * 80,
+                            rotate: direction * 4,
+                            scale: 0.95,
+                          }
                     }
                     animate={{ opacity: 1, x: 0, rotate: 0, scale: 1 }}
                     exit={
                       reduced
                         ? { opacity: 0 }
-                        : { opacity: 0, x: -direction * 80, rotate: -direction * 4, scale: 0.95 }
+                        : {
+                            opacity: 0,
+                            x: -direction * 80,
+                            rotate: -direction * 4,
+                            scale: 0.95,
+                          }
                     }
                     transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                     className="absolute inset-0"
@@ -111,13 +127,18 @@ const UxBitesList: React.FC = () => {
 
                       <div className="relative h-full p-8 md:p-10 flex flex-col">
                         <div className="flex items-center justify-between font-bite-display text-[10px] uppercase tracking-[0.28em] bite-ink-soft">
-                          <span className="bite-accent">No. {String(index + 1).padStart(2, "0")}</span>
+                          <span className="bite-accent">
+                            No. {String(index + 1).padStart(2, "0")}
+                          </span>
                           <span>
                             {current.date
-                              ? new Date(current.date).toLocaleDateString("en-US", {
-                                  year: "numeric",
-                                  month: "short",
-                                })
+                              ? new Date(current.date).toLocaleDateString(
+                                  "en-US",
+                                  {
+                                    year: "numeric",
+                                    month: "short",
+                                  },
+                                )
                               : ""}
                           </span>
                         </div>
@@ -165,7 +186,7 @@ const UxBitesList: React.FC = () => {
                   aria-label="Previous bite"
                   disabled={total < 2}
                   className={cn(
-                    "h-11 w-11 rounded-full border bite-rule bg-[hsl(var(--bite-paper))] flex items-center justify-center hover:border-[hsl(var(--bite-accent))] hover:text-[hsl(var(--bite-accent))] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    "h-11 w-11 rounded-full border bite-rule bg-[hsl(var(--bite-paper))] flex items-center justify-center hover:border-[hsl(var(--bite-accent))] hover:text-[hsl(var(--bite-accent))] transition-colors disabled:opacity-30 disabled:cursor-not-allowed",
                   )}
                 >
                   <ChevronLeft className="w-5 h-5" />
@@ -177,7 +198,9 @@ const UxBitesList: React.FC = () => {
                       key={i}
                       className={cn(
                         "h-1.5 rounded-full transition-all",
-                        i === index ? "bg-[hsl(var(--bite-accent))] w-6" : "bg-[hsl(var(--bite-rule))] w-1.5"
+                        i === index
+                          ? "bg-[hsl(var(--bite-accent))] w-6"
+                          : "bg-[hsl(var(--bite-rule))] w-1.5",
                       )}
                     />
                   ))}
@@ -188,7 +211,7 @@ const UxBitesList: React.FC = () => {
                   aria-label="Next bite"
                   disabled={total < 2}
                   className={cn(
-                    "h-11 w-11 rounded-full border bite-rule bg-[hsl(var(--bite-paper))] flex items-center justify-center hover:border-[hsl(var(--bite-accent))] hover:text-[hsl(var(--bite-accent))] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    "h-11 w-11 rounded-full border bite-rule bg-[hsl(var(--bite-paper))] flex items-center justify-center hover:border-[hsl(var(--bite-accent))] hover:text-[hsl(var(--bite-accent))] transition-colors disabled:opacity-30 disabled:cursor-not-allowed",
                   )}
                 >
                   <ChevronRight className="w-5 h-5" />

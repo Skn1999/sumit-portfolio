@@ -449,7 +449,6 @@ The following components read and respond to mode changes:
 
 - Used for page transitions (PageTransition component)
 - Hero animations (HeroSection, HeroWithSwirls)
-- Skill constellation animations (SkillConstellation)
 - Magnetic button effects (MagneticButton)
 
 **Animation Patterns:**
