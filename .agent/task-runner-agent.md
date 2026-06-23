@@ -51,7 +51,7 @@ Use `architecture.md` to understand how the app is wired, `tech-stack.md` to cho
 11. Manually inspect or reason through each acceptance criterion.
 12. Update `.agent/progress.md`.
 13. Update `.agent/learnings.md`.
-14. Do a sensible git commit of all the files changed in this specific task.
+14. Do a sensible git commit of all the files changed in this specific task and adding a brief commit message about what changes were about and which files were changed.
 15. Reply with a concise completion summary, changed files, tests run, and any remaining risk.
 
 ## Implementation Rules
