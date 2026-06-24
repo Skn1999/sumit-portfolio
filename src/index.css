@@ -911,3 +911,111 @@ html:has(.project-page-snap-container) {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ===== Cinematic Parallax Hero Zoom (Awwwards Style) ===== */
+.cinematic-hero-wrapper {
+  height: 48vh; /* Height of the scroll animation zone */
+  perspective: 1000px;
+}
+
+.cinematic-hero-sticky {
+  position: sticky;
+  top: 5.5rem; /* Below sticky navbar */
+  height: 40vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.cinematic-hero-inner {
+  width: 100%;
+  height: 100%;
+  max-width: 64rem; /* Initial max-width: max-w-5xl */
+  margin: 0 auto;
+  transition: border-radius 0.3s ease, max-width 0.3s ease, transform 0.3s ease;
+  will-change: transform, max-width, border-radius;
+}
+
+.cinematic-hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+  will-change: transform;
+}
+
+.cinematic-hero-overlay {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  will-change: opacity;
+}
+
+.cinematic-hero-caption {
+  transition: opacity 0.3s ease;
+  will-change: opacity;
+}
+
+/* Scroll-driven keyframe animations using native ScrollTimeline (root scroller) */
+@media (prefers-reduced-motion: no-preference) {
+  @supports ((animation-timeline: scroll()) and (animation-range: 0% 100%)) {
+    /* Scale and expand cinematic container as page is scrolled */
+    .cinematic-hero-inner {
+      animation: zoom-to-full-bleed auto linear forwards;
+      animation-timeline: scroll(root);
+      animation-range: 50px 350px;
+    }
+
+    /* Zoom image slightly in the opposite direction */
+    .cinematic-hero-image {
+      animation: zoom-image auto linear forwards;
+      animation-timeline: scroll(root);
+      animation-range: 50px 350px;
+    }
+
+    /* Fade in the gradient overlay to shadow the background */
+    .cinematic-hero-overlay {
+      animation: fade-overlay auto linear forwards;
+      animation-timeline: scroll(root);
+      animation-range: 50px 300px;
+    }
+    
+    /* Fade out the image caption as we scroll */
+    .cinematic-hero-caption {
+      animation: fade-out-caption auto linear forwards;
+      animation-timeline: scroll(root);
+      animation-range: 50px 180px;
+    }
+  }
+}
+
+@keyframes zoom-to-full-bleed {
+  to {
+    max-width: 100vw;
+    width: 100vw;
+    height: 65vh;
+    border-radius: 0;
+    border-color: transparent;
+    box-shadow: none;
+    transform: translateY(-80px); /* Center slightly higher to align with the back text */
+  }
+}
+
+@keyframes zoom-image {
+  to {
+    transform: scale(1.15);
+  }
+}
+
+@keyframes fade-overlay {
+  to {
+    opacity: 0.95;
+  }
+}
+
+@keyframes fade-out-caption {
+  to {
+    opacity: 0;
+  }
+}
