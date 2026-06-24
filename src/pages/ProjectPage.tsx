@@ -122,7 +122,7 @@ const ProjectPage: React.FC = () => {
         <TableOfContents />
 
         {/* Main Content Container */}
-        <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-20 bg-background rounded-t-[2.5rem] pt-12 shadow-[0_-15px_40px_-5px_rgba(0,0,0,0.03)] dark:shadow-[0_-25px_50px_-10px_rgba(0,0,0,0.45)]">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-20 bg-background rounded-t-[2.5rem] pt-12">
           <div className="py-4 md:py-8">
             <article
               className={`

@@ -699,18 +699,16 @@ All colors MUST be HSL.
 
 /* ===== Awwwards-winning individual project page typography & layout ===== */
 html:has(.project-page-snap-container) {
-  scroll-snap-type: y proximity;
   scroll-behavior: smooth;
 }
 
-/* Ensure the header is not overlapping when snapping */
+/* Ensure the header is not overlapping when scrolling */
 .project-page-snap-container .scroll-snap-item,
 .project-page-snap-container article > h2,
 .project-page-snap-container article > h3,
 .project-page-snap-container article > h4,
 .project-page-snap-container .case-study-split,
 .project-page-snap-container .impact-metric-banner {
-  scroll-snap-align: start;
   scroll-margin-top: 6.5rem;
 }
 
