@@ -38,7 +38,7 @@ This file is updated by AI agents after each task is attempted or completed. It 
 ### 2026-06-23 - tasks/task_003_update_optmyzr_mdx_structure.md
 
 - Status: Completed
-- Summary: Updated Optmyzr MDX to use metric and split-layout components, adding ImpactMetricBanner after Overview, wrapping The Problem text and image in CaseStudySplit, wrapping config-driven rendering explanation in CaseStudySplit, and converting dense result bullets into a more scannable layout.
+- Summary: Updated Optmyzr MDX to use metric and split-layout components, adding ImpactMetricBanner after Overview, wrapping Engineering & Architecture Decisions sections with CaseStudySplit for points with images and text, and removing CaseStudySplit from The Problem section to focus split layouts only on technical explanations. Extracted code block into collapsible "Sample Code Snippet" element and expanded CaseStudySplit width to accommodate 2-column layout.
 - Files changed: `src/content/projects/optmyzr-dashboard-migration/index.mdx`, `.agent/progress.md`, `.agent/learnings.md`
 - Tests run: `npm run build` passed; `npm run lint` failed on existing repo-wide lint errors outside the modified MDX file.
 - Acceptance criteria: Optmyzr page has a visible impact metric row directly after overview content; at least two sections use explicit text/media pairing; images remain accessible with meaningful alt text; the technical story remains accurate and complete; mobile layout stacks cleanly.
