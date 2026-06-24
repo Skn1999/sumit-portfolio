@@ -49,8 +49,8 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
 
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const startScroll = 50;
-      const endScroll = 500;
+      const startScroll = 0;
+      const endScroll = 550;
 
       // Calculate scroll fraction (0 to 1)
       const fraction = Math.min(1, Math.max(0, (scrollY - startScroll) / (endScroll - startScroll)));
@@ -58,7 +58,6 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
       const inner = document.querySelector(".cinematic-hero-inner") as HTMLElement;
       const img = document.querySelector(".cinematic-hero-image") as HTMLElement;
       const overlay = document.querySelector(".cinematic-hero-overlay") as HTMLElement;
-      const caption = document.querySelector(".cinematic-hero-caption") as HTMLElement;
 
       if (inner) {
         // Interpolate border radius: 16px (rounded-2xl) -> 0px
@@ -66,7 +65,7 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
         // Interpolate max-width: 64rem (1024px) -> window width
         const widthVal = fraction > 0.99 ? "100vw" : "100%";
         const maxWVal = fraction > 0.99 ? "100vw" : "64rem";
-        const transformY = -fraction * 80;
+        const transformY = -fraction * 60;
         // Interpolate height from sticky frame 65vh to full vertical height 90vh
         const heightVal = fraction > 0.99 ? "90vh" : `${65 + fraction * 25}vh`;
 
@@ -84,11 +83,7 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
       }
 
       if (overlay) {
-        overlay.style.opacity = `${fraction * 0.95}`;
-      }
-
-      if (caption) {
-        caption.style.opacity = `${1 - fraction}`;
+        overlay.style.opacity = `${0.15 + fraction * 0.8}`;
       }
     };
 
@@ -100,38 +95,58 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
   }, [project]);
 
   return (
-    <header className="relative overflow-hidden pt-14 md:pt-20 scroll-snap-item scroll-mt-0 pb-0">
-      {/* Centered content with padding */}
-      <div className="max-w-6xl mx-auto px-4 md:px-6 flex flex-col gap-10 md:gap-12 pb-8 md:pb-12">
+    <header className="relative overflow-hidden pt-14 md:pt-20 scroll-snap-item scroll-mt-0 pb-32 md:pb-48 min-h-[85vh]">
+      {/* 1. Background Cover Image: Sticky/Fixed underlay */}
+      {project.cover && (
+        <div className="absolute inset-0 cinematic-hero-wrapper pointer-events-none">
+          <div className="cinematic-hero-sticky">
+            <div className="overflow-hidden rounded-2xl border border-border/60 bg-muted/40 shadow-lg cinematic-hero-inner">
+              <ProjectImageAsset
+                src={`${project.slug}/${project.cover.filename}`}
+                alt={project.cover.alt || project.title}
+                className="w-full h-full object-cover cinematic-hero-image"
+                priority
+              />
+              {/* Dark base layer to ensure absolute legibility of light text in both modes */}
+              <div className="absolute inset-0 bg-black/15 dark:bg-black/40 pointer-events-none" />
+              {/* Premium gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/25 opacity-0 cinematic-hero-overlay pointer-events-none" />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 2. Foreground Content: Scrolls OVER the background cover image */}
+      <div className="relative z-20 max-w-6xl mx-auto px-4 md:px-6 flex flex-col gap-10 md:gap-12 pointer-events-auto">
         {/* Top: Staggered Fade & Slide Up Text */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center max-w-4xl mx-auto flex flex-col items-center"
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center max-w-4xl mx-auto flex flex-col items-center select-none"
         >
           {project.type && (
-            <p className="mb-5 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            <p className="mb-5 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground bg-background/80 px-3.5 py-1 rounded-full backdrop-blur-md border border-border/40 inline-block shadow-sm">
               {project.type === "engineering" ? "Engineering" : "Design"}
             </p>
           )}
-          <h1 className="heading-primary text-5xl font-extrabold leading-tight text-foreground md:text-6xl lg:text-7xl">
+          <h1 className="heading-primary text-5xl font-extrabold leading-tight text-foreground md:text-6xl lg:text-7xl drop-shadow-md select-text bg-background/15 dark:bg-background/5 px-4 py-2 rounded-2xl backdrop-blur-xs">
             {project.title}
           </h1>
           {project.tagline && (
-            <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground md:text-xl lg:text-2xl">
+            <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground md:text-xl lg:text-2xl drop-shadow-sm select-text bg-background/15 dark:bg-background/5 px-4 py-2 rounded-xl backdrop-blur-xs">
               {project.tagline}
             </p>
           )}
         </motion.div>
 
-        {/* Middle: Staggered Fade In Metadata */}
+        {/* Middle: Staggered Fade In Metadata with blur/semi-trans background */}
         {hasMetadata && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="rounded-2xl border border-border/60 bg-muted/30 p-5 md:p-6 max-w-5xl mx-auto w-full"
+            transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="rounded-2xl border border-border/60 bg-background/70 dark:bg-card/75 backdrop-blur-md p-5 md:p-6 max-w-5xl mx-auto w-full shadow-lg"
           >
             <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 text-left">
               {project.roles && project.roles.length > 0 && (
@@ -189,34 +204,6 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
           </motion.div>
         )}
       </div>
-
-      {/* Bottom: Cover Image with scroll zoom layout - OUTSIDE center container for true full-width bleed */}
-      {project.cover && (
-        <motion.figure
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full cinematic-hero-wrapper mt-4 scroll-snap-item scroll-mt-24"
-        >
-          <div className="cinematic-hero-sticky">
-            <div className="overflow-hidden rounded-2xl border border-border/60 bg-muted/40 shadow-lg cinematic-hero-inner">
-              <ProjectImageAsset
-                src={`${project.slug}/${project.cover.filename}`}
-                alt={project.cover.alt || project.title}
-                className="w-full h-full object-cover cinematic-hero-image"
-                priority
-              />
-              {/* Premium gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/20 opacity-0 cinematic-hero-overlay pointer-events-none" />
-            </div>
-          </div>
-          {project.cover.caption && (
-            <figcaption className="mt-4 text-sm italic text-muted-foreground text-center cinematic-hero-caption px-4">
-              {project.cover.caption}
-            </figcaption>
-          )}
-        </motion.figure>
-      )}
     </header>
   );
 };

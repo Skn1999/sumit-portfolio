@@ -912,14 +912,19 @@ html:has(.project-page-snap-container) {
 
 /* ===== Cinematic Parallax Hero Zoom (Awwwards Style) ===== */
 .cinematic-hero-wrapper {
-  height: 80vh; /* Large height for long scroll parallax zone */
+  position: absolute;
+  inset-x: 0;
+  top: 0;
+  height: 110vh; /* Scroll track depth */
   perspective: 1000px;
+  pointer-events: none;
+  z-index: 10;
 }
 
 .cinematic-hero-sticky {
   position: sticky;
-  top: 4.5rem; /* Sits higher to align well with viewport */
-  height: 65vh; /* Large height of the active image frame */
+  top: 0;
+  height: 80vh; /* Height of the viewport area occupied by the image */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -945,7 +950,7 @@ html:has(.project-page-snap-container) {
 }
 
 .cinematic-hero-overlay {
-  opacity: 0;
+  opacity: 0.15; /* subtle base overlay for shadow contrast */
   transition: opacity 0.3s ease;
   will-change: opacity;
 }
