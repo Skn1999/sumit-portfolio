@@ -36,48 +36,66 @@ import {
 
 ## Overview
 
-[cite_start]Optmyzr is a PPC management SaaS platform serving digital advertising agencies handling high-volume accounts across Google, Microsoft, and Amazon Ads[cite: 3]. [cite_start]As part of the Core team, I owned the frontend migration of the platform's two highest-traffic, data-dense applications: the **Account Dashboard** and the **PPC Comparison Tool**[cite: 4]. 
+Optmyzr is a PPC management SaaS platform serving digital advertising agencies handling high-volume accounts across Google, Microsoft, and Amazon Ads. As part of the Core team, I owned the frontend migration of the platform's two highest-traffic, data-dense applications: the **Account Dashboard** and the **PPC Comparison Tool**. 
 
-[cite_start]The mission was critical: eliminate a mounting mountain of technical debt and transition the system into a performant, modular architecture where supporting new ad networks required zero core code modifications[cite: 5].
+The mission was critical: eliminate a mounting mountain of technical debt and transition the system into a performant, modular architecture where supporting new ad networks required zero core code modifications.
 
 ---
 
 ## The Problem: Systemic UI Collapse under Enterprise Scale
 
-[cite_start]The original dashboard infrastructure relied on Backbone.js, manual jQuery DOM manipulation, and server-side templates[cite: 6]. [cite_start]When enterprise accounts pulled massive datasets from external ad APIs, the interface structurally buckled[cite: 7]:
+The original dashboard infrastructure relied on Backbone.js, manual jQuery DOM manipulation, and server-side templates. When enterprise accounts pulled massive datasets from external ad APIs, the interface structurally buckled:
 
-* [cite_start]**Severe Performance Deficit:** High-spend account dashboards took between **8 to 10 seconds** to reach an interactive state, severely damaging user retention[cite: 8].
-* [cite_start]**Cascade Re-rendering Loops:** Changing a single metric parameter or date range in one component triggered un-scoped DOM update loops across every single sibling widget on the page[cite: 9].
-* [cite_start]**Rigid Maintenance Blockers:** Adding a single new ad format (such as Amazon Ads) required manual engineering interventions across the entire base data layer, view controllers, and stylesheets[cite: 10].
-
-<ProjectImageAsset src="optmyzr-dashboard-migration/legacy-dashboard.svg" alt="Conceptual layout map showing how un-scoped jQuery state updates caused systemic page lag" />
+* **Severe Performance Deficit:** High-spend account dashboards took between **8 to 10 seconds** to reach an interactive state, severely damaging user retention.
+* **Cascade Re-rendering Loops:** Changing a single metric parameter or date range in one component triggered un-scoped DOM update loops across every single sibling widget on the page.
+* **Rigid Maintenance Blockers:** Adding a single new ad format (such as Amazon Ads) required manual engineering interventions across the entire base data layer, view controllers, and stylesheets.
 
 ---
 
 ## Engineering & Architecture Decisions
 
-[cite_start]Fixing these bottlenecks required decoupling our UI rendering orchestration from the underlying data source models[cite: 11]. I engineered the recovery through three targeted architectural shifts:
+Fixing these bottlenecks required decoupling our UI rendering orchestration from the underlying data source models. I engineered the recovery through three targeted architectural shifts:
 
 ### 1. Breaking the Reactivity Cascade via Scoped Redux Slices
-[cite_start]To halt global re-rendering loops across complex multi-widget interfaces, I established rigid data boundaries[cite: 12]:
 
-* [cite_start]**Domain State Isolation:** Segmented data pipelines into independent, localized Redux slices to prevent un-scoped global notifications from forcing sibling recalculations[cite: 12, 13].
-* [cite_start]**Memoized Selector Filters:** Configured components to subscribe exclusively to the granular dataset properties required for execution, dropping unneeded sibling evaluation passes to zero[cite: 14].
-* [cite_start]**Referential Stability:** Enforced strict rendering filters by wrapping UI modules in `React.memo` and securing downstream triggers with `useMemo` and `useCallback`[cite: 15].
+<CaseStudySplit>
+  <CaseStudyText>
+    To halt global re-rendering loops across complex multi-widget interfaces, I established rigid data boundaries:
 
-<ProjectImageAsset src="optmyzr-dashboard-migration/redux-isolation-barrier.png" alt="Redux State Isolation Barrier comparing global data collapse versus scoped slice filters" />
+    * **Domain State Isolation:** Segmented data pipelines into independent, localized Redux slices to prevent un-scoped global notifications from forcing sibling recalculations.
+    * **Memoized Selector Filters:** Configured components to subscribe exclusively to the granular dataset properties required for execution, dropping unneeded sibling evaluation passes to zero.
+    * **Referential Stability:** Enforced strict rendering filters by wrapping UI modules in `React.memo` and securing downstream triggers with `useMemo` and `useCallback`.
+  </CaseStudyText>
+  <CaseStudyMedia>
+    <ProjectImageAsset src="optmyzr-dashboard-migration/cascade.png" alt="Redux State Isolation Barrier comparing global data collapse versus scoped slice filters" />
+  </CaseStudyMedia>
+</CaseStudySplit>
 
 ### 2. Viewport-Driven Data Hydration
-[cite_start]Enterprise accounts regularly process hundreds of simultaneous metrics, warning matrices, and data layers[cite: 16]. [cite_start]Flooding the browser's main thread with this data instantly froze the UI tab[cite: 17]. 
+Enterprise accounts regularly process hundreds of simultaneous metrics, warning matrices, and data layers. Flooding the browser's main thread with this data instantly froze the UI tab. 
 
-[cite_start]I restructured the delivery flow into a progressive, asynchronous asset loading model[cite: 18]:
-1. [cite_start]The layout engine renders lightweight core frame skeletons immediately upon mounting[cite: 19].
-2. [cite_start]High-priority alert modules paint initial visible critical text chunks instantly[cite: 20].
-3. [cite_start]Heavy graphical plots, charts, and deep tabular data break downs defer calculations, running asynchronously only as their bounding containers break the viewport threshold[cite: 21].
-
+I restructured the delivery flow into a progressive, asynchronous asset loading model:
+1. The layout engine renders lightweight core frame skeletons immediately upon mounting.
+2. High-priority alert modules paint initial visible critical text chunks instantly.
+3. Heavy graphical plots, charts, and deep tabular data break downs defer calculations, running asynchronously only as their bounding containers break the viewport threshold.
 ### 3. Config-Driven Component Architecture
-[cite_start]To completely isolate interface layout variations from the underlying core application code, I designed a metadata-driven configuration factory that instantiates components dynamically at runtime based on strict JSON definitions[cite: 21].
 
+<CaseStudySplit className="max-w-[120ch]">
+  <CaseStudyText>
+    To completely isolate interface layout variations from the underlying core application code, I designed a metadata-driven configuration factory that instantiates components dynamically at runtime based on strict JSON definitions.
+
+    On app initialization, the route engine parses the account type directly from the application URL context. The core orchestrator fetches the corresponding metadata configuration matrix, iterates through the map objects, and instantiates components cleanly without touching the primary engineering base.
+  </CaseStudyText>
+  <CaseStudyMedia>
+    <ProjectImageAsset src="optmyzr-dashboard-migration/dynamic-widget-hydration.png" alt="Config-driven development workflow for dynamic widget instantiation and webpage hydration. Allows for flexible, maintainable UI composition as well as faster loads for the users." />
+  </CaseStudyMedia>
+</CaseStudySplit>
+
+<details className="not-prose my-8 rounded-xl border border-border bg-muted/50 p-5 md:p-6">
+  <summary className="cursor-pointer font-mono text-xs font-semibold uppercase tracking-wider text-primary">
+    Sample Code Snippet
+  </summary>
+  <div className="mt-4 text-sm leading-relaxed text-foreground md:text-base">
     ```typescript
     // Abstracted representation of the plug-and-render interface mapping
     import React from 'react';
@@ -89,20 +107,21 @@ import {
       props: Record<string, any>;
     }
 
-export const WidgetRenderer: React.FC<{ config: WidgetConfig[] }> = ({ config }) => {
-  return (
-    <>
-      {config.map(({ componentPath, props, title }) => {
-        const TargetWidget = widgetRegistry[componentPath];
-        if (!TargetWidget) return null;
-        
-        return <TargetWidget key={title} {...props} />;
-      })}
-    </>
-  );
-};
-```
-On app initialization, the route engine parses the account type directly from the application URL context. The core orchestrator fetches the corresponding metadata configuration matrix, iterates through the map objects, and instantiates components cleanly without touching the primary engineering base.  
+    export const WidgetRenderer: React.FC<{ config: WidgetConfig[] }> = ({ config }) => {
+      return (
+        <>
+          {config.map(({ componentPath, props, title }) => {
+            const TargetWidget = widgetRegistry[componentPath];
+            if (!TargetWidget) return null;
+            
+            return <TargetWidget key={title} {...props} />;
+          })}
+        </>
+      );
+    };
+    ```
+  </div>
+</details>
 
 ## Results & Product Impact
 
