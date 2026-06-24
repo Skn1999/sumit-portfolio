@@ -2,6 +2,7 @@ import React from "react";
 import { ProjectMeta } from "@/lib/projects";
 import { ProjectImageAsset } from "@/components/ui/project-image-asset";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface ProjectHeroProps {
   project: ProjectMeta;
@@ -19,9 +20,10 @@ const formatTimeline = (date?: string) => {
 const MetadataSection: React.FC<{
   label: string;
   children: React.ReactNode;
-}> = ({ label, children }) => (
-  <section className="border-t border-slate-200 pt-4 first:border-t-0 first:pt-0">
-    <h2 className="mb-2 font-mono text-[0.7rem] font-semibold uppercase tracking-wider text-slate-500">
+  className?: string;
+}> = ({ label, children, className }) => (
+  <section className={cn("flex flex-col gap-1", className)}>
+    <h2 className="mb-1 font-mono text-[0.7rem] font-semibold uppercase tracking-wider text-slate-500">
       {label}
     </h2>
     {children}
@@ -48,10 +50,13 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className={`grid gap-8 lg:gap-12 ${
-            project.cover ? "lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]" : ""
+            project.cover
+              ? "lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]"
+              : ""
           }`}
         >
-          <div className="flex flex-col justify-between gap-8">
+          {/* Left Column: Title & Tagline */}
+          <div className="flex flex-col justify-center">
             <div>
               {project.type && (
                 <p className="mb-5 font-mono text-xs font-semibold uppercase tracking-wider text-slate-500">
@@ -67,71 +72,9 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
                 </p>
               )}
             </div>
-
-            {hasMetadata && (
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 md:p-6">
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                  {project.roles && project.roles.length > 0 && (
-                    <MetadataSection label="Roles">
-                      <p className="text-sm font-medium leading-relaxed text-slate-900">
-                        {project.roles.join(", ")}
-                      </p>
-                    </MetadataSection>
-                  )}
-
-                  {timeline && (
-                    <MetadataSection label="Timeline">
-                      <p className="text-sm font-medium text-slate-900">
-                        {timeline}
-                      </p>
-                    </MetadataSection>
-                  )}
-
-                  {project.tech && project.tech.length > 0 && (
-                    <MetadataSection label="Implementation Stack">
-                      <div className="flex flex-wrap gap-2">
-                        {project.tech.map((tech) => (
-                          <span
-                            key={tech}
-                            className="rounded-md border border-slate-200 bg-white px-2 py-1 text-xs font-medium text-slate-700"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </MetadataSection>
-                  )}
-
-                  {project.metric && (
-                    <MetadataSection label="Metric">
-                      <p className="text-sm font-medium leading-relaxed text-slate-900">
-                        {project.metric}
-                      </p>
-                    </MetadataSection>
-                  )}
-
-                  {linkEntries.length > 0 && (
-                    <MetadataSection label="Links">
-                      <div className="flex flex-wrap gap-x-4 gap-y-2">
-                        {linkEntries.map(([key, url]) => (
-                          <a
-                            key={key}
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm font-medium text-primary hover:underline"
-                          >
-                            {key.charAt(0).toUpperCase() + key.slice(1)} →
-                          </a>
-                        ))}
-                      </div>
-                    </MetadataSection>
-                  )}
-                </div>
-              </div>
-            )}
           </div>
 
+          {/* Right Column: Cover Image */}
           {project.cover && (
             <figure className="lg:pt-10">
               <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
@@ -148,6 +91,77 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
                 </figcaption>
               )}
             </figure>
+          )}
+
+          {/* Full Width Row: Metadata */}
+          {hasMetadata && (
+            <div
+              className={`rounded-xl border border-slate-200 bg-slate-50 p-5 md:p-6 ${
+                project.cover ? "lg:col-span-2" : ""
+              }`}
+            >
+              <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {project.roles && project.roles.length > 0 && (
+                  <MetadataSection label="Roles">
+                    <p className="text-sm font-medium leading-relaxed text-slate-900">
+                      {project.roles.join(", ")}
+                    </p>
+                  </MetadataSection>
+                )}
+
+                {timeline && (
+                  <MetadataSection label="Timeline">
+                    <p className="text-sm font-medium text-slate-900">
+                      {timeline}
+                    </p>
+                  </MetadataSection>
+                )}
+
+                {project.tech && project.tech.length > 0 && (
+                  <MetadataSection
+                    label="Implementation Stack"
+                    className="lg:col-span-2"
+                  >
+                    <div className="flex flex-wrap gap-2">
+                      {project.tech.map((tech) => (
+                        <span
+                          key={tech}
+                          className="rounded-md border border-slate-200 bg-white px-2 py-1 text-xs font-medium text-slate-700"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </MetadataSection>
+                )}
+
+                {/* {project.metric && (
+                  <MetadataSection label="Metric">
+                    <p className="text-sm font-medium leading-relaxed text-slate-900">
+                      {project.metric}
+                    </p>
+                  </MetadataSection>
+                )} */}
+
+                {linkEntries.length > 0 && (
+                  <MetadataSection label="Links">
+                    <div className="flex flex-wrap gap-x-4 gap-y-2">
+                      {linkEntries.map(([key, url]) => (
+                        <a
+                          key={key}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm font-medium text-primary hover:underline"
+                        >
+                          {key.charAt(0).toUpperCase() + key.slice(1)} →
+                        </a>
+                      ))}
+                    </div>
+                  </MetadataSection>
+                )}
+              </div>
+            </div>
           )}
         </motion.div>
       </div>

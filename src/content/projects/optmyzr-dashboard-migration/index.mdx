@@ -12,7 +12,6 @@ tech:
   - "React"
   - "TypeScript"
   - "Redux Toolkit"
-  - "Firebase"
   - "Performance Engineering"
   - "Component Design"
 metric: "Dashboard load times reduced from 8-10s to <1s; zero core state changes required to support new ad platforms"
@@ -37,58 +36,47 @@ import {
 
 ## Overview
 
-Optmyzr is a PPC management SaaS platform serving digital advertising agencies handling high-volume accounts across Google, Microsoft, and Amazon Ads. As part of the Core team, I owned the frontend migration of the platform's two highest-traffic, data-dense applications, the **Account Dashboard** and the **PPC Comparison Tool**.
+[cite_start]Optmyzr is a PPC management SaaS platform serving digital advertising agencies handling high-volume accounts across Google, Microsoft, and Amazon Ads[cite: 3]. [cite_start]As part of the Core team, I owned the frontend migration of the platform's two highest-traffic, data-dense applications: the **Account Dashboard** and the **PPC Comparison Tool**[cite: 4]. 
 
-The goal was simple but mandatory: replace a high-debt, legacy tech stack with a performant architecture where adding support for new ad account types required zero core code changes.
-
-<ImpactMetricBanner>
-  <ImpactMetric value="<1s" label="Load Time" />
-  <ImpactMetric value="90%" label="Acceleration" />
-  <ImpactMetric value="0" label="Core Changes" />
-</ImpactMetricBanner>
+[cite_start]The mission was critical: eliminate a mounting mountain of technical debt and transition the system into a performant, modular architecture where supporting new ad networks required zero core code modifications[cite: 5].
 
 ---
 
-## The Problem
+## The Problem: Systemic UI Collapse under Enterprise Scale
 
-<CaseStudySplit>
-  <CaseStudyText>
-    The existing dashboard stack was built on Backbone.js with heavy jQuery orchestration and server-side templating. For enterprise accounts pulling massive datasets from external advertising APIs, the interface collapsed under its own weight. 
+[cite_start]The original dashboard infrastructure relied on Backbone.js, manual jQuery DOM manipulation, and server-side templates[cite: 6]. [cite_start]When enterprise accounts pulled massive datasets from external ad APIs, the interface structurally buckled[cite: 7]:
 
-    * **Severe Performance Deficit:** High-spend account dashboards took between **8 to 10 seconds** to become fully interactive, driving down user retention.
-    * **Cascade Re-rendering:** Changing parameters or timeline ranges within a single UI module triggered an un-scoped DOM updates loop across every sibling component on the page.
-    * **Rigid Scaling:** Adding a new ad network format (such as Amazon Ads) required manual modifications to the base data layer, view controllers, and styling layouts.
-  </CaseStudyText>
-  <CaseStudyMedia>
-    <ProjectImageAsset src="optmyzr-dashboard-migration/legacy-dashboard.svg" alt="Conceptual layout map showing how un-scoped jQuery state updates caused systemic page lag" />
-  </CaseStudyMedia>
-</CaseStudySplit>
+* [cite_start]**Severe Performance Deficit:** High-spend account dashboards took between **8 to 10 seconds** to reach an interactive state, severely damaging user retention[cite: 8].
+* [cite_start]**Cascade Re-rendering Loops:** Changing a single metric parameter or date range in one component triggered un-scoped DOM update loops across every single sibling widget on the page[cite: 9].
+* [cite_start]**Rigid Maintenance Blockers:** Adding a single new ad format (such as Amazon Ads) required manual engineering interventions across the entire base data layer, view controllers, and stylesheets[cite: 10].
+
+<ProjectImageAsset src="optmyzr-dashboard-migration/legacy-dashboard.svg" alt="Conceptual layout map showing how un-scoped jQuery state updates caused systemic page lag" />
 
 ---
 
 ## Engineering & Architecture Decisions
 
-Instead of a generic template rewrite, the solution required separating UI rendering orchestration from data source models through three foundational architectural adjustments.
+[cite_start]Fixing these bottlenecks required decoupling our UI rendering orchestration from the underlying data source models[cite: 11]. I engineered the recovery through three targeted architectural shifts:
 
-### 1. Domain State Isolation via Scoped Redux Slices
-To halt cascade re-rendering across complex multi-widget interfaces, I implemented a strict boundaries framework:
+### 1. Breaking the Reactivity Cascade via Scoped Redux Slices
+[cite_start]To halt global re-rendering loops across complex multi-widget interfaces, I established rigid data boundaries[cite: 12]:
 
-* **Slice Scoping:** Isolated separate data domains into dedicated Redux slices. Dashboard-wide data notifications were restricted to protect independent widget states.
-* **Memoized Selectors:** Components subscribed exclusively to the precise dataset property needed for execution, reducing unnecessary sibling evaluation passes to zero.
-* **Reference Stability:** Wrapped complex layout modules in `React.memo` and stabilized functional triggers using `useMemo` and `useCallback` to control referential equality leaks.
+* [cite_start]**Domain State Isolation:** Segmented data pipelines into independent, localized Redux slices to prevent un-scoped global notifications from forcing sibling recalculations[cite: 12, 13].
+* [cite_start]**Memoized Selector Filters:** Configured components to subscribe exclusively to the granular dataset properties required for execution, dropping unneeded sibling evaluation passes to zero[cite: 14].
+* [cite_start]**Referential Stability:** Enforced strict rendering filters by wrapping UI modules in `React.memo` and securing downstream triggers with `useMemo` and `useCallback`[cite: 15].
 
-### 2. Progressive, Viewport-Driven Data Hydration
-Enterprise clients routinely fetch hundreds of metric segments, warnings lists, and visualization nodes simultaneously. Flooding the browser main thread with this data instantly froze the tab view.
+<ProjectImageAsset src="optmyzr-dashboard-migration/redux-isolation-barrier.png" alt="Redux State Isolation Barrier comparing global data collapse versus scoped slice filters" />
 
-I restructured the layer into a progressive asset delivery model:
-1. Core frame skeletons render immediately on mount.
-2. High-priority alert structures paint initial visible text chunks immediately.
-3. Complex line charts and comprehensive metric breakdowns load background payloads asynchronously as their bounding containers enter the viewport.
+### 2. Viewport-Driven Data Hydration
+[cite_start]Enterprise accounts regularly process hundreds of simultaneous metrics, warning matrices, and data layers[cite: 16]. [cite_start]Flooding the browser's main thread with this data instantly froze the UI tab[cite: 17]. 
 
-### 3. Config-Driven Dynamic Rendering
-<CaseStudySplit>
-  <CaseStudyText>
-    To isolate layout generation from core feature code entirely, I designed a configuration engine that instantiates components dynamically based on structural JSON rules.
+[cite_start]I restructured the delivery flow into a progressive, asynchronous asset loading model[cite: 18]:
+1. [cite_start]The layout engine renders lightweight core frame skeletons immediately upon mounting[cite: 19].
+2. [cite_start]High-priority alert modules paint initial visible critical text chunks instantly[cite: 20].
+3. [cite_start]Heavy graphical plots, charts, and deep tabular data break downs defer calculations, running asynchronously only as their bounding containers break the viewport threshold[cite: 21].
+
+### 3. Config-Driven Component Architecture
+[cite_start]To completely isolate interface layout variations from the underlying core application code, I designed a metadata-driven configuration factory that instantiates components dynamically at runtime based on strict JSON definitions[cite: 21].
 
     ```typescript
     // Abstracted representation of the plug-and-render interface mapping
@@ -101,46 +89,29 @@ I restructured the layer into a progressive asset delivery model:
       props: Record<string, any>;
     }
 
-    export const WidgetRenderer: React.FC<{ config: WidgetConfig[] }> = ({ config }) => {
-      return (
-        <>
-          {config.map(({ componentPath, props, title }) => {
-            const TargetWidget = widgetRegistry[componentPath];
-            if (!TargetWidget) return null;
-            
-            return <TargetWidget key={title} {...props} />;
-          })}
-        </>
-      );
-    };
-    ```
+export const WidgetRenderer: React.FC<{ config: WidgetConfig[] }> = ({ config }) => {
+  return (
+    <>
+      {config.map(({ componentPath, props, title }) => {
+        const TargetWidget = widgetRegistry[componentPath];
+        if (!TargetWidget) return null;
+        
+        return <TargetWidget key={title} {...props} />;
+      })}
+    </>
+  );
+};
+```
+On app initialization, the route engine parses the account type directly from the application URL context. The core orchestrator fetches the corresponding metadata configuration matrix, iterates through the map objects, and instantiates components cleanly without touching the primary engineering base.  
 
-    On dashboard initialization, the account type is parsed dynamically from the application routing URL. The orchestrator fetches the mapped configuration map, loops through the metadata structure, and executes instantiation safely without core workflow intervention.
-  </CaseStudyText>
-  <CaseStudyMedia>
-    <ProjectImageAsset src="optmyzr-dashboard-migration/migrated-dashboard.jpg" alt="Migrated version of account dashboard optimised using React and redux. Image showcases different widgets like account summary, top performing campaigns and ad, alerts, and quick optimisations. There are more widgets shown below the fold in the image but are hidden." />
-  </CaseStudyMedia>
-</CaseStudySplit>
+## Results & Product Impact
 
-## Results & Impact
-
-<ImpactMetricBanner>
-  <ImpactMetric value="90%" label="Acceleration" />
-  <ImpactMetric value="0" label="Core Changes" />
-  <ImpactMetric value="100%" label="Blueprints" />
-  <ImpactMetric value="1" label="Session" />
-</ImpactMetricBanner>
-
-The migration delivered measurable business impact:
-
-* Core application load and time-to-interactive benchmarks dropped reliably to under 1 second, matching modern UX expectations.
-* New advertising network integrations migrated from a multi-day core development workflow to a basic configuration-authoring checklist.
-* The dynamic rendering structure was formally adopted by engineering leads as the reference codebase architecture blueprint for upcoming platform tools.
-* Engineering management invited me to lead a technical framework session teaching advanced React reconciliation mechanics and state isolation architecture to junior developers.
+- **90% Load Acceleration**: Core application initialization and Time-to-Interactive (TTI) dropped permanently to under 1 second.
+- **Zero-Engine Maintenance**: Integrating entirely new advertising platforms moved from an extensive, multi-day core feature rewrite to a fast, risk-free configuration-authoring checklist.  
+- **Reference System Blueprints**: The core dynamic configuration framework was adopted as the official reference architecture for all upcoming multi-account management tooling.  
 
 ## Implementation Stack
-**Languages & State**: React, TypeScript, Redux Toolkit, React.memo
 
-**Data & Core Integration**: Firebase Realtime Database, Google Ads API, Microsoft Advertising API
-
-**Engineering Tools**: Chrome DevTools (Performance Profiling), Webpack Setup Optimization
+Languages & Core State: React, TypeScript, Redux Toolkit, React.memo   
+Data Integration: Firebase Realtime Database, Google Ads API, Microsoft Advertising API   
+Profiling & Tooling: Chrome DevTools (Performance Profiling), Webpack Bundle Optimization   

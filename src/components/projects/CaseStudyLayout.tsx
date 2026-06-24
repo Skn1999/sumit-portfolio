@@ -37,6 +37,7 @@ export function ImpactMetricBanner({
     <section
       className={cn(
         "not-prose my-10 grid gap-4 rounded-xl border border-border bg-muted/50 p-5 sm:grid-cols-2 md:my-12 md:grid-cols-3 md:p-6",
+        "lg:w-[calc(100%+4rem)] lg:-mx-8 xl:w-[calc(100%+8rem)] xl:-mx-16 2xl:w-[calc(100%+12rem)] 2xl:-mx-24",
         className
       )}
       {...props}
@@ -86,6 +87,7 @@ export function CaseStudySplit({
     <section
       className={cn(
         "not-prose my-10 grid gap-6 md:my-12 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:items-start md:gap-8",
+        "lg:w-[calc(100%+4rem)] lg:-mx-8 xl:w-[calc(100%+8rem)] xl:-mx-16 2xl:w-[calc(100%+12rem)] 2xl:-mx-24",
         reverse &&
           "md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] [&>*:first-child]:md:order-2",
         className
