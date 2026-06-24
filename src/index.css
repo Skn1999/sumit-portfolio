@@ -914,14 +914,14 @@ html:has(.project-page-snap-container) {
 
 /* ===== Cinematic Parallax Hero Zoom (Awwwards Style) ===== */
 .cinematic-hero-wrapper {
-  height: 48vh; /* Height of the scroll animation zone */
+  height: 80vh; /* Large height for long scroll parallax zone */
   perspective: 1000px;
 }
 
 .cinematic-hero-sticky {
   position: sticky;
-  top: 5.5rem; /* Below sticky navbar */
-  height: 40vh;
+  top: 4.5rem; /* Sits higher to align well with viewport */
+  height: 65vh; /* Large height of the active image frame */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -933,8 +933,8 @@ html:has(.project-page-snap-container) {
   height: 100%;
   max-width: 64rem; /* Initial max-width: max-w-5xl */
   margin: 0 auto;
-  transition: border-radius 0.3s ease, max-width 0.3s ease, transform 0.3s ease;
-  will-change: transform, max-width, border-radius;
+  transition: border-radius 0.3s ease, max-width 0.3s ease, transform 0.3s ease, height 0.3s ease;
+  will-change: transform, max-width, border-radius, height;
 }
 
 .cinematic-hero-image {
@@ -964,28 +964,28 @@ html:has(.project-page-snap-container) {
     .cinematic-hero-inner {
       animation: zoom-to-full-bleed auto linear forwards;
       animation-timeline: scroll(root);
-      animation-range: 50px 350px;
+      animation-range: 50px 500px;
     }
 
     /* Zoom image slightly in the opposite direction */
     .cinematic-hero-image {
       animation: zoom-image auto linear forwards;
       animation-timeline: scroll(root);
-      animation-range: 50px 350px;
+      animation-range: 50px 500px;
     }
 
     /* Fade in the gradient overlay to shadow the background */
     .cinematic-hero-overlay {
       animation: fade-overlay auto linear forwards;
       animation-timeline: scroll(root);
-      animation-range: 50px 300px;
+      animation-range: 50px 450px;
     }
     
     /* Fade out the image caption as we scroll */
     .cinematic-hero-caption {
       animation: fade-out-caption auto linear forwards;
       animation-timeline: scroll(root);
-      animation-range: 50px 180px;
+      animation-range: 50px 220px;
     }
   }
 }
@@ -994,7 +994,7 @@ html:has(.project-page-snap-container) {
   to {
     max-width: 100vw;
     width: 100vw;
-    height: 65vh;
+    height: 90vh; /* Fill the entire viewport vertical height */
     border-radius: 0;
     border-color: transparent;
     box-shadow: none;
