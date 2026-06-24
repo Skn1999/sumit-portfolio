@@ -36,7 +36,7 @@ export function ImpactMetricBanner({
   return (
     <section
       className={cn(
-        "not-prose my-10 grid gap-4 rounded-xl border border-border bg-muted/50 p-5 sm:grid-cols-2 md:my-12 md:grid-cols-3 md:p-6",
+        "not-prose my-10 grid gap-4 rounded-2xl border border-border bg-muted/50 p-5 sm:grid-cols-2 md:my-12 md:grid-cols-3 md:p-6 scroll-snap-item",
         "lg:w-[calc(100%+4rem)] lg:-mx-8 xl:w-[calc(100%+8rem)] xl:-mx-16 2xl:w-[calc(100%+12rem)] 2xl:-mx-24",
         className
       )}
@@ -57,7 +57,7 @@ export function ImpactMetric({
   return (
     <div
       className={cn(
-        "rounded-lg border border-border bg-background p-4",
+        "rounded-xl border border-border bg-background p-4",
         className
       )}
       {...props}
@@ -86,7 +86,7 @@ export function CaseStudySplit({
   return (
     <section
       className={cn(
-        "not-prose my-10 grid gap-6 md:my-12 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:items-start md:gap-8",
+        "not-prose my-10 grid gap-6 md:my-12 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:items-start md:gap-8 scroll-snap-item",
         "lg:w-[calc(100%+4rem)] lg:-mx-8 xl:w-[calc(100%+8rem)] xl:-mx-16 2xl:w-[calc(100%+12rem)] 2xl:-mx-24",
         reverse &&
           "md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] [&>*:first-child]:md:order-2",
@@ -125,12 +125,12 @@ export function CaseStudyMedia({
   return (
     <figure
       className={cn(
-        "not-prose overflow-hidden rounded-xl border border-border bg-muted/50 p-3",
+        "not-prose overflow-hidden rounded-2xl border border-border bg-muted/50 p-3 scroll-snap-item",
         className
       )}
       {...props}
     >
-      <div className="overflow-hidden rounded-lg bg-background">{children}</div>
+      <div className="overflow-hidden rounded-xl bg-background">{children}</div>
     </figure>
   );
 }
@@ -144,7 +144,7 @@ export function EngineeringCallout({
   return (
     <aside
       className={cn(
-        "not-prose my-8 rounded-xl border border-border bg-muted/50 p-5 md:p-6",
+        "not-prose my-8 rounded-2xl border border-border bg-muted/50 p-5 md:p-6 scroll-snap-item",
         className
       )}
       {...props}

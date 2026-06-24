@@ -43,3 +43,12 @@ This file is updated by AI agents after each task is attempted or completed. It 
 - Tests run: `npm run build` passed; `npm run lint` failed on existing repo-wide lint errors outside the modified MDX file.
 - Acceptance criteria: Optmyzr page has a visible impact metric row directly after overview content; at least two sections use explicit text/media pairing; images remain accessible with meaningful alt text; the technical story remains accurate and complete; mobile layout stacks cleanly.
 - Follow-ups / risks: None identified. The changes are scoped to the Optmyzr project only and maintain backward compatibility with the existing MDX content loading pattern.
+
+### 2026-06-24 - tasks/task_004_refine_project_article_typography.md
+
+- Status: Completed
+- Summary: Implemented an Awwwards-winning cinematic aesthetic on individual project pages. Added section scroll snapping (y proximity), slow smooth scroll transitions, native viewport entrance/reveal animations (using CSS view() timeline) with an IntersectionObserver fallback for unsupported browsers. Centralized editorial typography customizations for headers (h2-h4 font-extrabold with dramatic margins/sizes), blockquotes (no border, rounded cards with custom padding and mode-aware card bg), pre-blocks, inline code tags, lists, and links inside `index.css`. Upgraded component layouts to use soft rounded corners (`rounded-2xl`).
+- Files changed: `src/components/projects/CaseStudyLayout.tsx`, `src/components/projects/ProjectFooter.tsx`, `src/components/projects/ProjectHero.tsx`, `src/index.css`, `src/pages/ProjectPage.tsx`
+- Tests run: ESLint checks passed on modified files (`./node_modules/.bin/eslint`); full project build successfully passed (`npm run build`).
+- Acceptance criteria: All criteria met including bold typography hierarchy, scroll snapping, viewport scroll reveal animations, soft rounded corners, generous whitespace, customized blockquotes, pre, and inline code formatting.
+- Follow-ups / risks: The IntersectionObserver handles viewport anim trigger on scroll for Firefox/older browsers; since scroll timelines are native and composed in Chrome and Safari, it is highly performant. Snapping is set to proximity to avoid blocking users on longer case study content, which is a great UX choice.

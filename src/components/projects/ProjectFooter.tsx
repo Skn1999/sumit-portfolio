@@ -25,7 +25,7 @@ export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
       : null;
 
   return (
-    <footer className="pt-12 md:pt-24 pb-12 md:pb-16 max-w-7xl mx-auto">
+    <footer className="pt-12 md:pt-24 pb-12 md:pb-16 max-w-7xl mx-auto scroll-snap-item scroll-mt-24">
       {/* Links Section */}
       {project.links && Object.keys(project.links).length > 0 && (
         <motion.div

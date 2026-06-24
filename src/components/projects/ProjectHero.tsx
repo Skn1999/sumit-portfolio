@@ -43,7 +43,7 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
     linkEntries.length > 0;
 
   return (
-    <header className="relative overflow-hidden px-4 pb-12 pt-14 md:px-6 md:pb-16 md:pt-20">
+    <header className="relative overflow-hidden px-4 pb-12 pt-14 md:px-6 md:pb-16 md:pt-20 scroll-snap-item scroll-mt-0">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -77,7 +77,7 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
           {/* Right Column: Cover Image */}
           {project.cover && (
             <figure className="lg:pt-10">
-              <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+              <div className="overflow-hidden rounded-2xl border border-border/60 bg-muted/40 shadow-sm">
                 <ProjectImageAsset
                   src={`${project.slug}/${project.cover.filename}`}
                   alt={project.cover.alt || project.title}
@@ -96,14 +96,14 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
           {/* Full Width Row: Metadata */}
           {hasMetadata && (
             <div
-              className={`rounded-xl border border-slate-200 bg-slate-50 p-5 md:p-6 ${
+              className={`rounded-2xl border border-border/60 bg-muted/30 p-5 md:p-6 ${
                 project.cover ? "lg:col-span-2" : ""
               }`}
             >
               <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {project.roles && project.roles.length > 0 && (
                   <MetadataSection label="Roles">
-                    <p className="text-sm font-medium leading-relaxed text-slate-900">
+                    <p className="text-sm font-medium leading-relaxed text-foreground">
                       {project.roles.join(", ")}
                     </p>
                   </MetadataSection>
@@ -111,7 +111,7 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
 
                 {timeline && (
                   <MetadataSection label="Timeline">
-                    <p className="text-sm font-medium text-slate-900">
+                    <p className="text-sm font-medium text-foreground">
                       {timeline}
                     </p>
                   </MetadataSection>
@@ -126,7 +126,7 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
                       {project.tech.map((tech) => (
                         <span
                           key={tech}
-                          className="rounded-md border border-slate-200 bg-white px-2 py-1 text-xs font-medium text-slate-700"
+                          className="rounded-lg border border-border/60 bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground"
                         >
                           {tech}
                         </span>
