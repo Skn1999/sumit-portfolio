@@ -57,3 +57,11 @@ This file is updated by AI agents after each task is attempted or completed. It 
 - Resolution: Implemented standard HSL color tokens and custom utility typography classes smoothly, verifying that the entire suite compiles correctly.
 - Future instruction: Always design brand color variations for dark mode with explicit relative luminance checks, aiming for at least 4.5:1 contrast against the background canvas.
 
+### 2026-06-25 - tasks/task_007_homepage_hero_block.md
+
+- Lessons learned: Simplification of visual features (dropping complex grids, sliders, branching mode checks) yields a highly optimized and performant hero section that shifts structural focus cleanly onto editorial typography and messaging. Minimizing unnecessary hook state and assets makes rendering robust across all viewports.
+- Errors or surprises: None.
+- Resolution: Overwrote `src/components/HeroSection.tsx` with a single high-contrast typography design, completely cleaning up unused imports, hooks, and local variables.
+- Future instruction: When refactoring highly interactive layouts into minimalist editorial blocks, proactively clean up unused hooks, imports, and variables to keep code clean and lint-free.
+
+
