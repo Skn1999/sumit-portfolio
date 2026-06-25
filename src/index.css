@@ -931,6 +931,12 @@ html:has(.project-page-snap-container) {
   overflow-x: auto !important;
 }
 
+/* Fallback for pre elements in not-prose containers */
+pre {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+}
+
 /* Lists styling */
 .prose ul,
 .prose ol {

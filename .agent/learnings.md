@@ -42,3 +42,10 @@ This file is updated by AI agents after each task is attempted or completed. It 
 - Errors or surprises: Encountered a react-hooks/rules-of-hooks error because the `useEffect` hook in `ProjectPage.tsx` was placed after an early `if (!project)` return.
 - Resolution: Moved the `useEffect` hook above the early return and added a simple `if (!project) return;` guard check inside the hook callback.
 - Future instruction: Always place React hooks at the very top level of a component before any early returns, adding conditional guards inside the hook bodies if necessary.
+
+### 2026-06-25 - tasks/task_005_verify_project_layout_responsiveness.md
+
+- Lessons learned: MDX details panels using `not-prose` bypass standard Tailwind Typography styling, which can cause internal `<pre>` blocks to overflow on mobile if generic responsive CSS rules aren't applied. Also, hardcoded column grids (e.g. `grid-cols-3` in HTML/JSX tags inside MDX) must have responsive viewport prefixes (like `md:grid-cols-3`) to prevent horizontal layout squishing on mobile.
+- Errors or surprises: PostCSS build compilation failed when using Tailwind-specific utility class name `max-w-full` directly inside raw CSS (`src/index.css`) rather than standard CSS property `max-width: 100%`.
+- Resolution: Corrected the invalid CSS rule in `src/index.css` to use `max-width: 100%`.
+- Future instruction: Never use Tailwind-specific utility shorthand class names (like `max-w-full`, `h-auto`) as raw property names inside plain CSS files; always write standard CSS properties (e.g. `max-width: 100%`, `height: auto`).
