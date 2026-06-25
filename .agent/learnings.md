@@ -49,3 +49,11 @@ This file is updated by AI agents after each task is attempted or completed. It 
 - Errors or surprises: PostCSS build compilation failed when using Tailwind-specific utility class name `max-w-full` directly inside raw CSS (`src/index.css`) rather than standard CSS property `max-width: 100%`.
 - Resolution: Corrected the invalid CSS rule in `src/index.css` to use `max-width: 100%`.
 - Future instruction: Never use Tailwind-specific utility shorthand class names (like `max-w-full`, `h-auto`) as raw property names inside plain CSS files; always write standard CSS properties (e.g. `max-width: 100%`, `height: auto`).
+
+### 2026-06-25 - tasks/task_006_homepage_visual_identity_and_tokens.md
+
+- Lessons learned: Preserving backwards-compatibility for dual-mode layouts during styling refactoring is best achieved by mapping the mode-dependent CSS variables (e.g. `--engineer-*` and `--designer-*`) directly to the new unified brand tokens (Deep Purple). For dark mode contrast ratios, brand colors should have adjusted luminosity levels (e.g. shifting `hsl(270, 90%, 50%)` to `hsl(270, 90%, 65%)`) to satisfy the 4.5:1 WCAG requirement on dark backgrounds.
+- Errors or surprises: None.
+- Resolution: Implemented standard HSL color tokens and custom utility typography classes smoothly, verifying that the entire suite compiles correctly.
+- Future instruction: Always design brand color variations for dark mode with explicit relative luminance checks, aiming for at least 4.5:1 contrast against the background canvas.
+

@@ -61,3 +61,13 @@ This file is updated by AI agents after each task is attempted or completed. It 
 - Tests run: ESLint checks passed on modified files (`./node_modules/.bin/eslint`); full project build successfully passed (`npm run build`).
 - Acceptance criteria: All layout responsiveness checkpoints, image scaling, grids, touch targets, and compilation checks were verified and fully met.
 - Follow-ups / risks: None identified; responsive adjustments are locally scoped and backwards-compatible.
+
+### 2026-06-25 - tasks/task_006_homepage_visual_identity_and_tokens.md
+
+- Status: Completed
+- Summary: Defined a unified editorial visual system and design system color/typography tokens. Created variables for Pure White background canvas, Slate Charcoal text/headings, Ceramic Off-White layering/framing surfaces, and an ultra-saturated Deep Purple primary/accent brand identity. Converted dark mode to utilize Ceramic/Off-White for text on a warm charcoal background, adjusting the Deep Purple intensity to ensure >= 4.5:1 contrast. Added display/label/body-narrative font mappings in `tailwind.config.ts` and custom utility classes in `src/index.css`.
+- Files changed: `src/index.css`, `tailwind.config.ts`, `.agent/progress.md`
+- Tests run: `npm run build` compiled successfully. `npx eslint tailwind.config.ts` passed.
+- Acceptance criteria: Centralized HSL color tokens defined, dark mode equivalent defined with correct contrast, custom typography utilities added, and build compiled successfully.
+- Follow-ups / risks: The contextual ModeProvider still exists in components, but its style values now fall back to the unified Deep Purple palette.
+
