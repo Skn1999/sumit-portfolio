@@ -62,8 +62,15 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
       if (inner) {
         // Interpolate border radius: 16px (rounded-2xl) -> 0px
         const radius = 16 - fraction * 16;
-        // Interpolate max-width: 64rem (1024px) -> window width
-        const widthVal = fraction > 0.99 ? "100vw" : "100%";
+        // Interpolate width: (window width minus padding) -> window width
+        const widthVal = (() => {
+          if (fraction > 0.99) return "100vw";
+          const w = window.innerWidth;
+          const pad = w < 768 ? 32 : w < 1024 ? 48 : 0;
+          const initialWidth = w - pad;
+          const currentWidth = initialWidth + fraction * pad;
+          return `${currentWidth}px`;
+        })();
         const maxWVal = fraction > 0.99 ? "100vw" : "64rem";
         const transformY = -fraction * 60;
         // Keep height at 50vh (do not exceed half of the viewport height)
@@ -128,11 +135,11 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
               {project.type === "engineering" ? "Engineering" : "Design"}
             </p>
           )}
-          <h1 className="heading-primary text-5xl font-extrabold leading-tight text-foreground md:text-6xl lg:text-7xl drop-shadow-md select-text bg-background/15 dark:bg-background/5 px-4 py-2 rounded-2xl backdrop-blur-xs">
+          <h1 className="heading-primary text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-tight text-foreground drop-shadow-md select-text bg-background/15 dark:bg-background/5 px-4 py-2 rounded-2xl backdrop-blur-xs">
             {project.title}
           </h1>
           {project.tagline && (
-            <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground md:text-xl lg:text-2xl drop-shadow-sm select-text bg-background/15 dark:bg-background/5 px-4 py-2 rounded-xl backdrop-blur-xs">
+            <p className="mt-6 max-w-3xl text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl leading-relaxed text-muted-foreground drop-shadow-sm select-text bg-background/15 dark:bg-background/5 px-4 py-2 rounded-xl backdrop-blur-xs">
               {project.tagline}
             </p>
           )}

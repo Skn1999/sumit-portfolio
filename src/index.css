@@ -931,6 +931,12 @@ html:has(.project-page-snap-container) {
   overflow-x: auto !important;
 }
 
+/* Fallback for pre elements in not-prose containers */
+pre {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+}
+
 /* Lists styling */
 .prose ul,
 .prose ol {
@@ -1006,7 +1012,7 @@ html:has(.project-page-snap-container) {
 }
 
 .cinematic-hero-inner {
-  width: 100%;
+  width: calc(100% - 2rem); /* 1rem (16px) margin on left and right on mobile */
   height: 100%;
   max-width: 64rem; /* Initial max-width: max-w-5xl */
   margin: 0 auto;
@@ -1016,6 +1022,18 @@ html:has(.project-page-snap-container) {
     transform 0.3s ease,
     height 0.3s ease;
   will-change: transform, max-width, border-radius, height;
+}
+
+@media (min-width: 768px) {
+  .cinematic-hero-inner {
+    width: calc(100% - 3rem); /* 1.5rem (24px) margin on left and right on tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  .cinematic-hero-inner {
+    width: 100%;
+  }
 }
 
 .cinematic-hero-image {
