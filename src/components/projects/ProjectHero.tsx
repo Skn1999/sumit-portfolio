@@ -95,29 +95,27 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
   }, [project]);
 
   return (
-    <header className="relative overflow-hidden pt-14 md:pt-20 scroll-snap-item scroll-mt-0 pb-32 md:pb-48 min-h-[85vh]">
-      {/* 1. Background Cover Image: Sticky/Fixed underlay */}
+    <header className="relative w-full overflow-hidden">
+      {/* 1. Cover Image: Sticky flow underlay */}
       {project.cover && (
-        <div className="absolute inset-0 cinematic-hero-wrapper pointer-events-none">
-          <div className="cinematic-hero-sticky">
-            <div className="overflow-hidden rounded-2xl border border-border/60 bg-muted/40 shadow-lg cinematic-hero-inner">
-              <ProjectImageAsset
-                src={`${project.slug}/${project.cover.filename}`}
-                alt={project.cover.alt || project.title}
-                className="w-full h-full object-cover cinematic-hero-image"
-                priority
-              />
-              {/* Dark base layer to ensure absolute legibility of light text in both modes */}
-              <div className="absolute inset-0 bg-black/15 dark:bg-black/40 pointer-events-none" />
-              {/* Premium gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/25 opacity-0 cinematic-hero-overlay pointer-events-none" />
-            </div>
+        <div className="cinematic-hero-wrapper pointer-events-none">
+          <div className="overflow-hidden rounded-2xl border border-border/60 bg-muted/40 shadow-lg cinematic-hero-inner">
+            <ProjectImageAsset
+              src={`${project.slug}/${project.cover.filename}`}
+              alt={project.cover.alt || project.title}
+              className="w-full h-full object-cover cinematic-hero-image"
+              priority
+            />
+            {/* Dark base layer to ensure absolute legibility of light text in both modes */}
+            <div className="absolute inset-0 bg-black/15 dark:bg-black/40 pointer-events-none" />
+            {/* Premium gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/25 opacity-0 cinematic-hero-overlay pointer-events-none" />
           </div>
         </div>
       )}
 
-      {/* 2. Foreground Content: Scrolls OVER the background cover image */}
-      <div className="relative z-20 max-w-6xl mx-auto px-4 md:px-6 flex flex-col gap-10 md:gap-12 pointer-events-auto">
+      {/* 2. Foreground Content: Sit below cover image on page load, scrolls OVER it on scroll */}
+      <div className="relative z-20 max-w-6xl mx-auto px-4 md:px-6 pt-16 pb-20 flex flex-col gap-10 md:gap-12 pointer-events-auto bg-transparent text-foreground">
         {/* Top: Staggered Fade & Slide Up Text */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
