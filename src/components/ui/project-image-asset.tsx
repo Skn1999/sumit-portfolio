@@ -6,6 +6,11 @@ interface ProjectImageAssetProps {
   alt: string;
   className?: string;
   priority?: boolean;
+  /**
+   * Optional cap on rendered image width. Number → px, string passed through
+   * (e.g. "720px", "48rem"). When set, the image is centered within its column.
+   */
+  maxWidth?: number | string;
 }
 
 /**
@@ -16,6 +21,7 @@ export const ProjectImageAsset = memo(function ProjectImageAsset({
   alt,
   className,
   priority = false,
+  maxWidth,
 }: ProjectImageAssetProps) {
   const imageUrl = useMemo(() => {
     try {
@@ -28,16 +34,29 @@ export const ProjectImageAsset = memo(function ProjectImageAsset({
     }
   }, [src]);
 
+  const style =
+    maxWidth !== undefined
+      ? { maxWidth: typeof maxWidth === "number" ? `${maxWidth}px` : maxWidth, width: "100%" }
+      : undefined;
+  const centerClass = maxWidth !== undefined ? "mx-auto block" : undefined;
+
   if (!imageUrl) {
     // Return empty div with same dimensions to prevent layout shift
-    return <div className={cn("bg-muted", className)} aria-hidden="true" />;
+    return (
+      <div
+        className={cn("bg-muted", centerClass, className)}
+        style={style}
+        aria-hidden="true"
+      />
+    );
   }
 
   return (
     <img
       src={imageUrl}
       alt={alt}
-      className={className}
+      className={cn(centerClass, className)}
+      style={style}
       loading={priority ? "eager" : "lazy"}
     />
   );
