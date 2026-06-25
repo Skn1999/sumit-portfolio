@@ -35,3 +35,10 @@ This file is updated by AI agents after each task is attempted or completed. It 
 - Errors or surprises: None encountered. The MDX compilation and build process handled the new component imports smoothly.
 - Resolution: Successfully imported all required CaseStudyLayout components and structured the MDX content to use them effectively, maintaining the technical accuracy while improving scannability. Applied split layouts selectively to Engineering & Architecture Decisions sections only. Extracted code block into collapsible "Sample Code Snippet" element and expanded CaseStudySplit width to accommodate 2-column layout.
 - Future instruction: Use CaseStudySplit for technical explanations that benefit from text/media pairing, and ImpactMetricBanner for key metrics that should stand out from the main content flow. Don't apply split layouts to every section - use them selectively where they add value. Extract code examples into collapsible elements to keep the main flow clean and focused.
+
+### 2026-06-24 - tasks/task_004_refine_project_article_typography.md
+
+- Lessons learned: Native CSS scroll timelines (`animation-timeline: view()`) are highly performant and can be applied elegantly inside CSS without touching MDX templates, but an IntersectionObserver fallback is required for Firefox/older browsers. Additionally, setting up scroll-snapping on a long-form article page requires `scroll-snap-type: y proximity` (instead of `mandatory`) to prevent layout lockouts where sections are taller than the user's viewport.
+- Errors or surprises: Encountered a react-hooks/rules-of-hooks error because the `useEffect` hook in `ProjectPage.tsx` was placed after an early `if (!project)` return.
+- Resolution: Moved the `useEffect` hook above the early return and added a simple `if (!project) return;` guard check inside the hook callback.
+- Future instruction: Always place React hooks at the very top level of a component before any early returns, adding conditional guards inside the hook bodies if necessary.

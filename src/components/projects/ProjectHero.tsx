@@ -42,128 +42,165 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
     Boolean(timeline) ||
     linkEntries.length > 0;
 
+  React.useEffect(() => {
+    if (!project.cover || CSS.supports("animation-timeline: scroll()")) {
+      return;
+    }
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const startScroll = 0;
+      const endScroll = 550;
+
+      // Calculate scroll fraction (0 to 1)
+      const fraction = Math.min(1, Math.max(0, (scrollY - startScroll) / (endScroll - startScroll)));
+
+      const inner = document.querySelector(".cinematic-hero-inner") as HTMLElement;
+      const img = document.querySelector(".cinematic-hero-image") as HTMLElement;
+      const overlay = document.querySelector(".cinematic-hero-overlay") as HTMLElement;
+
+      if (inner) {
+        // Interpolate border radius: 16px (rounded-2xl) -> 0px
+        const radius = 16 - fraction * 16;
+        // Interpolate max-width: 64rem (1024px) -> window width
+        const widthVal = fraction > 0.99 ? "100vw" : "100%";
+        const maxWVal = fraction > 0.99 ? "100vw" : "64rem";
+        const transformY = -fraction * 60;
+        // Keep height at 50vh (do not exceed half of the viewport height)
+        const heightVal = "50vh";
+
+        inner.style.borderRadius = `${radius}px`;
+        inner.style.width = widthVal;
+        inner.style.maxWidth = maxWVal;
+        inner.style.height = heightVal;
+        inner.style.transform = `translateY(${transformY}px)`;
+      }
+
+      if (img) {
+        // Interpolate scale: 1.05 -> 1.15
+        const scale = 1.05 + fraction * 0.1;
+        img.style.transform = `scale(${scale})`;
+      }
+
+      if (overlay) {
+        overlay.style.opacity = `${0.15 + fraction * 0.8}`;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    // Run once on load to establish correct states if page is already scrolled
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [project]);
+
   return (
-    <header className="relative overflow-hidden px-4 pb-12 pt-14 md:px-6 md:pb-16 md:pt-20">
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className={`grid gap-8 lg:gap-12 ${
-            project.cover
-              ? "lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]"
-              : ""
-          }`}
-        >
-          {/* Left Column: Title & Tagline */}
-          <div className="flex flex-col justify-center">
-            <div>
-              {project.type && (
-                <p className="mb-5 font-mono text-xs font-semibold uppercase tracking-wider text-slate-500">
-                  {project.type === "engineering" ? "Engineering" : "Design"}
-                </p>
-              )}
-              <h1 className="heading-primary max-w-4xl text-4xl font-bold leading-tight text-foreground md:text-5xl lg:text-6xl">
-                {project.title}
-              </h1>
-              {project.tagline && (
-                <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
-                  {project.tagline}
-                </p>
-              )}
-            </div>
+    <header className="relative w-full overflow-hidden">
+      {/* 1. Cover Image: Sticky flow underlay */}
+      {project.cover && (
+        <div className="cinematic-hero-wrapper pointer-events-none">
+          <div className="overflow-hidden rounded-2xl border border-border/60 bg-muted/40 shadow-lg cinematic-hero-inner">
+            <ProjectImageAsset
+              src={`${project.slug}/${project.cover.filename}`}
+              alt={project.cover.alt || project.title}
+              className="w-full h-full object-cover cinematic-hero-image"
+              priority
+            />
+            {/* Dark base layer to ensure absolute legibility of light text in both modes */}
+            <div className="absolute inset-0 bg-black/15 dark:bg-black/40 pointer-events-none" />
+            {/* Premium gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/25 opacity-0 cinematic-hero-overlay pointer-events-none" />
           </div>
+        </div>
+      )}
 
-          {/* Right Column: Cover Image */}
-          {project.cover && (
-            <figure className="lg:pt-10">
-              <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
-                <ProjectImageAsset
-                  src={`${project.slug}/${project.cover.filename}`}
-                  alt={project.cover.alt || project.title}
-                  className="aspect-[4/3] w-full object-cover"
-                  priority
-                />
-              </div>
-              {project.cover.caption && (
-                <figcaption className="mt-3 text-sm italic text-muted-foreground">
-                  {project.cover.caption}
-                </figcaption>
-              )}
-            </figure>
+      {/* 2. Foreground Content: Sit below cover image on page load, scrolls OVER it on scroll */}
+      <div className="relative z-20 max-w-6xl mx-auto px-4 md:px-6 pt-16 pb-20 flex flex-col gap-10 md:gap-12 pointer-events-auto bg-transparent text-foreground">
+        {/* Top: Staggered Fade & Slide Up Text */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center max-w-4xl mx-auto flex flex-col items-center select-none"
+        >
+          {project.type && (
+            <p className="mb-5 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground bg-background/80 px-3.5 py-1 rounded-full backdrop-blur-md border border-border/40 inline-block shadow-sm">
+              {project.type === "engineering" ? "Engineering" : "Design"}
+            </p>
           )}
-
-          {/* Full Width Row: Metadata */}
-          {hasMetadata && (
-            <div
-              className={`rounded-xl border border-slate-200 bg-slate-50 p-5 md:p-6 ${
-                project.cover ? "lg:col-span-2" : ""
-              }`}
-            >
-              <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {project.roles && project.roles.length > 0 && (
-                  <MetadataSection label="Roles">
-                    <p className="text-sm font-medium leading-relaxed text-slate-900">
-                      {project.roles.join(", ")}
-                    </p>
-                  </MetadataSection>
-                )}
-
-                {timeline && (
-                  <MetadataSection label="Timeline">
-                    <p className="text-sm font-medium text-slate-900">
-                      {timeline}
-                    </p>
-                  </MetadataSection>
-                )}
-
-                {project.tech && project.tech.length > 0 && (
-                  <MetadataSection
-                    label="Implementation Stack"
-                    className="lg:col-span-2"
-                  >
-                    <div className="flex flex-wrap gap-2">
-                      {project.tech.map((tech) => (
-                        <span
-                          key={tech}
-                          className="rounded-md border border-slate-200 bg-white px-2 py-1 text-xs font-medium text-slate-700"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </MetadataSection>
-                )}
-
-                {/* {project.metric && (
-                  <MetadataSection label="Metric">
-                    <p className="text-sm font-medium leading-relaxed text-slate-900">
-                      {project.metric}
-                    </p>
-                  </MetadataSection>
-                )} */}
-
-                {linkEntries.length > 0 && (
-                  <MetadataSection label="Links">
-                    <div className="flex flex-wrap gap-x-4 gap-y-2">
-                      {linkEntries.map(([key, url]) => (
-                        <a
-                          key={key}
-                          href={url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm font-medium text-primary hover:underline"
-                        >
-                          {key.charAt(0).toUpperCase() + key.slice(1)} →
-                        </a>
-                      ))}
-                    </div>
-                  </MetadataSection>
-                )}
-              </div>
-            </div>
+          <h1 className="heading-primary text-5xl font-extrabold leading-tight text-foreground md:text-6xl lg:text-7xl drop-shadow-md select-text bg-background/15 dark:bg-background/5 px-4 py-2 rounded-2xl backdrop-blur-xs">
+            {project.title}
+          </h1>
+          {project.tagline && (
+            <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground md:text-xl lg:text-2xl drop-shadow-sm select-text bg-background/15 dark:bg-background/5 px-4 py-2 rounded-xl backdrop-blur-xs">
+              {project.tagline}
+            </p>
           )}
         </motion.div>
+
+        {/* Middle: Staggered Fade In Metadata with blur/semi-trans background */}
+        {hasMetadata && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="rounded-2xl border border-border/60 bg-background/70 dark:bg-card/75 backdrop-blur-md p-5 md:p-6 max-w-5xl mx-auto w-full shadow-lg"
+          >
+            <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 text-left">
+              {project.roles && project.roles.length > 0 && (
+                <MetadataSection label="Roles">
+                  <p className="text-sm font-medium leading-relaxed text-foreground">
+                    {project.roles.join(", ")}
+                  </p>
+                </MetadataSection>
+              )}
+
+              {timeline && (
+                <MetadataSection label="Timeline">
+                  <p className="text-sm font-medium text-foreground">
+                    {timeline}
+                  </p>
+                </MetadataSection>
+              )}
+
+              {project.tech && project.tech.length > 0 && (
+                <MetadataSection
+                  label="Implementation Stack"
+                  className="lg:col-span-2"
+                >
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech.map((tech) => (
+                      <span
+                        key={tech}
+                        className="rounded-lg border border-border/60 bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </MetadataSection>
+              )}
+
+              {linkEntries.length > 0 && (
+                <MetadataSection label="Links">
+                  <div className="flex flex-wrap gap-x-4 gap-y-2">
+                    {linkEntries.map(([key, url]) => (
+                      <a
+                        key={key}
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-medium text-primary hover:underline"
+                      >
+                        {key.charAt(0).toUpperCase() + key.slice(1)} →
+                      </a>
+                    ))}
+                  </div>
+                </MetadataSection>
+              )}
+            </div>
+          </motion.div>
+        )}
       </div>
     </header>
   );

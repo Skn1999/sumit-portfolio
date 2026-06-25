@@ -16,6 +16,57 @@ const ProjectPage: React.FC = () => {
   const { mode } = useMode();
   const isDesigner = mode === "designer";
 
+  React.useEffect(() => {
+    if (!project) return;
+
+    // Only run if native CSS scroll timelines are NOT supported and user does not prefer reduced motion
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion || CSS.supports("animation-timeline: view()")) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+          }
+        });
+      },
+      {
+        rootMargin: "0px 0px -10% 0px", // triggers slightly before entering full view
+        threshold: 0.05,
+      }
+    );
+
+    // Select all elements to reveal on scroll
+    const selectors = [
+      ".project-page-snap-container article > h2",
+      ".project-page-snap-container article > h3",
+      ".project-page-snap-container article > h4",
+      ".project-page-snap-container article > p",
+      ".project-page-snap-container article > ul",
+      ".project-page-snap-container article > ol",
+      ".project-page-snap-container .scroll-reveal",
+      ".project-page-snap-container blockquote",
+      ".project-page-snap-container pre",
+      ".project-page-snap-container figure",
+      ".project-page-snap-container .scroll-snap-item",
+    ];
+
+    const elements = document.querySelectorAll(selectors.join(", "));
+    elements.forEach((el) => {
+      el.classList.add("scroll-reveal-fallback");
+      observer.observe(el);
+    });
+
+    return () => {
+      elements.forEach((el) => {
+        observer.unobserve(el);
+      });
+    };
+  }, [project]);
+
   if (!project) {
     return (
       <Layout>
@@ -63,7 +114,7 @@ const ProjectPage: React.FC = () => {
         publishedDate={project.date}
       />
       <ReadingProgress />
-      <div className="min-h-screen relative">
+      <div className="min-h-screen relative project-page-snap-container">
         {/* Hero Section */}
         <ProjectHero project={project} />
 
@@ -71,8 +122,8 @@ const ProjectPage: React.FC = () => {
         <TableOfContents />
 
         {/* Main Content Container */}
-        <div className="max-w-7xl mx-auto px-4 md:px-6 relative">
-          <div className="py-8 md:py-12">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-20 bg-background rounded-t-[2.5rem] pt-12">
+          <div className="py-4 md:py-8">
             <article
               className={`
               mx-auto max-w-4xl
@@ -93,8 +144,8 @@ const ProjectPage: React.FC = () => {
                   ? "prose-blockquote:border-[hsl(var(--designer-primary))]"
                   : "prose-blockquote:border-primary"
               }
-              prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-              prose-img:rounded-lg prose-img:shadow-md
+              prose-a:text-primary
+              prose-img:rounded-2xl prose-img:shadow-lg
               dark:prose-invert
             `}
             >
@@ -109,7 +160,7 @@ const ProjectPage: React.FC = () => {
 
             {/* Gallery Section */}
             {project.gallery && project.gallery.length > 0 && (
-              <div className="mt-16 md:mt-24 pt-10 md:pt-16 border-t border-border/20">
+              <div className="mt-16 md:mt-24 pt-10 md:pt-16 border-t border-border/20 scroll-snap-item scroll-mt-24">
                 <h2
                   className={`heading-primary text-3xl md:text-4xl font-bold mb-12 text-center ${
                     isDesigner

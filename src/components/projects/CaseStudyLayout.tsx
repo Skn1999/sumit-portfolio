@@ -36,9 +36,9 @@ export function ImpactMetricBanner({
   return (
     <section
       className={cn(
-        "not-prose my-10 grid gap-4 rounded-xl border border-border bg-muted/50 p-5 sm:grid-cols-2 md:my-12 md:grid-cols-3 md:p-6",
+        "not-prose my-10 grid gap-4 rounded-2xl border border-border bg-muted/50 p-5 sm:grid-cols-2 md:my-12 md:grid-cols-3 md:p-6 scroll-snap-item",
         "lg:w-[calc(100%+4rem)] lg:-mx-8 xl:w-[calc(100%+8rem)] xl:-mx-16 2xl:w-[calc(100%+12rem)] 2xl:-mx-24",
-        className
+        className,
       )}
       {...props}
     >
@@ -57,8 +57,8 @@ export function ImpactMetric({
   return (
     <div
       className={cn(
-        "rounded-lg border border-border bg-background p-4",
-        className
+        "rounded-xl border border-border bg-background p-4",
+        className,
       )}
       {...props}
     >
@@ -86,11 +86,11 @@ export function CaseStudySplit({
   return (
     <section
       className={cn(
-        "not-prose my-10 grid gap-6 md:my-12 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:items-start md:gap-8",
-        "lg:w-[calc(100%+4rem)] lg:-mx-8 xl:w-[calc(100%+8rem)] xl:-mx-16 2xl:w-[calc(100%+12rem)] 2xl:-mx-24",
+        "not-prose my-10 grid gap-6 md:my-12 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:items-start md:gap-8 scroll-snap-item",
+        "lg:w-[calc(100%+4rem)] lg:-mx-8 xl:w-[calc(100%+8rem)] xl:-mx-16 2xl:w-[calc(100%+12rem)] 2xl:-mx-24 lg:place-items-center",
         reverse &&
-          "md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] [&>*:first-child]:md:order-2",
-        className
+          "md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] [&>*:first-child]:md:order-2 lg:place-items-center",
+        className,
       )}
       {...props}
     >
@@ -99,16 +99,12 @@ export function CaseStudySplit({
   );
 }
 
-export function CaseStudyText({
-  children,
-  className,
-  ...props
-}: DivProps) {
+export function CaseStudyText({ children, className, ...props }: DivProps) {
   return (
     <div
       className={cn(
         "prose prose-slate max-w-none dark:prose-invert prose-headings:mt-0 prose-p:leading-relaxed prose-li:leading-relaxed",
-        className
+        className,
       )}
       {...props}
     >
@@ -117,20 +113,16 @@ export function CaseStudyText({
   );
 }
 
-export function CaseStudyMedia({
-  children,
-  className,
-  ...props
-}: FigureProps) {
+export function CaseStudyMedia({ children, className, ...props }: FigureProps) {
   return (
     <figure
       className={cn(
-        "not-prose overflow-hidden rounded-xl border border-border bg-muted/50 p-3",
-        className
+        "not-prose overflow-hidden rounded-2xl border border-border bg-muted/50 p-3 scroll-snap-item",
+        className,
       )}
       {...props}
     >
-      <div className="overflow-hidden rounded-lg bg-background">{children}</div>
+      <div className="overflow-hidden rounded-xl bg-background">{children}</div>
     </figure>
   );
 }
@@ -144,8 +136,8 @@ export function EngineeringCallout({
   return (
     <aside
       className={cn(
-        "not-prose my-8 rounded-xl border border-border bg-muted/50 p-5 md:p-6",
-        className
+        "not-prose my-8 rounded-2xl border border-border bg-muted/50 p-5 md:p-6 scroll-snap-item",
+        className,
       )}
       {...props}
     >
