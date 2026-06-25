@@ -66,8 +66,8 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
         const widthVal = fraction > 0.99 ? "100vw" : "100%";
         const maxWVal = fraction > 0.99 ? "100vw" : "64rem";
         const transformY = -fraction * 60;
-        // Interpolate height from sticky frame 65vh to full vertical height 90vh
-        const heightVal = fraction > 0.99 ? "90vh" : `${65 + fraction * 25}vh`;
+        // Keep height at 50vh (do not exceed half of the viewport height)
+        const heightVal = "50vh";
 
         inner.style.borderRadius = `${radius}px`;
         inner.style.width = widthVal;
