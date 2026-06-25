@@ -62,8 +62,15 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
       if (inner) {
         // Interpolate border radius: 16px (rounded-2xl) -> 0px
         const radius = 16 - fraction * 16;
-        // Interpolate max-width: 64rem (1024px) -> window width
-        const widthVal = fraction > 0.99 ? "100vw" : "100%";
+        // Interpolate width: (window width minus padding) -> window width
+        const widthVal = (() => {
+          if (fraction > 0.99) return "100vw";
+          const w = window.innerWidth;
+          const pad = w < 768 ? 32 : w < 1024 ? 48 : 0;
+          const initialWidth = w - pad;
+          const currentWidth = initialWidth + fraction * pad;
+          return `${currentWidth}px`;
+        })();
         const maxWVal = fraction > 0.99 ? "100vw" : "64rem";
         const transformY = -fraction * 60;
         // Keep height at 50vh (do not exceed half of the viewport height)
