@@ -7,22 +7,23 @@ export const AcademicCohorts: React.FC = () => {
   const cohorts = [
     {
       title: "UX Bites",
-      focus: "Rapid design exploration sandboxes where I take random Saas products and try to do a small UX improvement..",
+      focus:
+        "Rapid design exploration sandboxes where I take random Saas products and try to do a small UX improvement..",
       deliverable: "Small audits. Sharp observations. Joyful fixes.",
       link: "/ux-bites",
     },
-    {
-      title: "EIT Digital Venture Lab Project",
-      focus: "Scalable service prototyping, pan-European stakeholder alignment, and interface flow mapping for emerging digital ecosystems.",
-      deliverable: "Interactive high-fidelity prototype and systemic venture architecture roadmap",
-      link: null,
-    },
-    {
-      title: "Selected Master's Curricular Systems Design",
-      focus: "Applying advanced user-centered research methodologies, semantic layouts, and data visualizations to complex interactive domains.",
-      deliverable: "Complete heuristic analysis documentation and user testing matrices",
-      link: null,
-    },
+    // {
+    //   title: "EIT Digital Venture Lab Project",
+    //   focus: "Scalable service prototyping, pan-European stakeholder alignment, and interface flow mapping for emerging digital ecosystems.",
+    //   deliverable: "Interactive high-fidelity prototype and systemic venture architecture roadmap",
+    //   link: null,
+    // },
+    // {
+    //   title: "Selected Master's Curricular Systems Design",
+    //   focus: "Applying advanced user-centered research methodologies, semantic layouts, and data visualizations to complex interactive domains.",
+    //   deliverable: "Complete heuristic analysis documentation and user testing matrices",
+    //   link: null,
+    // },
   ];
 
   return (
@@ -30,7 +31,9 @@ export const AcademicCohorts: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4 lg:px-0">
         {/* Header */}
         <div className="mb-12 md:mb-16">
-          <span className="font-label text-xs tracking-widest text-slate-500 uppercase font-semibold">// ACADEMIC PORTFOLIO</span>
+          <span className="font-label text-xs tracking-widest text-slate-500 uppercase font-semibold">
+            // ACADEMIC PORTFOLIO
+          </span>
           <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mt-2 tracking-tighter">
             Academic Case Cohorts &amp; UX Bites
           </h2>
@@ -159,7 +162,9 @@ const Card: React.FC<CardProps> = ({
         onHoverEnd={onInteractingEnd}
         onTap={onSelect}
         className={`w-[190px] h-[250px] md:w-[260px] md:h-[350px] flex flex-col justify-between border rounded-xl bg-[hsl(var(--card))] overflow-hidden transition-shadow duration-300 shadow-sm active:shadow-2xl hover:shadow-lg select-none cursor-grab active:cursor-grabbing ${
-          isActive ? "border-primary/80 ring-1 ring-primary/20" : "border-border/40"
+          isActive
+            ? "border-primary/80 ring-1 ring-primary/20"
+            : "border-border/40"
         } ${!hasImage ? "border-dashed" : ""}`}
       >
         {/* Card Header / Image Preview */}
@@ -264,7 +269,7 @@ export const ProfessionalCredentials: React.FC = () => {
   const [selectedCred, setSelectedCred] = useState<CredentialItem | null>(null);
   const [activeCardIndex, setActiveCardIndex] = useState<number>(0);
   const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1200
+    typeof window !== "undefined" ? window.innerWidth : 1200,
   );
   const [hasEntered, setHasEntered] = useState(false);
 
@@ -287,7 +292,7 @@ export const ProfessionalCredentials: React.FC = () => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       // Trigger when the section top has crossed 60% from the bottom of the viewport
-      if (rect.top < window.innerHeight * 0.60) {
+      if (rect.top < window.innerHeight * 0.6) {
         setHasEntered(true);
       } else {
         setHasEntered(false);
@@ -312,8 +317,26 @@ export const ProfessionalCredentials: React.FC = () => {
     }
   }, [hasEntered]);
 
+  // Lock background scroll when modal opens
+  useEffect(() => {
+    if (selectedCred) {
+      document.body.style.overflow = "hidden";
+      (window as any).lenis?.stop();
+    } else {
+      document.body.style.overflow = "";
+      (window as any).lenis?.start();
+    }
+    return () => {
+      document.body.style.overflow = "";
+      (window as any).lenis?.start();
+    };
+  }, [selectedCred]);
+
   return (
-    <div ref={containerRef} className="relative h-[250vh] w-full bg-background border-t border-border/40">
+    <div
+      ref={containerRef}
+      className="relative h-[250vh] w-full bg-background border-t border-border/40"
+    >
       <div className="sticky top-0 h-screen w-full flex flex-col justify-between overflow-hidden py-12 md:py-16">
         <div className="max-w-6xl mx-auto w-full px-4 lg:px-0 flex-1 flex flex-col justify-between">
           {/* Header Row */}
@@ -386,7 +409,7 @@ export const ProfessionalCredentials: React.FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedCred(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md"
           >
             {/* Close Button */}
             <button
@@ -403,26 +426,27 @@ export const ProfessionalCredentials: React.FC = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-4xl max-h-[90vh] w-full flex flex-col gap-4"
+              className="relative max-w-3xl w-full max-h-[90vh] md:max-h-[85vh] flex flex-col gap-3 justify-center items-center pointer-events-auto"
             >
-              <div className="relative w-full aspect-[4/3] max-h-[75vh] rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+              {/* Image Container */}
+              <div className="relative w-full flex-1 min-h-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black flex items-center justify-center">
                 <img
                   src={selectedCred.image!}
                   alt={selectedCred.scope}
-                  className="w-full h-full object-contain"
+                  className="max-w-full max-h-full object-contain pointer-events-none"
                 />
               </div>
 
               {/* Detail overlay panel */}
-              <div className="p-4 md:p-6 bg-slate-900/90 backdrop-blur-md rounded-xl border border-white/10 text-white flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="flex flex-col gap-1 max-w-2xl text-left">
-                  <span className="font-label text-[10px] tracking-widest text-[hsl(var(--primary))] uppercase font-semibold">
+              <div className="w-full p-4 md:p-5 bg-slate-900/90 backdrop-blur-md rounded-xl border border-white/10 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 shrink-0">
+                <div className="flex flex-col gap-0.5 max-w-xl text-left">
+                  <span className="font-label text-[9px] tracking-widest text-[hsl(var(--primary))] uppercase font-semibold">
                     {selectedCred.authorizer}
                   </span>
-                  <h4 className="font-display font-bold text-sm md:text-base">
+                  <h4 className="font-display font-bold text-xs md:text-sm leading-tight">
                     {selectedCred.scope}
                   </h4>
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <p className="text-[10px] md:text-xs text-slate-400 leading-relaxed">
                     {selectedCred.pillar}
                   </p>
                 </div>
@@ -430,9 +454,9 @@ export const ProfessionalCredentials: React.FC = () => {
                 <a
                   href={selectedCred.image!}
                   download={`${selectedCred.scope.replace(/\s+/g, "_")}.jpg`}
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[hsl(var(--primary))] hover:opacity-90 text-white text-xs font-semibold uppercase tracking-wider font-label whitespace-nowrap transition-opacity self-start md:self-center"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-[hsl(var(--primary))] hover:opacity-90 text-white text-[10px] font-semibold uppercase tracking-wider font-label whitespace-nowrap transition-opacity self-start sm:self-center shrink-0"
                 >
-                  <Download className="w-4 h-4" /> Download Certificate
+                  <Download className="w-3.5 h-3.5" /> Download
                 </a>
               </div>
             </motion.div>
@@ -449,15 +473,22 @@ export const LogisticsCleardown: React.FC = () => {
       <div className="container max-w-7xl mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
           <div className="flex flex-col gap-4 border-b md:border-b-0 md:border-r border-border/40 pb-8 md:pb-0 md:pr-16">
-            <span className="font-label text-xs tracking-widest text-slate-500 uppercase">CURRENT DEPLOYMENT STATUS</span>
+            <span className="font-label text-xs tracking-widest text-slate-500 uppercase">
+              CURRENT DEPLOYMENT STATUS
+            </span>
             <p className="font-body-narrative text-base md:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-              Concluding Master's Thesis track at Aalto University. Ready for permanent on-site engineering team deployment in Helsinki.
+              Concluding Master's Thesis track at Aalto University. Ready for
+              permanent on-site engineering team deployment in Helsinki.
             </p>
           </div>
           <div className="flex flex-col gap-4 pt-8 md:pt-0">
-            <span className="font-label text-xs tracking-widest text-[hsl(var(--primary))] uppercase">WORK RIGHTS & LOGISTICS</span>
+            <span className="font-label text-xs tracking-widest text-[hsl(var(--primary))] uppercase">
+              WORK RIGHTS & LOGISTICS
+            </span>
             <p className="font-body-narrative text-base md:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-              Possess immediate, valid Finnish work rights with post-study visa residency extension processing. Zero initial corporate visa sponsorship parameters required for onboarding loops.
+              Possess immediate, valid Finnish work rights with post-study visa
+              residency extension processing. Zero initial corporate visa
+              sponsorship parameters required for onboarding loops.
             </p>
           </div>
         </div>
