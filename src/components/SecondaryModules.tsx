@@ -341,69 +341,67 @@ export const ProfessionalCredentials: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="relative h-[250vh] w-full bg-background border-t border-border/40"
+      className="relative min-h-[650px] md:h-screen w-full bg-background border-t border-border/40 py-12 md:py-16 overflow-hidden flex flex-col justify-between"
     >
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-between overflow-hidden py-12 md:py-16">
-        <div className="max-w-6xl mx-auto w-full px-4 lg:px-0 flex-1 flex flex-col justify-between">
-          {/* Header Row */}
-          <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 border-b border-border/40 pb-6 w-full">
-            {/* Left side: Section Title */}
-            <div>
-              <span className="font-label text-[10px] md:text-xs tracking-widest text-slate-500 uppercase font-semibold">
-                // CREDENTIAL REGISTRY
-              </span>
-              <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mt-1 tracking-tighter">
-                Verified Certifications
-              </h2>
-            </div>
-
-            {/* Right side: Dynamic active certificate metadata */}
-            <div className="md:text-right max-w-md flex flex-col gap-1 min-h-[80px] justify-center">
-              <span className="font-label text-[10px] tracking-widest text-[hsl(var(--primary))] uppercase font-bold">
-                {credentials[activeCardIndex].authorizer}
-              </span>
-              <h3 className="font-display font-bold text-sm md:text-base text-foreground leading-tight">
-                {credentials[activeCardIndex].scope}
-              </h3>
-              <p className="font-body-narrative text-xs text-slate-500 dark:text-slate-400">
-                {credentials[activeCardIndex].pillar}
-              </p>
-            </div>
-          </div>
-
-          {/* Interactive Draggable Canvas Container */}
-          <div
-            ref={constraintsRef}
-            className="relative flex-1 w-full h-full min-h-[400px] md:min-h-[500px] flex items-center justify-center overflow-hidden bg-background pointer-events-none"
-          >
-            {credentials.map((cred, index) => (
-              <Card
-                key={index}
-                item={cred}
-                index={index}
-                hasEntered={hasEntered}
-                isMobile={isMobile}
-                constraintsRef={constraintsRef}
-                isActive={activeCardIndex === index}
-                onSelect={() => cred.image && setSelectedCred(cred)}
-                onInteractingStart={() => {
-                  isInteracting.current = true;
-                  setActiveCardIndex(index);
-                }}
-                onInteractingEnd={() => {
-                  isInteracting.current = false;
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Bottom Metabar Instruction */}
-          <div className="flex justify-between items-center text-[10px] font-label text-slate-400 uppercase tracking-widest border-t border-border/40 pt-4 w-full">
-            <span>Scroll to pull cards into canvas</span>
-            <span className="animate-pulse flex items-center gap-1.5">
-              <Grab className="w-3.5 h-3.5" /> Grab &amp; drag cards to inspect
+      <div className="max-w-6xl mx-auto w-full px-4 lg:px-0 flex-1 flex flex-col justify-between">
+        {/* Header Row */}
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 border-b border-border/40 pb-6 w-full">
+          {/* Left side: Section Title */}
+          <div>
+            <span className="font-label text-[10px] md:text-xs tracking-widest text-slate-500 uppercase font-semibold">
+              // CREDENTIAL REGISTRY
             </span>
+            <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mt-1 tracking-tighter">
+              Verified Certifications
+            </h2>
           </div>
+
+          {/* Right side: Dynamic active certificate metadata */}
+          <div className="md:text-right max-w-md flex flex-col gap-1 min-h-[80px] justify-center">
+            <span className="font-label text-[10px] tracking-widest text-[hsl(var(--primary))] uppercase font-semibold">
+              {credentials[activeCardIndex].authorizer}
+            </span>
+            <h3 className="font-display font-bold text-sm md:text-base text-foreground leading-tight">
+              {credentials[activeCardIndex].scope}
+            </h3>
+            <p className="font-body-narrative text-xs text-slate-500 dark:text-slate-400">
+              {credentials[activeCardIndex].pillar}
+            </p>
+          </div>
+        </div>
+
+        {/* Interactive Draggable Canvas Container */}
+        <div
+          ref={constraintsRef}
+          className="relative flex-1 w-full h-full min-h-[400px] md:min-h-[500px] flex items-center justify-center overflow-hidden bg-background pointer-events-none"
+        >
+          {credentials.map((cred, index) => (
+            <Card
+              key={index}
+              item={cred}
+              index={index}
+              hasEntered={hasEntered}
+              isMobile={isMobile}
+              constraintsRef={constraintsRef}
+              isActive={activeCardIndex === index}
+              onSelect={() => cred.image && setSelectedCred(cred)}
+              onInteractingStart={() => {
+                isInteracting.current = true;
+                setActiveCardIndex(index);
+              }}
+              onInteractingEnd={() => {
+                isInteracting.current = false;
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Bottom Metabar Instruction */}
+        <div className="flex justify-between items-center text-[10px] font-label text-slate-400 uppercase tracking-widest border-t border-border/40 pt-4 w-full">
+          <span>Scroll section into view to reveal certifications</span>
+          <span className="animate-pulse flex items-center gap-1.5">
+            <Grab className="w-3.5 h-3.5" /> Grab &amp; drag cards to inspect
+          </span>
         </div>
       </div>
 
