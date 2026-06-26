@@ -2,7 +2,11 @@ import { Layout, Container } from "@/components/Layout";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import HeroSection from "@/components/HeroSection";
-import { AcademicCohorts, ProfessionalCredentials, LogisticsCleardown } from "@/components/SecondaryModules";
+import {
+  AcademicCohorts,
+  ProfessionalCredentials,
+  LogisticsCleardown,
+} from "@/components/SecondaryModules";
 import ScrollProgress from "@/components/ScrollProgress";
 import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
@@ -33,7 +37,7 @@ const IndexContent = () => {
       >
         <ScrollProgress />
         <div className="relative z-10 scroll-blur-content">
-          <Container>
+          <Container className="overflow-x-visible">
             <HeroSection />
           </Container>
 

@@ -30,7 +30,7 @@ export const DotGridBackground: React.FC = () => {
     const GRID_SPACING = 36;
     const WARP_RADIUS = 200;
     const WARP_FORCE = 35; // Maximum repel distance
-    const EASING = 0.08;   // Smooth spring back speed
+    const EASING = 0.08; // Smooth spring back speed
 
     const initGrid = () => {
       width = container.clientWidth;
@@ -76,13 +76,15 @@ export const DotGridBackground: React.FC = () => {
       const primaryColor = getComputedStyle(document.documentElement)
         .getPropertyValue("--primary")
         .trim();
-      
+
       // Default fallback color if custom HSL variable isn't parsed instantly
-      const colorBase = primaryColor ? `hsl(${primaryColor} / ` : "rgba(124, 58, 237, ";
+      const colorBase = primaryColor
+        ? `hsl(${primaryColor} / `
+        : "rgba(124, 58, 237, ";
 
       for (let i = 0; i < dots.length; i++) {
         const dot = dots[i];
-        
+
         let targetX = dot.originX;
         let targetY = dot.originY;
         let opacity = 0.12;
@@ -96,7 +98,7 @@ export const DotGridBackground: React.FC = () => {
           if (distance < WARP_RADIUS) {
             // Stronger push as cursor gets closer (inverse linear mapping)
             const force = (WARP_RADIUS - distance) / WARP_RADIUS;
-            
+
             // Normalize direction vector
             const dirX = distance > 0 ? dx / distance : 0;
             const dirY = distance > 0 ? dy / distance : 0;
@@ -118,7 +120,9 @@ export const DotGridBackground: React.FC = () => {
         // Draw dot
         ctx.beginPath();
         ctx.arc(dot.x, dot.y, size, 0, Math.PI * 2);
-        ctx.fillStyle = colorBase.startsWith("hsl") ? `${colorBase}${opacity})` : `${colorBase}${opacity})`;
+        ctx.fillStyle = colorBase.startsWith("hsl")
+          ? `${colorBase}${opacity})`
+          : `${colorBase}${opacity})`;
         ctx.fill();
       }
 

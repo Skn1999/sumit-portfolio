@@ -20,7 +20,7 @@ const HeroSection: React.FC = () => {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative min-h-[70svh] flex flex-col justify-center pt-24 pb-16 md:pt-36 md:pb-24 overflow-hidden"
+      className="relative min-h-[60svh] md:min-h-[65svh] flex flex-col justify-center py-16 md:py-24 mt-6 md:mt-10 lg:mt-12 rounded-[24px] bg-primary/[0.02] dark:bg-primary/[0.03] border border-primary/[0.05] dark:border-primary/[0.08] overflow-hidden"
     >
       {/* Interactive Dot Grid Background */}
       <DotGridBackground />
@@ -59,7 +59,7 @@ const HeroSection: React.FC = () => {
               }}
               className="font-display tracking-tighter font-bold text-4xl md:text-6xl text-foreground leading-[1.1] mb-8"
             >
-              Sumit builds rigid code translation layers for data-dense user interfaces.
+              Hi, I'm Sumit. I am a UX Architect.
             </motion.h1>
 
             {/* Primary Description Narrative */}
@@ -69,7 +69,9 @@ const HeroSection: React.FC = () => {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="font-body-narrative leading-[1.8] text-base md:text-lg text-slate-500 dark:text-slate-400"
             >
-              Re-aligning 4 years of production-level React and TypeScript enterprise development at Optmyzr with advanced human-computer interaction frameworks from Aalto University. Specialized in optimizing interface architecture, isolating domain state systems, and closing the translation gap between design primitives and production-ready applications.
+              I design scalable interface systems and data workflows. Blending 4
+              years of enterprise frontend execution with an HCI Master's from
+              Aalto University and University of Trento.
             </motion.p>
           </div>
 

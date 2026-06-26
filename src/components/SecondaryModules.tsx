@@ -9,7 +9,7 @@ export const AcademicCohorts: React.FC = () => {
     {
       title: "UX Bites",
       focus:
-        "Rapid design exploration sandboxes where I take random Saas products and try to do a small UX improvement..",
+        "Rapid Frontend Prototypes and design explorations where I take random Saas products and try to do a small UX improvement..",
       deliverable: "Small audits. Sharp observations. Joyful fixes.",
       link: "/ux-bites",
     },
@@ -406,70 +406,71 @@ export const ProfessionalCredentials: React.FC = () => {
       </div>
 
       {/* Lightbox Modal (wrapped in a React Portal to escape parent CSS filter translation boundaries) */}
-      {mounted && createPortal(
-        <AnimatePresence>
-          {selectedCred && selectedCred.image && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedCred(null)}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md"
-            >
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedCred(null)}
-                className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-55"
-                aria-label="Close"
-              >
-                <X className="w-6 h-6" />
-              </button>
-
-              {/* Modal Body Container */}
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {selectedCred && selectedCred.image && (
               <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                onClick={(e) => e.stopPropagation()}
-                className="relative max-w-3xl w-full max-h-[90vh] md:max-h-[85vh] flex flex-col gap-3 justify-center items-center pointer-events-auto"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setSelectedCred(null)}
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md"
               >
-                {/* Image Container */}
-                <div className="relative w-full flex-1 min-h-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black flex items-center justify-center">
-                  <img
-                    src={selectedCred.image!}
-                    alt={selectedCred.scope}
-                    className="max-w-full max-h-full object-contain pointer-events-none"
-                  />
-                </div>
+                {/* Close Button */}
+                <button
+                  onClick={() => setSelectedCred(null)}
+                  className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-55"
+                  aria-label="Close"
+                >
+                  <X className="w-6 h-6" />
+                </button>
 
-                {/* Detail overlay panel */}
-                <div className="w-full p-4 md:p-5 bg-slate-900/90 backdrop-blur-md rounded-xl border border-white/10 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 shrink-0">
-                  <div className="flex flex-col gap-0.5 max-w-xl text-left">
-                    <span className="font-label text-[9px] tracking-widest text-[hsl(var(--primary))] uppercase font-semibold">
-                      {selectedCred.authorizer}
-                    </span>
-                    <h4 className="font-display font-bold text-xs md:text-sm leading-tight">
-                      {selectedCred.scope}
-                    </h4>
-                    <p className="text-[10px] md:text-xs text-slate-400 leading-relaxed">
-                      {selectedCred.pillar}
-                    </p>
+                {/* Modal Body Container */}
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.9, opacity: 0 }}
+                  onClick={(e) => e.stopPropagation()}
+                  className="relative max-w-3xl w-full max-h-[90vh] md:max-h-[85vh] flex flex-col gap-3 justify-center items-center pointer-events-auto"
+                >
+                  {/* Image Container */}
+                  <div className="relative w-full flex-1 min-h-0 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black flex items-center justify-center">
+                    <img
+                      src={selectedCred.image!}
+                      alt={selectedCred.scope}
+                      className="max-w-full max-h-full object-contain pointer-events-none"
+                    />
                   </div>
 
-                  <a
-                    href={selectedCred.image!}
-                    download={`${selectedCred.scope.replace(/\s+/g, "_")}.jpg`}
-                    className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-[hsl(var(--primary))] hover:opacity-90 text-white text-[10px] font-semibold uppercase tracking-wider font-label whitespace-nowrap transition-opacity self-start sm:self-center shrink-0"
-                  >
-                    <Download className="w-3.5 h-3.5" /> Download
-                  </a>
-                </div>
+                  {/* Detail overlay panel */}
+                  <div className="w-full p-4 md:p-5 bg-slate-900/90 backdrop-blur-md rounded-xl border border-white/10 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 shrink-0">
+                    <div className="flex flex-col gap-0.5 max-w-xl text-left">
+                      <span className="font-label text-[9px] tracking-widest text-[hsl(var(--primary))] uppercase font-semibold">
+                        {selectedCred.authorizer}
+                      </span>
+                      <h4 className="font-display font-bold text-xs md:text-sm leading-tight">
+                        {selectedCred.scope}
+                      </h4>
+                      <p className="text-[10px] md:text-xs text-slate-400 leading-relaxed">
+                        {selectedCred.pillar}
+                      </p>
+                    </div>
+
+                    <a
+                      href={selectedCred.image!}
+                      download={`${selectedCred.scope.replace(/\s+/g, "_")}.jpg`}
+                      className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-[hsl(var(--primary))] hover:opacity-90 text-white text-[10px] font-semibold uppercase tracking-wider font-label whitespace-nowrap transition-opacity self-start sm:self-center shrink-0"
+                    >
+                      <Download className="w-3.5 h-3.5" /> Download
+                    </a>
+                  </div>
+                </motion.div>
               </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>,
-        document.body
-      )}
+            )}
+          </AnimatePresence>,
+          document.body,
+        )}
     </div>
   );
 };
