@@ -341,7 +341,7 @@ export const ProfessionalCredentials: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="relative min-h-[650px] md:h-screen w-full bg-background border-t border-border/40 py-12 md:py-16 overflow-hidden flex flex-col justify-between"
+      className="relative w-full h-[600px] md:h-[780px] bg-background border-t border-border/40 py-12 md:py-16 overflow-hidden flex flex-col justify-between"
     >
       <div className="max-w-6xl mx-auto w-full px-4 lg:px-0 flex-1 flex flex-col justify-between">
         {/* Header Row */}
