@@ -23,7 +23,7 @@ const NavLink = ({
 const NAV_ITEMS = [
   { to: "/#projects", label: "Projects" },
   { to: "/ux-bites", label: "UX Bites" },
-  { to: "/#about", label: "About" },
+  { to: "/resume", label: "Resume" },
   { to: "/#contact", label: "Contact" },
 ];
 

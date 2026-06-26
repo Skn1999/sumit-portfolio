@@ -15,10 +15,12 @@ const Contact = () => {
   };
 
   const handleSectionClick = () => {
-    if (!isOverInteractive) {
-      window.location.href = "mailto:sknayyar.sk@gmail.com";
+    if (!isOverInteractive && mailToButtonRef.current) {
+      mailToButtonRef.current.click();
     }
   };
+
+  const mailToButtonRef = React.useRef<HTMLAnchorElement>(null);
 
   return (
     <section
@@ -52,11 +54,18 @@ const Contact = () => {
               // CONNECT
             </span>
             <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mb-4 tracking-tighter">
-              Coffee? Chat? Let's Talk.
+              Coffee? Chat? Let's{" "}
+              <span className="text-primary underline">Talk</span>.
             </h2>
             <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 font-body-narrative leading-relaxed max-w-xl">
-              I bring curiosity, code, and coffee. Let's build something we're proud of. Click anywhere in this block to send me an email.
+              I bring curiosity, code, and coffee. Let's build something we're
+              proud of. Click anywhere in this block to send me an email.
             </p>
+            <a
+              ref={mailToButtonRef}
+              href="mailto:sknayyar.sk@gmail.com"
+              className="invisible"
+            ></a>
           </div>
 
           {/* Right Column: Social Links */}
@@ -71,7 +80,11 @@ const Contact = () => {
               className="rounded-full w-12 h-12 border-border/80 hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 flex items-center justify-center shrink-0"
               onClick={(e) => {
                 e.stopPropagation();
-                window.open("https://www.linkedin.com/in/sumitnayyar-ux/", "_blank", "noopener,noreferrer");
+                window.open(
+                  "https://www.linkedin.com/in/sumitnayyar-ux/",
+                  "_blank",
+                  "noopener,noreferrer",
+                );
               }}
               aria-label="LinkedIn"
             >
@@ -84,7 +97,11 @@ const Contact = () => {
               className="rounded-full w-12 h-12 border-border/80 hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 flex items-center justify-center shrink-0"
               onClick={(e) => {
                 e.stopPropagation();
-                window.open("https://www.behance.net/desman_designer", "_blank", "noopener,noreferrer");
+                window.open(
+                  "https://www.behance.net/desman_designer",
+                  "_blank",
+                  "noopener,noreferrer",
+                );
               }}
               aria-label="Behance"
             >
@@ -114,7 +131,8 @@ export const UnsaidMoments = () => {
           Unsaid Moments
         </h2>
         <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto font-body-narrative leading-relaxed">
-          Weekly thoughts on design systems, human-computer interaction, and building things that matter.
+          A small publication where I explore my passion for writing about
+          complex yet thoughtful moments.
         </p>
         <div className="mx-auto max-w-xl rounded-2xl overflow-hidden border border-border/60 shadow-sm bg-white dark:bg-white">
           <iframe

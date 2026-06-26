@@ -60,7 +60,7 @@ const IndexContent = () => {
             <UnsaidMoments />
           </Container>
 
-          <LogisticsCleardown />
+          {/* <LogisticsCleardown /> */}
 
           <Footer />
         </div>
