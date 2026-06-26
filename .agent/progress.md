@@ -101,16 +101,18 @@ This file is updated by AI agents after each task is attempted or completed. It 
 ### 2026-06-26 - tasks/task_013_homepage_academic_cohorts_and_credentials.md
 
 - Status: Completed
-- Summary: Restructured secondary homepage modules to match updated redesign requirements. Replaced placeholder labs and sandboxes with a consolidated AcademicCohorts index (designed as an asymmetric, grid-aligned editorial list). Refactored the ProfessionalCredentials registry module from a static list/table to a premium scroll-pinned interactive gallery. Implemented viewport scroll pinning, draggable fanned certificate cards using Framer Motion spring physics, dynamic metadata detail tracking for the active center card, a full-resolution lightbox viewer, and dynamic responsive scaling of coordinates for mobile viewports.
+- Summary: Restructured secondary homepage modules to match updated redesign requirements. Replaced placeholder labs and sandboxes with a consolidated AcademicCohorts index (designed as an asymmetric, grid-aligned editorial list) featuring the updated UX Bites copy as Row 1. Refactored the ProfessionalCredentials registry module from a static list/table to a premium scroll-pinned interactive gallery. Implemented viewport scroll pinning, draggable fanned certificate cards using Framer Motion spring physics, dynamic metadata detail tracking for the active center card, and a full-resolution lightbox viewer. All cards jump in staggered via a spring transition when the section crosses 60% of the viewport.
 - Files changed:
   - `src/components/SecondaryModules.tsx`
   - `src/pages/Index.tsx`
 - Tests run: `npx eslint` passed with zero errors; `npm run build` compiled successfully.
 - Acceptance criteria:
-  - Single unified AcademicCohorts table implemented with proper deliverables, arrow link triggers, and links.
+  - Single unified AcademicCohorts table implemented with Row 1 showing the updated UX Bites focus and deliverables, linking correctly to `/ux-bites`.
   - ProfessionalCredentials section implements scroll-pinning (`sticky top-0 h-screen`) within a scroll container.
   - Certifications render as cards in a draggable gallery format, fanning out into the center of the scene.
-  - Right top side of the section dynamically displays metadata details (Title, Authorizer, Pillar) for the active/focused card.
+  - All cards jump in with a staggered spring animation as soon as the section top crosses 60% of the viewport.
+  - Right top side of the section dynamically displays metadata details for the active/focused card.
   - Tap/click opens a fully functional lightbox with image download options.
   - Certifications images render correctly using base path prefixes and are responsive.
 - Follow-ups / risks: None.
+

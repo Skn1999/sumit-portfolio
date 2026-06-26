@@ -78,9 +78,14 @@ This file is updated by AI agents after each task is attempted or completed. It 
   2. To allow natural page scrolling over an interactive canvas, set `pointer-events-none` on the canvas container and `pointer-events-auto` on the child cards. This keeps the drag gestures functional on cards while letting scroll wheels pass through to the page scrollbar.
   3. Absolute positioning of cards centering can be anchor-aligned across devices by setting `left-1/2 top-1/2` and applying responsive negative margins (`-ml` / `-mt`) representing half the card's dimensions.
   4. Coordinate layouts for fanned cards must scale dynamically with window width (e.g. using resize listeners and a `scaleFactor` or percentages) to prevent horizontal overflows on mobile devices.
-- Errors or surprises: Attempting to bind `x` and `y` coordinates to `scrollYProgress` transforms directly on a draggable element will cause drag inputs to get immediately overwritten on the next scroll frame.
-- Resolution: Refactored card structure into a scroll-translated parent wrapper and an inner `drag={true}` card container. Used negative margins for offset anchoring, scaled card positions dynamically for mobile, and mapped dynamic active state tracking to scroll-interval frames combined with hover/drag events.
-- Future instruction: For draggable components that animate on scroll, always separate scroll layout (parent) from drag state (child) and set pointer-events filtering to keep page scroll natural.
+  5. Declaring static constant arrays (like credentials lists) inside components causes react-hooks dependency warnings or infinite effect triggers on re-render. Declaring them outside the component as module-level constants completely avoids this.
+  6. Smooth viewport threshold entrance triggers can be implemented via bounding client rect offset logic: `rect.top < window.innerHeight * percentage` to accurately track scroll visibility.
+- Errors or surprises:
+  1. Attempting to bind `x` and `y` coordinates to `scrollYProgress` transforms directly on a draggable element will cause drag inputs to get immediately overwritten on the next scroll frame.
+  2. Local arrays inside component scopes trigger React exhaustive-deps rules, warning about mutating values outside the dependency array.
+- Resolution: Refactored card structure into a scroll-translated parent wrapper and an inner `drag={true}` card container. Moved credentials array to module-level scope. Used negative margins for offset anchoring, scaled card positions dynamically for mobile, and mapped dynamic active state tracking to scroll-interval frames combined with hover/drag events. Triggered entry animation once based on section scroll visibility threshold.
+- Future instruction: Declare static arrays outside of components and separate scroll-based triggers from manual drags by using nested wrapper elements.
+
 
 
 
