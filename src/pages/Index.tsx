@@ -46,9 +46,7 @@ const IndexContent = () => {
             <AcademicCohorts />
           </Container>
 
-          <Container>
-            <ProfessionalCredentials />
-          </Container>
+          <ProfessionalCredentials />
 
           <Container>
             <Contact />
