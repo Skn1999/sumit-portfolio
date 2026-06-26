@@ -1,10 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, X, Download, Eye, Grab, Move } from "lucide-react";
-import { motion, AnimatePresence, useScroll, useTransform, useSpring, MotionValue } from "framer-motion";
+import { ArrowRight, X, Download, Eye, Grab } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const AcademicCohorts: React.FC = () => {
   const cohorts = [
+    {
+      title: "UX Bites",
+      focus: "Rapid design exploration sandboxes where I take random Saas products and try to do a small UX improvement..",
+      deliverable: "Small audits. Sharp observations. Joyful fixes.",
+      link: "/ux-bites",
+    },
     {
       title: "EIT Digital Venture Lab Project",
       focus: "Scalable service prototyping, pan-European stakeholder alignment, and interface flow mapping for emerging digital ecosystems.",
@@ -16,12 +22,6 @@ export const AcademicCohorts: React.FC = () => {
       focus: "Applying advanced user-centered research methodologies, semantic layouts, and data visualizations to complex interactive domains.",
       deliverable: "Complete heuristic analysis documentation and user testing matrices",
       link: null,
-    },
-    {
-      title: "UX Bites & Micro-Interactions Index",
-      focus: "Rapid design exploration sandboxes validating transition curves, accessible typography tokens, and responsive frontend component behavior.",
-      deliverable: "Production-ready asset sandboxes and motion choreography sketches",
-      link: "/ux-bites",
     },
   ];
 
@@ -98,7 +98,7 @@ interface CredentialItem {
 interface CardProps {
   item: CredentialItem;
   index: number;
-  scrollYProgress: MotionValue<number>;
+  hasEntered: boolean;
   isMobile: boolean;
   constraintsRef: React.RefObject<HTMLDivElement>;
   isActive: boolean;
@@ -110,7 +110,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({
   item,
   index,
-  scrollYProgress,
+  hasEntered,
   isMobile,
   constraintsRef,
   isActive,
@@ -127,29 +127,25 @@ const Card: React.FC<CardProps> = ({
   const targetY = basePositionsY[index] * (isMobile ? 0.45 : 1.0);
   const targetRotate = baseRotates[index];
 
-  const startScroll = index * 0.08;
-  const endScroll = Math.min(startScroll + 0.15, 0.95);
-
   const startX = isMobile ? 350 : 850;
   const startY = isMobile ? 150 : 300;
-
-  // Scroll-driven transforms
-  const xRaw = useTransform(scrollYProgress, [0, startScroll, endScroll], [startX, startX, targetX]);
-  const yRaw = useTransform(scrollYProgress, [0, startScroll, endScroll], [startY, startY, targetY]);
-  const rotateRaw = useTransform(scrollYProgress, [0, startScroll, endScroll], [35, 35, targetRotate]);
-  const opacityRaw = useTransform(scrollYProgress, [0, startScroll, endScroll], [0, 0, 1]);
-
-  // Spring settings for satisfying fluid motion
-  const x = useSpring(xRaw, { stiffness: 60, damping: 15 });
-  const y = useSpring(yRaw, { stiffness: 60, damping: 15 });
-  const rotate = useSpring(rotateRaw, { stiffness: 60, damping: 15 });
-  const opacity = useSpring(opacityRaw, { stiffness: 60, damping: 15 });
 
   const hasImage = !!item.image;
 
   return (
     <motion.div
-      style={{ x, y, rotate, opacity }}
+      initial={{ x: startX, y: startY, rotate: 35, opacity: 0 }}
+      animate={
+        hasEntered
+          ? { x: targetX, y: targetY, rotate: targetRotate, opacity: 1 }
+          : { x: startX, y: startY, rotate: 35, opacity: 0 }
+      }
+      transition={{
+        type: "spring",
+        stiffness: 70,
+        damping: 14,
+        delay: index * 0.05,
+      }}
       className="absolute left-1/2 top-1/2 pointer-events-auto -ml-[95px] -mt-[125px] md:-ml-[130px] md:-mt-[175px]"
     >
       <motion.div
@@ -211,12 +207,66 @@ const Card: React.FC<CardProps> = ({
   );
 };
 
+const BASE_URL = import.meta.env.BASE_URL || "/";
+
+const credentials: CredentialItem[] = [
+  {
+    scope: "Upbeat Summer School",
+    authorizer: "EIT Digital Summer School",
+    pillar: "European Tech Venture & Digital Ecosystems",
+    image: null,
+  },
+  {
+    scope: "DESIGN RULES: Principles + Practices for Great UI Design",
+    authorizer: "Udemy",
+    pillar: "Advanced Interface Systems & UI Visual Hierarchy",
+    image: `${BASE_URL}images/certificates/udemy.jpg`,
+  },
+  {
+    scope: "Front-End Web Development with React",
+    authorizer: "Coursera",
+    pillar: "Reusable Component Engineering & State Architecture",
+    image: null,
+  },
+  {
+    scope: "Foundations of User Experience (UX) Design",
+    authorizer: "Coursera",
+    pillar: "Interaction Frameworks & User-Centered Research",
+    image: `${BASE_URL}images/certificates/foundations-ux.jpg`,
+  },
+  {
+    scope: "Start the UX Design Process: Empathize, Define, and Ideate",
+    authorizer: "Coursera",
+    pillar: "Structural Ideation & User Workflow Mapping",
+    image: `${BASE_URL}images/certificates/start-ux.jpg`,
+  },
+  {
+    scope: "Visual Elements of User Interface Design",
+    authorizer: "Coursera",
+    pillar: "Core Typography, Color Layouts, & Interface Primitives",
+    image: `${BASE_URL}images/certificates/visual-elements-ui-design.jpeg`,
+  },
+  {
+    scope: "Introduction to Git and GitHub",
+    authorizer: "Coursera",
+    pillar: "Version Control, Distributed Code Management, & Workflows",
+    image: `${BASE_URL}images/certificates/intro-github.jpg`,
+  },
+  {
+    scope: "Using Python to Interact with the Operating System",
+    authorizer: "Coursera",
+    pillar: "Scripting Systems, File Orchestration, & Process Automation",
+    image: null,
+  },
+];
+
 export const ProfessionalCredentials: React.FC = () => {
   const [selectedCred, setSelectedCred] = useState<CredentialItem | null>(null);
   const [activeCardIndex, setActiveCardIndex] = useState<number>(0);
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1200
   );
+  const [hasEntered, setHasEntered] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const constraintsRef = useRef<HTMLDivElement>(null);
@@ -231,81 +281,36 @@ export const ProfessionalCredentials: React.FC = () => {
 
   const isMobile = windowWidth < 768;
 
-  // Set up scroll tracking for pinning progress
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  const BASE_URL = import.meta.env.BASE_URL || "/";
-
-  const credentials: CredentialItem[] = [
-    {
-      scope: "Upbeat Summer School",
-      authorizer: "EIT Digital Summer School",
-      pillar: "European Tech Venture & Digital Ecosystems",
-      image: null,
-    },
-    {
-      scope: "DESIGN RULES: Principles + Practices for Great UI Design",
-      authorizer: "Udemy",
-      pillar: "Advanced Interface Systems & UI Visual Hierarchy",
-      image: `${BASE_URL}images/certificates/udemy.jpg`,
-    },
-    {
-      scope: "Front-End Web Development with React",
-      authorizer: "Coursera",
-      pillar: "Reusable Component Engineering & State Architecture",
-      image: null,
-    },
-    {
-      scope: "Foundations of User Experience (UX) Design",
-      authorizer: "Coursera",
-      pillar: "Interaction Frameworks & User-Centered Research",
-      image: `${BASE_URL}images/certificates/foundations-ux.jpg`,
-    },
-    {
-      scope: "Start the UX Design Process: Empathize, Define, and Ideate",
-      authorizer: "Coursera",
-      pillar: "Structural Ideation & User Workflow Mapping",
-      image: `${BASE_URL}images/certificates/start-ux.jpg`,
-    },
-    {
-      scope: "Visual Elements of User Interface Design",
-      authorizer: "Coursera",
-      pillar: "Core Typography, Color Layouts, & Interface Primitives",
-      image: `${BASE_URL}images/certificates/visual-elements-ui-design.jpeg`,
-    },
-    {
-      scope: "Introduction to Git and GitHub",
-      authorizer: "Coursera",
-      pillar: "Version Control, Distributed Code Management, & Workflows",
-      image: `${BASE_URL}images/certificates/intro-github.jpg`,
-    },
-    {
-      scope: "Using Python to Interact with the Operating System",
-      authorizer: "Coursera",
-      pillar: "Scripting Systems, File Orchestration, & Process Automation",
-      image: null,
-    },
-  ];
-
-  // Dynamically calculate active card based on scroll progress if not user-interacting
+  // Track scroll position of the section to trigger the "jump in" entrance
   useEffect(() => {
-    const unsubscribe = scrollYProgress.on("change", (latest) => {
-      if (isInteracting.current) return;
-      const zoneSize = 0.95 / credentials.length;
-      const calculatedIndex = Math.max(
-        0,
-        Math.min(
-          Math.floor(latest / zoneSize),
-          credentials.length - 1
-        )
-      );
-      setActiveCardIndex(calculatedIndex);
-    });
-    return () => unsubscribe();
-  }, [scrollYProgress, credentials.length]);
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      // Trigger when the section top has crossed 60% from the bottom of the viewport
+      if (rect.top < window.innerHeight * 0.60) {
+        setHasEntered(true);
+      } else {
+        setHasEntered(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Sequentially cycle active card details on slide-in sequence if not user-interacting
+  useEffect(() => {
+    if (hasEntered) {
+      credentials.forEach((_, index) => {
+        setTimeout(() => {
+          if (!isInteracting.current) {
+            setActiveCardIndex(index);
+          }
+        }, index * 100);
+      });
+    }
+  }, [hasEntered]);
 
   return (
     <div ref={containerRef} className="relative h-[250vh] w-full bg-background border-t border-border/40">
@@ -347,7 +352,7 @@ export const ProfessionalCredentials: React.FC = () => {
                 key={index}
                 item={cred}
                 index={index}
-                scrollYProgress={scrollYProgress}
+                hasEntered={hasEntered}
                 isMobile={isMobile}
                 constraintsRef={constraintsRef}
                 isActive={activeCardIndex === index}
