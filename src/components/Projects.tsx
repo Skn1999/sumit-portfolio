@@ -8,6 +8,7 @@ import { getProjectBySlug } from "@/lib/projects";
 const Projects = () => {
   const optmyzrProject = getProjectBySlug("optmyzr-dashboard-migration");
   const ediaqiProject = getProjectBySlug("ediaqi-decision-support-system");
+  const socialIntegrationProject = getProjectBySlug("social-integration-pd");
 
   const cards = [
     {
@@ -27,6 +28,15 @@ const Projects = () => {
       metricBanner: "Architected a progressive, multi-stakeholder user platform to render high-volume, messy environmental datasets actionable for non-technical research pipelines without performance lag.",
       skillTags: ["Interaction Architecture", "User Testing Systems", "Data Visualization", "HCI Research"],
       imageSide: "left",
+    },
+    {
+      project: socialIntegrationProject,
+      slug: "social-integration-pd",
+      monospaceHeader: "PROJECT 03 // PARTICIPATORY SERVICE DESIGN",
+      title: "Mesa Te Club: Co-Designing Common Spaces for Social Integration",
+      metricBanner: "Designed and executed collaborative participatory frameworks and co-design toolkits to transform underutilized social housing common areas into active, resident-owned community spaces.",
+      skillTags: ["Participatory Design", "Co-design Workshops", "Service Design", "User Research"],
+      imageSide: "right",
     },
   ];
 
