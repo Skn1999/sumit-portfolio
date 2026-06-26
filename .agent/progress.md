@@ -101,12 +101,16 @@ This file is updated by AI agents after each task is attempted or completed. It 
 ### 2026-06-26 - tasks/task_013_homepage_academic_cohorts_and_credentials.md
 
 - Status: Completed
-- Summary: Restructured secondary homepage modules to match updated redesign requirements. Replaced placeholder labs and sandboxes with a consolidated AcademicCohorts index (designed as an asymmetric, grid-aligned editorial list) and introduced a ProfessionalCredentials certification registry table (designed as a high-density mobile-responsive data grid block).
+- Summary: Restructured secondary homepage modules to match updated redesign requirements. Replaced placeholder labs and sandboxes with a consolidated AcademicCohorts index (designed as an asymmetric, grid-aligned editorial list). Refactored the ProfessionalCredentials registry module from a static list/table to a premium scroll-pinned interactive gallery. Implemented viewport scroll pinning, draggable fanned certificate cards using Framer Motion spring physics, dynamic metadata detail tracking for the active center card, a full-resolution lightbox viewer, and dynamic responsive scaling of coordinates for mobile viewports.
 - Files changed:
   - `src/components/SecondaryModules.tsx`
   - `src/pages/Index.tsx`
-- Tests run: `npm run lint` and `npm run build` compiled successfully.
-- Acceptance criteria: Single unified AcademicCohorts table implemented with proper deliverables, arrow link triggers, and links; high-density ProfessionalCredentials registry table created with exact credential lists and hidden mobile metadata helper tags; both integrated smoothly on the Index page with responsive layout integrity.
+- Tests run: `npx eslint` passed with zero errors; `npm run build` compiled successfully.
+- Acceptance criteria:
+  - Single unified AcademicCohorts table implemented with proper deliverables, arrow link triggers, and links.
+  - ProfessionalCredentials section implements scroll-pinning (`sticky top-0 h-screen`) within a scroll container.
+  - Certifications render as cards in a draggable gallery format, fanning out into the center of the scene.
+  - Right top side of the section dynamically displays metadata details (Title, Authorizer, Pillar) for the active/focused card.
+  - Tap/click opens a fully functional lightbox with image download options.
+  - Certifications images render correctly using base path prefixes and are responsive.
 - Follow-ups / risks: None.
-
-

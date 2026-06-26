@@ -73,9 +73,14 @@ This file is updated by AI agents after each task is attempted or completed. It 
 
 ### 2026-06-26 - tasks/task_013_homepage_academic_cohorts_and_credentials.md
 
-- Lessons learned: Designing tabular interfaces as custom CSS grids (`grid-cols-12`) rather than HTML `<table>` tags allows for a highly polished editorial style that can be dynamically reshuffled on smaller viewports. Standard HTML tables squish or force horizontal overflow, whereas grids can hide headers and render field-level labels inline on mobile screen widths to provide maximum data density without breaking responsive layouts.
-- Errors or surprises: Generic HTML tables can look boring and basic, failing to meet the visual criteria for Awwwards-style portfolio layouts.
-- Resolution: Refactored generic `<table>` tags to custom asymmetric CSS grids with micro-animations, clean card layers, and inline label tags for mobile viewports.
-- Future instruction: Prefer CSS grids over standard HTML `<table>` layouts for complex content matrices in editorial designs to ensure high art-direction control and clean mobile scaling.
+- Lessons learned:
+  1. Integrating Framer Motion `drag` with scroll-driven entry animations is best achieved by nesting the draggable element inside a scroll-animated parent. This prevents the drag handler from conflicting with scroll-driven coordinate transforms.
+  2. To allow natural page scrolling over an interactive canvas, set `pointer-events-none` on the canvas container and `pointer-events-auto` on the child cards. This keeps the drag gestures functional on cards while letting scroll wheels pass through to the page scrollbar.
+  3. Absolute positioning of cards centering can be anchor-aligned across devices by setting `left-1/2 top-1/2` and applying responsive negative margins (`-ml` / `-mt`) representing half the card's dimensions.
+  4. Coordinate layouts for fanned cards must scale dynamically with window width (e.g. using resize listeners and a `scaleFactor` or percentages) to prevent horizontal overflows on mobile devices.
+- Errors or surprises: Attempting to bind `x` and `y` coordinates to `scrollYProgress` transforms directly on a draggable element will cause drag inputs to get immediately overwritten on the next scroll frame.
+- Resolution: Refactored card structure into a scroll-translated parent wrapper and an inner `drag={true}` card container. Used negative margins for offset anchoring, scaled card positions dynamically for mobile, and mapped dynamic active state tracking to scroll-interval frames combined with hover/drag events.
+- Future instruction: For draggable components that animate on scroll, always separate scroll layout (parent) from drag state (child) and set pointer-events filtering to keep page scroll natural.
+
 
 
