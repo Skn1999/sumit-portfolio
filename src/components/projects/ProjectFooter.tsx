@@ -66,10 +66,10 @@ export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: 0.1 }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center"
+        className="flex justify-center"
       >
         {/* Previous Project */}
-        <div className="order-2 md:order-1">
+        {/* <div className="order-2 md:order-1">
           {prevProject ? (
             <Link
               to={`/projects/${prevProject.slug}`}
@@ -95,7 +95,7 @@ export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
           ) : (
             <div />
           )}
-        </div>
+        </div> */}
 
         {/* Back to Projects */}
         <div className="text-center order-1 md:order-2">
@@ -110,7 +110,7 @@ export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
           </Link>
         </div>
 
-        {/* Next Project */}
+        {/* Next Project
         <div className="order-3">
           {nextProject ? (
             <Link
@@ -137,7 +137,7 @@ export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
           ) : (
             <div />
           )}
-        </div>
+        </div> */}
       </motion.div>
     </footer>
   );
