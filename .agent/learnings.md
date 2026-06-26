@@ -64,4 +64,11 @@ This file is updated by AI agents after each task is attempted or completed. It 
 - Resolution: Overwrote `src/components/HeroSection.tsx` with a single high-contrast typography design, completely cleaning up unused imports, hooks, and local variables.
 - Future instruction: When refactoring highly interactive layouts into minimalist editorial blocks, proactively clean up unused hooks, imports, and variables to keep code clean and lint-free.
 
+### 2026-06-26 - tasks/task_012_smooth_scrolling_and_motion_blur.md
+
+- Lessons learned: Applying CSS filters to containers with fixed positioned children causes them to lose their viewport-relative positioning because filters establish a new containing block context. Moving fixed elements (like TableOfContents and headers) outside of the filtered DOM tree resolves this completely. Extending the global `Window` interface in TypeScript for dynamic external library instances (like `window.lenis`) prevents lint-time `any` violations while maintaining complete type safety.
+- Errors or surprises: Encountered TypeScript compiler and linter errors when trying to cast the `window` object to `any` (due to `@typescript-eslint/no-explicit-any`).
+- Resolution: Resolved by declaring global interface extensions for `window` and typing `lenis?: Lenis` directly in `SmoothScroll.tsx`.
+- Future instruction: When applying CSS filters or transformations that might affect layout context, verify that sticky or fixed positioned descendants are rendered outside of the target DOM wrapper.
+
 

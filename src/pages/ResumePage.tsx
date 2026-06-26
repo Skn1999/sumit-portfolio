@@ -3,7 +3,6 @@ import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import { Layout } from "@/components/Layout";
-import { useMode } from "@/contexts/ModeContext";
 import {
   ArrowLeft,
   Download,
@@ -27,8 +26,6 @@ const options = {
 };
 
 const ResumePage: React.FC = () => {
-  const { mode } = useMode();
-  const isEngineer = mode === "engineer";
   const isMobile = useIsMobile();
   const pdfUrl = `${import.meta.env.BASE_URL}CV_2026.pdf`;
 
@@ -58,7 +55,7 @@ const ResumePage: React.FC = () => {
     <Layout>
       <SEO
         title="Resume"
-        description="View or download Sumit Knayyar's resume Full-stack Engineer & UX Designer."
+        description="View or download Sumit Knayyar's resume."
         path="/resume"
       />
       <motion.div
@@ -66,18 +63,14 @@ const ResumePage: React.FC = () => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
-        className="min-h-screen flex flex-col"
+        className="min-h-screen flex flex-col bg-background"
       >
         {/* Top bar */}
-        <div className="sticky top-16 z-30 bg-background/80 backdrop-blur-md border-b">
+        <div className="sticky top-16 z-30 bg-background/80 backdrop-blur-md border-b border-border/40">
           <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
             <Link
               to="/"
-              className={`inline-flex items-center gap-2 text-sm font-medium mode-transition hover:opacity-80 ${
-                isEngineer
-                  ? "text-[hsl(var(--engineer-primary))]"
-                  : "text-[hsl(var(--designer-primary))]"
-              }`}
+              className="inline-flex items-center gap-2 text-xs font-label uppercase tracking-widest font-bold text-primary hover:opacity-85"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Home
@@ -86,7 +79,7 @@ const ResumePage: React.FC = () => {
             <Button
               size="sm"
               variant="outline"
-              className={`font-body ${isEngineer ? "" : "neubrutalism-button"}`}
+              className="font-label text-xs tracking-wider uppercase font-semibold"
               asChild
             >
               <a href={pdfUrl} download>
@@ -97,22 +90,19 @@ const ResumePage: React.FC = () => {
           </div>
         </div>
 
-        {/* ── Mobile: Card with preview + action buttons ── */}
+        <div className="scroll-blur-content flex-1 flex flex-col">
+          {/* ── Mobile: Card with preview + action buttons ── */}
         {isMobile ? (
           <div className="flex-1 flex items-center justify-center px-4 py-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className={`w-full max-w-sm rounded-2xl overflow-hidden ${
-                isEngineer
-                  ? "border border-border shadow-lg"
-                  : "border-2 border-foreground shadow-[6px_6px_0px_0px_hsl(var(--foreground))]"
-              }`}
+              className="w-full max-w-sm rounded-2xl overflow-hidden border border-border/80 shadow-md bg-[hsl(var(--card))]"
             >
-              {/* PDF thumbnail preview render first page small */}
-              <div className="bg-muted/30 p-6 flex justify-center border-b border-border/20">
-                <div className="w-48 rounded-lg overflow-hidden shadow-md bg-card">
+              {/* PDF thumbnail preview */}
+              <div className="bg-muted/35 p-6 flex justify-center border-b border-border/20">
+                <div className="w-48 rounded-lg overflow-hidden shadow-md bg-[hsl(var(--card))]">
                   <Document
                     file={pdfUrl}
                     options={options}
@@ -133,9 +123,9 @@ const ResumePage: React.FC = () => {
               <div className="p-6 bg-background">
                 <div className="flex items-center gap-3 mb-2">
                   <FileText className="w-5 h-5 text-muted-foreground" />
-                  <h2 className="font-bold text-lg">Resume</h2>
+                  <h2 className="font-bold text-lg font-display">Resume</h2>
                 </div>
-                <p className="text-sm text-muted-foreground mb-6">
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-6 font-body-narrative leading-relaxed">
                   For the best reading experience on mobile, open or download
                   the PDF.
                 </p>
@@ -143,11 +133,7 @@ const ResumePage: React.FC = () => {
                 <div className="flex flex-col gap-3">
                   <Button
                     size="lg"
-                    className={`w-full ${
-                      isEngineer
-                        ? ""
-                        : "neubrutalism-button bg-[hsl(var(--designer-primary))] text-primary-foreground"
-                    }`}
+                    className="w-full font-label text-xs tracking-wider uppercase font-semibold"
                     asChild
                   >
                     <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
@@ -159,7 +145,7 @@ const ResumePage: React.FC = () => {
                   <Button
                     size="lg"
                     variant="outline"
-                    className={`w-full ${isEngineer ? "" : "neubrutalism-button"}`}
+                    className="w-full font-label text-xs tracking-wider uppercase font-semibold"
                     asChild
                   >
                     <a href={pdfUrl} download>
@@ -203,11 +189,7 @@ const ResumePage: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.4 }}
-                  className={`mb-8 rounded-lg overflow-hidden shadow-md ${
-                    isEngineer
-                      ? "border border-border"
-                      : "border-2 border-foreground shadow-[4px_4px_0px_0px_hsl(var(--foreground))]"
-                  }`}
+                  className="mb-8 rounded-lg overflow-hidden shadow-md border border-border/80"
                 >
                   <Page
                     pageNumber={index + 1}
@@ -226,6 +208,7 @@ const ResumePage: React.FC = () => {
             )}
           </div>
         )}
+        </div>
       </motion.div>
     </Layout>
   );

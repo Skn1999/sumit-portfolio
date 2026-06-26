@@ -1,242 +1,133 @@
-import { useMode } from "@/contexts/ModeContext";
-import { ExternalLink, Github } from "lucide-react";
+import React from "react";
 import { motion } from "framer-motion";
-import { Button } from "./ui/button";
-import { useState, useMemo } from "react";
-import {
-  getProjectsByType,
-  getAllSkills,
-  filterProjectsBySkills,
-} from "@/lib/projects";
-import { ProjectImage } from "./ProjectImage";
-import { FilterBar } from "./FilterBar";
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { ProjectImage } from "./ProjectImage";
+import { getProjectBySlug } from "@/lib/projects";
 
 const Projects = () => {
-  const { mode } = useMode();
-  const isEngineer = mode === "engineer";
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const optmyzrProject = getProjectBySlug("optmyzr-dashboard-migration");
+  const ediaqiProject = getProjectBySlug("ediaqi-decision-support-system");
 
-  const engineerProjects = getProjectsByType("engineering");
-  const designerProjects = getProjectsByType("design");
-
-  const allProjects = isEngineer ? engineerProjects : designerProjects;
-
-  // Get all skills and counts for current mode
-  const { skills: availableSkills, counts: projectCounts } = useMemo(
-    () => getAllSkills(isEngineer ? "engineering" : "design"),
-    [isEngineer],
-  );
-
-  // Filter projects based on selected skills
-  const projects = useMemo(
-    () => filterProjectsBySkills(allProjects, selectedFilters),
-    [allProjects, selectedFilters],
-  );
-
-  // Filter handlers
-  const handleFilterToggle = (skill: string) => {
-    setSelectedFilters((prev) =>
-      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill],
-    );
-  };
-
-  const handleClearFilters = () => {
-    setSelectedFilters([]);
-  };
-
-  // Handle empty projects array
-  if (!projects || projects.length === 0) {
-    return (
-      <section id="projects" className="py-12 md:py-24 section-alt">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2
-              className={`heading-primary text-4xl md:text-5xl font-bold text-center mb-10 md:mb-16 mode-transition ${
-                isEngineer ? "text-gradient-engineer" : "text-gradient-designer"
-              }`}
-            >
-              {isEngineer ? "Building Solutions" : "Solving Problems"}
-            </h2>
-            <div className="card-styled p-12 rounded-2xl text-center">
-              <p className="text-lg text-muted-foreground mb-4">
-                {isEngineer
-                  ? "Engineering projects coming soon! Switch to Designer mode to see available projects."
-                  : "Design projects coming soon! Switch to Engineer mode to see available projects."}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Use the mode toggle in the header to switch between modes.
-              </p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-    );
-  }
-
-  // Ensure featuredIndex is valid
-  const validFeaturedIndex = 0;
-  const featuredProject = projects[validFeaturedIndex];
+  const cards = [
+    {
+      project: optmyzrProject,
+      slug: "optmyzr-dashboard-migration",
+      monospaceHeader: "PROJECT 01 // PRODUCTION SYSTEM MIGRATION",
+      title: "Migrating Legacy Ad Analytics to a Config-Driven React Architecture",
+      metricBanner: "Dashboard initialization compressed from 8–10 seconds to under 1 second across enterprise account lines, establishing a flexible design blueprint used for downstream corporate tool development.",
+      skillTags: ["React", "TypeScript", "Redux Toolkit", "State Optimization", "Component Engineering"],
+      imageSide: "right",
+    },
+    {
+      project: ediaqiProject,
+      slug: "ediaqi-decision-support-system",
+      monospaceHeader: "PROJECT 02 // COGNITIVE WORKFLOW HCI",
+      title: "Translating Scientific Environmental Complexity into Low-Cognitive-Load Interfaces",
+      metricBanner: "Architected a progressive, multi-stakeholder user platform to render high-volume, messy environmental datasets actionable for non-technical research pipelines without performance lag.",
+      skillTags: ["Interaction Architecture", "User Testing Systems", "Data Visualization", "HCI Research"],
+      imageSide: "left",
+    },
+  ];
 
   return (
-    <section id="projects" className="py-12 md:py-24 section-alt">
+    <section id="projects" className="py-16 md:py-32 bg-background border-t border-border/40">
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2
-            className={`heading-primary text-4xl md:text-5xl font-bold text-center mb-10 md:mb-16 mode-transition ${
-              isEngineer ? "text-gradient-engineer" : "text-gradient-designer"
-            }`}
-          >
-            {isEngineer ? "Building Solutions" : "Solving Problems"}
+        {/* Section Title */}
+        <div className="mb-16 md:mb-24 px-4 lg:px-0">
+          <span className="font-label text-xs tracking-widest text-slate-500 uppercase">Selected Projects</span>
+          <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mt-2">
+            Engineered Interfaces
           </h2>
+        </div>
 
-          {/* Filter Bar commented out for now (only 2 projects) */}
-          {/* {availableSkills.length > 0 && (
-            <FilterBar
-              skills={availableSkills}
-              selectedFilters={selectedFilters}
-              onFilterToggle={handleFilterToggle}
-              onClearAll={handleClearFilters}
-              projectCounts={projectCounts}
-            />
-          )} */}
+        {/* Stacked Project Cards */}
+        <div className="flex flex-col gap-24 md:gap-36">
+          {cards.map((card, index) => {
+            if (!card.project) return null;
 
-          {/* No Results Message */}
-          {projects.length === 0 && selectedFilters.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="card-styled p-12 rounded-2xl text-center"
-            >
-              <p className="text-lg text-muted-foreground mb-4">
-                No projects found with selected skills
-              </p>
-              <Button
-                onClick={handleClearFilters}
-                variant="outline"
-                className="rounded-xl"
+            const isImageRight = card.imageSide === "right";
+
+            return (
+              <motion.div
+                key={card.slug}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center px-4 lg:px-0"
               >
-                Clear filters
-              </Button>
-            </motion.div>
-          )}
-
-          {/* Projects Grid */}
-          {projects.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8">
-              {projects.map((project, index) => (
-                <motion.div
-                  key={project.slug}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group h-full"
+                {/* Text Content */}
+                <div
+                  className={`lg:col-span-5 flex flex-col gap-6 ${
+                    isImageRight ? "lg:order-1" : "lg:order-2"
+                  }`}
                 >
-                  <div className="card-styled h-full p-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] flex flex-col">
-                    {/* Project Image */}
-                    {project.cover ? (
-                      <ProjectImage
-                        className="w-full h-48 rounded-xl mb-4 overflow-hidden"
-                        project={project.slug}
-                        image={project.cover}
-                      />
-                    ) : (
-                      <div
-                        className={`w-full h-48 rounded-xl mb-4 flex items-center justify-center ${
-                          isEngineer
-                            ? "bg-[hsl(var(--engineer-surface))]"
-                            : "bg-[hsl(var(--designer-surface))]"
-                        }`}
-                      >
-                        <p className="text-muted-foreground text-sm">
-                          No image
-                        </p>
-                      </div>
-                    )}
+                  {/* Monospace Header */}
+                  <span className="font-label text-xs tracking-widest text-[hsl(var(--primary))] font-semibold">
+                    {card.monospaceHeader}
+                  </span>
 
-                    {/* Metric Badge */}
-                    {project.metric && (
-                      <div className="mb-3">
-                        <span
-                          className={`inline-block px-3 py-1.5 rounded-full text-xs font-semibold ${
-                            isEngineer
-                              ? "bg-primary/10 text-primary border border-primary/20"
-                              : "bg-[hsl(var(--designer-primary))]/10 text-[hsl(var(--designer-primary))] border border-[hsl(var(--designer-primary))]/20"
-                          }`}
-                        >
-                          {project.metric}
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Title */}
-                    <h3
-                      className={`text-xl font-bold mb-2 group-hover:text-primary transition-colors ${
-                        isEngineer ? "font-engineer" : "font-designer"
-                      }`}
-                    >
-                      {project.title}
+                  {/* Title */}
+                  <Link to={`/projects/${card.slug}`} className="group/title">
+                    <h3 className="text-2xl md:text-4xl font-bold font-display text-foreground group-hover/title:text-[hsl(var(--primary))] transition-colors duration-300 leading-tight">
+                      {card.title}
                     </h3>
+                  </Link>
 
-                    {/* Tagline */}
-                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                      {project.tagline}
+                  {/* Metric Banner */}
+                  <div className="bg-[hsl(var(--card))] border-l-4 border-[hsl(var(--primary))] p-5 rounded-r-xl shadow-sm">
+                    <p className="text-sm md:text-base font-body-narrative text-foreground/95 leading-relaxed">
+                      {card.metricBanner}
                     </p>
-
-                    {/* Tech Stack */}
-                    {project.tech && project.tech.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mb-6">
-                        {project.tech.slice(0, 4).map((tech, techIndex) => (
-                          <span
-                            key={techIndex}
-                            className={`px-2 py-1 rounded text-xs font-medium ${
-                              isEngineer
-                                ? "bg-[hsl(var(--engineer-surface))] text-[hsl(var(--engineer-primary))]"
-                                : "bg-[hsl(var(--designer-surface))] text-[hsl(var(--designer-primary))] border border-[hsl(var(--designer-border))]"
-                            }`}
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                        {project.tech.length > 4 && (
-                          <span className="px-2 py-1 rounded text-xs font-medium text-muted-foreground">
-                            +{project.tech.length - 4}
-                          </span>
-                        )}
-                      </div>
-                    )}
-
-                    {/* View Project Button - Sticky to Bottom */}
-                    <div className="mt-auto pt-4 border-t border-border/20">
-                      <Link
-                        to={`/projects/${project.slug}`}
-                        className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all group-hover:gap-3 ${
-                          isEngineer
-                            ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl"
-                            : "bg-[hsl(var(--designer-primary))] text-white border-3 border-[hsl(var(--designer-border))] shadow-[4px_4px_0px_hsl(var(--designer-border))] hover:shadow-[2px_2px_0px_hsl(var(--designer-border))] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px]"
-                        }`}
-                      >
-                        View Project
-                        <ExternalLink className="w-4 h-4" />
-                      </Link>
-                    </div>
                   </div>
-                </motion.div>
-              ))}
-            </div>
-          )}
-        </motion.div>
+
+                  {/* Skill Tags */}
+                  <div className="flex flex-wrap gap-2">
+                    {card.skillTags.map((tag, tagIndex) => (
+                      <span
+                        key={tagIndex}
+                        className="px-2.5 py-1 rounded bg-[hsl(var(--card))] text-[hsl(var(--foreground))] border border-border/60 text-xs font-semibold font-label tracking-wide"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* View case study */}
+                  <div className="pt-2">
+                    <Link
+                      to={`/projects/${card.slug}`}
+                      className="inline-flex items-center gap-2 font-label text-xs font-bold uppercase tracking-wider text-[hsl(var(--primary))] hover:gap-3 transition-all duration-300"
+                    >
+                      View Case Study
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Cover Image Container */}
+                <div
+                  className={`lg:col-span-7 ${
+                    isImageRight ? "lg:order-2" : "lg:order-1"
+                  }`}
+                >
+                  <Link to={`/projects/${card.slug}`} className="block group">
+                    <div className="relative overflow-hidden rounded-xl border border-border/80 bg-[hsl(var(--card))] aspect-[16/10] shadow-md group-hover:border-[hsl(var(--primary))/0.6] transition-colors duration-300">
+                      {card.project.cover && (
+                        <ProjectImage
+                          className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                          project={card.slug}
+                          image={card.project.cover}
+                        />
+                      )}
+                    </div>
+                  </Link>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

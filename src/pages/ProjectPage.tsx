@@ -5,7 +5,6 @@ import { ProjectHero } from "@/components/projects/ProjectHero";
 import { ProjectFooter } from "@/components/projects/ProjectFooter";
 import { TableOfContents } from "@/components/projects/TableOfContents";
 import { ProjectGallery } from "@/components/ProjectImage";
-import { useMode } from "@/contexts/ModeContext";
 import { Layout } from "@/components/Layout";
 import ReadingProgress from "@/components/ReadingProgress";
 import SEO from "@/components/SEO";
@@ -13,8 +12,6 @@ import SEO from "@/components/SEO";
 const ProjectPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const project = getProjectBySlug(slug || "");
-  const { mode } = useMode();
-  const isDesigner = mode === "designer";
 
   React.useEffect(() => {
     if (!project) return;
@@ -72,7 +69,7 @@ const ProjectPage: React.FC = () => {
       <Layout>
         <main className="min-h-screen flex items-center justify-center px-6">
           <div className="card-styled p-12 rounded-2xl text-center max-w-md">
-            <h1 className="heading-primary text-4xl font-bold mb-4">
+            <h1 className="typography-hero text-4xl mb-4">
               Project not found
             </h1>
             <p className="text-muted-foreground mb-6">
@@ -114,40 +111,25 @@ const ProjectPage: React.FC = () => {
         publishedDate={project.date}
       />
       <ReadingProgress />
-      <div className="min-h-screen relative project-page-snap-container">
+      <TableOfContents />
+      <div className="scroll-blur-content min-h-screen relative project-page-snap-container bg-background">
         {/* Hero Section */}
         <ProjectHero project={project} />
-
-        {/* Table of Contents - Fixed position, outside flow */}
-        <TableOfContents />
 
         {/* Main Content Container */}
         <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-20 bg-background rounded-t-[2.5rem] pt-12">
           <div className="py-4 md:py-8">
             <article
-              className={`
-              mx-auto max-w-4xl
-              prose prose-lg
-              prose-headings:font-semibold
-              ${
-                isDesigner
-                  ? "prose-headings:font-designer"
-                  : "prose-headings:font-engineer"
-              }
-              ${
-                isDesigner
-                  ? "prose-h2:text-gradient-designer"
-                  : "prose-h2:text-gradient-engineer"
-              }
-              ${
-                isDesigner
-                  ? "prose-blockquote:border-[hsl(var(--designer-primary))]"
-                  : "prose-blockquote:border-primary"
-              }
-              prose-a:text-primary
-              prose-img:rounded-2xl prose-img:shadow-lg
-              dark:prose-invert
-            `}
+              className="
+                mx-auto max-w-4xl
+                prose prose-lg
+                prose-headings:font-bold prose-headings:font-display prose-headings:tracking-tighter
+                prose-h2:text-foreground
+                prose-blockquote:border-l-4 prose-blockquote:border-[hsl(var(--primary))]
+                prose-a:text-primary
+                prose-img:rounded-2xl prose-img:shadow-lg
+                dark:prose-invert
+              "
             >
               {Component ? (
                 <Component />
@@ -161,13 +143,7 @@ const ProjectPage: React.FC = () => {
             {/* Gallery Section */}
             {project.gallery && project.gallery.length > 0 && (
               <div className="mt-16 md:mt-24 pt-10 md:pt-16 border-t border-border/20 scroll-snap-item scroll-mt-24">
-                <h2
-                  className={`heading-primary text-3xl md:text-4xl font-bold mb-12 text-center ${
-                    isDesigner
-                      ? "text-gradient-designer"
-                      : "text-gradient-engineer"
-                  }`}
-                >
+                <h2 className="text-3xl md:text-4xl font-bold font-display tracking-tighter mb-12 text-center text-foreground">
                   Project Gallery
                 </h2>
                 <ProjectGallery

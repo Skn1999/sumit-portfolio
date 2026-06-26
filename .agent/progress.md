@@ -80,4 +80,22 @@ This file is updated by AI agents after each task is attempted or completed. It 
 - Acceptance criteria: Singular typography block defined, asymmetric layout with whitespace configured, location tag implemented, display title implemented with geometric sans-serif tracking, description narrative under 3 sentences implemented, responsive integrity checked.
 - Follow-ups / risks: None. The bento grid elements were removed completely as per the instructions, keeping the layout visual hierarchy clean and typographic.
 
+### 2026-06-26 - tasks/task_012_smooth_scrolling_and_motion_blur.md
+
+- Status: Completed
+- Summary: Implemented smooth inertia scrolling using Lenis and dynamic directional Y-axis motion blur using an SVG Gaussian filter updated via scroll velocity in a highly optimized RAF loop.
+- Files changed:
+  - `package.json`
+  - `src/App.tsx`
+  - `src/index.css`
+  - `src/components/SmoothScroll.tsx`
+  - `src/pages/Index.tsx`
+  - `src/pages/ProjectPage.tsx`
+  - `src/pages/UxBitePage.tsx`
+  - `src/pages/UxBitesList.tsx`
+  - `src/pages/ResumePage.tsx`
+- Tests run: `npm run lint` and `npm run build` compiled successfully.
+- Acceptance criteria: Inertia scrolling is smooth; scroll velocity listener maps velocity dynamically to Y-axis blur using an SVG `<feGaussianBlur>` filter; disabled filters and smooth animations on `prefers-reduced-motion: reduce`; kept header, TOC, and other fixed/sticky components sharp and outside the filtered content container.
+- Follow-ups / risks: None. Easing scroll blur with sub-pixel thresholds prevents jank or layout recalculations.
+
 

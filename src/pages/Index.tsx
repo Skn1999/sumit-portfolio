@@ -1,16 +1,13 @@
-import { ModeProvider, useMode } from "@/contexts/ModeContext";
-import ModeToggle from "@/components/ModeToggle";
 import { Layout, Container } from "@/components/Layout";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import HeroSection from "@/components/HeroSection";
+import { ResearchLabs, ProductionSandbox, LogisticsCleardown } from "@/components/SecondaryModules";
 import ScrollProgress from "@/components/ScrollProgress";
 import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
 
 const IndexContent = () => {
-  const { mode } = useMode();
-
   return (
     <Layout>
       <SEO
@@ -32,10 +29,10 @@ const IndexContent = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        className="mode-transition relative mode-dependent-content"
+        className="relative"
       >
         <ScrollProgress />
-        <div className="relative z-10">
+        <div className="relative z-10 scroll-blur-content">
           <Container>
             <HeroSection />
           </Container>
@@ -46,8 +43,18 @@ const IndexContent = () => {
           </Container>
 
           <Container>
+            <ResearchLabs />
+          </Container>
+
+          <Container>
+            <ProductionSandbox />
+          </Container>
+
+          <Container>
             <Contact />
           </Container>
+
+          <LogisticsCleardown />
         </div>
       </motion.div>
     </Layout>

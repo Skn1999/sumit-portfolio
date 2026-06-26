@@ -1,9 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import ModeToggle from "./ModeToggle";
 import ThemeToggle from "./ThemeToggle";
-import { useMode } from "@/contexts/ModeContext";
 
 /* ── Desktop nav link ── */
 const NavLink = ({
@@ -90,9 +88,7 @@ const slatVariant: Variants = {
 };
 
 const Header = () => {
-  const { mode } = useMode();
   const location = useLocation();
-  const isDesigner = mode === "designer";
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = useCallback(() => setMenuOpen((v) => !v), []);
@@ -111,16 +107,14 @@ const Header = () => {
   }, [menuOpen]);
 
   return (
-    <header className="w-full border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-40 mode-transition">
+    <header className="w-full border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-40">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo + desktop nav */}
           <div className="flex items-center gap-8">
             <Link
               to="/"
-              className={`text-xl font-bold tracking-tight transition-all hover:scale-105 ${
-                isDesigner ? "font-designer" : "font-engineer"
-              }`}
+              className="text-xl font-bold tracking-tight transition-all hover:scale-105 font-display"
             >
               <div className="w-12 md:w-16 h-auto">
                 <img
@@ -186,13 +180,7 @@ const Header = () => {
                   <Link
                     to={item.to}
                     onClick={() => setMenuOpen(false)}
-                    className={`block px-4 py-4 text-lg font-semibold tracking-tight rounded-xl transition-colors
-                      ${
-                        isDesigner
-                          ? "font-designer hover:bg-[hsl(var(--designer-primary)/0.08)]"
-                          : "font-engineer hover:bg-primary/5"
-                      }
-                    `}
+                    className="block px-4 py-4 text-lg font-semibold tracking-tight rounded-xl transition-colors font-display hover:bg-primary/5"
                   >
                     <span className="flex items-center justify-between">
                       <span>{item.label}</span>
@@ -201,13 +189,7 @@ const Header = () => {
                       </span>
                     </span>
                     {/* Slat divider line */}
-                    <span
-                      className={`block mt-4 h-[1px] w-full ${
-                        isDesigner
-                          ? "bg-[hsl(var(--designer-primary)/0.15)]"
-                          : "bg-border"
-                      }`}
-                    />
+                    <span className="block mt-4 h-[1px] w-full bg-border/40" />
                   </Link>
                 </motion.div>
               ))}

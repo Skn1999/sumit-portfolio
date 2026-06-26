@@ -1,44 +1,27 @@
-import { useMode } from "@/contexts/ModeContext";
 import { Mail, Linkedin, FileText } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import MagneticButton from "./MagneticButton";
 
 const Contact = () => {
-  const { mode } = useMode();
-  const isEngineer = mode === "engineer";
-
   return (
-    <section id="contact" className="py-12 md:py-24">
-      <div className="max-w-4xl mx-auto text-center">
-        <h2
-          className={`heading-primary text-4xl md:text-5xl font-bold mb-6 mode-transition ${
-            isEngineer ? "text-gradient-engineer" : "text-gradient-designer"
-          }`}
-        >
-          {isEngineer
-            ? "Coffee? Chat? Let's Talk."
-            : "Your Project Needs This Energy"}
+    <section id="contact" className="py-16 md:py-32">
+      <div className="max-w-4xl mx-auto text-center px-4 md:px-0">
+        <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mb-6">
+          Coffee? Chat? Let's Talk.
         </h2>
 
-        <p className="text-lg md:text-xl text-muted-foreground mb-8 md:mb-12 max-w-2xl mx-auto leading-relaxed">
-          {isEngineer
-            ? "I bring curiosity, code, and coffee. Let's build something you're proud of."
-            : "I bring empathy, research, and imagination. Let's create experiences people love."}
+        <p className="text-lg md:text-xl text-muted-foreground mb-8 md:mb-12 max-w-2xl mx-auto leading-relaxed font-body-narrative">
+          I bring curiosity, code, and coffee. Let's build something we're proud of.
         </p>
 
         <div className="flex flex-wrap gap-4 justify-center">
           <MagneticButton
             size="lg"
-            className={`${
-              isEngineer
-                ? "font-engineer"
-                : "font-designer neubrutalism-button bg-[hsl(var(--designer-primary))] text-primary-foreground"
-            }`}
+            className="font-label text-xs tracking-wider uppercase font-semibold"
             asChild
           >
             <a href="mailto:sknayyar.sk@gmail.com">
-              <Mail className="w-5 h-5 mr-2" />
+              <Mail className="w-4 h-4 mr-2" />
               Email Me
             </a>
           </MagneticButton>
@@ -46,9 +29,7 @@ const Contact = () => {
           <MagneticButton
             size="lg"
             variant="outline"
-            className={`${
-              isEngineer ? "font-engineer" : "font-designer neubrutalism-button"
-            }`}
+            className="font-label text-xs tracking-wider uppercase font-semibold"
             asChild
           >
             <a
@@ -56,7 +37,7 @@ const Contact = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Linkedin className="w-5 h-5 mr-2" />
+              <Linkedin className="w-4 h-4 mr-2" />
               LinkedIn
             </a>
           </MagneticButton>
@@ -64,28 +45,19 @@ const Contact = () => {
           <MagneticButton
             size="lg"
             variant="outline"
-            className={`${
-              isEngineer ? "font-engineer" : "font-designer neubrutalism-button"
-            }`}
+            className="font-label text-xs tracking-wider uppercase font-semibold"
             asChild
           >
             <Link to="/resume">
-              <FileText className="w-5 h-5 mr-2" />
+              <FileText className="w-4 h-4 mr-2" />
               Resume
             </Link>
           </MagneticButton>
         </div>
 
         {/* ── Substack Subscribe ── */}
-        <div className="mt-16 mx-auto text-center">
-          {/* <p className="text-sm text-muted-foreground font-body mb-1">
-            I also write about the quiet, unfiltered side of life.
-          </p>
-          <p className="text-base font-heading font-semibold text-foreground mb-4">
-            awkward silences, unspoken kindnesses, and moments we replay in our
-            heads.
-          </p> */}
-          <div className="rounded-2xl overflow-hidden border border-border shadow-sm">
+        <div className="mt-16 mx-auto text-center max-w-xl">
+          <div className="rounded-2xl overflow-hidden border border-border/60 shadow-sm">
             <iframe
               src="https://sumit6131.substack.com/embed"
               width="100%"
@@ -98,7 +70,7 @@ const Contact = () => {
           </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t">
+        <div className="mt-20 pt-8 border-t border-border/20">
           <p className="text-sm text-muted-foreground">
             © 2026 Sumit Knayyar. Designed with intention, built with care.
           </p>

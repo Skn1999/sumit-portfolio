@@ -390,95 +390,34 @@ All colors MUST be HSL.
   }
 
   /* ===== TYPOGRAPHY ===== */
-  .text-gradient-engineer {
-    @apply bg-gradient-to-r from-[hsl(var(--engineer-primary))] to-[hsl(var(--engineer-accent))] bg-clip-text text-transparent;
-  }
-
-  .text-gradient-designer {
-    @apply bg-gradient-to-r from-[hsl(var(--designer-primary))] to-[hsl(var(--designer-accent))] bg-clip-text text-transparent;
-  }
-
-  /* Engineer mode: Clean, precise typography */
-  [data-mode="engineer"] .heading-primary {
-    @apply font-engineer tracking-tight leading-[1.1];
-    letter-spacing: -0.02em;
-  }
-
-  /* Designer mode: Expressive, bold typography */
-  [data-mode="designer"] .heading-primary {
-    @apply font-designer tracking-normal leading-[1.15];
-    letter-spacing: -0.01em;
+  .heading-primary {
+    @apply font-display tracking-tighter leading-[1.1] font-bold;
   }
 
   /* ===== CARDS & SURFACES ===== */
-  /* Engineer mode: Minimal, clean cards with subtle shadows */
-  [data-mode="engineer"] .card-styled {
-    @apply bg-card border border-border rounded-xl;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  .card-styled {
+    @apply bg-card border border-border/80 rounded-xl transition-all duration-300;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
   }
 
-  [data-mode="engineer"] .card-styled:hover {
-    @apply border-[hsl(var(--engineer-primary)/0.4)];
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  }
-
-  /* Designer mode: Bold neubrutalism cards */
-  [data-mode="designer"] .card-styled {
-    @apply bg-card border-4 border-[hsl(var(--designer-border))] rounded-xl;
-    box-shadow: 6px 6px 0px hsl(var(--designer-border));
-  }
-
-  [data-mode="designer"] .card-styled:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 4px 4px 0px hsl(var(--designer-border));
+  .card-styled:hover {
+    @apply border-[hsl(var(--primary))/0.6];
+    box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.04);
   }
 
   /* ===== GLOWS & EFFECTS ===== */
-  .glow-engineer {
-    box-shadow: 0 0 40px -10px hsl(var(--engineer-glow) / 0.5);
-  }
-
-  .glow-designer {
-    box-shadow: 6px 6px 0px hsl(var(--designer-border));
-  }
-
-  /* ===== NEUBRUTALISM (Designer Mode) ===== */
-  .neubrutalism-card {
-    @apply border-4 border-[hsl(var(--designer-border))] rounded-lg;
-    box-shadow: 8px 8px 0px hsl(var(--designer-border));
-  }
-
-  .neubrutalism-button {
-    @apply border-[3px] border-[hsl(var(--designer-border))];
-    box-shadow: 4px 4px 0px hsl(var(--designer-border));
-    transition: all 0.2s ease;
-  }
-
-  .neubrutalism-button:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px hsl(var(--designer-border));
-  }
-
-  .neubrutalism-button:active {
-    transform: translate(4px, 4px);
-    box-shadow: 0px 0px 0px hsl(var(--designer-border));
+  .glow-effect {
+    box-shadow: 0 0 40px -10px hsl(var(--primary) / 0.3);
   }
 
   /* ===== BADGES & TAGS ===== */
-  [data-mode="engineer"] .badge-styled {
+  .badge-styled {
     @apply px-3 py-1 rounded-full text-xs font-semibold;
-    @apply bg-[hsl(var(--engineer-primary))] text-white;
-    box-shadow: 0 2px 8px hsl(var(--engineer-primary) / 0.25);
+    @apply bg-[hsl(var(--primary))] text-white;
+    box-shadow: 0 2px 8px hsl(var(--primary) / 0.25);
   }
 
-  [data-mode="designer"] .badge-styled {
-    @apply px-3 py-1 rounded-lg text-xs font-bold;
-    @apply bg-[hsl(var(--designer-primary))] text-white;
-    @apply border-2 border-[hsl(var(--designer-border))];
-    box-shadow: 3px 3px 0px hsl(var(--designer-border));
-  }
-
-  /* ===== APPLE-LIKE HOVER EFFECTS (Engineer Mode) ===== */
+  /* ===== APPLE-LIKE HOVER EFFECTS ===== */
   .apple-hover {
     transition: var(--transition-smooth);
   }
@@ -505,12 +444,8 @@ All colors MUST be HSL.
   }
 
   /* ===== SECTION BACKGROUNDS ===== */
-  [data-mode="engineer"] .section-alt {
+  .section-alt {
     @apply bg-muted/20;
-  }
-
-  [data-mode="designer"] .section-alt {
-    @apply bg-muted/30;
   }
 
   /* ===== TWO-COLUMN ARTICLE LAYOUT ===== */
@@ -1124,5 +1059,17 @@ pre {
 @keyframes fade-out-caption {
   to {
     opacity: 0;
+  }
+}
+
+/* Scroll-Velocity Motion Blur CSS Filter mapping */
+.scroll-blur-content {
+  filter: url(#scroll-blur);
+  will-change: filter;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-blur-content {
+    filter: none !important;
   }
 }
