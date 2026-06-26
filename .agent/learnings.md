@@ -71,4 +71,11 @@ This file is updated by AI agents after each task is attempted or completed. It 
 - Resolution: Resolved by declaring global interface extensions for `window` and typing `lenis?: Lenis` directly in `SmoothScroll.tsx`.
 - Future instruction: When applying CSS filters or transformations that might affect layout context, verify that sticky or fixed positioned descendants are rendered outside of the target DOM wrapper.
 
+### 2026-06-26 - tasks/task_013_homepage_academic_cohorts_and_credentials.md
+
+- Lessons learned: Designing tabular interfaces as custom CSS grids (`grid-cols-12`) rather than HTML `<table>` tags allows for a highly polished editorial style that can be dynamically reshuffled on smaller viewports. Standard HTML tables squish or force horizontal overflow, whereas grids can hide headers and render field-level labels inline on mobile screen widths to provide maximum data density without breaking responsive layouts.
+- Errors or surprises: Generic HTML tables can look boring and basic, failing to meet the visual criteria for Awwwards-style portfolio layouts.
+- Resolution: Refactored generic `<table>` tags to custom asymmetric CSS grids with micro-animations, clean card layers, and inline label tags for mobile viewports.
+- Future instruction: Prefer CSS grids over standard HTML `<table>` layouts for complex content matrices in editorial designs to ensure high art-direction control and clean mobile scaling.
+
 

@@ -2,7 +2,7 @@ import { Layout, Container } from "@/components/Layout";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import HeroSection from "@/components/HeroSection";
-import { ResearchLabs, ProductionSandbox, LogisticsCleardown } from "@/components/SecondaryModules";
+import { AcademicCohorts, ProfessionalCredentials, LogisticsCleardown } from "@/components/SecondaryModules";
 import ScrollProgress from "@/components/ScrollProgress";
 import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
@@ -43,11 +43,11 @@ const IndexContent = () => {
           </Container>
 
           <Container>
-            <ResearchLabs />
+            <AcademicCohorts />
           </Container>
 
           <Container>
-            <ProductionSandbox />
+            <ProfessionalCredentials />
           </Container>
 
           <Container>

@@ -98,4 +98,15 @@ This file is updated by AI agents after each task is attempted or completed. It 
 - Acceptance criteria: Inertia scrolling is smooth; scroll velocity listener maps velocity dynamically to Y-axis blur using an SVG `<feGaussianBlur>` filter; disabled filters and smooth animations on `prefers-reduced-motion: reduce`; kept header, TOC, and other fixed/sticky components sharp and outside the filtered content container.
 - Follow-ups / risks: None. Easing scroll blur with sub-pixel thresholds prevents jank or layout recalculations.
 
+### 2026-06-26 - tasks/task_013_homepage_academic_cohorts_and_credentials.md
+
+- Status: Completed
+- Summary: Restructured secondary homepage modules to match updated redesign requirements. Replaced placeholder labs and sandboxes with a consolidated AcademicCohorts index (designed as an asymmetric, grid-aligned editorial list) and introduced a ProfessionalCredentials certification registry table (designed as a high-density mobile-responsive data grid block).
+- Files changed:
+  - `src/components/SecondaryModules.tsx`
+  - `src/pages/Index.tsx`
+- Tests run: `npm run lint` and `npm run build` compiled successfully.
+- Acceptance criteria: Single unified AcademicCohorts table implemented with proper deliverables, arrow link triggers, and links; high-density ProfessionalCredentials registry table created with exact credential lists and hidden mobile metadata helper tags; both integrated smoothly on the Index page with responsive layout integrity.
+- Follow-ups / risks: None.
+
 
