@@ -1,6 +1,6 @@
 import { Layout, Container } from "@/components/Layout";
 import Projects from "@/components/Projects";
-import Contact from "@/components/Contact";
+import Contact, { UnsaidMoments, Footer } from "@/components/Contact";
 import HeroSection from "@/components/HeroSection";
 import {
   AcademicCohorts,
@@ -56,7 +56,13 @@ const IndexContent = () => {
             <Contact />
           </Container>
 
+          <Container>
+            <UnsaidMoments />
+          </Container>
+
           <LogisticsCleardown />
+
+          <Footer />
         </div>
       </motion.div>
     </Layout>

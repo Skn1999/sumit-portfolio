@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { FileText } from "lucide-react";
+import { Link } from "react-router-dom";
 import DotGridBackground from "./DotGridBackground";
+import MagneticButton from "./MagneticButton";
 
 const HeroSection: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -43,9 +46,14 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.5 }}
-              className="font-label uppercase tracking-widest text-[10px] md:text-xs font-semibold text-slate-500 mb-6"
+              className="font-label uppercase tracking-widest text-[10px] md:text-xs font-semibold text-slate-500 mb-6 flex items-center gap-2 flex-wrap"
             >
-              LOC: HELSINKI, FI // SYSTEM STATE: IMMEDIATE ACCESSIBILITY
+              <span>LOC: HELSINKI, FI // SYSTEM STATE:</span>
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span>IMMEDIATE ACCESSIBILITY</span>
             </motion.div>
 
             {/* Primary Display Title */}
@@ -73,6 +81,26 @@ const HeroSection: React.FC = () => {
               years of enterprise frontend execution with an HCI Master's from
               Aalto University and University of Trento.
             </motion.p>
+
+            {/* View Resume Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              className="mt-8"
+            >
+              <MagneticButton
+                size="lg"
+                variant="outline"
+                className="font-label text-xs tracking-wider uppercase font-semibold border-border/80 hover:border-primary/50"
+                asChild
+              >
+                <Link to="/resume" className="flex items-center gap-2">
+                  <FileText className="w-4 h-4" />
+                  View Resume
+                </Link>
+              </MagneticButton>
+            </motion.div>
           </div>
 
           {/* Right Column: Profile Image */}
