@@ -7,24 +7,19 @@ import { createPortal } from "react-dom";
 export const AcademicCohorts: React.FC = () => {
   const cohorts = [
     {
+      title: "Mesa Te Club",
+      focus:
+        "A participatory design proposal that uses tea gatherings and playful co-design tools to help social housing residents, municipalities, and developers collaboratively shape common areas.",
+      deliverable: "Co-Design Case Study & Proposal",
+      link: "/projects/social-integration-pd",
+    },
+    {
       title: "UX Bites",
       focus:
         "Rapid Frontend Prototypes and design explorations where I take random Saas products and try to do a small UX improvement..",
       deliverable: "Small audits. Sharp observations. Joyful fixes.",
       link: "/ux-bites",
     },
-    // {
-    //   title: "EIT Digital Venture Lab Project",
-    //   focus: "Scalable service prototyping, pan-European stakeholder alignment, and interface flow mapping for emerging digital ecosystems.",
-    //   deliverable: "Interactive high-fidelity prototype and systemic venture architecture roadmap",
-    //   link: null,
-    // },
-    // {
-    //   title: "Selected Master's Curricular Systems Design",
-    //   focus: "Applying advanced user-centered research methodologies, semantic layouts, and data visualizations to complex interactive domains.",
-    //   deliverable: "Complete heuristic analysis documentation and user testing matrices",
-    //   link: null,
-    // },
   ];
 
   return (

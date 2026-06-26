@@ -8,7 +8,7 @@ import { getProjectBySlug } from "@/lib/projects";
 const Projects = () => {
   const optmyzrProject = getProjectBySlug("optmyzr-dashboard-migration");
   const ediaqiProject = getProjectBySlug("ediaqi-decision-support-system");
-  const socialIntegrationProject = getProjectBySlug("social-integration-pd");
+  const superEgoProject = getProjectBySlug("super-ego-app");
 
   const cards = [
     {
@@ -30,12 +30,12 @@ const Projects = () => {
       imageSide: "left",
     },
     {
-      project: socialIntegrationProject,
-      slug: "social-integration-pd",
-      monospaceHeader: "PROJECT 03 // PARTICIPATORY SERVICE DESIGN",
-      title: "Mesa Te Club: Co-Designing Common Spaces for Social Integration",
-      metricBanner: "Designed and executed collaborative participatory frameworks and co-design toolkits to transform underutilized social housing common areas into active, resident-owned community spaces.",
-      skillTags: ["Participatory Design", "Co-design Workshops", "Service Design", "User Research"],
+      project: superEgoProject,
+      slug: "super-ego-app",
+      monospaceHeader: "PROJECT 03 // BEHAVIORAL INTERACTION SYSTEM",
+      title: "YOU (SuperEgo) — OS-Level Assistant for Preconscious Habit Alignment",
+      metricBanner: "Designed and prototyped an operating-system-level assistant that translates quiet behavioral signals into personalized, friction-based nudges adapting to emotional awareness.",
+      skillTags: ["Behavioral Design", "Interaction Logic", "Prototyping", "Social Psychology"],
       imageSide: "right",
     },
   ];
