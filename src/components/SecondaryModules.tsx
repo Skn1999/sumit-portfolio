@@ -36,7 +36,7 @@ export const AcademicCohorts: React.FC = () => {
             // ACADEMIC PORTFOLIO
           </span>
           <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mt-2 tracking-tighter">
-            Academic Case Cohorts &amp; UX Bites
+            Side-Quest Cohorts
           </h2>
         </div>
 
