@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Lenis from "lenis";
 import { useLocation } from "react-router-dom";
 
@@ -10,7 +10,6 @@ declare global {
 
 export const SmoothScroll = () => {
   const { pathname } = useLocation();
-  const filterRef = useRef<SVGFEGaussianBlurElement>(null);
 
   useEffect(() => {
     // 1. Accessibility check: check if the user prefers reduced motion
@@ -37,35 +36,10 @@ export const SmoothScroll = () => {
     window.lenis = lenis;
 
     let rafId: number;
-    let targetBlur = 0;
-    let currentBlur = 0;
-    const EASING = 0.15; // Smooth blur transition speed
-    const MAX_BLUR = 4.5; // Cap the maximum blur to prevent legibility issues
-    const VELOCITY_SCALE = 0.08; // Scale velocity to pixel blur range
 
     // 3. Animation frame loop
     const tick = (time: number) => {
       lenis.raf(time);
-
-      // Read current scroll velocity from Lenis
-      const velocity = Math.abs(lenis.velocity);
-
-      // Calculate target blur based on velocity
-      targetBlur = Math.min(velocity * VELOCITY_SCALE, MAX_BLUR);
-
-      // Ease the current blur to prevent flickering or sudden jumps
-      currentBlur += (targetBlur - currentBlur) * EASING;
-
-      // Threshold cleanup to avoid sub-pixel rendering calculations
-      if (Math.abs(targetBlur - currentBlur) < 0.01) {
-        currentBlur = targetBlur;
-      }
-
-      // Update the Y-axis blur on the SVG element directly for performance
-      if (filterRef.current) {
-        filterRef.current.setAttribute("stdDeviation", `0 ${currentBlur.toFixed(2)}`);
-      }
-
       rafId = requestAnimationFrame(tick);
     };
 
@@ -89,25 +63,7 @@ export const SmoothScroll = () => {
     }
   }, [pathname]);
 
-  return (
-    <svg
-      width="0"
-      height="0"
-      className="absolute pointer-events-none"
-      style={{ visibility: "hidden", position: "absolute", top: -100, left: -100 }}
-      aria-hidden="true"
-    >
-      <defs>
-        <filter id="scroll-blur">
-          <feGaussianBlur
-            ref={filterRef}
-            stdDeviation="0 0"
-            edgeMode="duplicate"
-          />
-        </filter>
-      </defs>
-    </svg>
-  );
+  return null;
 };
 
 export default SmoothScroll;

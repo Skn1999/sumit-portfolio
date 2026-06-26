@@ -1062,14 +1062,7 @@ pre {
   }
 }
 
-/* Scroll-Velocity Motion Blur CSS Filter mapping */
+/* Scroll-Velocity Motion Blur CSS Filter mapping disabled */
 .scroll-blur-content {
-  filter: url(#scroll-blur);
-  will-change: filter;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scroll-blur-content {
-    filter: none !important;
-  }
+  /* Motion blur disabled */
 }
