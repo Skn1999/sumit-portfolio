@@ -134,8 +134,8 @@ I structured the project around **five falsifiable research hypotheses** linking
   </tbody>
 </table>
 
-<details className="border rounded-lg p-4 mb-6 bg-slate-50 group px-[16px] py-0">
-  <summary className="cursor-pointer font-semibold text-sm hover:text-blue-700 inline flex items-center gap-3 transition-colors">
+<details className="border rounded-lg mb-6 bg-muted/40 dark:bg-muted/10 group px-[16px] py-0">
+  <summary className="cursor-pointer font-semibold text-sm hover:text-primary flex items-center gap-3 transition-colors py-3 min-h-[44px]">
     <span className="inline-block text-lg group-open:scale-110 transition-transform duration-300 origin-center">
       💡
     </span>
@@ -158,19 +158,19 @@ I structured the project around **five falsifiable research hypotheses** linking
 
 ## Key Design Decisions
 
-<section class="grid grid-cols-3 gap-6 mt-6">
-  <article class="border col-span-1 rounded-lg p-6 shadow-sm bg-neutral-800">
-    <h4 class="text-lg font-semibold mb-3">Role Separation is Non-Negotiable</h4>
-    <ul class="list-disc pl-5 mb-3 text-sm">
+<section className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+  <article className="border border-border/40 rounded-2xl p-6 bg-muted/30 dark:bg-muted/10 col-span-1">
+    <h4 className="text-lg font-semibold mb-3">Role Separation is Non-Negotiable</h4>
+    <ul className="list-disc pl-5 mb-3 text-sm">
       <li><strong>Basic View</strong>: for teachers and office workers: minimal parameters, plain-language action guidance, single-location context</li>
       <li><strong>Advanced View</strong>: for facility staff: multi-location monitoring, severity-ranked alerts, compliance documentation flows</li>
     </ul>
   </article>
 
-  <article class="border col-span-1 rounded-lg p-6 shadow-sm bg-neutral-800">
-    <h4 class="text-lg font-semibold mb-3">The Action Protocol Layer</h4>
-    <p class="mb-3 text-sm">Drawing from the Boston Public Schools IAQ Response Action Plan precedent, I designed an explicit action protocol layer that sits between the sensor reading and the user. For each parameter threshold breach, the system surfaces:</p>
-    <ol class="list-decimal pl-5 space-y-2 text-sm">
+  <article className="border border-border/40 rounded-2xl p-6 bg-muted/30 dark:bg-muted/10 col-span-1">
+    <h4 className="text-lg font-semibold mb-3">The Action Protocol Layer</h4>
+    <p className="mb-3 text-sm">Drawing from the Boston Public Schools IAQ Response Action Plan precedent, I designed an explicit action protocol layer that sits between the sensor reading and the user. For each parameter threshold breach, the system surfaces:</p>
+    <ol className="list-decimal pl-5 space-y-2 text-sm">
       <li>A plain-language severity label</li>
       <li>A context-specific action prompt (e.g., "Open two windows cross-ventilation recommended")</li>
       <li>A one-tap logging action for compliance documentation</li>
@@ -178,10 +178,10 @@ I structured the project around **five falsifiable research hypotheses** linking
     </ol>
   </article>
 
-  <article class="border col-span-1 rounded-lg p-6 shadow-sm bg-neutral-800">
-    <h4 class="text-lg font-semibold mb-3">Wall-Mounted Tablet Display</h4>
-    <p class="mb-3 text-sm">I designed four contextual display states:</p>
-    <ul class="list-disc pl-5 space-y-2 text-sm">
+  <article className="border border-border/40 rounded-2xl p-6 bg-muted/30 dark:bg-muted/10 col-span-1">
+    <h4 className="text-lg font-semibold mb-3">Wall-Mounted Tablet Display</h4>
+    <p className="mb-3 text-sm">I designed four contextual display states:</p>
+    <ul className="list-disc pl-5 space-y-2 text-sm">
       <li><strong>Ambient / Passive</strong> — ambient quality visible at a glance, no action required</li>
       <li><strong>Alert</strong> — threshold exceeded, action prompt displayed prominently</li>
       <li><strong>Action Taken / Recovery Tracking</strong> — confirms action logged, tracks parameter recovery</li>
@@ -206,16 +206,11 @@ I designed a wall-mounted tablet display prototype that visualizes the five cont
 
 <MagneticButton
     size="lg"
-    className={`${
-      "font-designer neubrutalism-button bg-[hsl(var(--designer-primary))] text-white"
-    }`}
-    asChild
+    className="font-label text-xs tracking-wider uppercase font-semibold"
     magneticRadius={300}
     onClick={() => window.open('https://www.figma.com/make/NMaJtePg9r2moSJt4pxSZr/Indoor-Air-Quality-Display?fullscreen=1&t=8ZFJ14PVlixDqryN-1&code-node-id=0-9', '_blank')}
 >
-  <span className="text-white no-underline cursor-pointer">
-    View the Interactive Prototype
-  </span>
+  View the Interactive Prototype
 </MagneticButton>
 
 ---
@@ -232,16 +227,11 @@ After the evaluation, a V2 version of the dashboard was created which can be acc
 
 <MagneticButton
     size="lg"
-    className={`${
-      "font-designer neubrutalism-button bg-[hsl(var(--designer-primary))] text-white"
-    }`}
-    asChild
+    className="font-label text-xs tracking-wider uppercase font-semibold"
     magneticRadius={300}
     onClick={() => window.open('https://www.figma.com/make/rGy3EC5u9Kv5cjRtsqL3Nx/Low-Fidelity-Wireframes-for-Dashboard?fullscreen=1&t=TnOHy22IdTdxUu9z-1&code-node-id=0-9', '_blank')}
 >
-  <span className="text-white no-underline cursor-pointer">
-    View the Dashboard Prototype
-  </span>   
+  View the Dashboard Prototype
 </MagneticButton>
 
 ---

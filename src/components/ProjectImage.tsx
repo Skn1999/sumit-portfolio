@@ -2,7 +2,6 @@ import { cn } from "@/lib/utils";
 import type { ProjectImage as ProjectImageType } from "@/lib/projects";
 import { HTMLAttributes, useState } from "react";
 import { ProjectImageAsset } from "./ui/project-image-asset";
-import { useMode } from "@/contexts/ModeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
@@ -48,8 +47,6 @@ export function ProjectGallery({
   images,
   className,
 }: ProjectGalleryProps) {
-  const { mode } = useMode();
-  const isDesigner = mode === "designer";
   const [selectedImage, setSelectedImage] = useState<ProjectImageType | null>(
     null
   );
@@ -65,11 +62,7 @@ export function ProjectGallery({
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
             onClick={() => setSelectedImage(image)}
-            className={`group cursor-pointer overflow-hidden transition-all ${
-              isDesigner
-                ? "rounded-xl border-4 border-[hsl(var(--designer-border))] hover:shadow-[6px_6px_0px_hsl(var(--designer-border))]"
-                : "rounded-xl shadow-lg hover:shadow-2xl"
-            }`}
+            className="group cursor-pointer overflow-hidden transition-all rounded-xl border border-border/80 bg-[hsl(var(--card))] shadow-sm hover:shadow-md hover:border-border"
           >
             <div className="relative overflow-hidden aspect-[4/3]">
               <ProjectImageAsset

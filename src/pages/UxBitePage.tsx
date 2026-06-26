@@ -60,7 +60,7 @@ const UxBitePage: React.FC = () => {
           />
         )}
 
-        <article className="min-h-screen">
+        <article className="min-h-screen scroll-blur-content">
           <div className="mx-auto w-full max-w-3xl px-5 md:px-6">
             {/* Hero */}
             <header className="pt-10 md:pt-16 pb-8 md:pb-12">

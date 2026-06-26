@@ -2,11 +2,9 @@ import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { getProjectBySlug } from "@/lib/projects";
 import { ProjectHero } from "@/components/projects/ProjectHero";
-import { MetadataStrip } from "@/components/projects/MetadataStrip";
 import { ProjectFooter } from "@/components/projects/ProjectFooter";
 import { TableOfContents } from "@/components/projects/TableOfContents";
 import { ProjectGallery } from "@/components/ProjectImage";
-import { useMode } from "@/contexts/ModeContext";
 import { Layout } from "@/components/Layout";
 import ReadingProgress from "@/components/ReadingProgress";
 import SEO from "@/components/SEO";
@@ -14,15 +12,64 @@ import SEO from "@/components/SEO";
 const ProjectPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const project = getProjectBySlug(slug || "");
-  const { mode } = useMode();
-  const isDesigner = mode === "designer";
+
+  React.useEffect(() => {
+    if (!project) return;
+
+    // Only run if native CSS scroll timelines are NOT supported and user does not prefer reduced motion
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion || CSS.supports("animation-timeline: view()")) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+          }
+        });
+      },
+      {
+        rootMargin: "0px 0px -10% 0px", // triggers slightly before entering full view
+        threshold: 0.05,
+      }
+    );
+
+    // Select all elements to reveal on scroll
+    const selectors = [
+      ".project-page-snap-container article > h2",
+      ".project-page-snap-container article > h3",
+      ".project-page-snap-container article > h4",
+      ".project-page-snap-container article > p",
+      ".project-page-snap-container article > ul",
+      ".project-page-snap-container article > ol",
+      ".project-page-snap-container .scroll-reveal",
+      ".project-page-snap-container blockquote",
+      ".project-page-snap-container pre",
+      ".project-page-snap-container figure",
+      ".project-page-snap-container .scroll-snap-item",
+    ];
+
+    const elements = document.querySelectorAll(selectors.join(", "));
+    elements.forEach((el) => {
+      el.classList.add("scroll-reveal-fallback");
+      observer.observe(el);
+    });
+
+    return () => {
+      elements.forEach((el) => {
+        observer.unobserve(el);
+      });
+    };
+  }, [project]);
 
   if (!project) {
     return (
       <Layout>
         <main className="min-h-screen flex items-center justify-center px-6">
           <div className="card-styled p-12 rounded-2xl text-center max-w-md">
-            <h1 className="heading-primary text-4xl font-bold mb-4">
+            <h1 className="typography-hero text-4xl mb-4">
               Project not found
             </h1>
             <p className="text-muted-foreground mb-6">
@@ -64,148 +111,25 @@ const ProjectPage: React.FC = () => {
         publishedDate={project.date}
       />
       <ReadingProgress />
-      <div className="min-h-screen relative">
+      <TableOfContents />
+      <div className="scroll-blur-content min-h-screen relative project-page-snap-container bg-background">
         {/* Hero Section */}
         <ProjectHero project={project} />
 
-        {/* Table of Contents - Fixed position, outside flow */}
-        <TableOfContents />
-
         {/* Main Content Container */}
-        <div className="max-w-7xl mx-auto px-4 md:px-6 relative">
-          {/* Combined Metadata Strip - Full Width */}
-          <div className="py-6 md:py-12 border-b border-border/20">
-            {/* <MetadataStrip project={project} /> */}
-
-            {/* Project Info Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-0 sm:gap-6">
-              {/* Client/Company */}
-              {project.links?.client && (
-                <div className="py-4 sm:py-0 border-b sm:border-b-0 border-border/15">
-                  <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">
-                    Client
-                  </h3>
-                  <p className="text-sm font-medium text-foreground">
-                    {project.links.client}
-                  </p>
-                </div>
-              )}
-
-              {/* Project Type */}
-              {project.type && (
-                <div className="py-4 sm:py-0 border-b sm:border-b-0 border-border/15">
-                  <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">
-                    Project Type
-                  </h3>
-                  <p className="text-sm font-medium text-foreground">
-                    {project.type === "engineering"
-                      ? "Engineering"
-                      : "Design Case Study"}
-                  </p>
-                </div>
-              )}
-
-              {/* Role */}
-              {project.roles && project.roles.length > 0 && (
-                <div className="py-4 sm:py-0 border-b sm:border-b-0 border-border/15">
-                  <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">
-                    Role
-                  </h3>
-                  <p className="text-sm font-medium text-foreground">
-                    {project.roles.join(", ")}
-                  </p>
-                </div>
-              )}
-
-              {/* Timeline */}
-              {project.date && (
-                <div className="py-4 sm:py-0 border-b sm:border-b-0 border-border/15">
-                  <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">
-                    Timeline
-                  </h3>
-                  <p className="text-sm font-medium text-foreground">
-                    {new Date(project.date).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                    })}
-                  </p>
-                </div>
-              )}
-
-              {/* Tech Stack */}
-              {project.tech && project.tech.length > 0 && (
-                <div className="col-span-1 sm:col-span-2 pt-4 sm:pt-0">
-                  <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">
-                    Technologies
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.map((tech, index) => (
-                      <span
-                        key={index}
-                        className={`px-2 py-1 rounded text-xs font-medium ${
-                          isDesigner
-                            ? "bg-[hsl(var(--designer-surface))] text-[hsl(var(--designer-primary))] border border-[hsl(var(--designer-border))]"
-                            : "bg-muted text-foreground border border-border"
-                        }`}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* External Links */}
-              {/* {project.links && Object.keys(project.links).length > 0 && (
-                <div>
-                  <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">
-                    Links
-                  </h3>
-                  <div className="space-y-2">
-                    {Object.entries(project.links)
-                      .filter(([key]) => key !== "client")
-                      .map(([key, url]) => (
-                        <a
-                          key={key}
-                          href={url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block text-sm text-primary hover:underline font-medium"
-                        >
-                          {key.charAt(0).toUpperCase() + key.slice(1)} →
-                        </a>
-                      ))}
-                  </div>
-                </div>
-              )} */}
-            </div>
-          </div>
-
-          <div className="py-8 md:py-12">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-20 bg-background rounded-t-[2.5rem] pt-12">
+          <div className="py-4 md:py-8">
             <article
-              className={`
-              mx-auto max-w-4xl
-              prose prose-lg
-              prose-headings:font-semibold
-              ${
-                isDesigner
-                  ? "prose-headings:font-designer"
-                  : "prose-headings:font-engineer"
-              }
-              ${
-                isDesigner
-                  ? "prose-h2:text-gradient-designer"
-                  : "prose-h2:text-gradient-engineer"
-              }
-              ${
-                isDesigner
-                  ? "prose-blockquote:border-[hsl(var(--designer-primary))]"
-                  : "prose-blockquote:border-primary"
-              }
-              prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-              prose-img:rounded-lg prose-img:shadow-md
-              dark:prose-invert
-            `}
+              className="
+                mx-auto max-w-4xl
+                prose prose-lg
+                prose-headings:font-bold prose-headings:font-display prose-headings:tracking-tighter
+                prose-h2:text-foreground
+                prose-blockquote:border-l-4 prose-blockquote:border-[hsl(var(--primary))]
+                prose-a:text-primary
+                prose-img:rounded-2xl prose-img:shadow-lg
+                dark:prose-invert
+              "
             >
               {Component ? (
                 <Component />
@@ -218,14 +142,8 @@ const ProjectPage: React.FC = () => {
 
             {/* Gallery Section */}
             {project.gallery && project.gallery.length > 0 && (
-              <div className="mt-16 md:mt-24 pt-10 md:pt-16 border-t border-border/20">
-                <h2
-                  className={`heading-primary text-3xl md:text-4xl font-bold mb-12 text-center ${
-                    isDesigner
-                      ? "text-gradient-designer"
-                      : "text-gradient-engineer"
-                  }`}
-                >
+              <div className="mt-16 md:mt-24 pt-10 md:pt-16 border-t border-border/20 scroll-snap-item scroll-mt-24">
+                <h2 className="text-3xl md:text-4xl font-bold font-display tracking-tighter mb-12 text-center text-foreground">
                   Project Gallery
                 </h2>
                 <ProjectGallery

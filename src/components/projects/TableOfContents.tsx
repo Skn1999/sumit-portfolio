@@ -1,11 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { useMode } from "@/contexts/ModeContext";
 
 export const TableOfContents: React.FC = () => {
-  const { mode } = useMode();
-  const isDesigner = mode === "designer";
   const [headings, setHeadings] = useState<
     { id: string; text: string; level: number }[]
   >([]);
@@ -80,9 +77,7 @@ export const TableOfContents: React.FC = () => {
   if (headings.length === 0) return null;
 
   const activeIndex = headings.findIndex((h) => h.id === activeId);
-  const accentColor = isDesigner
-    ? "hsl(var(--designer-primary))"
-    : "hsl(var(--primary))";
+  const accentColor = "hsl(var(--primary))";
 
   return (
     <div
@@ -130,15 +125,10 @@ export const TableOfContents: React.FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
-              className={cn(
-                "rounded-xl p-4 origin-top-right",
-                isDesigner
-                  ? "bg-card/80 backdrop-blur-sm border border-border/30 shadow-lg"
-                  : "bg-card/95 backdrop-blur-md border border-border/20 shadow-lg",
-              )}
+              className="rounded-xl p-4 origin-top-right bg-card/95 backdrop-blur-md border border-border/20 shadow-lg"
               style={{ maxWidth: "280px" }}
             >
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/60 mb-3">
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/60 mb-3 font-label">
                 On this page
               </p>
               <nav>
@@ -161,12 +151,10 @@ export const TableOfContents: React.FC = () => {
                           });
                         }}
                         className={cn(
-                          "block text-[13px] py-1 px-2 rounded-md transition-all duration-150",
+                          "block text-[10px] md:text-xs py-1 px-2 rounded-md transition-all duration-150 font-label tracking-wide uppercase",
                           activeId === heading.id
-                            ? isDesigner
-                              ? "text-[hsl(var(--designer-primary))] font-medium"
-                              : "text-primary font-medium"
-                            : "text-muted-foreground/70 hover:text-foreground",
+                            ? "text-primary font-bold bg-primary/5"
+                            : "text-muted-foreground/70 hover:text-foreground hover:bg-muted/50",
                         )}
                       >
                         {heading.text}

@@ -37,7 +37,7 @@ export const ProjectImageAsset = memo(function ProjectImageAsset({
     <img
       src={imageUrl}
       alt={alt}
-      className={className}
+      className={cn("max-w-full h-auto", className)}
       loading={priority ? "eager" : "lazy"}
     />
   );
