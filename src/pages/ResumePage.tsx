@@ -18,7 +18,6 @@ import {
   GraduationCap,
   Briefcase,
   Sliders,
-  Printer,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -187,6 +186,27 @@ const ResumePage: React.FC = () => {
     setSelectedFrameId(frame.id);
   }, [isMobile]);
 
+  // Center canvas on a specific section
+  const centerOnSection = useCallback((section: SectionData) => {
+    const globalX = section.x + section.w / 2;
+    const globalY = section.y + section.h / 2;
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Responsive Zoom Level: fits section bounds cleanly
+    const targetZoom = isMobile
+      ? Math.min(0.8, (container.clientWidth - 48) / section.w)
+      : 0.9;
+
+    setZoom(targetZoom);
+    setPan({
+      x: container.clientWidth / 2 - globalX * targetZoom,
+      y: container.clientHeight / 2 - globalY * targetZoom,
+    });
+    setSelectedFrameId(section.frames[0]?.id || null);
+  }, [isMobile]);
+
   // Center canvas on Profile Frame on mount once container is ready
   useEffect(() => {
     const profileFrame = figmaSections[0].frames[0];
@@ -274,11 +294,6 @@ const ResumePage: React.FC = () => {
     };
   }, []);
 
-  // Trigger browser print dialog
-  const handlePrint = () => {
-    window.print();
-  };
-
   // Render Frame content based on Design / Code theme
   const renderFrameContent = (frameId: string) => {
     if (!isXRay) {
@@ -311,9 +326,7 @@ const ResumePage: React.FC = () => {
                 </div>
 
                 <p className="text-xs text-slate-600 leading-relaxed mt-4 pt-4 border-t border-dashed border-slate-200">
-                  UX Designer and Frontend Engineer with 4+ years building user-centric SaaS products.
-                  I design in Figma and ship in React and TypeScript, closing handoff gaps and turning data-dense
-                  workflows into well-crafted, accessible interfaces. Backed by an HCI Master's from Aalto.
+                  I design scalable interface systems and data workflows. Blending 4 years of enterprise frontend execution with an HCI Master's from Aalto University and University of Trento.
                 </p>
 
                 <div className="mt-5 space-y-2 text-xs text-slate-600">
@@ -894,37 +907,65 @@ const calculateDifficulty = (dist, w) => {
             <span className="text-[10px] font-mono font-bold text-muted-foreground mr-2 uppercase">
               Fly To:
             </span>
-            {figmaSections.map((section) =>
-              section.frames.map((frame) => (
-                <button
-                  key={frame.id}
-                  onClick={() => centerOnFrame(frame)}
-                  className={`px-3 py-1.5 rounded text-[10px] font-mono font-bold uppercase transition-all duration-300 ${
-                    selectedFrameId === frame.id
-                      ? isXRay
-                        ? "bg-emerald-500 text-slate-950"
-                        : "bg-[#18a0fb] text-white"
-                      : "hover:bg-muted text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {frame.id.replace("-frame", "")}
-                </button>
-              ))
-            )}
+            {/* Profile Tab */}
+            <button
+              onClick={() => centerOnFrame(figmaSections[0].frames[0])}
+              className={`px-3 py-1.5 rounded text-[10px] font-mono font-bold uppercase transition-all duration-300 ${
+                selectedFrameId === "profile-frame"
+                  ? isXRay
+                    ? "bg-emerald-500 text-slate-950"
+                    : "bg-[#18a0fb] text-white"
+                  : "hover:bg-muted text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              profile
+            </button>
+
+            {/* Skills Tab */}
+            <button
+              onClick={() => centerOnFrame(figmaSections[0].frames[1])}
+              className={`px-3 py-1.5 rounded text-[10px] font-mono font-bold uppercase transition-all duration-300 ${
+                selectedFrameId === "skills-frame"
+                  ? isXRay
+                    ? "bg-emerald-500 text-slate-950"
+                    : "bg-[#18a0fb] text-white"
+                  : "hover:bg-muted text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              skills
+            </button>
+
+            {/* Experience Tab */}
+            <button
+              onClick={() => centerOnSection(figmaSections[1])}
+              className={`px-3 py-1.5 rounded text-[10px] font-mono font-bold uppercase transition-all duration-300 ${
+                selectedFrameId === "optmyzr-frame" || selectedFrameId === "dedanext-frame"
+                  ? isXRay
+                    ? "bg-emerald-500 text-slate-950"
+                    : "bg-[#18a0fb] text-white"
+                  : "hover:bg-muted text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              experience
+            </button>
+
+            {/* Education Tab */}
+            <button
+              onClick={() => centerOnFrame(figmaSections[2].frames[0])}
+              className={`px-3 py-1.5 rounded text-[10px] font-mono font-bold uppercase transition-all duration-300 ${
+                selectedFrameId === "edu-frame"
+                  ? isXRay
+                    ? "bg-emerald-500 text-slate-950"
+                    : "bg-[#18a0fb] text-white"
+                  : "hover:bg-muted text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              education
+            </button>
           </div>
 
-          {/* Action Hub (Print + X-Ray controls) */}
+          {/* Action Hub (X-Ray controls only) */}
           <div className="bg-background/85 backdrop-blur-md border border-border/40 px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 text-xs font-mono pointer-events-auto">
-            <Button
-              variant="outline"
-              size="xs"
-              onClick={handlePrint}
-              className="text-[10px] uppercase font-bold tracking-wider h-6.5 flex items-center gap-1 animate-none hover:bg-muted"
-            >
-              <Printer className="w-3 h-3" />
-              <span>Print Page</span>
-            </Button>
-            <span className="text-muted-foreground">|</span>
             <Button
               variant={isXRay ? "default" : "outline"}
               size="xs"
@@ -973,9 +1014,7 @@ const calculateDifficulty = (dist, w) => {
                 Profile
               </h2>
               <p className="text-xs text-slate-700 leading-relaxed">
-                UX Designer and Frontend Engineer with 4+ years building user-centric SaaS products.
-                I design in Figma and ship in React and TypeScript, closing handoff gaps and turning data-dense
-                workflows into well-crafted, accessible interfaces. Backed by an HCI Master's from Aalto University.
+                I design scalable interface systems and data workflows. Blending 4 years of enterprise frontend execution with an HCI Master's from Aalto University and University of Trento.
               </p>
             </section>
 
