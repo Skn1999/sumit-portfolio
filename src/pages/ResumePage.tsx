@@ -194,7 +194,8 @@ const ResumePage: React.FC = () => {
       centerOnFrame(profileFrame);
     }, 150);
     return () => clearTimeout(timer);
-  }, [dimensions, centerOnFrame]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Mouse wheel Zoom helper
   const handleWheel = (e: React.WheelEvent) => {
@@ -240,16 +241,14 @@ const ResumePage: React.FC = () => {
   const handlePointerUp = (e: React.PointerEvent) => {
     setIsDragging(false);
     (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+  };
 
-    // Click threshold to select elements
+  // Click handler to deselect frames if the click is directly on canvas elements
+  const handleCanvasClick = (e: React.MouseEvent) => {
     const dx = Math.abs(e.clientX - clickStart.current.x);
     const dy = Math.abs(e.clientY - clickStart.current.y);
-
-    if (dx < 5 && dy < 5) {
-      const target = e.target as HTMLElement;
-      if (target.classList.contains("grid-background-canvas")) {
-        setSelectedFrameId(null);
-      }
+    if (dx < 6 && dy < 6) {
+      setSelectedFrameId(null);
     }
   };
 
@@ -650,6 +649,40 @@ const calculateDifficulty = (dist, w) => {
         transition={{ duration: 0.3 }}
         className="min-h-screen h-[calc(100vh-64px)] flex flex-col bg-background text-foreground overflow-hidden select-none print:hidden relative"
       >
+        {/* Top Action Header */}
+        <header className="absolute top-6 left-6 right-6 z-40 pointer-events-none flex justify-between items-center">
+          <div className="pointer-events-auto">
+            <Button
+              variant="outline"
+              size="xs"
+              asChild
+              className="bg-background/85 backdrop-blur-md border border-border/40 shadow-lg font-mono text-[10px] uppercase font-bold tracking-wider h-9 px-3 flex items-center gap-1.5"
+            >
+              <Link to="/">
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Portfolio</span>
+              </Link>
+            </Button>
+          </div>
+
+          <div className="pointer-events-auto">
+            <Button
+              size="sm"
+              className={`shadow-lg font-label text-xs tracking-wider uppercase font-semibold h-9 px-4 flex items-center gap-2 transition-all duration-300 ${
+                isXRay
+                  ? "bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold border-emerald-600"
+                  : "bg-[#18a0fb] hover:bg-[#158edf] text-white border-[#18a0fb]"
+              }`}
+              asChild
+            >
+              <a href={pdfUrl} download="CV_2026.pdf">
+                <Download className="w-4 h-4" />
+                <span>Download Resume</span>
+              </a>
+            </Button>
+          </div>
+        </header>
+
         {/* Main Drag-Space Viewport */}
         <div
           ref={containerRef}
@@ -658,6 +691,7 @@ const calculateDifficulty = (dist, w) => {
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
+          onClick={handleCanvasClick}
           className={`flex-1 relative w-full h-full outline-none overflow-hidden transition-colors duration-700 grid-background-canvas ${
             isXRay ? "bg-[#0b0f0e]" : "bg-[#f3f1ed]"
           }`}
@@ -666,7 +700,7 @@ const calculateDifficulty = (dist, w) => {
             touchAction: "none", // Prevent native mobile scrolling/gestures on canvas
           }}
         >
-          {/* Infinite Grid Background dots */}
+          {/* Infinite Grid Background dots with Zoom-aware Fading Opacity */}
           <div
             className="absolute inset-0 pointer-events-none transition-opacity duration-500 grid-background-canvas"
             style={{
@@ -675,7 +709,9 @@ const calculateDifficulty = (dist, w) => {
                 : "radial-gradient(circle, #94a3b8 1.2px, transparent 1.2px)",
               backgroundSize: `${32 * zoom}px ${32 * zoom}px`,
               backgroundPosition: `${pan.x}px ${pan.y}px`,
-              opacity: isXRay ? 0.08 : 0.22,
+              opacity: isXRay
+                ? Math.min(0.15, Math.max(0.02, 0.05 + (zoom - 0.35) * 0.08))
+                : Math.min(0.35, Math.max(0.04, 0.10 + (zoom - 0.35) * 0.20)),
             }}
           />
 
@@ -688,6 +724,50 @@ const calculateDifficulty = (dist, w) => {
               transition: isDragging ? "none" : "transform 0.15s ease-out",
             }}
           >
+            {/* SVG Connector Guides with Pulsing Dash Animation */}
+            <svg
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                width: "2600px",
+                height: "850px",
+                overflow: "visible",
+              }}
+            >
+              {[
+                { d: "M 540 470 C 552.5 470, 552.5 470, 565 470", key: "c1" },
+                { d: "M 865 470 C 937.5 470, 937.5 430, 1010 430", key: "c2" },
+                { d: "M 1440 430 C 1450 430, 1450 430, 1460 430", key: "c3" },
+                { d: "M 1890 430 C 1960 430, 1960 480, 2030 480", key: "c4" }
+              ].map((path) => (
+                <g key={path.key}>
+                  {/* Background path line */}
+                  <path
+                    d={path.d}
+                    fill="none"
+                    stroke={isXRay ? "rgba(16, 185, 129, 0.12)" : "rgba(24, 160, 251, 0.12)"}
+                    strokeWidth="3.5"
+                    strokeLinecap="round"
+                  />
+                  {/* Animated flow pulse line */}
+                  <path
+                    d={path.d}
+                    fill="none"
+                    stroke={isXRay ? "#10b981" : "#18a0fb"}
+                    strokeWidth="2"
+                    strokeDasharray="8 16"
+                    strokeLinecap="round"
+                  >
+                    <animate
+                      attributeName="stroke-dashoffset"
+                      values="100;0"
+                      dur="5s"
+                      repeatCount="indefinite"
+                    />
+                  </path>
+                </g>
+              ))}
+            </svg>
+
             {/* Render Figma/IDE Sections */}
             {figmaSections.map((section) => (
               <div
@@ -714,7 +794,7 @@ const calculateDifficulty = (dist, w) => {
                   ) : (
                     <>
                       <MousePointer className="w-3.5 h-3.5 text-slate-400" />
-                      <span className="text-slate-505 font-bold uppercase">{section.title}</span>
+                      <span className="text-slate-500 font-bold uppercase">{section.title}</span>
                     </>
                   )}
                 </div>
@@ -727,7 +807,7 @@ const calculateDifficulty = (dist, w) => {
                       key={frame.id}
                       onClick={(e) => {
                         e.stopPropagation();
-                        setSelectedFrameId(frame.id);
+                        centerOnFrame(frame);
                       }}
                       className={`absolute rounded-lg border transition-all duration-500 cursor-pointer pointer-events-auto ${
                         isSelected
@@ -839,7 +919,7 @@ const calculateDifficulty = (dist, w) => {
               variant="outline"
               size="xs"
               onClick={handlePrint}
-              className="text-[10px] uppercase font-bold tracking-wider h-6.5 flex items-center gap-1"
+              className="text-[10px] uppercase font-bold tracking-wider h-6.5 flex items-center gap-1 animate-none hover:bg-muted"
             >
               <Printer className="w-3 h-3" />
               <span>Print Page</span>
@@ -848,12 +928,14 @@ const calculateDifficulty = (dist, w) => {
             <Button
               variant={isXRay ? "default" : "outline"}
               size="xs"
-              onMouseDown={() => setIsXRay(true)}
-              onMouseUp={() => setIsXRay(false)}
-              onMouseLeave={() => setIsXRay(false)}
-              className="text-[10px] uppercase font-bold tracking-wider h-6.5"
+              onClick={() => setIsXRay(prev => !prev)}
+              className={`text-[10px] uppercase font-bold tracking-wider h-6.5 transition-all duration-300 ${
+                isXRay
+                  ? "bg-emerald-600 hover:bg-emerald-500 text-slate-950 border-emerald-600"
+                  : "hover:bg-muted"
+              }`}
             >
-              Hold for X-Ray
+              {isXRay ? "View Design" : "Toggle Code Mode"}
             </Button>
             <span className="text-muted-foreground hidden lg:inline">|</span>
             <span className="text-muted-foreground text-[10px] uppercase hidden lg:inline">

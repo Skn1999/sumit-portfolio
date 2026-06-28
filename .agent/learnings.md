@@ -105,6 +105,10 @@ This file is updated by AI agents after each task is attempted or completed. It 
   2. Pointer Events (`onPointerDown`, `onPointerMove`, `onPointerUp`) should be used instead of Mouse Events to provide built-in multi-input compatibility (capturing mouse and touch inputs simultaneously) on draggable layouts without writing separate touch listeners.
   3. Wrapping complex interactive layouts inside standard layout templates and `framer-motion` anim gates avoids page rendering collapsing or hanging during SPA route transitions.
   4. Adding a hidden semantic `print:block` layout is the most robust way to ensure interactive canvas graphics output as clean, multi-page PDFs when printed.
-- Errors or surprises: First-tick centering on mount can fail or yield `NaN` offsets if container dimensions (`clientWidth`/`clientHeight`) are read before the DOM elements are fully bound and layout out.
+  5. Rendering SVG Bezier paths directly inside the transform-scaled canvas stage allows the connector lines to automatically translate and scale (pan & zoom) with the rest of the canvas coordinates.
+  6. Using standard event bubbling on the viewport container (combined with `e.stopPropagation()` on interactive elements) is a clean way to implement clicks-outside-to-deselect behavior.
+  7. Zoom-dependent fading opacity on background dot grids reduces high-frequency visual noise when panned far out.
+- Errors or surprises: First-tick centering on mount can fail or yield `NaN` offsets if container dimensions (`clientWidth`/`clientHeight`) are read before the DOM elements are fully bound and laid out.
 - Resolution: Bound the initial centering invocation to a brief `setTimeout` (150ms) to allow layout bounds to compute successfully.
 - Future instruction: Use Pointer Events for manual pan layouts, implement a distinct print-only document wrapper for canvas visualizers, and delay initial boundary centering calculations slightly to ensure DOM dimensions are computed.
+
