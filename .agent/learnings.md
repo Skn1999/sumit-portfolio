@@ -98,4 +98,13 @@ This file is updated by AI agents after each task is attempted or completed. It 
 
 
 
+### 2026-06-28 - tasks/task_015_interactive_resume_page.md
 
+- Lessons learned:
+  1. Responsive infinite canvas layouts are best panned and centered by calculating dynamic scaling values relative to the active element's width vs the container viewport's client width (`Math.min(0.9, (container.clientWidth - 48) / frame.w)`). This automatically scales elements to fit mobile devices cleanly.
+  2. Pointer Events (`onPointerDown`, `onPointerMove`, `onPointerUp`) should be used instead of Mouse Events to provide built-in multi-input compatibility (capturing mouse and touch inputs simultaneously) on draggable layouts without writing separate touch listeners.
+  3. Wrapping complex interactive layouts inside standard layout templates and `framer-motion` anim gates avoids page rendering collapsing or hanging during SPA route transitions.
+  4. Adding a hidden semantic `print:block` layout is the most robust way to ensure interactive canvas graphics output as clean, multi-page PDFs when printed.
+- Errors or surprises: First-tick centering on mount can fail or yield `NaN` offsets if container dimensions (`clientWidth`/`clientHeight`) are read before the DOM elements are fully bound and layout out.
+- Resolution: Bound the initial centering invocation to a brief `setTimeout` (150ms) to allow layout bounds to compute successfully.
+- Future instruction: Use Pointer Events for manual pan layouts, implement a distinct print-only document wrapper for canvas visualizers, and delay initial boundary centering calculations slightly to ensure DOM dimensions are computed.
