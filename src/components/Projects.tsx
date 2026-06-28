@@ -16,7 +16,7 @@ const Projects = () => {
       slug: "optmyzr-dashboard-migration",
       monospaceHeader: "PROJECT 01 // PRODUCTION SYSTEM MIGRATION",
       title: "Migrating Legacy Ad Analytics to a Config-Driven React Architecture",
-      metricBanner: "Dashboard initialization compressed from 8–10 seconds to under 1 second across enterprise account lines, establishing a flexible design blueprint used for downstream corporate tool development.",
+      metricBanner: "Dashboard initialization compressed from eight to ten seconds down to under one second across enterprise account lines, establishing a flexible design blueprint used for downstream corporate tool development.",
       skillTags: ["React", "TypeScript", "Redux Toolkit", "State Optimization", "Component Engineering"],
       imageSide: "right",
     },

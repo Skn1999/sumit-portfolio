@@ -86,6 +86,16 @@ This file is updated by AI agents after each task is attempted or completed. It 
 - Resolution: Refactored card structure into a scroll-translated parent wrapper and an inner `drag={true}` card container. Moved credentials array to module-level scope. Used negative margins for offset anchoring, scaled card positions dynamically for mobile, and mapped dynamic active state tracking to scroll-interval frames combined with hover/drag events. Triggered entry animation once based on section scroll visibility threshold.
 - Future instruction: Declare static arrays outside of components and separate scroll-based triggers from manual drags by using nested wrapper elements.
 
+### 2026-06-28 - tasks/task_014_homepage_final_copy_alignments.md
+
+- Lessons learned:
+  1. Copy-audit tasks require strict word-by-word match to technical blueprints or specifications, especially concerning metrics and location designations which may affect external presentation.
+  2. Typos in text arrays or static lists can easily slip in during replacement, so verification and manual code proofreading are essential.
+- Errors or surprises: None.
+- Resolution: None.
+- Future instruction: Always double-check exact copy alignments word-for-word against the redesign specifications.
+
+
 
 
 

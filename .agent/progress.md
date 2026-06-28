@@ -116,3 +116,18 @@ This file is updated by AI agents after each task is attempted or completed. It 
   - Certifications images render correctly using base path prefixes and are responsive.
 - Follow-ups / risks: None.
 
+### 2026-06-28 - tasks/task_014_homepage_final_copy_alignments.md
+
+- Status: Completed
+- Summary: Audited and aligned location and work rights copy in HeroSection.tsx and Optmyzr project metric banner copy in Projects.tsx to match the redesign blueprint specification precisely.
+- Files changed:
+  - `src/components/HeroSection.tsx`
+  - `src/components/Projects.tsx`
+- Tests run: `npm run build` completed successfully.
+- Acceptance criteria:
+  - Hero section tag matches `LOCATION: HELSINKI, FI // WORK RIGHTS: IMMEDIATE ACCESSIBILITY` exactly.
+  - Biography paragraph is verified to consist of exactly two sentences.
+  - Optmyzr metric banner wording updated to: `Dashboard initialization compressed from eight to ten seconds down to under one second across enterprise account lines, establishing a flexible design blueprint used for downstream corporate tool development.`
+  - EDIAQI metric banner is verified to match blueprint spec.
+- Follow-ups / risks: None.
+
