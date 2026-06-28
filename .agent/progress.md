@@ -116,3 +116,31 @@ This file is updated by AI agents after each task is attempted or completed. It 
   - Certifications images render correctly using base path prefixes and are responsive.
 - Follow-ups / risks: None.
 
+### 2026-06-28 - tasks/task_014_homepage_final_copy_alignments.md
+
+- Status: Completed
+- Summary: Audited and aligned location and work rights copy in HeroSection.tsx and Optmyzr project metric banner copy in Projects.tsx to match the redesign blueprint specification precisely.
+- Files changed:
+  - `src/components/HeroSection.tsx`
+  - `src/components/Projects.tsx`
+- Tests run: `npm run build` completed successfully.
+- Acceptance criteria:
+  - Hero section tag matches `LOCATION: HELSINKI, FI // WORK RIGHTS: IMMEDIATE ACCESSIBILITY` exactly.
+  - Biography paragraph is verified to consist of exactly two sentences.
+  - Optmyzr metric banner wording updated to: `Dashboard initialization compressed from eight to ten seconds down to under one second across enterprise account lines, establishing a flexible design blueprint used for downstream corporate tool development.`
+  - EDIAQI metric banner is verified to match blueprint spec.
+- Follow-ups / risks: None.
+### 2026-06-28 - tasks/task_015_interactive_resume_page.md
+
+- Status: Completed
+- Summary: Implemented an immersive, full-bleed infinite Figma-style CV blueprint canvas on the main `/resume` page, replacing the static PDF viewer. Structured the resume into 3 Figma Sections and 6 nested Frames (Profile, Core Stack, Optmyzr, Deda Next, Higher Education, and Certifications). Added Sumit's profile picture. Built a spacebar-triggered X-Ray code morph transition to turn the Figma canvas into an IDE source directory. Implemented animated SVG Bezier curve connector guides, click deselection on canvas background, click centering on frames, top-right download button, and zoom-aware fading grid dots. Implemented a hidden print-only layout that formats the resume as a standard 2-column printed document when printing or saving as PDF. Fixed window vertical scroll overlap. Updated all content fields to align 100% with the updated `CV_2026.pdf` CV. Migrated the bottom HUD controls to a clean, left-anchored Figma layers sidebar (collapsible for mobile viewports). Set the default page load view focus directly on the 'Identity & Credentials' section.
+- Files changed:
+  - `src/pages/ResumePage.tsx`
+  - `public/CV_2026.pdf`
+- Tests run: `npx eslint src/pages/ResumePage.tsx` passed; `npm run build` compiled successfully.
+- Acceptance criteria: Fully met (infinite canvas environment, figma sections/frames matching CV content, profile image integrated, figma selection outlines/dimensions, X-ray mode to IDE code files, animated guides, download button, print media styling optimized, viewport scroll issue fixed, certifications/expertise content synchronized, layers sidebar navigation matching Figma layout, defaults focus to credentials section).
+- Follow-ups / risks: None.
+
+
+
+

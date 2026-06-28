@@ -48,12 +48,12 @@ const HeroSection: React.FC = () => {
               transition={{ delay: 0.1, duration: 0.5 }}
               className="font-label uppercase tracking-widest text-[10px] md:text-xs font-semibold text-slate-500 mb-6 flex items-center gap-2 flex-wrap"
             >
-              <span>LOC: HELSINKI, FI // SYSTEM STATE:</span>
+              <span>LOCATION: HELSINKI, FI // WORK RIGHTS:</span>
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span>IMMEDIATE ACCESSIBILITY</span>
+              <span>IMMEDIATE AVAILABILITY</span>
             </motion.div>
 
             {/* Primary Display Title */}

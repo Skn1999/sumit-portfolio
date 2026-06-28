@@ -86,6 +86,35 @@ This file is updated by AI agents after each task is attempted or completed. It 
 - Resolution: Refactored card structure into a scroll-translated parent wrapper and an inner `drag={true}` card container. Moved credentials array to module-level scope. Used negative margins for offset anchoring, scaled card positions dynamically for mobile, and mapped dynamic active state tracking to scroll-interval frames combined with hover/drag events. Triggered entry animation once based on section scroll visibility threshold.
 - Future instruction: Declare static arrays outside of components and separate scroll-based triggers from manual drags by using nested wrapper elements.
 
+### 2026-06-28 - tasks/task_014_homepage_final_copy_alignments.md
+
+- Lessons learned:
+  1. Copy-audit tasks require strict word-by-word match to technical blueprints or specifications, especially concerning metrics and location designations which may affect external presentation.
+  2. Typos in text arrays or static lists can easily slip in during replacement, so verification and manual code proofreading are essential.
+- Errors or surprises: None.
+- Resolution: None.
+- Future instruction: Always double-check exact copy alignments word-for-word against the redesign specifications.
+
+
+
+
+### 2026-06-28 - tasks/task_015_interactive_resume_page.md
+
+- Lessons learned:
+  1. Responsive infinite canvas layouts are best panned and centered by calculating dynamic scaling values relative to the active element's width vs the container viewport's client width (`Math.min(0.9, (container.clientWidth - 48) / frame.w)`). This automatically scales elements to fit mobile devices cleanly.
+  2. Pointer Events (`onPointerDown`, `onPointerMove`, `onPointerUp`) should be used instead of Mouse Events to provide built-in multi-input compatibility (capturing mouse and touch inputs simultaneously) on draggable layouts without writing separate touch listeners.
+  3. Wrapping complex interactive layouts inside standard layout templates and `framer-motion` anim gates avoids page rendering collapsing or hanging during SPA route transitions.
+  4. Adding a hidden semantic `print:block` layout is the most robust way to ensure interactive canvas graphics output as clean, multi-page PDFs when printed.
+  5. Rendering SVG Bezier paths directly inside the transform-scaled canvas stage allows the connector lines to automatically translate and scale (pan & zoom) with the rest of the canvas coordinates.
+  6. Using standard event bubbling on the viewport container (combined with `e.stopPropagation()` on interactive elements) is a clean way to implement clicks-outside-to-deselect behavior.
+  7. Zoom-dependent fading opacity on background dot grids reduces high-frequency visual noise when panned far out.
+  8. When building full-screen routes under a global header navigation block, ensure the inner container's height is strictly constrained using `h-[calc(100vh-HeaderHeight)]` and `min-h-[calc(100vh-HeaderHeight)]` while avoiding `min-h-screen` which overrides it and creates scrollbars.
+  9. To synchronize online canvas views with PDF resume updates, convert PDF screenshots/OCR into structured data fields, expanding parent section heights and adding connecting guides chronologically as content grows.
+  10. Designing a vertical collapsible layers sidebar (mimicking professional design workspaces like Figma) provides a clean hierarchical visualization of complex multi-section canvas maps.
+- Errors or surprises: First-tick centering on mount can fail or yield `NaN` offsets if container dimensions (`clientWidth`/`clientHeight`) are read before the DOM elements are fully bound and laid out.
+- Resolution: Bound the initial centering invocation to a brief `setTimeout` (150ms) to allow layout bounds to compute successfully.
+- Future instruction: Use Pointer Events for manual pan layouts, implement a distinct print-only document wrapper for canvas visualizers, and delay initial boundary centering calculations slightly to ensure DOM dimensions are computed. Avoid combining `min-h-screen` and CSS calc limits on layouts designed to be scroll-locked. Maintain exact layout alignment with physical or reference PDFs using OCR audits. Emulate design editor panel conventions (collapsible tree lists) for mapping multi-dimensional canvases.
+
 
 
 
