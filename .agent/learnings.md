@@ -109,8 +109,10 @@ This file is updated by AI agents after each task is attempted or completed. It 
   6. Using standard event bubbling on the viewport container (combined with `e.stopPropagation()` on interactive elements) is a clean way to implement clicks-outside-to-deselect behavior.
   7. Zoom-dependent fading opacity on background dot grids reduces high-frequency visual noise when panned far out.
   8. When building full-screen routes under a global header navigation block, ensure the inner container's height is strictly constrained using `h-[calc(100vh-HeaderHeight)]` and `min-h-[calc(100vh-HeaderHeight)]` while avoiding `min-h-screen` which overrides it and creates scrollbars.
+  9. To synchronize online canvas views with PDF resume updates, convert PDF screenshots/OCR into structured data fields, expanding parent section heights and adding connecting guides chronologically as content grows.
 - Errors or surprises: First-tick centering on mount can fail or yield `NaN` offsets if container dimensions (`clientWidth`/`clientHeight`) are read before the DOM elements are fully bound and laid out.
 - Resolution: Bound the initial centering invocation to a brief `setTimeout` (150ms) to allow layout bounds to compute successfully.
-- Future instruction: Use Pointer Events for manual pan layouts, implement a distinct print-only document wrapper for canvas visualizers, and delay initial boundary centering calculations slightly to ensure DOM dimensions are computed. Avoid combining `min-h-screen` and CSS calc limits on layouts designed to be scroll-locked.
+- Future instruction: Use Pointer Events for manual pan layouts, implement a distinct print-only document wrapper for canvas visualizers, and delay initial boundary centering calculations slightly to ensure DOM dimensions are computed. Avoid combining `min-h-screen` and CSS calc limits on layouts designed to be scroll-locked. Maintain exact layout alignment with physical or reference PDFs using OCR audits.
+
 
 

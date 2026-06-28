@@ -113,12 +113,12 @@ const figmaSections: SectionData[] = [
   },
   {
     id: "academics-section",
-    title: "Section: Academics",
+    title: "Section: Academics & Credentials",
     dirTitle: "Directory: src/components/academics",
     x: 1990,
     y: 180,
     w: 520,
-    h: 560,
+    h: 980,
     frames: [
       {
         id: "edu-frame",
@@ -129,6 +129,16 @@ const figmaSections: SectionData[] = [
         y: 80,
         w: 440,
         h: 440,
+      },
+      {
+        id: "certifications-frame",
+        sectionId: "academics-section",
+        title: "Frame: Certifications",
+        fileTitle: "Credentials.json",
+        x: 40,
+        y: 560,
+        w: 440,
+        h: 360,
       },
     ],
   },
@@ -326,13 +336,13 @@ const ResumePage: React.FC = () => {
                 </div>
 
                 <p className="text-xs text-slate-600 leading-relaxed mt-4 pt-4 border-t border-dashed border-slate-200">
-                  I design scalable interface systems and data workflows. Blending 4 years of enterprise frontend execution with an HCI Master's from Aalto University and University of Trento.
+                  UX Designer and Frontend Engineer with 4+ years building user-centric SaaS products. I design in Figma and ship in React and TypeScript, closing handoff gaps and turning data dense workflows into well-crafted, accessible interfaces. Backed by an HCI Master's from Aalto University. Based in the Helsinki metropolitan area and committed to building my long-term career and home in Finland.
                 </p>
 
                 <div className="mt-5 space-y-2 text-xs text-slate-600">
                   <div className="flex items-center gap-2">
                     <MapPin className="w-3.5 h-3.5 text-primary/70" />
-                    <span>Helsinki Metropolitan Area, Finland</span>
+                    <span>Helsinki, Finland</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Mail className="w-3.5 h-3.5 text-primary/70" />
@@ -369,7 +379,7 @@ const ResumePage: React.FC = () => {
                 <h3 className="text-lg font-bold font-display text-slate-900 mt-1">Core Stack</h3>
                 <p className="text-[10px] uppercase text-slate-400">Design Systems &amp; Methods</p>
 
-                <div className="mt-4 pt-4 border-t border-dashed border-slate-200 space-y-4">
+                <div className="mt-4 pt-4 border-t border-dashed border-slate-200 space-y-4 overflow-y-auto max-h-[380px] pr-1">
                   <div>
                     <h4 className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider mb-2">
                       Design &amp; Strategy
@@ -382,7 +392,7 @@ const ResumePage: React.FC = () => {
                         "Figma",
                         "Rapid Prototyping",
                         "Usability Testing",
-                        "Accessibility (WCAG)",
+                        "Accessibility",
                       ].map((s) => (
                         <span key={s} className="px-2 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] text-slate-650 font-medium">
                           {s}
@@ -405,6 +415,25 @@ const ResumePage: React.FC = () => {
                         "REST APIs",
                       ].map((s) => (
                         <span key={s} className="px-2 py-1 bg-primary/5 border border-primary/20 text-primary rounded text-[10px] font-medium">
+                          {s}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider mb-2">
+                      Targeted Expertise
+                    </h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {[
+                        "Legacy stack migrations",
+                        "UI/UX performance triage",
+                        "Config-driven dashboards",
+                        "Cognitive load optimization",
+                        "Zero-handoff system specs",
+                      ].map((s) => (
+                        <span key={s} className="px-2 py-1 bg-emerald-50 border border-emerald-200/50 text-emerald-700 rounded text-[10px] font-medium">
                           {s}
                         </span>
                       ))}
@@ -464,12 +493,12 @@ const ResumePage: React.FC = () => {
 
                 <div className="mt-4 pt-4 border-t border-dashed border-slate-200 space-y-3 text-xs leading-relaxed text-slate-650">
                   <p>
-                    Worked on EDIAQI, an EU Horizon Europe research project, designing air quality data visualizers helping schools and public buildings make facility decisions.
+                    Worked on EDIAQI, an EU Horizon Europe project, designing how indoor air quality data helps schools and public buildings make better facility decisions.
                   </p>
                   <ul className="list-disc pl-4 space-y-1.5 text-[11px] text-slate-600">
-                    <li>Mapped messy multi-stakeholder workflows into clean dashboard experiences.</li>
-                    <li>Researched and integrated high-volume air quality telemetry.</li>
-                    <li>Translated raw sensors data to clear graphical visual vectors.</li>
+                    <li>Researched user needs, mapped messy workflows, and delivered decision-support/reporting tool.</li>
+                    <li>Translated high-volume sensor telemetry into clear, interactive visualizations.</li>
+                    <li>Focused on reducing cognitive load for non-technical facility managers.</li>
                   </ul>
                 </div>
               </div>
@@ -496,9 +525,9 @@ const ResumePage: React.FC = () => {
                     <p className="text-slate-500 text-[11px] mt-0.5 leading-relaxed">
                       M.Sc. Human-Computer Interaction &amp; Design (Expected Aug 2026)
                       <br />
-                      <strong>Focus:</strong> Usability engineering, information architecture, interaction.
+                      <strong>Focus:</strong> Usability engineering, information architecture, interactive systems.
                       <br />
-                      <strong>Thesis:</strong> Translating complex air quality sensors into public visual insights.
+                      <strong>Thesis:</strong> Translating complex indoor air quality sensor data into actionable insights for non-technical users.
                     </p>
                   </div>
 
@@ -515,6 +544,40 @@ const ResumePage: React.FC = () => {
 
               <div className="text-[9px] font-mono text-slate-400 border-t border-slate-100 pt-3">
                 ACAD_CREDENTIAL // DUAL_DEGREE_FI_IT
+              </div>
+            </div>
+          );
+
+        case "certifications-frame":
+          return (
+            <div className="flex flex-col justify-between h-full p-6 text-slate-800 font-body select-none">
+              <div>
+                <span className="text-[10px] font-mono tracking-widest text-primary uppercase font-bold">
+                  CREDENTIALS &amp; CERTIFICATES
+                </span>
+                <h3 className="text-lg font-bold font-display text-slate-900 mt-1">Certifications</h3>
+                <p className="text-[10px] uppercase text-slate-400">Industry Recognition</p>
+
+                <div className="mt-4 pt-4 border-t border-dashed border-slate-200 space-y-3">
+                  {[
+                    { title: "Upbeat Summer School (28DIGITAL)", issuer: "EIT Digital Summer School", date: "Sep 2025" },
+                    { title: "Design Rules: Principles + Practices for Great UI Design", issuer: "Udemy", date: "Jul 2023" },
+                    { title: "Start the UX Design Process: Empathize, Define, Ideate", issuer: "Coursera", date: "May 2021" },
+                    { title: "Foundations of User Experience (UX) Design", issuer: "Coursera", date: "Apr 2021" },
+                  ].map((cert, index) => (
+                    <div key={index} className="text-xs">
+                      <div className="flex justify-between items-start gap-2">
+                        <span className="font-bold text-slate-800 text-[11px] leading-tight">{cert.title}</span>
+                        <span className="text-[9px] font-mono text-slate-550 whitespace-nowrap">{cert.date}</span>
+                      </div>
+                      <span className="text-[10px] text-slate-500 block mt-0.5">{cert.issuer}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="text-[9px] font-mono text-slate-400 border-t border-slate-100 pt-3">
+                CERTIFICATE_REGISTRY // VERIFIED_CREDENTIALS
               </div>
             </div>
           );
@@ -560,9 +623,8 @@ const ResumePage: React.FC = () => {
                   <pre>{`const STACK = {
   core: ["React", "TS", "Redux"],
   builders: ["Git", "Webpack"],
-  designParity: [
-    "Figma API", "WCAG", "IA"
-  ]
+  designParity: ["Figma API", "WCAG", "IA"],
+  expertise: ["Perf Triage", "Cognitive Load"]
 };`}</pre>
                 </div>
               </div>
@@ -636,6 +698,37 @@ const calculateDifficulty = (dist, w) => {
               </div>
               <div className="text-[9px] text-emerald-600">
                 SRC: LatencyHCI.tsx // HEURISTIC_ACCURACY: 99.8%
+              </div>
+            </div>
+          );
+
+        case "certifications-frame":
+          return (
+            <div className="p-5 font-mono text-xs text-emerald-400 h-full flex flex-col justify-between">
+              <div>
+                <span className="text-[10px] text-emerald-600">// Professional credentials array</span>
+                <div className="bg-slate-950 border border-emerald-900/30 rounded p-3 text-[9.5px] text-slate-300 leading-normal mt-2">
+                  <pre>{`const CERTIFICATIONS = [
+  {
+    name: "EIT Digital Summer School",
+    cohort: "28DIGITAL",
+    date: "2025-09"
+  },
+  {
+    name: "Great UI Design",
+    provider: "Udemy",
+    date: "2023-07"
+  },
+  {
+    name: "UX Design Process",
+    provider: "Coursera",
+    date: "2021-05"
+  }
+];`}</pre>
+                </div>
+              </div>
+              <div className="text-[9px] text-emerald-600">
+                EXPORT_VALS // CERTIFICATES: 4 SIGNED
               </div>
             </div>
           );
@@ -742,7 +835,7 @@ const calculateDifficulty = (dist, w) => {
               className="absolute inset-0 pointer-events-none"
               style={{
                 width: "2600px",
-                height: "850px",
+                height: "980px",
                 overflow: "visible",
               }}
             >
@@ -750,7 +843,8 @@ const calculateDifficulty = (dist, w) => {
                 { d: "M 540 470 C 552.5 470, 552.5 470, 565 470", key: "c1" },
                 { d: "M 865 470 C 937.5 470, 937.5 430, 1010 430", key: "c2" },
                 { d: "M 1440 430 C 1450 430, 1450 430, 1460 430", key: "c3" },
-                { d: "M 1890 430 C 1960 430, 1960 480, 2030 480", key: "c4" }
+                { d: "M 1890 430 C 1960 430, 1960 480, 2030 480", key: "c4" },
+                { d: "M 2250 700 C 2250 710, 2250 730, 2250 740", key: "c5" }
               ].map((path) => (
                 <g key={path.key}>
                   {/* Background path line */}
@@ -951,9 +1045,9 @@ const calculateDifficulty = (dist, w) => {
 
             {/* Education Tab */}
             <button
-              onClick={() => centerOnFrame(figmaSections[2].frames[0])}
+              onClick={() => centerOnSection(figmaSections[2])}
               className={`px-3 py-1.5 rounded text-[10px] font-mono font-bold uppercase transition-all duration-300 ${
-                selectedFrameId === "edu-frame"
+                selectedFrameId === "edu-frame" || selectedFrameId === "certifications-frame"
                   ? isXRay
                     ? "bg-emerald-500 text-slate-950"
                     : "bg-[#18a0fb] text-white"
@@ -997,7 +1091,7 @@ const calculateDifficulty = (dist, w) => {
             </p>
           </div>
           <div className="text-right text-xs text-slate-700 space-y-1 font-mono">
-            <div>Helsinki, Metropolitan Area, Finland</div>
+            <div>Helsinki, Finland</div>
             <div>sknayyar.sk@gmail.com</div>
             <div>+358 41 743 4861</div>
             <div>skn1999.github.io/sumit-portfolio</div>
@@ -1014,7 +1108,7 @@ const calculateDifficulty = (dist, w) => {
                 Profile
               </h2>
               <p className="text-xs text-slate-700 leading-relaxed">
-                I design scalable interface systems and data workflows. Blending 4 years of enterprise frontend execution with an HCI Master's from Aalto University and University of Trento.
+                UX Designer and Frontend Engineer with 4+ years building user-centric SaaS products. I design in Figma and ship in React and TypeScript, closing handoff gaps and turning data dense workflows into well-crafted, accessible interfaces. Backed by an HCI Master's from Aalto University. Based in the Helsinki metropolitan area and committed to building my long-term career and home in Finland.
               </p>
             </section>
 
@@ -1050,7 +1144,7 @@ const calculateDifficulty = (dist, w) => {
                   <li>Designed a runtime, metadata-driven configuration engine that parses JSON definitions to instantiate multi-platform UI components dynamically, cutting new ad network integration from a multi-day core rewrite to a configuration checklist.</li>
                   <li>Eliminated global cascade re-rendering loops across dense dashboard grids by isolating data domains into localized Redux slices with memoized selector filters.</li>
                   <li>Built a progressive, viewport-driven lazy-hydration pipeline that loads heavy plots and metric lists asynchronously as their containers enter the viewport.</li>
-                  <li><strong>Impact:</strong> Reduced core dashboard load and time-to-interactive from 8-10 seconds down to under 1 second under enterprise production loads.</li>
+                  <li><strong>Impact:</strong> Reduced core dashboard load and time-to-interactive from 8 to 10 seconds down to under 1 second under enterprise production loads.</li>
                 </ul>
               </div>
             </section>
@@ -1117,6 +1211,43 @@ const calculateDifficulty = (dist, w) => {
                   <p className="text-slate-700 leading-relaxed">
                     Git / GitHub, Firebase, Webpack, DevTools Profiling.
                   </p>
+                </div>
+              </div>
+            </section>
+
+            {/* Certifications */}
+            <section>
+              <h2 className="text-lg font-bold uppercase tracking-wider text-slate-900 border-b border-slate-300 pb-1 mb-3">
+                Certifications
+              </h2>
+              <div className="space-y-3 text-xs leading-normal">
+                <div>
+                  <div className="flex justify-between font-semibold">
+                    <span>Upbeat Summer School (28DIGITAL)</span>
+                    <span className="font-mono text-slate-600">Sep 2025</span>
+                  </div>
+                  <div className="text-slate-500 text-[11px]">EIT Digital Summer School</div>
+                </div>
+                <div>
+                  <div className="flex justify-between font-semibold">
+                    <span>Design Rules: Principles + Practices for Great UI Design</span>
+                    <span className="font-mono text-slate-650">Jul 2023</span>
+                  </div>
+                  <div className="text-slate-500 text-[11px]">Udemy</div>
+                </div>
+                <div>
+                  <div className="flex justify-between font-semibold">
+                    <span>Start the UX Design Process: Empathize, Define, Ideate</span>
+                    <span className="font-mono text-slate-650">May 2021</span>
+                  </div>
+                  <div className="text-slate-500 text-[11px]">Coursera</div>
+                </div>
+                <div>
+                  <div className="flex justify-between font-semibold">
+                    <span>Foundations of User Experience (UX) Design</span>
+                    <span className="font-mono text-slate-650">Apr 2021</span>
+                  </div>
+                  <div className="text-slate-500 text-[11px]">Coursera</div>
                 </div>
               </div>
             </section>
