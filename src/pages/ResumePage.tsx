@@ -153,7 +153,9 @@ const ResumePage: React.FC = () => {
   const [zoom, setZoom] = useState(0.85);
   const [isXRay, setIsXRay] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [selectedFrameId, setSelectedFrameId] = useState<string | null>("profile-frame");
+  const [selectedFrameId, setSelectedFrameId] = useState<string | null>(
+    "profile-frame",
+  );
   const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
 
   const dragStart = useRef({ x: 0, y: 0 });
@@ -174,49 +176,55 @@ const ResumePage: React.FC = () => {
   }, []);
 
   // Center canvas on a specific frame (making it mobile-responsive)
-  const centerOnFrame = useCallback((frame: FrameData) => {
-    const section = figmaSections.find((s) => s.id === frame.sectionId);
-    if (!section) return;
+  const centerOnFrame = useCallback(
+    (frame: FrameData) => {
+      const section = figmaSections.find((s) => s.id === frame.sectionId);
+      if (!section) return;
 
-    const globalX = section.x + frame.x + frame.w / 2;
-    const globalY = section.y + frame.y + frame.h / 2;
+      const globalX = section.x + frame.x + frame.w / 2;
+      const globalY = section.y + frame.y + frame.h / 2;
 
-    const container = containerRef.current;
-    if (!container) return;
+      const container = containerRef.current;
+      if (!container) return;
 
-    // Responsive Zoom Level: scales down on mobile to fit screen bounds
-    const targetZoom = isMobile
-      ? Math.min(0.9, (container.clientWidth - 48) / frame.w)
-      : 0.95;
+      // Responsive Zoom Level: scales down on mobile to fit screen bounds
+      const targetZoom = isMobile
+        ? Math.min(0.9, (container.clientWidth - 48) / frame.w)
+        : 0.95;
 
-    setZoom(targetZoom);
-    setPan({
-      x: container.clientWidth / 2 - globalX * targetZoom,
-      y: container.clientHeight / 2 - globalY * targetZoom,
-    });
-    setSelectedFrameId(frame.id);
-  }, [isMobile]);
+      setZoom(targetZoom);
+      setPan({
+        x: container.clientWidth / 2 - globalX * targetZoom,
+        y: container.clientHeight / 2 - globalY * targetZoom,
+      });
+      setSelectedFrameId(frame.id);
+    },
+    [isMobile],
+  );
 
   // Center canvas on a specific section
-  const centerOnSection = useCallback((section: SectionData) => {
-    const globalX = section.x + section.w / 2;
-    const globalY = section.y + section.h / 2;
+  const centerOnSection = useCallback(
+    (section: SectionData) => {
+      const globalX = section.x + section.w / 2;
+      const globalY = section.y + section.h / 2;
 
-    const container = containerRef.current;
-    if (!container) return;
+      const container = containerRef.current;
+      if (!container) return;
 
-    // Responsive Zoom Level: fits section bounds cleanly
-    const targetZoom = isMobile
-      ? Math.min(0.8, (container.clientWidth - 48) / section.w)
-      : 0.9;
+      // Responsive Zoom Level: fits section bounds cleanly
+      const targetZoom = isMobile
+        ? Math.min(0.8, (container.clientWidth - 48) / section.w)
+        : 0.9;
 
-    setZoom(targetZoom);
-    setPan({
-      x: container.clientWidth / 2 - globalX * targetZoom,
-      y: container.clientHeight / 2 - globalY * targetZoom,
-    });
-    setSelectedFrameId(section.frames[0]?.id || null);
-  }, [isMobile]);
+      setZoom(targetZoom);
+      setPan({
+        x: container.clientWidth / 2 - globalX * targetZoom,
+        y: container.clientHeight / 2 - globalY * targetZoom,
+      });
+      setSelectedFrameId(section.frames[0]?.id || null);
+    },
+    [isMobile],
+  );
 
   // Center canvas on Identity & Credentials Section on mount once container is ready
   useEffect(() => {
@@ -327,7 +335,7 @@ const ResumePage: React.FC = () => {
                     </p>
                   </div>
                   {/* Profile Picture Asset */}
-                  <div className="w-16 h-16 rounded-lg overflow-hidden border border-slate-200 shadow-sm bg-slate-50 flex-shrink-0">
+                  <div className="w-20 h-20 rounded-lg overflow-hidden border border-slate-200 shadow-sm bg-slate-50 flex-shrink-0">
                     <img
                       src={`${import.meta.env.BASE_URL}images/about/hero.jpg`}
                       alt="Sumit profile pic"
@@ -337,7 +345,13 @@ const ResumePage: React.FC = () => {
                 </div>
 
                 <p className="text-xs text-slate-600 leading-relaxed mt-4 pt-4 border-t border-dashed border-slate-200">
-                  UX Designer and Frontend Engineer with 4+ years building user-centric SaaS products. I design in Figma and ship in React and TypeScript, closing handoff gaps and turning data dense workflows into well-crafted, accessible interfaces. Backed by an HCI Master's from Aalto University. Based in the Helsinki metropolitan area and committed to building my long-term career and home in Finland.
+                  UX Designer and Frontend Engineer with 4+ years building
+                  user-centric SaaS products. I design in Figma and ship in
+                  React and TypeScript, closing handoff gaps and turning data
+                  dense workflows into well-crafted, accessible interfaces.
+                  Backed by an HCI Master's from Aalto University. Based in the
+                  Helsinki metropolitan area and committed to building my
+                  long-term career and home in Finland.
                 </p>
 
                 <div className="mt-5 space-y-2 text-xs text-slate-600">
@@ -377,8 +391,12 @@ const ResumePage: React.FC = () => {
                 <span className="text-[10px] font-mono tracking-widest text-primary uppercase font-bold">
                   SKILLS INVENTORY
                 </span>
-                <h3 className="text-lg font-bold font-display text-slate-900 mt-1">Core Stack</h3>
-                <p className="text-[10px] uppercase text-slate-400">Design Systems &amp; Methods</p>
+                <h3 className="text-lg font-bold font-display text-slate-900 mt-1">
+                  Core Stack
+                </h3>
+                <p className="text-[10px] uppercase text-slate-400">
+                  Design Systems &amp; Methods
+                </p>
 
                 <div className="mt-4 pt-4 border-t border-dashed border-slate-200 space-y-4 overflow-y-auto max-h-[380px] pr-1">
                   <div>
@@ -395,7 +413,10 @@ const ResumePage: React.FC = () => {
                         "Usability Testing",
                         "Accessibility",
                       ].map((s) => (
-                        <span key={s} className="px-2 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] text-slate-650 font-medium">
+                        <span
+                          key={s}
+                          className="px-2 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] text-slate-650 font-medium"
+                        >
                           {s}
                         </span>
                       ))}
@@ -415,7 +436,10 @@ const ResumePage: React.FC = () => {
                         "HTML5 / CSS3 / Sass",
                         "REST APIs",
                       ].map((s) => (
-                        <span key={s} className="px-2 py-1 bg-primary/5 border border-primary/20 text-primary rounded text-[10px] font-medium">
+                        <span
+                          key={s}
+                          className="px-2 py-1 bg-primary/5 border border-primary/20 text-primary rounded text-[10px] font-medium"
+                        >
                           {s}
                         </span>
                       ))}
@@ -434,7 +458,10 @@ const ResumePage: React.FC = () => {
                         "Cognitive load optimization",
                         "Zero-handoff system specs",
                       ].map((s) => (
-                        <span key={s} className="px-2 py-1 bg-emerald-50 border border-emerald-200/50 text-emerald-700 rounded text-[10px] font-medium">
+                        <span
+                          key={s}
+                          className="px-2 py-1 bg-emerald-50 border border-emerald-200/50 text-emerald-700 rounded text-[10px] font-medium"
+                        >
                           {s}
                         </span>
                       ))}
@@ -456,20 +483,36 @@ const ResumePage: React.FC = () => {
                 <span className="text-[10px] font-mono tracking-widest text-primary uppercase font-bold">
                   PROFESSIONAL HIST
                 </span>
-                <h3 className="text-xl font-bold font-display text-slate-900 mt-1">Optmyzr</h3>
+                <h3 className="text-xl font-bold font-display text-slate-900 mt-1">
+                  Optmyzr
+                </h3>
                 <p className="text-[10px] font-semibold uppercase text-slate-400">
                   Frontend Engineer (SDE-II) // May 2020 - Jul 2024
                 </p>
 
                 <div className="mt-4 pt-4 border-t border-dashed border-slate-200 space-y-3 text-xs leading-relaxed text-slate-650">
                   <p>
-                    Progressed from intern to SDE-II on the Core team, owning the frontend migration of the platform's two highest-traffic, data-dense analytics applications (Account Dashboard and PPC Comparison Tool).
+                    Progressed from intern to SDE-II on the Core team, owning
+                    the frontend migration of the platform's two
+                    highest-traffic, data-dense analytics applications (Account
+                    Dashboard and PPC Comparison Tool).
                   </p>
                   <ul className="list-disc pl-4 space-y-1.5 text-[11px] text-slate-600">
-                    <li>Designed runtime, metadata-driven component configuration engine.</li>
-                    <li>Eliminated cascade rendering loops via isolated Redux slices.</li>
-                    <li>Built progressive viewport-driven lazy-hydration pipeline.</li>
-                    <li><strong>Impact:</strong> Reduced dashboard load TTI from 8-10s down to under 1s.</li>
+                    <li>
+                      Designed runtime, metadata-driven component configuration
+                      engine.
+                    </li>
+                    <li>
+                      Eliminated cascade rendering loops via isolated Redux
+                      slices.
+                    </li>
+                    <li>
+                      Built progressive viewport-driven lazy-hydration pipeline.
+                    </li>
+                    <li>
+                      <strong>Impact:</strong> Reduced dashboard load TTI from
+                      8-10s down to under 1s.
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -487,19 +530,32 @@ const ResumePage: React.FC = () => {
                 <span className="text-[10px] font-mono tracking-widest text-primary uppercase font-bold">
                   PROFESSIONAL HIST
                 </span>
-                <h3 className="text-xl font-bold font-display text-slate-900 mt-1">Deda Next</h3>
+                <h3 className="text-xl font-bold font-display text-slate-900 mt-1">
+                  Deda Next
+                </h3>
                 <p className="text-[10px] font-semibold uppercase text-slate-400">
                   UX Designer &amp; Researcher // Mar 2026 - May 2026
                 </p>
 
                 <div className="mt-4 pt-4 border-t border-dashed border-slate-200 space-y-3 text-xs leading-relaxed text-slate-650">
                   <p>
-                    Worked on EDIAQI, an EU Horizon Europe project, designing how indoor air quality data helps schools and public buildings make better facility decisions.
+                    Worked on EDIAQI, an EU Horizon Europe project, designing
+                    how indoor air quality data helps schools and public
+                    buildings make better facility decisions.
                   </p>
                   <ul className="list-disc pl-4 space-y-1.5 text-[11px] text-slate-600">
-                    <li>Researched user needs, mapped messy workflows, and delivered decision-support/reporting tool.</li>
-                    <li>Translated high-volume sensor telemetry into clear, interactive visualizations.</li>
-                    <li>Focused on reducing cognitive load for non-technical facility managers.</li>
+                    <li>
+                      Researched user needs, mapped messy workflows, and
+                      delivered decision-support/reporting tool.
+                    </li>
+                    <li>
+                      Translated high-volume sensor telemetry into clear,
+                      interactive visualizations.
+                    </li>
+                    <li>
+                      Focused on reducing cognitive load for non-technical
+                      facility managers.
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -517,27 +573,40 @@ const ResumePage: React.FC = () => {
                 <span className="text-[10px] font-mono tracking-widest text-primary uppercase font-bold">
                   ACADEMIC MASTERS
                 </span>
-                <h3 className="text-lg font-bold font-display text-slate-900 mt-1">Higher Education</h3>
-                <p className="text-[10px] uppercase text-slate-400">Dual Degree HCI &amp; Cognitive Science</p>
+                <h3 className="text-lg font-bold font-display text-slate-900 mt-1">
+                  Higher Education
+                </h3>
+                <p className="text-[10px] uppercase text-slate-400">
+                  Dual Degree HCI &amp; Cognitive Science
+                </p>
 
                 <div className="mt-4 pt-4 border-t border-dashed border-slate-200 space-y-4 text-xs">
                   <div>
-                    <h4 className="font-bold text-slate-850">Aalto University (Espoo, Finland)</h4>
+                    <h4 className="font-bold text-slate-850">
+                      Aalto University (Espoo, Finland)
+                    </h4>
                     <p className="text-slate-500 text-[11px] mt-0.5 leading-relaxed">
-                      M.Sc. Human-Computer Interaction &amp; Design (Expected Aug 2026)
+                      M.Sc. Human-Computer Interaction &amp; Design (Expected
+                      Aug 2026)
                       <br />
-                      <strong>Focus:</strong> Usability engineering, information architecture, interactive systems.
+                      <strong>Focus:</strong> Usability engineering, information
+                      architecture, interactive systems.
                       <br />
-                      <strong>Thesis:</strong> Translating complex indoor air quality sensor data into actionable insights for non-technical users.
+                      <strong>Thesis:</strong> Translating complex indoor air
+                      quality sensor data into actionable insights for
+                      non-technical users.
                     </p>
                   </div>
 
                   <div>
-                    <h4 className="font-bold text-slate-850">Università di Trento (Trento, Italy)</h4>
+                    <h4 className="font-bold text-slate-850">
+                      Università di Trento (Trento, Italy)
+                    </h4>
                     <p className="text-slate-500 text-[11px] mt-0.5">
                       M.Sc. Cognitive Science (Expected 2026)
                       <br />
-                      <strong>Focus:</strong> Human heuristics, cognitive metrics, and mental workflows.
+                      <strong>Focus:</strong> Human heuristics, cognitive
+                      metrics, and mental workflows.
                     </p>
                   </div>
                 </div>
@@ -556,22 +625,50 @@ const ResumePage: React.FC = () => {
                 <span className="text-[10px] font-mono tracking-widest text-primary uppercase font-bold">
                   CREDENTIALS &amp; CERTIFICATES
                 </span>
-                <h3 className="text-lg font-bold font-display text-slate-900 mt-1">Certifications</h3>
-                <p className="text-[10px] uppercase text-slate-400">Industry Recognition</p>
+                <h3 className="text-lg font-bold font-display text-slate-900 mt-1">
+                  Certifications
+                </h3>
+                <p className="text-[10px] uppercase text-slate-400">
+                  Industry Recognition
+                </p>
 
                 <div className="mt-4 pt-4 border-t border-dashed border-slate-200 space-y-3">
                   {[
-                    { title: "Upbeat Summer School (28DIGITAL)", issuer: "EIT Digital Summer School", date: "Sep 2025" },
-                    { title: "Design Rules: Principles + Practices for Great UI Design", issuer: "Udemy", date: "Jul 2023" },
-                    { title: "Start the UX Design Process: Empathize, Define, Ideate", issuer: "Coursera", date: "May 2021" },
-                    { title: "Foundations of User Experience (UX) Design", issuer: "Coursera", date: "Apr 2021" },
+                    {
+                      title: "Upbeat Summer School (28DIGITAL)",
+                      issuer: "EIT Digital Summer School",
+                      date: "Sep 2025",
+                    },
+                    {
+                      title:
+                        "Design Rules: Principles + Practices for Great UI Design",
+                      issuer: "Udemy",
+                      date: "Jul 2023",
+                    },
+                    {
+                      title:
+                        "Start the UX Design Process: Empathize, Define, Ideate",
+                      issuer: "Coursera",
+                      date: "May 2021",
+                    },
+                    {
+                      title: "Foundations of User Experience (UX) Design",
+                      issuer: "Coursera",
+                      date: "Apr 2021",
+                    },
                   ].map((cert, index) => (
                     <div key={index} className="text-xs">
                       <div className="flex justify-between items-start gap-2">
-                        <span className="font-bold text-slate-800 text-[11px] leading-tight">{cert.title}</span>
-                        <span className="text-[9px] font-mono text-slate-550 whitespace-nowrap">{cert.date}</span>
+                        <span className="font-bold text-slate-800 text-[11px] leading-tight">
+                          {cert.title}
+                        </span>
+                        <span className="text-[9px] font-mono text-slate-550 whitespace-nowrap">
+                          {cert.date}
+                        </span>
                       </div>
-                      <span className="text-[10px] text-slate-500 block mt-0.5">{cert.issuer}</span>
+                      <span className="text-[10px] text-slate-500 block mt-0.5">
+                        {cert.issuer}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -593,7 +690,9 @@ const ResumePage: React.FC = () => {
           return (
             <div className="p-5 font-mono text-xs text-emerald-400 h-full flex flex-col justify-between">
               <div>
-                <span className="text-[10px] text-emerald-600">// Identity metadata file</span>
+                <span className="text-[10px] text-emerald-600">
+                  // Identity metadata file
+                </span>
                 <div className="bg-slate-950 border border-emerald-900/30 rounded p-3 text-[10px] text-slate-300 leading-relaxed mt-2">
                   <pre>{`{
   "developer": "Sumit Nayyar",
@@ -619,7 +718,9 @@ const ResumePage: React.FC = () => {
           return (
             <div className="p-5 font-mono text-xs text-emerald-400 h-full flex flex-col justify-between">
               <div>
-                <span className="text-[10px] text-emerald-600">// Dependency package configuration</span>
+                <span className="text-[10px] text-emerald-600">
+                  // Dependency package configuration
+                </span>
                 <div className="bg-slate-950 border border-emerald-900/30 rounded p-3 text-[10.5px] text-slate-300 mt-2">
                   <pre>{`const STACK = {
   core: ["React", "TS", "Redux"],
@@ -639,9 +740,14 @@ const ResumePage: React.FC = () => {
           return (
             <div className="p-5 font-mono text-xs text-emerald-400 h-full flex flex-col justify-between">
               <div>
-                <span className="text-[10px] text-emerald-600">// lazy-hydration pipeline &amp; Redux selector optimization</span>
+                <span className="text-[10px] text-emerald-600">
+                  // lazy-hydration pipeline &amp; Redux selector optimization
+                </span>
                 <p className="text-[10px] text-slate-300 mt-1.5 leading-relaxed">
-                  <span className="text-emerald-500 font-bold">// PERF OUTCOME:</span> Compressed grid telemetry loading latency from 8s to under 1s.
+                  <span className="text-emerald-500 font-bold">
+                    // PERF OUTCOME:
+                  </span>{" "}
+                  Compressed grid telemetry loading latency from 8s to under 1s.
                 </p>
                 <div className="bg-slate-950 border border-emerald-900/30 rounded p-3 text-[9.5px] text-slate-300 leading-normal mt-2">
                   <pre>{`// Viewport dynamic hydrator grid wrapper
@@ -666,7 +772,9 @@ const LazyGridLoader = ({ children }) => {
           return (
             <div className="p-5 font-mono text-xs text-emerald-400 h-full flex flex-col justify-between">
               <div>
-                <span className="text-[10px] text-emerald-600">// telemetric telemetry stream mapping</span>
+                <span className="text-[10px] text-emerald-600">
+                  // telemetric telemetry stream mapping
+                </span>
                 <div className="bg-slate-950 border border-emerald-900/30 rounded p-3 text-[9.5px] text-slate-300 leading-normal mt-2">
                   <pre>{`// Translate raw AQI data stream
 const mapSensorVectors = (rawData) => {
@@ -688,7 +796,9 @@ const mapSensorVectors = (rawData) => {
           return (
             <div className="p-5 font-mono text-xs text-emerald-400 h-full flex flex-col justify-between">
               <div>
-                <span className="text-[10px] text-emerald-600">// Target selection latency (Fitts's Law)</span>
+                <span className="text-[10px] text-emerald-600">
+                  // Target selection latency (Fitts's Law)
+                </span>
                 <div className="bg-slate-950 border border-emerald-900/30 rounded p-3 text-[9.5px] text-slate-300 leading-normal mt-2">
                   <pre>{`// MT = a + b * log2(2D/W)
 const calculateDifficulty = (dist, w) => {
@@ -707,7 +817,9 @@ const calculateDifficulty = (dist, w) => {
           return (
             <div className="p-5 font-mono text-xs text-emerald-400 h-full flex flex-col justify-between">
               <div>
-                <span className="text-[10px] text-emerald-600">// Professional credentials array</span>
+                <span className="text-[10px] text-emerald-600">
+                  // Professional credentials array
+                </span>
                 <div className="bg-slate-950 border border-emerald-900/30 rounded p-3 text-[9.5px] text-slate-300 leading-normal mt-2">
                   <pre>{`const CERTIFICATIONS = [
   {
@@ -795,7 +907,7 @@ const calculateDifficulty = (dist, w) => {
           <div className="absolute left-6 top-[84px] z-30 pointer-events-auto">
             <Button
               variant="outline"
-              size="xs"
+              size="lg"
               onClick={() => setIsSidebarOpen(true)}
               className="bg-background/85 backdrop-blur-md border border-border/40 shadow-lg h-9 w-9 px-0 flex items-center justify-center rounded-xl"
               title="Open Layers Sidebar"
@@ -825,7 +937,7 @@ const calculateDifficulty = (dist, w) => {
                 </div>
                 <button
                   onClick={() => setIsSidebarOpen(false)}
-                  className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground transition-colors font-mono text-[10px]"
+                  className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground transition-colors font-mono text-[16px]"
                   title="Collapse Sidebar"
                 >
                   ✕
@@ -838,10 +950,12 @@ const calculateDifficulty = (dist, w) => {
                   <div className="flex items-center gap-1.5 text-muted-foreground px-2 py-1 select-none font-bold text-[10px] uppercase tracking-wider">
                     <span>CV Blueprint</span>
                   </div>
-                  
+
                   <div className="space-y-2 pl-1 border-l border-border/40 ml-2 mt-1">
                     {figmaSections.map((section) => {
-                      const isSectionSelected = section.frames.some(f => f.id === selectedFrameId);
+                      const isSectionSelected = section.frames.some(
+                        (f) => f.id === selectedFrameId,
+                      );
                       return (
                         <div key={section.id} className="space-y-1">
                           {/* Section Item */}
@@ -857,14 +971,17 @@ const calculateDifficulty = (dist, w) => {
                           >
                             <FolderOpen className="w-3.5 h-3.5 flex-shrink-0" />
                             <span className="truncate">
-                              {isXRay ? section.dirTitle.replace("Directory: ", "") : section.title.replace("Section: ", "")}
+                              {isXRay
+                                ? section.dirTitle.replace("Directory: ", "")
+                                : section.title.replace("Section: ", "")}
                             </span>
                           </button>
 
                           {/* Frames (Indented under Section) */}
                           <div className="space-y-0.5 pl-3.5 mt-0.5">
                             {section.frames.map((frame) => {
-                              const isFrameSelected = selectedFrameId === frame.id;
+                              const isFrameSelected =
+                                selectedFrameId === frame.id;
                               return (
                                 <button
                                   key={frame.id}
@@ -879,7 +996,9 @@ const calculateDifficulty = (dist, w) => {
                                 >
                                   <FileCode className="w-3 h-3 flex-shrink-0" />
                                   <span className="truncate">
-                                    {isXRay ? frame.fileTitle : frame.title.replace("Frame: ", "")}
+                                    {isXRay
+                                      ? frame.fileTitle
+                                      : frame.title.replace("Frame: ", "")}
                                   </span>
                                 </button>
                               );
@@ -894,7 +1013,9 @@ const calculateDifficulty = (dist, w) => {
 
               {/* Sidebar Footer info */}
               <div className="px-4 py-2 border-t border-border/40 text-[9px] font-mono text-muted-foreground/60 select-none bg-muted/10">
-                {selectedFrameId ? `Focused: ${selectedFrameId.replace("-frame", "")}` : "No active selection"}
+                {selectedFrameId
+                  ? `Focused: ${selectedFrameId.replace("-frame", "")}`
+                  : "No active selection"}
               </div>
             </motion.aside>
           )}
@@ -928,7 +1049,7 @@ const calculateDifficulty = (dist, w) => {
               backgroundPosition: `${pan.x}px ${pan.y}px`,
               opacity: isXRay
                 ? Math.min(0.15, Math.max(0.02, 0.05 + (zoom - 0.35) * 0.08))
-                : Math.min(0.35, Math.max(0.04, 0.10 + (zoom - 0.35) * 0.20)),
+                : Math.min(0.35, Math.max(0.04, 0.1 + (zoom - 0.35) * 0.2)),
             }}
           />
 
@@ -955,14 +1076,18 @@ const calculateDifficulty = (dist, w) => {
                 { d: "M 865 470 C 937.5 470, 937.5 430, 1010 430", key: "c2" },
                 { d: "M 1440 430 C 1450 430, 1450 430, 1460 430", key: "c3" },
                 { d: "M 1890 430 C 1960 430, 1960 480, 2030 480", key: "c4" },
-                { d: "M 2250 700 C 2250 710, 2250 730, 2250 740", key: "c5" }
+                { d: "M 2250 700 C 2250 710, 2250 730, 2250 740", key: "c5" },
               ].map((path) => (
                 <g key={path.key}>
                   {/* Background path line */}
                   <path
                     d={path.d}
                     fill="none"
-                    stroke={isXRay ? "rgba(16, 185, 129, 0.12)" : "rgba(24, 160, 251, 0.12)"}
+                    stroke={
+                      isXRay
+                        ? "rgba(16, 185, 129, 0.12)"
+                        : "rgba(24, 160, 251, 0.12)"
+                    }
                     strokeWidth="3.5"
                     strokeLinecap="round"
                   />
@@ -1007,12 +1132,16 @@ const calculateDifficulty = (dist, w) => {
                   {isXRay ? (
                     <>
                       <FolderOpen className="w-3.5 h-3.5 text-emerald-500" />
-                      <span className="text-emerald-500 uppercase">{section.dirTitle}</span>
+                      <span className="text-emerald-500 uppercase">
+                        {section.dirTitle}
+                      </span>
                     </>
                   ) : (
                     <>
                       <MousePointer className="w-3.5 h-3.5 text-slate-400" />
-                      <span className="text-slate-500 font-bold uppercase">{section.title}</span>
+                      <span className="text-slate-500 font-bold uppercase">
+                        {section.title}
+                      </span>
                     </>
                   )}
                 </div>
@@ -1033,8 +1162,8 @@ const calculateDifficulty = (dist, w) => {
                             ? "border-emerald-400 bg-slate-950 shadow-[0_0_20px_rgba(16,185,129,0.15)]"
                             : "border-[#18a0fb] bg-white shadow-xl"
                           : isXRay
-                          ? "border-emerald-900/50 bg-slate-950/40 opacity-75 hover:opacity-100 hover:border-emerald-800"
-                          : "border-slate-200 bg-white opacity-85 hover:opacity-100 hover:border-slate-350"
+                            ? "border-emerald-900/50 bg-slate-950/40 opacity-75 hover:opacity-100 hover:border-emerald-800"
+                            : "border-slate-200 bg-white opacity-85 hover:opacity-100 hover:border-slate-350"
                       }`}
                       style={{
                         left: `${frame.x}px`,
@@ -1051,8 +1180,8 @@ const calculateDifficulty = (dist, w) => {
                               ? "bg-emerald-500 text-slate-950"
                               : "bg-[#18a0fb] text-white"
                             : isXRay
-                            ? "text-emerald-600"
-                            : "text-slate-400"
+                              ? "text-emerald-600"
+                              : "text-slate-400"
                         }`}
                       >
                         {isXRay ? (
@@ -1093,7 +1222,8 @@ const calculateDifficulty = (dist, w) => {
                           <div className="absolute -bottom-1 -left-1 w-2.5 h-2.5 bg-slate-950 border-2 border-emerald-400 rounded-sm pointer-events-none" />
                           <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-slate-950 border-2 border-emerald-400 rounded-sm pointer-events-none" />
                           <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-emerald-500 text-slate-950 text-[8px] font-mono px-1 rounded-sm select-none font-bold">
-                            LOC: {frame.fileTitle} // SIZE: {Math.round(frame.w * 0.1)} lines
+                            LOC: {frame.fileTitle} // SIZE:{" "}
+                            {Math.round(frame.w * 0.1)} lines
                           </div>
                         </>
                       )}
@@ -1112,7 +1242,7 @@ const calculateDifficulty = (dist, w) => {
             <Button
               variant={isXRay ? "default" : "outline"}
               size="xs"
-              onClick={() => setIsXRay(prev => !prev)}
+              onClick={() => setIsXRay((prev) => !prev)}
               className={`text-[10px] uppercase font-bold tracking-wider h-6.5 transition-all duration-300 ${
                 isXRay
                   ? "bg-emerald-600 hover:bg-emerald-500 text-slate-950 border-emerald-600"
@@ -1123,7 +1253,11 @@ const calculateDifficulty = (dist, w) => {
             </Button>
             <span className="text-muted-foreground hidden lg:inline">|</span>
             <span className="text-muted-foreground text-[10px] uppercase hidden lg:inline">
-              Hold <kbd className="px-1.5 py-0.5 bg-muted rounded border border-border">Spacebar</kbd> for IDE
+              Hold{" "}
+              <kbd className="px-1.5 py-0.5 bg-muted rounded border border-border">
+                Spacebar
+              </kbd>{" "}
+              for IDE
             </span>
           </div>
         </footer>
@@ -1134,7 +1268,9 @@ const calculateDifficulty = (dist, w) => {
         {/* Header Block */}
         <div className="flex justify-between items-start border-b-2 border-slate-900 pb-4 mb-6">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight text-slate-900">Sumit Nayyar</h1>
+            <h1 className="text-4xl font-bold tracking-tight text-slate-900">
+              Sumit Nayyar
+            </h1>
             <p className="text-lg font-semibold text-slate-600 uppercase tracking-wider mt-1">
               UX Designer / Frontend Engineer
             </p>
@@ -1157,7 +1293,13 @@ const calculateDifficulty = (dist, w) => {
                 Profile
               </h2>
               <p className="text-xs text-slate-700 leading-relaxed">
-                UX Designer and Frontend Engineer with 4+ years building user-centric SaaS products. I design in Figma and ship in React and TypeScript, closing handoff gaps and turning data dense workflows into well-crafted, accessible interfaces. Backed by an HCI Master's from Aalto University. Based in the Helsinki metropolitan area and committed to building my long-term career and home in Finland.
+                UX Designer and Frontend Engineer with 4+ years building
+                user-centric SaaS products. I design in Figma and ship in React
+                and TypeScript, closing handoff gaps and turning data dense
+                workflows into well-crafted, accessible interfaces. Backed by an
+                HCI Master's from Aalto University. Based in the Helsinki
+                metropolitan area and committed to building my long-term career
+                and home in Finland.
               </p>
             </section>
 
@@ -1170,14 +1312,32 @@ const calculateDifficulty = (dist, w) => {
               {/* Deda Next */}
               <div>
                 <div className="flex justify-between font-semibold text-sm">
-                  <h3 className="text-slate-900 font-bold">Deda Next (Dedagroup)</h3>
-                  <span className="text-xs font-mono text-slate-600">Mar 2026 - May 2026</span>
+                  <h3 className="text-slate-900 font-bold">
+                    Deda Next (Dedagroup)
+                  </h3>
+                  <span className="text-xs font-mono text-slate-600">
+                    Mar 2026 - May 2026
+                  </span>
                 </div>
-                <div className="text-xs text-slate-600 italic">UX Designer &amp; Researcher — Trento, Italy</div>
+                <div className="text-xs text-slate-600 italic">
+                  UX Designer &amp; Researcher — Trento, Italy
+                </div>
                 <ul className="list-disc pl-4 mt-2 text-xs text-slate-700 space-y-1.5 leading-relaxed">
-                  <li>Worked on EDIAQI, an EU Horizon Europe project, designing how indoor air quality data helps schools and public buildings make better facility decisions.</li>
-                  <li>Researched user needs, mapped messy multi-stakeholder workflows, and delivered the first version of a decision-support and reporting experience.</li>
-                  <li>Translated high-volume sensor data into clear, interactive visualizations built to reduce cognitive load for non-technical users.</li>
+                  <li>
+                    Worked on EDIAQI, an EU Horizon Europe project, designing
+                    how indoor air quality data helps schools and public
+                    buildings make better facility decisions.
+                  </li>
+                  <li>
+                    Researched user needs, mapped messy multi-stakeholder
+                    workflows, and delivered the first version of a
+                    decision-support and reporting experience.
+                  </li>
+                  <li>
+                    Translated high-volume sensor data into clear, interactive
+                    visualizations built to reduce cognitive load for
+                    non-technical users.
+                  </li>
                 </ul>
               </div>
 
@@ -1185,15 +1345,42 @@ const calculateDifficulty = (dist, w) => {
               <div>
                 <div className="flex justify-between font-semibold text-sm">
                   <h3 className="text-slate-900 font-bold">Optmyzr</h3>
-                  <span className="text-xs font-mono text-slate-600">May 2020 - Jul 2024</span>
+                  <span className="text-xs font-mono text-slate-600">
+                    May 2020 - Jul 2024
+                  </span>
                 </div>
-                <div className="text-xs text-slate-600 italic">Frontend Engineer (SDE-II) — Remote / Hyderabad</div>
+                <div className="text-xs text-slate-600 italic">
+                  Frontend Engineer (SDE-II) — Remote / Hyderabad
+                </div>
                 <ul className="list-disc pl-4 mt-2 text-xs text-slate-700 space-y-1.5 leading-relaxed">
-                  <li>Progressed from intern to SDE-II on the Core team, owning the frontend migration of the platform's two highest-traffic, data-dense analytics applications (Account Dashboard and PPC Comparison Tool).</li>
-                  <li>Designed a runtime, metadata-driven configuration engine that parses JSON definitions to instantiate multi-platform UI components dynamically, cutting new ad network integration from a multi-day core rewrite to a configuration checklist.</li>
-                  <li>Eliminated global cascade re-rendering loops across dense dashboard grids by isolating data domains into localized Redux slices with memoized selector filters.</li>
-                  <li>Built a progressive, viewport-driven lazy-hydration pipeline that loads heavy plots and metric lists asynchronously as their containers enter the viewport.</li>
-                  <li><strong>Impact:</strong> Reduced core dashboard load and time-to-interactive from 8 to 10 seconds down to under 1 second under enterprise production loads.</li>
+                  <li>
+                    Progressed from intern to SDE-II on the Core team, owning
+                    the frontend migration of the platform's two
+                    highest-traffic, data-dense analytics applications (Account
+                    Dashboard and PPC Comparison Tool).
+                  </li>
+                  <li>
+                    Designed a runtime, metadata-driven configuration engine
+                    that parses JSON definitions to instantiate multi-platform
+                    UI components dynamically, cutting new ad network
+                    integration from a multi-day core rewrite to a configuration
+                    checklist.
+                  </li>
+                  <li>
+                    Eliminated global cascade re-rendering loops across dense
+                    dashboard grids by isolating data domains into localized
+                    Redux slices with memoized selector filters.
+                  </li>
+                  <li>
+                    Built a progressive, viewport-driven lazy-hydration pipeline
+                    that loads heavy plots and metric lists asynchronously as
+                    their containers enter the viewport.
+                  </li>
+                  <li>
+                    <strong>Impact:</strong> Reduced core dashboard load and
+                    time-to-interactive from 8 to 10 seconds down to under 1
+                    second under enterprise production loads.
+                  </li>
                 </ul>
               </div>
             </section>
@@ -1206,22 +1393,34 @@ const calculateDifficulty = (dist, w) => {
               <div>
                 <div className="flex justify-between font-semibold text-xs">
                   <h3 className="font-bold text-slate-900">Aalto University</h3>
-                  <span className="font-mono text-slate-600">Expected Aug 2026</span>
+                  <span className="font-mono text-slate-600">
+                    Expected Aug 2026
+                  </span>
                 </div>
-                <div className="text-xs text-slate-600 italic">M.Sc. Human-Computer Interaction &amp; Design — Espoo, Finland</div>
+                <div className="text-xs text-slate-600 italic">
+                  M.Sc. Human-Computer Interaction &amp; Design — Espoo, Finland
+                </div>
                 <p className="text-[11px] text-slate-700 mt-1 leading-relaxed">
-                  Focus: Usability engineering, information architecture, interactive systems.
+                  Focus: Usability engineering, information architecture,
+                  interactive systems.
                   <br />
-                  Thesis: Translating complex indoor air quality sensor data into actionable insights for non-technical users.
+                  Thesis: Translating complex indoor air quality sensor data
+                  into actionable insights for non-technical users.
                 </p>
               </div>
 
               <div>
                 <div className="flex justify-between font-semibold text-xs">
-                  <h3 className="font-bold text-slate-900">Università di Trento</h3>
-                  <span className="font-mono text-slate-600">Expected 2026</span>
+                  <h3 className="font-bold text-slate-900">
+                    Università di Trento
+                  </h3>
+                  <span className="font-mono text-slate-600">
+                    Expected 2026
+                  </span>
                 </div>
-                <div className="text-xs text-slate-600 italic">M.Sc. Cognitive Science (dual degree) — Trento, Italy</div>
+                <div className="text-xs text-slate-600 italic">
+                  M.Sc. Cognitive Science (dual degree) — Trento, Italy
+                </div>
               </div>
             </section>
           </div>
@@ -1240,7 +1439,8 @@ const calculateDifficulty = (dist, w) => {
                     Design &amp; Strategy
                   </h3>
                   <p className="text-slate-700 leading-relaxed">
-                    Information Architecture, User Workflows, Design Systems, Figma, Rapid Prototyping, Usability Testing, Accessibility.
+                    Information Architecture, User Workflows, Design Systems,
+                    Figma, Rapid Prototyping, Usability Testing, Accessibility.
                   </p>
                 </div>
 
@@ -1249,7 +1449,8 @@ const calculateDifficulty = (dist, w) => {
                     Frontend &amp; Architecture
                   </h3>
                   <p className="text-slate-700 leading-relaxed">
-                    React.js, TypeScript, JavaScript ES6+, Redux Toolkit, HTML5 / CSS3 / Sass, REST APIs.
+                    React.js, TypeScript, JavaScript ES6+, Redux Toolkit, HTML5
+                    / CSS3 / Sass, REST APIs.
                   </p>
                 </div>
 
@@ -1275,18 +1476,24 @@ const calculateDifficulty = (dist, w) => {
                     <span>Upbeat Summer School (28DIGITAL)</span>
                     <span className="font-mono text-slate-600">Sep 2025</span>
                   </div>
-                  <div className="text-slate-500 text-[11px]">EIT Digital Summer School</div>
+                  <div className="text-slate-500 text-[11px]">
+                    EIT Digital Summer School
+                  </div>
                 </div>
                 <div>
                   <div className="flex justify-between font-semibold">
-                    <span>Design Rules: Principles + Practices for Great UI Design</span>
+                    <span>
+                      Design Rules: Principles + Practices for Great UI Design
+                    </span>
                     <span className="font-mono text-slate-650">Jul 2023</span>
                   </div>
                   <div className="text-slate-500 text-[11px]">Udemy</div>
                 </div>
                 <div>
                   <div className="flex justify-between font-semibold">
-                    <span>Start the UX Design Process: Empathize, Define, Ideate</span>
+                    <span>
+                      Start the UX Design Process: Empathize, Define, Ideate
+                    </span>
                     <span className="font-mono text-slate-650">May 2021</span>
                   </div>
                   <div className="text-slate-500 text-[11px]">Coursera</div>
@@ -1305,7 +1512,9 @@ const calculateDifficulty = (dist, w) => {
             <div className="bg-slate-50 border border-slate-200 rounded p-4 text-[10px] text-slate-500 font-mono leading-relaxed print:hidden">
               <strong>PRINT GUIDELINE:</strong>
               <br />
-              This page automatically renders as a clean two-column letter document when printed via your browser (Cmd + P) or saved as a PDF.
+              This page automatically renders as a clean two-column letter
+              document when printed via your browser (Cmd + P) or saved as a
+              PDF.
             </div>
           </div>
         </div>
