@@ -647,7 +647,7 @@ const calculateDifficulty = (dist, w) => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
-        className="min-h-screen h-[calc(100vh-64px)] flex flex-col bg-background text-foreground overflow-hidden select-none print:hidden relative"
+        className="h-[calc(100vh-64px)] min-h-[calc(100vh-64px)] flex flex-col bg-background text-foreground overflow-hidden select-none print:hidden relative"
       >
         {/* Top Action Header */}
         <header className="absolute top-6 left-6 right-6 z-40 pointer-events-none flex justify-between items-center">

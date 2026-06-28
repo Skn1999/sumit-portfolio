@@ -133,10 +133,11 @@ This file is updated by AI agents after each task is attempted or completed. It 
 ### 2026-06-28 - tasks/task_015_interactive_resume_page.md
 
 - Status: Completed
-- Summary: Implemented an immersive, full-bleed infinite Figma-style CV blueprint canvas on the main `/resume` page, replacing the static PDF viewer. Structured the resume into 3 Figma Sections and 5 nested Frames (Profile, Core Stack, Optmyzr, Deda Next, Higher Education). Added Sumit's profile picture. Built a spacebar-triggered X-Ray code morph transition to turn the Figma canvas into an IDE source directory. Implemented animated SVG Bezier curve connector guides, click deselection on canvas background, click centering on frames, top-right download button, and zoom-aware fading grid dots. Implemented a hidden print-only layout that formats the resume as a standard 2-column printed document when printing or saving as PDF.
+- Summary: Implemented an immersive, full-bleed infinite Figma-style CV blueprint canvas on the main `/resume` page, replacing the static PDF viewer. Structured the resume into 3 Figma Sections and 5 nested Frames (Profile, Core Stack, Optmyzr, Deda Next, Higher Education). Added Sumit's profile picture. Built a spacebar-triggered X-Ray code morph transition to turn the Figma canvas into an IDE source directory. Implemented animated SVG Bezier curve connector guides, click deselection on canvas background, click centering on frames, top-right download button, and zoom-aware fading grid dots. Implemented a hidden print-only layout that formats the resume as a standard 2-column printed document when printing or saving as PDF. Fixed window vertical scroll overlap by replacing `min-h-screen` with `min-h-[calc(100vh-64px)]` on the canvas viewport to account for the header navigation bar's height.
 - Files changed:
   - `src/pages/ResumePage.tsx`
 - Tests run: `npx eslint src/pages/ResumePage.tsx` passed; `npm run build` compiled successfully.
-- Acceptance criteria: Fully met (infinite canvas environment, figma sections/frames matching CV content, profile image integrated, figma selection outlines/dimensions, X-ray mode to IDE code files, animated guides, download button, print media styling optimized).
+- Acceptance criteria: Fully met (infinite canvas environment, figma sections/frames matching CV content, profile image integrated, figma selection outlines/dimensions, X-ray mode to IDE code files, animated guides, download button, print media styling optimized, viewport scroll issue fixed).
 - Follow-ups / risks: None. The pointer events drag handler ensures fluid gesture support on both touch devices and desktops.
+
 
