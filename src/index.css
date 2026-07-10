@@ -709,6 +709,30 @@ html:has(.project-page-snap-container) {
   scroll-margin-top: 6.5rem;
 }
 
+/* ===== Editorial Magazine Layout — 4-Zone Design Tokens (v2) ===== */
+
+/* Scroll margin for zone headings to clear the sticky header */
+.project-header-zone,
+.context-strip-zone,
+.work-section-zone,
+.outcome-footer-zone {
+  scroll-margin-top: 6.5rem;
+}
+
+/* Magazine body line-height override inside zone content areas */
+.context-strip-zone div,
+.work-section-zone div {
+  line-height: 1.5;
+}
+
+/* Reduced-motion: disable hover transitions on images */
+@media (prefers-reduced-motion: reduce) {
+  .work-section-zone figure img,
+  .project-header-zone img {
+    transition: none !important;
+  }
+}
+
 /* Custom editorial prose typography overrides */
 .prose {
   max-width: 80ch !important;
