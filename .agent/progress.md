@@ -17,14 +17,14 @@ This file is updated by AI agents after each task is attempted or completed. It 
 
 ## Completed Tasks Log
 
-| Date | Task / Path | Summary | Status |
-| :--- | :--- | :--- | :--- |
-| 2026-06-22 | Agent Setup | Created documentation templates, architecture, and tech stack references. | Completed |
-| 2026-06-23 | `tasks/task_002_create_case_study_mdx_layout_components.md` | Created reusable MDX case study layout components (split grids, banners, metrics). | Completed |
-| 2026-06-23 | `tasks/task_003_update_optmyzr_mdx_structure.md` | Integrated Optmyzr MDX structure with split layouts and impact metric banners. | Completed |
-| 2026-06-24 | `tasks/task_004_refine_project_article_typography.md` | Refined typography, added scroll snapping, and fixed React hook orders. | Completed |
-| 2026-06-25 | `tasks/task_005_verify_project_layout_responsiveness.md` | Verified responsiveness across all layouts, mobile grids, touch targets, and scrolling code blocks. | Completed |
-| 2026-06-25 | `tasks/task_006_homepage_visual_identity_and_tokens.md` | Unified color system with Deep Purple tokens and adjusted dark mode relative contrast. | Completed |
-| 2026-06-25 | `tasks/task_007_homepage_hero_block.md` | Simplified Homepage Hero into a single typographic block with whitespace focus. | Completed |
-| 2026-06-26 | `tasks/task_012_smooth_scrolling_and_motion_blur.md` | Integrated Lenis smooth scroll and velocity-based motion blur SVG filter. | Completed |
-| 2026-06-26 | `tasks/task_013_homepage_academic_cohorts_and_credentials.md` | Redesigned secondary modules, adding Academic Cohorts and scroll-pinned Certifications gallery. | Completed |
+| Date       | Task / Path                                                   | Summary                                                                                             | Status    |
+| :--------- | :------------------------------------------------------------ | :-------------------------------------------------------------------------------------------------- | :-------- |
+| 2026-06-22 | Agent Setup                                                   | Created documentation templates, architecture, and tech stack references.                           | Completed |
+| 2026-06-23 | `tasks/task_002_create_case_study_mdx_layout_components.md`   | Created reusable MDX case study layout components (split grids, banners, metrics).                  | Completed |
+| 2026-06-23 | `tasks/task_003_update_optmyzr_mdx_structure.md`              | Integrated Optmyzr MDX structure with split layouts and impact metric banners.                      | Completed |
+| 2026-06-24 | `tasks/task_004_refine_project_article_typography.md`         | Refined typography, added scroll snapping, and fixed React hook orders.                             | Completed |
+| 2026-06-25 | `tasks/task_005_verify_project_layout_responsiveness.md`      | Verified responsiveness across all layouts, mobile grids, touch targets, and scrolling code blocks. | Completed |
+| 2026-06-25 | `tasks/task_006_homepage_visual_identity_and_tokens.md`       | Unified color system with Deep Purple tokens and adjusted dark mode relative contrast.              | Completed |
+| 2026-06-25 | `tasks/task_007_homepage_hero_block.md`                       | Simplified Homepage Hero into a single typographic block with whitespace focus.                     | Completed |
+| 2026-06-26 | `tasks/task_012_smooth_scrolling_and_motion_blur.md`          | Integrated Lenis smooth scroll and velocity-based motion blur SVG filter.                           | Completed |
+| 2026-06-26 | `tasks/task_013_homepage_academic_cohorts_and_credentials.md` | Redesigned secondary modules, adding Academic Cohorts and scroll-pinned Certifications gallery.     | Completed |

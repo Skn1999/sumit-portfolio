@@ -18,18 +18,21 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 ## 💡 Developer Guidelines & Rules Reference
 
 ### 1. Workflow & Tooling
+
 - **Required Context**: Read `.agent/architecture.md` and `.agent/tech-stack.md` before starting source file changes.
 - **Progress Reporting**: Always update `.agent/progress.md` and `.agent/learnings.md` at the end of each task (or when blocked).
 - **Git Check**: Running `npm run build` runs image optimization prebuild hooks, which may rewrite unrelated assets. Check `git status` post-build.
 - **Targeted Linting**: If the workspace contains pre-existing lint issues in unrelated legacy/third-party files, test modifications specifically via targeted commands (e.g. `./node_modules/.bin/eslint <file_path>`).
 
 ### 2. React & TypeScript
+
 - **Hook Rules**: Always declare React hooks at the top level of components, prior to any conditional returns. Put conditional logic inside hook callbacks.
-- **Static Declarations**: Declare static configurations and data arrays *outside* of component functions (module scope) to prevent `react-hooks/exhaustive-deps` loops and redundant re-renders.
+- **Static Declarations**: Declare static configurations and data arrays _outside_ of component functions (module scope) to prevent `react-hooks/exhaustive-deps` loops and redundant re-renders.
 - **Window Extensions**: Extend the global `Window` interface in TypeScript for dynamic libraries (e.g. `window.lenis`) instead of casting `window` to `any` (which triggers ESLint errors).
 - **Layout Mounting**: Reading elements' `clientWidth`/`clientHeight` on mount can fail or return `0`/`NaN` before layout completes. Wrap initial dimension checks in a brief `setTimeout` (~150ms).
 
 ### 3. Styling & Layout (CSS & Tailwind CSS)
+
 - **CSS Shorthand Restrictions**: Do not use Tailwind utility shorthands (like `max-w-full`, `h-auto`) as raw property names inside plain `.css` files. Use standard CSS property declarations (e.g., `max-width: 100%`, `height: auto`).
 - **Responsive Grids**: Grid specifications in MDX/React tags (e.g., `grid-cols-3`) need viewport prefixes (e.g., `md:grid-cols-3`) to prevent horizontal layout crushing on mobile devices.
 - **Scroll Snapping**: For long articles, use `scroll-snap-type: y proximity` (rather than `mandatory`) to avoid locking viewports on sections taller than the screen.
@@ -38,6 +41,7 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Luminance & Contrast**: Adjust brand token HSL values for dark mode (e.g. shifting `hsl(270, 90%, 50%)` to `hsl(270, 90%, 65%)`) to satisfy the WCAG 4.5:1 relative contrast ratio requirement on dark backgrounds.
 
 ### 4. Interactive Canvases & Motion
+
 - **Nested Animators**: When implementing Framer Motion `drag` alongside scroll-driven animations, nest the draggable element inside a scroll-animated parent to prevent coordinate override conflicts.
 - **Scroll Pass-Through**: For interactive canvases, apply `pointer-events-none` to the canvas wrapper and `pointer-events-auto` to child cards. This lets users scroll the page naturally while retaining drag gestures on interactive cards.
 - **Absolute Centering**: Center elements using `left-1/2 top-1/2` combined with negative margins (`-ml` / `-mt`) equivalent to half the item's width/height.
@@ -46,6 +50,7 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Click Outside**: Implement click-outside handlers by placing click triggers on the canvas viewport wrapper, using `e.stopPropagation()` on individual interactive elements to prevent bubble triggers.
 
 ### 5. MDX Case Studies
+
 - **Imports**: MDX articles can import layout components from `src/components/projects` using the `@` alias.
 - **Prose Resetting**: MDX containers utilizing `not-prose` bypass standard Tailwind Typography styles. Ensure custom styles (like scroll or sizing limits) are added to child `<pre>` blocks to prevent code overflow on mobile. Nest `<div className="prose">` blocks inside layout nodes for text that needs normal typography.
 - **Layout Choices**: Use `CaseStudySplit` selectively for sections that benefit from text/media layout. Avoid overusing it globally.
