@@ -69,3 +69,10 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **2026-06-26**: Smooth inertia scrolling (Lenis) and velocity-based motion blur SVG filter implemented.
 - **2026-06-26**: Secondary modules redesigned (AcademicCohorts list, ProfessionalCredentials scroll-pinned draggable card gallery with spring physics, lightbox viewer).
 - **2026-06-28**: Copy audits and interactive resume canvas refinement (zoom viewport scaling, SVG paths, click-outside, PDF printing stylesheet).
+
+### 2026-07-10 - `tasks/task_016_project_rewrite_layout_system.md`
+
+- **Lessons learned:** The v2 redesign spec (`project-layout-redesign-v2.md`) explicitly dropped the slide-deck metaphor (no scroll-snap, no corner numbers, no C-A-M pill labels). New components are `ProjectHeader`, `ContextStrip`, `WorkSection`, and `OutcomeFooter` — all conventional `<section>` elements styled as an editorial magazine spread.
+- **Errors or surprises:** `ProjectImageAsset` takes a relative `src` string resolved from `src/content/projects/`. Passing absolute paths will break silently. The `priority` prop needs to be added to the existing interface to support eager loading for above-the-fold `ProjectHeader` cover images — it was already present on the component.
+- **Resolution:** Imported `ProjectImageAsset` directly into `CaseStudyLayout.tsx` so that `WorkSection` and `ProjectHeader` handle their own image rendering without requiring MDX authors to import it separately.
+- **Future instruction:** When implementing tasks 017–019 (case study MDX rewrites), import only `ProjectHeader`, `ContextStrip`, `WorkSection`, and `OutcomeFooter` from `@/components/projects/CaseStudyLayout`. Do not use scroll-snap, slide numbers, or C-A-M bullet prefixes. Enforce 2-sentence body discipline through content, not React runtime logic.

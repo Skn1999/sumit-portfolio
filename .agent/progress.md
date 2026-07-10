@@ -28,3 +28,4 @@ This file is updated by AI agents after each task is attempted or completed. It 
 | 2026-06-25 | `tasks/task_007_homepage_hero_block.md`                       | Simplified Homepage Hero into a single typographic block with whitespace focus.                     | Completed |
 | 2026-06-26 | `tasks/task_012_smooth_scrolling_and_motion_blur.md`          | Integrated Lenis smooth scroll and velocity-based motion blur SVG filter.                           | Completed |
 | 2026-06-26 | `tasks/task_013_homepage_academic_cohorts_and_credentials.md` | Redesigned secondary modules, adding Academic Cohorts and scroll-pinned Certifications gallery.     | Completed |
+| 2026-07-10 | `tasks/task_016_project_rewrite_layout_system.md`             | Added 4-zone editorial layout components (ProjectHeader, ContextStrip, WorkSection, OutcomeFooter) to CaseStudyLayout.tsx. Added editorial CSS tokens to index.css. Build passes. | Completed |
