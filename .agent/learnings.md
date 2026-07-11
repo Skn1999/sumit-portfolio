@@ -76,3 +76,10 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Errors or surprises:** `ProjectImageAsset` takes a relative `src` string resolved from `src/content/projects/`. Passing absolute paths will break silently. The `priority` prop needs to be added to the existing interface to support eager loading for above-the-fold `ProjectHeader` cover images — it was already present on the component.
 - **Resolution:** Imported `ProjectImageAsset` directly into `CaseStudyLayout.tsx` so that `WorkSection` and `ProjectHeader` handle their own image rendering without requiring MDX authors to import it separately.
 - **Future instruction:** When implementing tasks 017–019 (case study MDX rewrites), import only `ProjectHeader`, `ContextStrip`, `WorkSection`, and `OutcomeFooter` from `@/components/projects/CaseStudyLayout`. Do not use scroll-snap, slide numbers, or C-A-M bullet prefixes. Enforce 2-sentence body discipline through content, not React runtime logic.
+
+### 2026-07-11 - `tasks/task_017_project_rewrite_optmyzr_case_study.md`
+
+- **Lessons learned:** MDX body content can directly use JSX components without any prose wrapper. The old file had `import { ProjectImageAsset }` — this is no longer needed because `WorkSection` and `ProjectHeader` handle images internally. Removing unused imports keeps the MDX clean and avoids confusion.
+- **Errors or surprises:** The Optmyzr project had no live demo URL in the `links` frontmatter key. Used the GitHub repository URL as the CTA fallback. The `legacy-dashboard.svg` was used for the AI Workflow slide — it is the best available visual for showing the legacy architecture.
+- **Resolution:** All four work sections and the outcome footer rendered cleanly. Build passed in 2.98s.
+- **Future instruction:** When writing MDX body content, `body` props should be JSX fragments (`<>...</>`) not plain strings — this preserves em-dashes and special characters correctly. The `imagePosition` alternation pattern for the Optmyzr case is: right → full → left → full.
