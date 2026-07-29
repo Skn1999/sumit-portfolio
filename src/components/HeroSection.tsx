@@ -118,7 +118,7 @@ const HeroSection: React.FC = () => {
 
           {/* Right Column: 3D Particle Canvas & Solidified Models (Re-triggers morph animation on route navigation) */}
           <div className="lg:col-span-6 flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-[280px] sm:max-w-[320px] lg:max-w-full aspect-[3/4]">
+            <div className="relative w-full max-w-[280px] sm:max-w-[340px] lg:max-w-full aspect-[1008/1244]">
               <HeroParticleCanvas
                 key={location.pathname + location.search}
                 imagePath={`${import.meta.env.BASE_URL}images/about/hero.jpg`}

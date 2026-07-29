@@ -26,13 +26,13 @@ function categoryToIndex(cat: CategoryKey): number {
   }
 }
 
-// 1. Hero Grid (Profile Photo)
+// 1. Hero Grid (Profile Photo matching exact 1008x1244 aspect ratio)
 function generateHeroGrid(count: number, cols: number, rows: number) {
   const positions = new Float32Array(count * 3);
   const uvs = new Float32Array(count * 2);
   const isOutline = new Float32Array(count);
 
-  const aspect = 3 / 4;
+  const aspect = 1008 / 1244; // Exact aspect ratio of new hero.jpg
   const width = 1.8 * aspect;
   const height = 1.8;
 
@@ -60,7 +60,6 @@ function processGLTFModel(originalScene: THREE.Object3D, targetSize = 0.85) {
   const scene = originalScene.clone();
   scene.updateMatrixWorld(true);
 
-  // Find primary mesh
   const meshes: THREE.Mesh[] = [];
   scene.traverse((child) => {
     if ((child as THREE.Mesh).isMesh && (child as THREE.Mesh).geometry) {
@@ -80,12 +79,10 @@ function processGLTFModel(originalScene: THREE.Object3D, targetSize = 0.85) {
     }
   }
 
-  // Clone geometry and apply world matrix to bake any parent node transforms
   const geometry = targetMesh.geometry.clone();
   targetMesh.updateMatrixWorld(true);
   geometry.applyMatrix4(targetMesh.matrixWorld);
 
-  // Center & scale geometry directly in vertex coordinates
   geometry.center();
   geometry.computeBoundingBox();
 
@@ -98,7 +95,6 @@ function processGLTFModel(originalScene: THREE.Object3D, targetSize = 0.85) {
   geometry.scale(scale, scale, scale);
   geometry.computeVertexNormals();
 
-  // Create solid mesh with Bright Silver Metal Material
   const solidMesh = new THREE.Mesh(
     geometry,
     new THREE.MeshStandardMaterial({
@@ -149,7 +145,7 @@ function samplePointsFromMesh(targetMesh: THREE.Mesh, count: number) {
   return { positions, isOutline };
 }
 
-/* ── Wireframe Outline Particle Shader ── */
+/* ── Wireframe Outline Particle Shader with Organic Vibration Jitter ── */
 const OutlineParticleShader = {
   uniforms: {
     uTexture: { value: null },
@@ -217,18 +213,28 @@ const OutlineParticleShader = {
         float angle = uTime * 0.3 * easeP;
         float cosA = cos(angle);
         float sinA = sin(angle);
-        // Synchronized Y-axis rotation matching Three.js group.rotation.y:
         currentPos.xz = vec2(
           currentPos.x * cosA + currentPos.z * sinA,
           -currentPos.x * sinA + currentPos.z * cosA
         );
       }
 
+      // Organic micro-vibration jitter for outline particles to feel alive
+      if (aIsOutline > 0.5) {
+        vec3 vibration = vec3(
+          sin(uTime * 14.0 + aRandom * 25.0) * 0.012,
+          cos(uTime * 16.0 + aRandom * 25.0) * 0.012,
+          sin(uTime * 12.0 + aRandom * 20.0) * 0.012
+        );
+        currentPos += vibration * uIsHovering;
+      }
+
       vec4 mvPosition = modelViewMatrix * vec4(currentPos, 1.0);
 
+      // Slightly bigger point size for outline particles
       float baseSize = mix(8.0, 5.0, easeP);
       if (aIsOutline > 0.5) {
-        baseSize = 9.5;
+        baseSize = mix(9.5, 14.0, uIsHovering);
       } else {
         baseSize = 2.0;
       }
@@ -335,7 +341,6 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const tvGLTF = useGLTF(`${import.meta.env.BASE_URL}models/tv-screen.glb`);
   const docGLTF = useGLTF(`${import.meta.env.BASE_URL}models/document.glb`);
 
-  // Process GLTF models & bake exact normalized geometry matrices
   const { solidMesh: handMesh } = useMemo(
     () => processGLTFModel(handGLTF.scene, 0.85),
     [handGLTF]
@@ -372,7 +377,6 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const rows = 146;
   const count = cols * rows;
 
-  // Sample outline surface points from the exact same baked 3D mesh geometry
   const { posHero, uvs, posUX, posVisual, posWritings, isOutline, randoms } = useMemo(() => {
     const hero = generateHeroGrid(count, cols, rows);
     const ux = samplePointsFromMesh(handMesh, count);
@@ -434,7 +438,7 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
     if (docRef.current) docRef.current.rotation.y = currentRot;
   });
 
-  const aspect = 3 / 4;
+  const aspect = 1008 / 1244;
   const planeWidth = 1.8 * aspect;
   const planeHeight = 1.8;
 
@@ -444,16 +448,14 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
 
   return (
     <group>
-      {/* Environment Map for Bright Metallic Silver Specular Reflections */}
       <Environment preset="studio" />
 
-      {/* Studio Metallic Lighting */}
       <ambientLight intensity={1.2} />
       <directionalLight position={[3, 5, 4]} intensity={3.5} color="#ffffff" />
       <directionalLight position={[-3, -2, 2]} intensity={2.2} color="#cbd5e1" />
       <pointLight position={[0, 4, -3]} intensity={2.8} color="#f8fafc" />
 
-      {/* 1. Wireframe Outline Particle Swarm (Active on Hover) */}
+      {/* 1. Wireframe Outline Particle Swarm with Micro-Vibration */}
       <points>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[posHero, 3]} />
