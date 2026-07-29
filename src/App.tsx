@@ -12,6 +12,7 @@ import UxBitePage from "./pages/UxBitePage";
 import UxDesignPage from "./pages/UxDesignPage";
 import VisualDesignPage from "./pages/VisualDesignPage";
 import WritingsPage from "./pages/WritingsPage";
+import { NavIntentProvider } from "./contexts/NavIntentContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { TransitionProvider } from "./contexts/TransitionContext";
 import { AnimatePresence } from "framer-motion";
@@ -69,9 +70,11 @@ const App = () => {
           <ThemeProvider>
             <TransitionProvider>
               <BrowserRouter basename={basename}>
-                <ScrollToHash />
-                <SmoothScroll />
-                <AnimatedRoutes />
+                <NavIntentProvider>
+                  <ScrollToHash />
+                  <SmoothScroll />
+                  <AnimatedRoutes />
+                </NavIntentProvider>
               </BrowserRouter>
             </TransitionProvider>
           </ThemeProvider>

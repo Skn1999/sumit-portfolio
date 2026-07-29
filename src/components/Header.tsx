@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, Variants } from "framer-motion";
+import { useNavIntent } from "@/contexts/NavIntentContext";
 
 interface SubNavItem {
   to: string;
@@ -105,15 +106,15 @@ const slatVariant: Variants = {
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { intendedRoute, setIntendedRoute } = useNavIntent();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [intendedRoute, setIntendedRoute] = useState<string | null>(null);
 
   const toggleMenu = useCallback(() => setMenuOpen((v) => !v), []);
 
   useEffect(() => {
     setMenuOpen(false);
     setIntendedRoute(null);
-  }, [location.pathname, location.hash, location.search]);
+  }, [location.pathname, location.hash, location.search, setIntendedRoute]);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -128,11 +129,11 @@ const Header = () => {
       navigate(intendedRoute);
     }
     setIntendedRoute(null);
-  }, [intendedRoute, location.pathname, location.search, navigate]);
+  }, [intendedRoute, location.pathname, location.search, navigate, setIntendedRoute]);
 
   const handleExplicitClick = useCallback(() => {
     setIntendedRoute(null);
-  }, []);
+  }, [setIntendedRoute]);
 
   return (
     <header className="w-full border-b border-paper-border bg-paper-bg/95 backdrop-blur-md fixed top-0 left-0 right-0 z-50">
