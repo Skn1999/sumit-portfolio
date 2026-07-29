@@ -122,22 +122,55 @@ function samplePointsFromGLTFScene(scene: THREE.Object3D, count: number) {
   return { positions, isOutline };
 }
 
-/* ── Shader Material ── */
-const MultiCategoryParticleShader = {
+// Prepare 3D GLTF models with Glass UI Material for Solidified State
+function prepareGlassModel(originalScene: THREE.Object3D) {
+  const scene = originalScene.clone();
+  scene.traverse((child) => {
+    if ((child as THREE.Mesh).isMesh) {
+      const mesh = child as THREE.Mesh;
+      mesh.material = new THREE.MeshPhysicalMaterial({
+        color: new THREE.Color(0xecf4fb),
+        metalness: 0.1,
+        roughness: 0.15,
+        transmission: 0.7,
+        transparent: true,
+        opacity: 0.95,
+        ior: 1.5,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.1,
+      });
+    }
+  });
+
+  // Center and scale scene
+  const box = new THREE.Box3().setFromObject(scene);
+  const center = new THREE.Vector3();
+  box.getCenter(center);
+  const size = new THREE.Vector3();
+  box.getSize(size);
+  const maxDim = Math.max(size.x, size.y, size.z) || 1.0;
+  const scale = 1.4 / maxDim;
+
+  scene.position.sub(center.multiplyScalar(scale));
+  scene.scale.set(scale, scale, scale);
+
+  return scene;
+}
+
+/* ── Wireframe Outline Particle Shader ── */
+const OutlineParticleShader = {
   uniforms: {
     uTexture: { value: null },
     uCurrentIndex: { value: 0 },
     uTargetIndex: { value: 0 },
     uMorphProgress: { value: 1.0 },
     uIsHovering: { value: 0.0 },
-    uSolidifyProgress: { value: 1.0 },
     uTime: { value: 0 },
     uMouse: { value: new THREE.Vector2(0, 0) },
   },
   vertexShader: `
     uniform float uMorphProgress;
     uniform float uIsHovering;
-    uniform float uSolidifyProgress;
     uniform float uTime;
     uniform vec2 uMouse;
     uniform int uCurrentIndex;
@@ -188,7 +221,6 @@ const MultiCategoryParticleShader = {
 
       vec3 currentPos = mix(startP, targetP, easeP) + noise;
 
-      // Slow 3D rotation for GLTF 3D models
       if (uTargetIndex != 0) {
         float angle = uTime * 0.3 * easeP;
         float cosA = cos(angle);
@@ -199,18 +231,11 @@ const MultiCategoryParticleShader = {
 
       vec4 mvPosition = modelViewMatrix * vec4(currentPos, 1.0);
 
-      // Point size logic:
-      // When Hovering (uIsHovering > 0.5): Outline particles pop to 9.0px, fill particles shrink to 3.0px.
-      // When Solidified (uIsHovering == 0.0): Points expand to 10.5px to form a dense solid 3D surface!
-      float baseSize = mix(8.0, 4.5, easeP);
-      if (uIsHovering > 0.5) {
-        if (aIsOutline > 0.5) {
-          baseSize = 9.0;
-        } else {
-          baseSize = 2.5;
-        }
+      float baseSize = mix(8.0, 5.0, easeP);
+      if (aIsOutline > 0.5) {
+        baseSize = 9.5;
       } else {
-        baseSize = mix(baseSize, 10.5, uSolidifyProgress);
+        baseSize = 2.0;
       }
 
       gl_PointSize = baseSize * (1.0 / -mvPosition.z);
@@ -221,7 +246,6 @@ const MultiCategoryParticleShader = {
     uniform sampler2D uTexture;
     uniform float uMorphProgress;
     uniform float uIsHovering;
-    uniform float uSolidifyProgress;
     uniform float uTime;
     uniform vec2 uMouse;
     uniform int uTargetIndex;
@@ -232,58 +256,26 @@ const MultiCategoryParticleShader = {
     varying float vMorphProgress;
 
     void main() {
-      // Circular point sprite mask
       vec2 coord = gl_PointCoord - vec2(0.5);
       if (dot(coord, coord) > 0.25) discard;
 
       float alphaEdge = smoothstep(0.25, 0.05, dot(coord, coord));
 
-      vec3 finalColor = vec3(1.0);
+      vec3 finalColor = vec3(0.98, 0.85, 0.55);
       float finalAlpha = 1.0;
 
       if (uTargetIndex == 0) {
-        // Hero Photo + Japanese Antique Coin Shader
         vec4 texColor = texture2D(uTexture, vUv);
-        float luminance = dot(texColor.rgb, vec3(0.299, 0.587, 0.114));
-
-        vec3 antiqueGold = vec3(0.88, 0.72, 0.45);
-        vec3 polishedBronze = vec3(0.98, 0.85, 0.60);
-        vec3 copperReflect = vec3(0.80, 0.55, 0.38);
-
-        vec3 normal = normalize(vec3((luminance - 0.5) * 1.2, (luminance - 0.5) * 1.2, 1.0));
-        vec3 lightDir = normalize(vec3(uMouse.x * 2.5, uMouse.y * 2.5, 1.8));
-        float spec = pow(max(dot(normal, lightDir), 0.0), 16.0);
-        float rim = 1.0 - max(dot(vec3(0.0, 0.0, 1.0), normal), 0.0);
-
-        vec3 metallicShine = antiqueGold * (0.6 + 0.4 * luminance) + polishedBronze * spec * 0.6 + copperReflect * pow(rim, 2.5) * 0.3;
-        finalColor = mix(texColor.rgb, metallicShine, 0.4);
-        finalAlpha = texColor.a;
+        finalColor = texColor.rgb;
       } else {
-        // Apple Glass UI Translucent Spheres for GLTF 3D Models (👆🏻, 📺, 📝)
-        vec3 glassBody = vec3(0.85, 0.92, 0.98);
-        vec3 goldAccent = vec3(0.95, 0.82, 0.50);
         vec3 cyanGlow = vec3(0.40, 0.85, 0.95);
-
-        vec3 lightDir = normalize(vec3(uMouse.x * 2.0, uMouse.y * 2.0, 1.5));
-        float spec = pow(max(dot(vec3(0.0, 0.0, 1.0), lightDir), 0.0), 12.0);
-
-        finalColor = mix(glassBody, goldAccent, vRandom * 0.5) + cyanGlow * spec * 0.8;
+        finalColor = mix(vec3(0.98, 0.85, 0.55), cyanGlow, vRandom);
       }
 
-      // OUTLINE VS SOLIDIFICATION STATE
-      if (uIsHovering > 0.5) {
-        // HOVER INTENT MODE: Show ONLY glowing outline wireframe
-        if (vIsOutline > 0.5) {
-          finalColor = mix(finalColor, vec3(0.98, 0.85, 0.55), 0.85);
-          finalAlpha = 0.98;
-        } else {
-          finalAlpha = 0.05; // Interior fill particles dim almost completely
-        }
+      if (vIsOutline > 0.5) {
+        finalAlpha = 0.98 * uIsHovering;
       } else {
-        // SOLIDIFIED MODE (Navigation complete): All particles fill in to form solid 3D object
-        if (uTargetIndex != 0) {
-          finalAlpha = mix(0.05, 0.98, uSolidifyProgress);
-        }
+        finalAlpha = 0.05 * uIsHovering;
       }
 
       float alpha = finalAlpha * alphaEdge;
@@ -296,7 +288,7 @@ const MultiCategoryParticleShader = {
 const SolidHeroShader = {
   uniforms: {
     uTexture: { value: null },
-    uProgress: { value: 0 },
+    uProgress: { value: 1.0 },
     uTime: { value: 0 },
     uMouse: { value: new THREE.Vector2(0, 0) },
   },
@@ -330,7 +322,7 @@ const SolidHeroShader = {
       vec3 metallicShine = antiqueGold * (0.6 + 0.4 * luminance) + polishedBronze * spec * 0.7 + copperReflect * pow(rim, 2.5) * 0.35;
       vec3 finalColor = mix(texColor.rgb, metallicShine, 0.35);
 
-      float solidAlpha = texColor.a * smoothstep(0.7, 1.0, uProgress);
+      float solidAlpha = texColor.a * uProgress;
       gl_FragColor = vec4(finalColor, solidAlpha);
     }
   `,
@@ -348,6 +340,11 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const tvGLTF = useGLTF(`${import.meta.env.BASE_URL}models/tv-screen.glb`);
   const docGLTF = useGLTF(`${import.meta.env.BASE_URL}models/document.glb`);
 
+  // Prepare solid 3D models with Apple Glass UI material
+  const handScene = useMemo(() => prepareGlassModel(handGLTF.scene), [handGLTF]);
+  const tvScene = useMemo(() => prepareGlassModel(tvGLTF.scene), [tvGLTF]);
+  const docScene = useMemo(() => prepareGlassModel(docGLTF.scene), [docGLTF]);
+
   const location = useLocation();
   const { intendedRoute } = useNavIntent();
 
@@ -362,6 +359,10 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const targetCategoryRef = useRef<CategoryKey>(intendedCategory);
   const morphProgressRef = useRef<number>(1.0);
   const solidifyProgressRef = useRef<number>(isHovering ? 0.0 : 1.0);
+
+  const handRef = useRef<THREE.Group>(null!);
+  const tvRef = useRef<THREE.Group>(null!);
+  const docRef = useRef<THREE.Group>(null!);
 
   const cols = 110;
   const rows = 146;
@@ -387,7 +388,6 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
     };
   }, [count, cols, rows, handGLTF, tvGLTF, docGLTF]);
 
-  // When intended category or active route changes, trigger morph & solidification animation
   useEffect(() => {
     if (intendedCategory !== targetCategoryRef.current) {
       prevCategoryRef.current = targetCategoryRef.current;
@@ -405,14 +405,13 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
     }
 
     const targetSolidify = isHovering ? 0.0 : 1.0;
-    solidifyProgressRef.current += (targetSolidify - solidifyProgressRef.current) * Math.min(delta * 4.0, 1.0);
+    solidifyProgressRef.current += (targetSolidify - solidifyProgressRef.current) * Math.min(delta * 5.0, 1.0);
 
     if (particleMaterialRef.current) {
       particleMaterialRef.current.uniforms.uCurrentIndex.value = categoryToIndex(prevCategoryRef.current);
       particleMaterialRef.current.uniforms.uTargetIndex.value = categoryToIndex(targetCategoryRef.current);
       particleMaterialRef.current.uniforms.uMorphProgress.value = morphProgressRef.current;
       particleMaterialRef.current.uniforms.uIsHovering.value = isHovering ? 1.0 : 0.0;
-      particleMaterialRef.current.uniforms.uSolidifyProgress.value = solidifyProgressRef.current;
       particleMaterialRef.current.uniforms.uTime.value = elapsedTime;
       particleMaterialRef.current.uniforms.uMouse.value.lerp(targetMouse, 0.08);
     }
@@ -423,15 +422,30 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
       solidMaterialRef.current.uniforms.uTime.value = elapsedTime;
       solidMaterialRef.current.uniforms.uMouse.value.lerp(targetMouse, 0.08);
     }
+
+    // Slow rotation on solid 3D GLTF model objects
+    const currentRot = elapsedTime * 0.3;
+    if (handRef.current) handRef.current.rotation.y = currentRot;
+    if (tvRef.current) tvRef.current.rotation.y = currentRot;
+    if (docRef.current) docRef.current.rotation.y = currentRot;
   });
 
   const aspect = 3 / 4;
   const planeWidth = 1.8 * aspect;
   const planeHeight = 1.8;
 
+  const showSolidUX = activeCategory === "ux-design" && !isHovering;
+  const showSolidVisual = activeCategory === "visual-design" && !isHovering;
+  const showSolidWritings = activeCategory === "writings" && !isHovering;
+
   return (
     <group>
-      {/* 1. Multi-Category Morphing Particles */}
+      {/* Lights for 3D Glass UI rendering */}
+      <ambientLight intensity={1.4} />
+      <directionalLight position={[2, 4, 3]} intensity={2.2} color="#fff4e0" />
+      <pointLight position={[-3, -2, 2]} intensity={1.8} color="#60a5fa" />
+
+      {/* 1. Wireframe Outline Particle Swarm (Active on Hover) */}
       <points>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[posHero, 3]} />
@@ -445,14 +459,14 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
         </bufferGeometry>
         <shaderMaterial
           ref={particleMaterialRef}
-          args={[MultiCategoryParticleShader]}
+          args={[OutlineParticleShader]}
           uniforms-uTexture-value={texture}
           transparent
           depthWrite={false}
         />
       </points>
 
-      {/* 2. Solidified Image Mesh (For Hero Photo on Homepage when not hovering) */}
+      {/* 2. Solidified Hero Photo Mesh (Homepage /) */}
       <mesh position={[0, 0, 0.001]}>
         <planeGeometry args={[planeWidth, planeHeight, 32, 32]} />
         <shaderMaterial
@@ -463,6 +477,27 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
           depthWrite
         />
       </mesh>
+
+      {/* 3. Solidified 3D Glass Model: UX Design Pointing Hand (👆🏻) */}
+      {showSolidUX && (
+        <group ref={handRef}>
+          <primitive object={handScene} />
+        </group>
+      )}
+
+      {/* 4. Solidified 3D Glass Model: Visual Design TV Monitor (📺) */}
+      {showSolidVisual && (
+        <group ref={tvRef}>
+          <primitive object={tvScene} />
+        </group>
+      )}
+
+      {/* 5. Solidified 3D Glass Model: Writings Document Sheet (📝) */}
+      {showSolidWritings && (
+        <group ref={docRef}>
+          <primitive object={docScene} />
+        </group>
+      )}
     </group>
   );
 };
@@ -498,7 +533,7 @@ export const HeroParticleCanvas: React.FC<{ imagePath: string }> = ({
   return (
     <div
       onMouseMove={handleMouseMove}
-      className="w-full h-full relative cursor-pointer overflow-hidden rounded-xl"
+      className="w-full h-full relative cursor-pointer"
     >
       <Canvas
         camera={{ position: [0, 0, 2.2], fov: 45 }}

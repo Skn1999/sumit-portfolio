@@ -116,9 +116,9 @@ const HeroSection: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Right Column: Profile Image Canvas (Re-triggers morph animation on intentional route navigation) */}
+          {/* Right Column: 3D Particle Canvas & Solidified Models (Re-triggers morph animation on route navigation) */}
           <div className="lg:col-span-4 flex justify-center lg:justify-end">
-            <div className="relative overflow-hidden rounded-xl border border-paper-border bg-paper-card aspect-[3/4] w-full max-w-[280px] sm:max-w-[320px] lg:max-w-full shadow-lg">
+            <div className="relative w-full max-w-[280px] sm:max-w-[320px] lg:max-w-full aspect-[3/4]">
               <HeroParticleCanvas
                 key={location.pathname + location.search}
                 imagePath={`${import.meta.env.BASE_URL}images/about/hero.jpg`}
