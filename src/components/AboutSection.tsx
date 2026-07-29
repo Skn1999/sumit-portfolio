@@ -19,7 +19,7 @@ const AboutSection: React.FC = () => {
   return (
     <section
       id="about-philosophy"
-      className="py-20 md:py-32 bg-paper-bg border-t border-paper-border"
+      className="pt-20 md:pt-32 bg-paper-bg border-t border-paper-border"
     >
       <div className="max-w-6xl mx-auto px-4 md:px-8">
         {/* 2-Column Layout with 40/60 split (lg:col-span-5 left, lg:col-span-7 right) */}
@@ -55,11 +55,10 @@ const AboutSection: React.FC = () => {
               I am an User Experience and Behavioural Design graduate from Aalto
               University, Finland and University of Trento, Italy. Recently, I
               collaborated with EU Horizon Project to work on Indoor Air Quality
-              monitoring project. I focus on design engineering products.
-              Having knowledge of both the frontend and the backend, I am able to
-              craft the experience exactly as desired. Due to my background in
-              Design, I bring a fresh, user-focused perspective to interaction
-              design.
+              monitoring project. I focus on design engineering products. Having
+              knowledge of both the frontend and the backend, I am able to craft
+              the experience exactly as desired. Due to my background in Design,
+              I bring a fresh, user-focused perspective to interaction design.
             </p>
           </motion.div>
         </div>

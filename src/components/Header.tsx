@@ -130,7 +130,7 @@ const Header = () => {
           {NAV_HIERARCHY.map((item) => (
             <div
               key={item.label}
-              className="flex flex-col items-start justify-center py-3.5 px-6 text-left"
+              className="flex flex-col items-start justify-start py-3.5 px-6 text-left"
             >
               {/* Main Category Header acting as Main Route (Bold Monospace Uppercase) */}
               <Link
@@ -141,9 +141,9 @@ const Header = () => {
               </Link>
 
               {/* Sub Nav Items Underneath acting as Sections within that route */}
-              <div className="flex items-center gap-3 font-mono text-[11px] tracking-wide text-ink-muted">
+              <div className="flex flex-col items-start font-mono text-[11px] tracking-wide text-ink-muted">
                 {item.subItems.map((subItem, idx) => (
-                  <span key={subItem.to} className="flex items-center gap-3">
+                  <span key={subItem.to} className="flex items-center">
                     <Link
                       to={subItem.to}
                       className="hover:text-ink-primary transition-colors hover:underline decoration-paper-border"
