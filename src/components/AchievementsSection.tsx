@@ -107,10 +107,10 @@ const AchievementsSection: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Right Column: Clean Scannable Sub-sections */}
-          <div className="lg:col-span-8 flex flex-col gap-14">
+          {/* Right Column: Tightened Scannable Sub-sections */}
+          <div className="lg:col-span-8 flex flex-col gap-8">
             {/* Top Bar Action: Open Curriculum Vitae */}
-            <div className="flex justify-end pb-2 border-b border-paper-border">
+            <div className="flex justify-end pb-1.5 border-b border-paper-border">
               <a
                 href={resumePdfUrl}
                 target="_blank"
@@ -128,15 +128,15 @@ const AchievementsSection: React.FC = () => {
               whileInView="visible"
               viewport={{ once: true }}
               variants={inkFadeVariant}
-              className="flex flex-col gap-6"
+              className="flex flex-col gap-3"
             >
-              <h3 className="font-display text-xl font-bold text-ink-primary pb-3 border-b border-paper-border">
+              <h3 className="font-display text-lg font-bold text-ink-primary pb-1.5 border-b border-paper-border">
                 Experience
               </h3>
 
-              <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-1">
                 {/* 3 Column Grid Header */}
-                <div className="hidden sm:grid grid-cols-12 gap-4 font-mono text-xs text-ink-muted uppercase tracking-wider font-semibold pb-1">
+                <div className="hidden sm:grid grid-cols-12 gap-4 font-mono text-[11px] text-ink-muted uppercase tracking-wider font-semibold pb-0.5">
                   <div className="col-span-5">What</div>
                   <div className="col-span-4">Where</div>
                   <div className="col-span-3 text-right">When</div>
@@ -146,12 +146,12 @@ const AchievementsSection: React.FC = () => {
                 {experiences.map((exp, idx) => (
                   <div
                     key={idx}
-                    className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-4 py-3 border-b border-paper-border/60 items-baseline"
+                    className="grid grid-cols-1 sm:grid-cols-12 gap-1.5 sm:gap-4 py-1.5 border-b border-paper-border/60 items-baseline"
                   >
-                    <div className="sm:col-span-5 font-body-narrative font-semibold text-base text-ink-primary">
+                    <div className="sm:col-span-5 font-body-narrative font-semibold text-sm text-ink-primary">
                       {exp.what}
                     </div>
-                    <div className="sm:col-span-4 font-body-narrative text-sm text-ink-muted">
+                    <div className="sm:col-span-4 font-body-narrative text-xs text-ink-muted">
                       {exp.where}
                     </div>
                     <div className="sm:col-span-3 font-mono text-xs text-ink-muted sm:text-right">
@@ -169,14 +169,14 @@ const AchievementsSection: React.FC = () => {
               whileInView="visible"
               viewport={{ once: true }}
               variants={inkFadeVariant}
-              className="flex flex-col gap-6"
+              className="flex flex-col gap-3"
             >
-              <h3 className="font-display text-xl font-bold text-ink-primary pb-3 border-b border-paper-border">
+              <h3 className="font-display text-lg font-bold text-ink-primary pb-1.5 border-b border-paper-border">
                 Skills
               </h3>
 
-              <div className="flex flex-col gap-4">
-                <div className="hidden sm:grid grid-cols-12 gap-4 font-mono text-xs text-ink-muted uppercase tracking-wider font-semibold pb-1">
+              <div className="flex flex-col gap-1">
+                <div className="hidden sm:grid grid-cols-12 gap-4 font-mono text-[11px] text-ink-muted uppercase tracking-wider font-semibold pb-0.5">
                   <div className="col-span-4">Category</div>
                   <div className="col-span-8">Technologies</div>
                 </div>
@@ -184,12 +184,12 @@ const AchievementsSection: React.FC = () => {
                 {skillGroups.map((group, idx) => (
                   <div
                     key={idx}
-                    className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-4 py-3 border-b border-paper-border/60 items-baseline"
+                    className="grid grid-cols-1 sm:grid-cols-12 gap-1.5 sm:gap-4 py-1.5 border-b border-paper-border/60 items-baseline"
                   >
-                    <div className="sm:col-span-4 font-body-narrative font-semibold text-base text-ink-primary">
+                    <div className="sm:col-span-4 font-body-narrative font-semibold text-sm text-ink-primary">
                       {group.category}
                     </div>
-                    <div className="sm:col-span-8 font-body-narrative text-sm text-ink-muted leading-relaxed">
+                    <div className="sm:col-span-8 font-body-narrative text-xs text-ink-muted leading-relaxed">
                       {group.technologies.join(", ")}
                     </div>
                   </div>
@@ -204,14 +204,14 @@ const AchievementsSection: React.FC = () => {
               whileInView="visible"
               viewport={{ once: true }}
               variants={inkFadeVariant}
-              className="flex flex-col gap-6"
+              className="flex flex-col gap-3"
             >
-              <h3 className="font-display text-xl font-bold text-ink-primary pb-3 border-b border-paper-border">
+              <h3 className="font-display text-lg font-bold text-ink-primary pb-1.5 border-b border-paper-border">
                 Languages
               </h3>
 
-              <div className="flex flex-col gap-4">
-                <div className="hidden sm:grid grid-cols-12 gap-4 font-mono text-xs text-ink-muted uppercase tracking-wider font-semibold pb-1">
+              <div className="flex flex-col gap-1">
+                <div className="hidden sm:grid grid-cols-12 gap-4 font-mono text-[11px] text-ink-muted uppercase tracking-wider font-semibold pb-0.5">
                   <div className="col-span-6">Language</div>
                   <div className="col-span-6">Proficiency</div>
                 </div>
@@ -219,12 +219,12 @@ const AchievementsSection: React.FC = () => {
                 {languages.map((lang, idx) => (
                   <div
                     key={idx}
-                    className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-4 py-3 border-b border-paper-border/60 items-baseline"
+                    className="grid grid-cols-1 sm:grid-cols-12 gap-1.5 sm:gap-4 py-1.5 border-b border-paper-border/60 items-baseline"
                   >
-                    <div className="sm:col-span-6 font-body-narrative font-semibold text-base text-ink-primary">
+                    <div className="sm:col-span-6 font-body-narrative font-semibold text-sm text-ink-primary">
                       {lang.name}
                     </div>
-                    <div className="sm:col-span-6 font-body-narrative text-sm text-ink-muted">
+                    <div className="sm:col-span-6 font-body-narrative text-xs text-ink-muted">
                       {lang.level}
                     </div>
                   </div>
