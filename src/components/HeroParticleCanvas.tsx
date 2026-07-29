@@ -25,7 +25,7 @@ function categoryToIndex(cat: CategoryKey): number {
   }
 }
 
-/* ── 3D Shape Points Generators for Morph Targets ── */
+/* ── High-Precision Vector THREE.Shape Generators ── */
 
 // 1. Hero Grid (Profile Photo)
 function generateHeroGrid(count: number, cols: number, rows: number) {
@@ -51,134 +51,140 @@ function generateHeroGrid(count: number, cols: number, rows: number) {
     uvs[i * 2] = u;
     uvs[i * 2 + 1] = v;
 
-    // Edge boundary particles marked as outline
+    // Edge boundary marked as outline
     isOutline[i] = (col === 0 || col === cols - 1 || row === 0 || row === rows - 1) ? 1.0 : 0.0;
   }
   return { positions, uvs, isOutline };
 }
 
-// 2. UX Design: 👆🏻 Pointing Hand Shape
-function generatePointingHand(count: number) {
+// 2. UX Design: 👆🏻 Pointing Hand Vector Shape
+function generatePointingHandShape(count: number) {
   const positions = new Float32Array(count * 3);
   const isOutline = new Float32Array(count);
 
-  for (let i = 0; i < count; i++) {
-    const isEdge = i % 5 === 0;
-    isOutline[i] = isEdge ? 1.0 : 0.0;
+  // Construct precise 2D vector path for pointing hand
+  const shape = new THREE.Shape();
+  // Extended Index Finger
+  shape.moveTo(-0.06, 0.72);
+  shape.absarc(0.0, 0.72, 0.06, Math.PI, 0, true);
+  shape.lineTo(0.06, 0.1);
+  // Folded Middle Finger
+  shape.absarc(0.14, 0.1, 0.08, Math.PI, 0, true);
+  shape.lineTo(0.22, -0.15);
+  // Folded Ring Finger
+  shape.absarc(0.28, -0.15, 0.07, Math.PI, 0, true);
+  shape.lineTo(0.35, -0.38);
+  // Folded Pinky Finger
+  shape.absarc(0.40, -0.38, 0.06, Math.PI, 0, true);
+  shape.lineTo(0.44, -0.62);
+  // Wrist & Base
+  shape.bezierCurveTo(0.38, -0.85, -0.22, -0.85, -0.32, -0.62);
+  // Thumb Contour
+  shape.bezierCurveTo(-0.38, -0.32, -0.26, 0.0, -0.16, 0.12);
+  shape.lineTo(-0.06, 0.1);
+  shape.closePath();
 
-    const t = Math.random();
-    if (i < count * 0.3) {
-      // Extended Index Finger
-      const w = isEdge ? 0.08 : Math.random() * 0.07;
-      const x = (Math.random() - 0.5) * w;
-      const y = 0.1 + Math.random() * 0.65;
-      const z = (Math.random() - 0.5) * 0.08;
-      positions[i * 3] = x;
-      positions[i * 3 + 1] = y;
-      positions[i * 3 + 2] = z;
-    } else if (i < count * 0.75) {
-      // Main Palm / Faded Knuckles Base
-      const radius = 0.35;
-      const angle = Math.random() * Math.PI * 2;
-      const dist = isEdge ? radius : Math.random() * radius;
-      positions[i * 3] = Math.cos(angle) * dist * 0.8;
-      positions[i * 3 + 1] = -0.25 + Math.sin(angle) * dist * 0.7;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.12;
+  const numOutline = Math.floor(count * 0.25);
+  const outlinePoints = shape.getSpacedPoints(numOutline);
+
+  for (let i = 0; i < count; i++) {
+    if (i < outlinePoints.length) {
+      // Razor-sharp outline points along vector contour
+      const pt = outlinePoints[i];
+      positions[i * 3] = pt.x;
+      positions[i * 3 + 1] = pt.y;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.02;
+      isOutline[i] = 1.0;
     } else {
-      // Folded Thumb Accent
-      const x = -0.22 + (Math.random() - 0.5) * 0.12;
-      const y = -0.1 + (Math.random() - 0.5) * 0.2;
-      const z = 0.05 + Math.random() * 0.08;
-      positions[i * 3] = x;
-      positions[i * 3 + 1] = y;
-      positions[i * 3 + 2] = z;
+      // Interior fill points
+      const rx = -0.35 + Math.random() * 0.8;
+      const ry = -0.8 + Math.random() * 1.5;
+      positions[i * 3] = rx * 0.65;
+      positions[i * 3 + 1] = ry * 0.65;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.1;
+      isOutline[i] = 0.0;
     }
   }
   return { positions, isOutline };
 }
 
-// 3. Visual Design: 📺 Display Screen Shape
-function generateTVScreen(count: number) {
+// 3. Visual Design: 📺 Display Screen Vector Shape
+function generateTVScreenShape(count: number) {
   const positions = new Float32Array(count * 3);
   const isOutline = new Float32Array(count);
 
-  for (let i = 0; i < count; i++) {
-    const isEdge = i % 4 === 0;
-    isOutline[i] = isEdge ? 1.0 : 0.0;
+  const shape = new THREE.Shape();
+  const w = 0.9, h = 0.65, r = 0.08;
+  shape.moveTo(-w / 2 + r, h / 2);
+  shape.lineTo(w / 2 - r, h / 2);
+  shape.quadraticCurveTo(w / 2, h / 2, w / 2, h / 2 - r);
+  shape.lineTo(w / 2, -h / 2 + r);
+  shape.quadraticCurveTo(w / 2, -h / 2, w / 2 - r, -h / 2);
+  shape.lineTo(-w / 2 + r, -h / 2);
+  shape.quadraticCurveTo(-w / 2, -h / 2, -w / 2, -h / 2 + r);
+  shape.lineTo(-w / 2, h / 2 - r);
+  shape.quadraticCurveTo(-w / 2, h / 2, -w / 2 + r, h / 2);
+  shape.closePath();
 
-    if (i < count * 0.7) {
-      // TV Bezel & Display Screen
-      const w = 0.75;
-      const h = 0.55;
-      let x = (Math.random() - 0.5) * w;
-      let y = 0.05 + (Math.random() - 0.5) * h;
-      if (isEdge) {
-        // Snap edge particles to outer frame boundary
-        const side = Math.floor(Math.random() * 4);
-        if (side === 0) { x = -w/2; }
-        else if (side === 1) { x = w/2; }
-        else if (side === 2) { y = 0.05 - h/2; }
-        else { y = 0.05 + h/2; }
-      }
-      positions[i * 3] = x;
-      positions[i * 3 + 1] = y;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.08;
-    } else if (i < count * 0.88) {
-      // TV Stand & Base
-      const x = (Math.random() - 0.5) * 0.35;
-      const y = -0.32 + (Math.random() - 0.5) * 0.12;
-      positions[i * 3] = x;
-      positions[i * 3 + 1] = y;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.06;
-    } else {
-      // Top V-Antenna
-      const side = i % 2 === 0 ? 1 : -1;
-      const progress = Math.random();
-      positions[i * 3] = side * progress * 0.25;
-      positions[i * 3 + 1] = 0.35 + progress * 0.25;
+  const numOutline = Math.floor(count * 0.25);
+  const outlinePoints = shape.getSpacedPoints(numOutline);
+
+  for (let i = 0; i < count; i++) {
+    if (i < outlinePoints.length) {
+      const pt = outlinePoints[i];
+      positions[i * 3] = pt.x;
+      positions[i * 3 + 1] = pt.y + 0.08;
       positions[i * 3 + 2] = 0;
+      isOutline[i] = 1.0;
+    } else {
+      const u = (Math.random() - 0.5) * (w - 0.05);
+      const v = 0.08 + (Math.random() - 0.5) * (h - 0.05);
+      positions[i * 3] = u;
+      positions[i * 3 + 1] = v;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.06;
+      isOutline[i] = 0.0;
     }
   }
   return { positions, isOutline };
 }
 
-// 4. Writings: 📝 Memo Document & Pencil Shape
-function generateMemoDoc(count: number) {
+// 4. Writings: 📝 Memo Document Vector Shape
+function generateMemoDocShape(count: number) {
   const positions = new Float32Array(count * 3);
   const isOutline = new Float32Array(count);
 
-  for (let i = 0; i < count; i++) {
-    const isEdge = i % 4 === 0;
-    isOutline[i] = isEdge ? 1.0 : 0.0;
+  const shape = new THREE.Shape();
+  const pw = 0.72, ph = 0.95;
+  shape.moveTo(-pw / 2, ph / 2);
+  shape.lineTo(pw / 2 - 0.2, ph / 2);
+  shape.lineTo(pw / 2, ph / 2 - 0.2);
+  shape.lineTo(pw / 2, -ph / 2);
+  shape.lineTo(-pw / 2, -ph / 2);
+  shape.closePath();
 
-    if (i < count * 0.8) {
-      // Sheet Paper Document
-      const w = 0.65;
-      const h = 0.85;
-      let x = (Math.random() - 0.5) * w;
-      let y = (Math.random() - 0.5) * h;
-      if (isEdge) {
-        const side = Math.floor(Math.random() * 4);
-        if (side === 0) { x = -w/2; }
-        else if (side === 1) { x = w/2; }
-        else if (side === 2) { y = -h/2; }
-        else { y = h/2; }
-      }
-      positions[i * 3] = x;
-      positions[i * 3 + 1] = y;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.06;
+  const numOutline = Math.floor(count * 0.25);
+  const outlinePoints = shape.getSpacedPoints(numOutline);
+
+  for (let i = 0; i < count; i++) {
+    if (i < outlinePoints.length) {
+      const pt = outlinePoints[i];
+      positions[i * 3] = pt.x;
+      positions[i * 3 + 1] = pt.y;
+      positions[i * 3 + 2] = 0;
+      isOutline[i] = 1.0;
     } else {
-      // Diagonal Writing Pencil
-      const progress = Math.random();
-      positions[i * 3] = 0.1 + progress * 0.3;
-      positions[i * 3 + 1] = -0.3 + progress * 0.6;
-      positions[i * 3 + 2] = 0.1;
+      const u = (Math.random() - 0.5) * (pw - 0.04);
+      const v = (Math.random() - 0.5) * (ph - 0.04);
+      positions[i * 3] = u;
+      positions[i * 3 + 1] = v;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
+      isOutline[i] = 0.0;
     }
   }
   return { positions, isOutline };
 }
 
-// Shader Material
+/* ── Shader Material ── */
 const MultiCategoryParticleShader = {
   uniforms: {
     uTexture: { value: null },
@@ -244,13 +250,12 @@ const MultiCategoryParticleShader = {
       ) * (1.0 - easeP);
 
       vec3 currentPos = mix(startP, targetP, easeP) + noise;
-
       vec4 mvPosition = modelViewMatrix * vec4(currentPos, 1.0);
 
-      // Size calculation: glowing outline particles pop slightly larger when hovering
+      // Size calculation: glowing outline particles pop larger when hovering
       float baseSize = mix(8.0, 5.0, easeP);
       if (uIsHovering > 0.5 && aIsOutline > 0.5) {
-        baseSize += 3.0;
+        baseSize += 3.5;
       }
 
       gl_PointSize = baseSize * (1.0 / -mvPosition.z);
@@ -278,7 +283,6 @@ const MultiCategoryParticleShader = {
 
       float alphaEdge = smoothstep(0.25, 0.05, dot(coord, coord));
 
-      // Color rendering logic depending on shape target
       vec3 finalColor = vec3(1.0);
       float finalAlpha = 1.0;
 
@@ -305,7 +309,6 @@ const MultiCategoryParticleShader = {
         vec3 goldAccent = vec3(0.95, 0.82, 0.50);
         vec3 cyanGlow = vec3(0.40, 0.85, 0.95);
 
-        // Specular reflections on glass particles
         vec3 lightDir = normalize(vec3(uMouse.x * 2.0, uMouse.y * 2.0, 1.5));
         float spec = pow(max(dot(vec3(0.0, 0.0, 1.0), lightDir), 0.0), 12.0);
 
@@ -316,16 +319,15 @@ const MultiCategoryParticleShader = {
       // OUTLINE HOVER MODE (When user hovers on header item)
       if (uIsHovering > 0.5) {
         if (vIsOutline > 0.5) {
-          // Outline particles glow brightly
-          finalColor = mix(finalColor, vec3(0.98, 0.85, 0.55), 0.7);
+          // Outline particles glow brightly to outline intended target shape
+          finalColor = mix(finalColor, vec3(0.98, 0.85, 0.55), 0.75);
           finalAlpha = 0.95;
         } else {
-          // Fill particles become translucent wireframe ghost
-          finalAlpha = 0.15;
+          // Fill particles dim to reveal wireframe outline
+          finalAlpha = 0.12;
         }
       }
 
-      // Smooth opacity fade into solidification
       float alpha = finalAlpha * alphaEdge;
       gl_FragColor = vec4(finalColor, alpha);
     }
@@ -401,12 +403,12 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const rows = 146;
   const count = cols * rows;
 
-  // Pre-generate all 4 target shape point buffers
+  // Pre-generate all 4 target shape point buffers with high-precision vector shapes
   const { posHero, uvs, posUX, posVisual, posWritings, isOutline, randoms } = useMemo(() => {
     const hero = generateHeroGrid(count, cols, rows);
-    const ux = generatePointingHand(count);
-    const vis = generateTVScreen(count);
-    const wr = generateMemoDoc(count);
+    const ux = generatePointingHandShape(count);
+    const vis = generateTVScreenShape(count);
+    const wr = generateMemoDocShape(count);
 
     const randArray = new Float32Array(count);
     for (let i = 0; i < count; i++) randArray[i] = Math.random();
@@ -417,12 +419,11 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
       posUX: ux.positions,
       posVisual: vis.positions,
       posWritings: wr.positions,
-      isOutline: hero.isOutline,
+      isOutline: ux.isOutline,
       randoms: randArray,
     };
   }, [count, cols, rows]);
 
-  // Handle route & hover state transitions
   useEffect(() => {
     if (intendedCategory !== prevCategoryRef.current) {
       morphProgressRef.current = 0.0;
@@ -433,14 +434,12 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
     const elapsedTime = clock.getElapsedTime();
     const targetMouse = new THREE.Vector2(mousePos.x, mousePos.y);
 
-    // Update morph progress (0 -> 1 over 1.2 seconds)
     if (morphProgressRef.current < 1.0) {
       morphProgressRef.current = Math.min(morphProgressRef.current + delta / 1.2, 1.0);
     } else {
       prevCategoryRef.current = intendedCategory;
     }
 
-    // Update solidify progress (0 -> 1 when mouse leaves header navigation)
     const targetSolidify = isHovering ? 0.0 : 1.0;
     solidifyProgressRef.current += (targetSolidify - solidifyProgressRef.current) * Math.min(delta * 5.0, 1.0);
 
@@ -468,7 +467,7 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
 
   return (
     <group>
-      {/* 1. Multi-Category Morphing Glass & Metallic Particles */}
+      {/* 1. Multi-Category Morphing Vector Glass & Metallic Particles */}
       <points>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[posHero, 3]} />
