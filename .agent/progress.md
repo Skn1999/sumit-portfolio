@@ -39,6 +39,7 @@ This file is updated by AI agents after each task is attempted or completed. It 
 | 2026-07-29 | `tasks/task_029_v2_living_motion_dynamics_and_verification.md` | Configured `ink-fade-reveal` animation keyframes in `src/index.css`, verified ambient cursor radial glow tracking and floating paper card hover physics, tested multi-viewport responsive layout (mobile ~375px, tablet ~768px, desktop ~1280px+), and confirmed clean build & type safety. Build passes. | Completed |
 | 2026-07-29 | `tasks/task_030_v2_service_offerings_section.md`          | Re-architected `SecondaryModules.tsx` into a recruiter-facing `ServiceOfferings` component featuring 3 core pillars (Human-in-the-Loop AI & System Oversight, UX Architecture & Cognitive Workflows, Usability Engineering & HCI Audits) extracted into target roles, skill groups, and configurable portfolio links. Build passes. | Completed |
 | 2026-07-29 | `tasks/task_031_ia_navigation_and_homepage_structure.md`  | Restructured site Information Architecture (IA), header navigation dropdown hierarchy (Sumit Nayyar, UX Design, Visual Design, Writings), page routes, and sequential homepage sections (Hero with bottom location/availability bar, About, Achievements 2-column split, Contact). Build passes. | Completed |
+| 2026-07-29 | `tasks/task_032_intent_based_navigation_and_main_pages.md` | Implemented intent-based header navigation hover-out transition state (`intendedRoute`), explicit sub-item click state resets, smooth anchor scrolling, created `/ux-design`, `/visual-design`, `/writings/publication` main pages with `HeroSection` as section 1 across all routes. Build passes. | Completed |
 
 ### 2026-07-29 - `tasks/task_031_ia_navigation_and_homepage_structure.md`
 
@@ -56,4 +57,22 @@ This file is updated by AI agents after each task is attempted or completed. It 
 - Tests run: `npm run build` (Passed in 2.89s)
 - Acceptance criteria: 100% met.
 - Follow-ups / risks: None.
+
+### 2026-07-29 - `tasks/task_032_intent_based_navigation_and_main_pages.md`
+
+- Status: Completed
+- Summary: Implemented intent-based header hover-out navigation (`intendedRoute` state + `onMouseLeave` client-side `navigate`), explicit sub-nav item click handling, smooth anchor scrolling (`/#about`, `/#contact`, `/ux-design#projects`, `/visual-design#projects`, `/writings/publication#publication`, `/writings/publication#ux-bites`), created `/ux-design`, `/visual-design`, and `/writings/publication` main route pages ensuring `HeroSection` is the first section in all main pages.
+- Files changed:
+  - `src/components/Header.tsx`
+  - `src/components/AboutSection.tsx`
+  - `src/pages/UxDesignPage.tsx`
+  - `src/pages/VisualDesignPage.tsx`
+  - `src/pages/WritingsPage.tsx`
+  - `src/App.tsx`
+  - `.agent/progress.md`
+  - `.agent/learnings.md`
+- Tests run: `npm run build` (Passed in 3.25s), `./node_modules/.bin/eslint` (Passed cleanly)
+- Acceptance criteria: 100% met.
+- Follow-ups / risks: None.
+
 

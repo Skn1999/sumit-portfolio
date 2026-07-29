@@ -8,10 +8,10 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ProjectPage from "./pages/ProjectPage";
 import ResumePage from "./pages/ResumePage";
-import UxBitesList from "./pages/UxBitesList";
 import UxBitePage from "./pages/UxBitePage";
-import ProjectList from "./components/ProjectList";
-import { PublicationPage, ResearchPage } from "./pages/WritingsPage";
+import UxDesignPage from "./pages/UxDesignPage";
+import VisualDesignPage from "./pages/VisualDesignPage";
+import WritingsPage from "./pages/WritingsPage";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { TransitionProvider } from "./contexts/TransitionContext";
 import { AnimatePresence } from "framer-motion";
@@ -44,11 +44,13 @@ const AnimatedRoutes = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Index />} />
         <Route path="/resume" element={<ResumePage />} />
-        <Route path="/projects" element={<ProjectList />} />
+        <Route path="/ux-design" element={<UxDesignPage />} />
+        <Route path="/projects" element={<UxDesignPage />} />
         <Route path="/projects/:slug" element={<ProjectPage />} />
-        <Route path="/writings/publication" element={<PublicationPage />} />
-        <Route path="/writings/research" element={<ResearchPage />} />
-        <Route path="/ux-bites" element={<UxBitesList />} />
+        <Route path="/visual-design" element={<VisualDesignPage />} />
+        <Route path="/writings/publication" element={<WritingsPage />} />
+        <Route path="/writings/research" element={<WritingsPage />} />
+        <Route path="/ux-bites" element={<WritingsPage />} />
         <Route path="/ux-bites/:slug" element={<UxBitePage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

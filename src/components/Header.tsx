@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 
 interface SubNavItem {
@@ -25,20 +25,20 @@ const NAV_HIERARCHY: NavItem[] = [
   },
   {
     label: "UX Design",
-    mainRoute: "/projects",
-    subItems: [{ to: "/projects", label: "Projects" }],
+    mainRoute: "/ux-design",
+    subItems: [{ to: "/ux-design#projects", label: "Projects" }],
   },
   {
     label: "Visual Design",
-    mainRoute: "/projects?category=visual-design",
-    subItems: [{ to: "/projects?category=visual-design", label: "Projects" }],
+    mainRoute: "/visual-design",
+    subItems: [{ to: "/visual-design#projects", label: "Projects" }],
   },
   {
     label: "Writings",
     mainRoute: "/writings/publication",
     subItems: [
-      { to: "/writings/publication", label: "Publication" },
-      { to: "/writings/research", label: "Research" },
+      { to: "/writings/publication#publication", label: "Publication" },
+      { to: "/writings/publication#ux-bites", label: "UX Bites" },
     ],
   },
 ];
@@ -104,13 +104,16 @@ const slatVariant: Variants = {
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [intendedRoute, setIntendedRoute] = useState<string | null>(null);
 
   const toggleMenu = useCallback(() => setMenuOpen((v) => !v), []);
 
   useEffect(() => {
     setMenuOpen(false);
-  }, [location.pathname, location.hash]);
+    setIntendedRoute(null);
+  }, [location.pathname, location.hash, location.search]);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -119,22 +122,37 @@ const Header = () => {
     };
   }, [menuOpen]);
 
+  const handleHeaderMouseLeave = useCallback(() => {
+    const currentRoute = location.pathname + location.search;
+    if (intendedRoute && intendedRoute !== currentRoute) {
+      navigate(intendedRoute);
+    }
+    setIntendedRoute(null);
+  }, [intendedRoute, location.pathname, location.search, navigate]);
+
+  const handleExplicitClick = useCallback(() => {
+    setIntendedRoute(null);
+  }, []);
+
   return (
     <header className="w-full border-b border-paper-border bg-paper-bg/95 backdrop-blur-md fixed top-0 left-0 right-0 z-50">
       <div className="w-full px-4 md:px-8">
-        {/* Desktop Navigation: Left-aligned 4 Equal Viewport Columns */}
+        {/* Desktop Navigation: Left-aligned 4 Equal Viewport Columns with Hover Intent */}
         <nav
+          onMouseLeave={handleHeaderMouseLeave}
           className="hidden md:grid grid-cols-4 w-full divide-x divide-paper-border/60"
           aria-label="Primary navigation"
         >
           {NAV_HIERARCHY.map((item) => (
             <div
               key={item.label}
-              className="flex flex-col items-start justify-start py-3.5 px-6 text-left"
+              onMouseEnter={() => setIntendedRoute(item.mainRoute)}
+              className="flex flex-col items-start justify-start py-3.5 px-6 text-left cursor-pointer"
             >
               {/* Main Category Header acting as Main Route (Bold Monospace Uppercase) */}
               <Link
                 to={item.mainRoute}
+                onClick={handleExplicitClick}
                 className="font-mono text-xs font-bold tracking-widest text-ink-primary uppercase mb-1 hover:text-ink-primary/70 transition-colors"
               >
                 {item.label}
@@ -146,6 +164,7 @@ const Header = () => {
                   <span key={subItem.to} className="flex items-center">
                     <Link
                       to={subItem.to}
+                      onClick={handleExplicitClick}
                       className="hover:text-ink-primary transition-colors hover:underline decoration-paper-border"
                     >
                       {subItem.label}

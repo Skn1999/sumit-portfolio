@@ -18,7 +18,7 @@ const AboutSection: React.FC = () => {
 
   return (
     <section
-      id="about-philosophy"
+      id="about"
       className="pt-20 md:pt-32 bg-paper-bg border-t border-paper-border"
     >
       <div className="max-w-6xl mx-auto px-4 md:px-8">

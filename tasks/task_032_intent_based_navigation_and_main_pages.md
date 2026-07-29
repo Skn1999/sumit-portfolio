@@ -16,15 +16,15 @@ Ensure all main routes defined by `mainRoute` in [src/components/Header.tsx](fil
 - **Route 1: `/` (Homepage)**
   - Page Component: `Index.tsx`
   - Sections: Hero, About & AI Philosophy (`#about`), Achievements (`#achievements`), Contact (`#contact`).
-- **Route 2: `/projects` (UX Design Projects)**
+- **Route 2: `/ux-design` (UX Design Projects)**
   - Page Component: `ProjectList.tsx`
   - Renders UX design project showcase index.
-- **Route 3: `/projects?category=visual-design` (Visual Design Projects)**
+- **Route 3: `/visual-design` (Visual Design Projects)**
   - Page Component: `ProjectList.tsx`
-  - Renders filtered visual design projects showcase.
-- **Route 4: `/writings/publication` & `/writings/research` (Writings)**
+  - Renders list of behance projects.
+- **Route 4: `/writings/publication` & `/ux-bites` (Writings)**
   - Page Component: `WritingsPage.tsx`
-  - Renders Unsaid Moments publication newsletter embedding and HCI research studies.
+  - Renders Unsaid Moments publication newsletter embedding and UX bites content as a section. Refer to `UXBitesList.tsx` to get the content list
 
 ---
 
@@ -33,7 +33,7 @@ Ensure all main routes defined by `mainRoute` in [src/components/Header.tsx](fil
 Implement intention-driven navigation transitions inside the header:
 
 - **State Tracking:** When the user hovers over any main navigation item (`Sumit Nayyar`, `UX Design`, `Visual Design`, `Writings`), store that item's `mainRoute` in header state (`intendedRoute`).
-- **Hover-Out Transition:** When the user's cursor leaves the `<header>` / navbar container (`onMouseLeave`), check if `intendedRoute` is set and different from current route (`location.pathname + location.search`). If so, trigger a programmatic client-side navigation (`navigate(intendedRoute)`) using React Router **without a full page reload**.
+- **Hover-Out Transition:** When the user's cursor leaves the `<header>` / navbar container (`onMouseLeave`), check if `intendedRoute` is set and different from current route (`location.pathname + location.search`). If so, trigger a programmatic client-side navigation (`navigate(intendedRoute)`) using React Router **without a full page reload**. Then update the address in the browser address bar programatically.
 - **State Reset:** Clear `intendedRoute` state upon navigation or when hover intention is cancelled.
 
 ---
@@ -49,6 +49,7 @@ Implement intention-driven navigation transitions inside the header:
 
 ### 4. Visual Hierarchy & Header Formatting
 
+- Make sure the `HeroSection.tsx` is always the first section in all of the main routes.
 - Retain left-aligned column structure with comfortable padding (`px-6 py-3.5`).
 - Main category items: bold uppercase monospace (`font-mono text-xs font-bold text-ink-primary uppercase`).
 - Sub-nav items: small muted monospace links directly underneath (`font-mono text-[11px] text-ink-muted hover:text-ink-primary transition-colors`).

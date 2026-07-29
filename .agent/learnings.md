@@ -147,3 +147,11 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Resolution:** Updated `Header.tsx` to support the multi-level IA hierarchy (Sumit Nayyar, UX Design, Visual Design, Writings), created `AboutSection.tsx`, `AchievementsSection.tsx`, `WritingsPage.tsx`, and updated `Index.tsx` and `App.tsx`.
 - **Future instruction:** Keep sub-navigation link paths aligned with both page routes (`/projects`, `/writings/publication`, `/writings/research`) and section hash targets (`/#about`, `/#contact`).
 
+### 2026-07-29 - `tasks/task_032_intent_based_navigation_and_main_pages.md`
+
+- **Lessons learned:** Implementing intent-based navigation via mouse hover state tracking (`intendedRoute`) and container mouse exit handling (`onMouseLeave`) creates a seamless, low-friction predictive browsing experience. Explicit click handlers must always clear hover state (`setIntendedRoute(null)`) to avoid conflicting navigation triggers when users explicitly select sub-items.
+- **Errors or surprises:** None.
+- **Resolution:** Managed `intendedRoute` state in `Header.tsx` with React Router `useNavigate()` client-side transitions and `ScrollToHash` for anchor scrolling.
+- **Future instruction:** When implementing intent-driven route transitions, ensure explicit link `onClick` handlers reset intent state to prevent race conditions during direct anchor navigation.
+
+
