@@ -1,7 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { ChevronDown } from "lucide-react";
 
 interface SubNavItem {
   to: string;
@@ -13,7 +12,7 @@ interface NavItem {
   subItems: SubNavItem[];
 }
 
-/* ── Navigation Items Hierarchy (from IA Vision) ── */
+/* ── Navigation Items Hierarchy ── */
 const NAV_HIERARCHY: NavItem[] = [
   {
     label: "Sumit Nayyar",
@@ -39,7 +38,7 @@ const NAV_HIERARCHY: NavItem[] = [
   },
 ];
 
-/* ── Hamburger / X icon ── */
+/* ── Hamburger / X icon for mobile ── */
 const MenuIcon = ({ open }: { open: boolean }) => (
   <div className="relative w-6 h-5 flex flex-col justify-between">
     <motion.span
@@ -101,13 +100,11 @@ const slatVariant: Variants = {
 const Header = () => {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   const toggleMenu = useCallback(() => setMenuOpen((v) => !v), []);
 
   useEffect(() => {
     setMenuOpen(false);
-    setActiveDropdown(null);
   }, [location.pathname, location.hash]);
 
   useEffect(() => {
@@ -118,78 +115,57 @@ const Header = () => {
   }, [menuOpen]);
 
   return (
-    <header className="w-full border-b border-paper-border bg-paper-bg/90 backdrop-blur-md fixed top-0 left-0 right-0 z-50">
+    <header className="w-full border-b border-paper-border bg-paper-bg/95 backdrop-blur-md fixed top-0 left-0 right-0 z-50">
       <div className="w-full px-4 md:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Desktop Navigation Spanning Full Width Equally (4 equal columns) */}
-          <nav
-            className="hidden md:grid grid-cols-4 w-full h-full items-center text-center divide-x divide-paper-border/60"
-            aria-label="Primary navigation"
-          >
-            {NAV_HIERARCHY.map((item) => (
-              <div
-                key={item.label}
-                className="relative h-full flex items-center justify-center"
-                onMouseEnter={() => setActiveDropdown(item.label)}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <button
-                  onClick={() =>
-                    setActiveDropdown(
-                      activeDropdown === item.label ? null : item.label
-                    )
-                  }
-                  className="w-full h-full flex items-center justify-center gap-1.5 font-mono text-xs tracking-widest font-semibold text-ink-muted hover:text-ink-primary transition-colors uppercase px-4"
-                >
-                  <span>{item.label}</span>
-                  <ChevronDown
-                    className={`w-3 h-3 transition-transform duration-200 ${
-                      activeDropdown === item.label ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                <AnimatePresence>
-                  {activeDropdown === item.label && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.98 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 6, scale: 0.98 }}
-                      transition={{ duration: 0.15, ease: "easeOut" }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-48 rounded-xl border border-paper-border bg-paper-card shadow-lg p-2 z-50 text-left"
-                    >
-                      {item.subItems.map((subItem) => (
-                        <Link
-                          key={subItem.to}
-                          to={subItem.to}
-                          onClick={() => setActiveDropdown(null)}
-                          className="block px-3 py-2 rounded-lg text-xs font-mono tracking-wide text-ink-primary hover:bg-paper-bg transition-colors"
-                        >
-                          → {subItem.label}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
-          </nav>
-
-          {/* Mobile Viewport Bar */}
-          <div className="flex md:hidden items-center justify-between w-full h-16">
-            <span className="font-mono text-xs font-semibold tracking-widest text-ink-primary uppercase">
-              NAVIGATION
-            </span>
-
-            <button
-              onClick={toggleMenu}
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={menuOpen}
-              className="relative z-50 p-2 -mr-2 tap-highlight-transparent"
+        {/* Desktop Navigation: 4 Equal Viewport Columns with Main Item & Sub-Items Underneath */}
+        <nav
+          className="hidden md:grid grid-cols-4 w-full divide-x divide-paper-border/60"
+          aria-label="Primary navigation"
+        >
+          {NAV_HIERARCHY.map((item) => (
+            <div
+              key={item.label}
+              className="flex flex-col items-center justify-center py-3.5 px-2 text-center"
             >
-              <MenuIcon open={menuOpen} />
-            </button>
-          </div>
+              {/* Main Category Header (Top Level Hierarchy: Bold Monospace Uppercase) */}
+              <span className="font-mono text-xs font-bold tracking-widest text-ink-primary uppercase mb-1">
+                {item.label}
+              </span>
+
+              {/* Sub Nav Items Underneath (Secondary Hierarchy: Small Muted Monospace) */}
+              <div className="flex items-center justify-center gap-3 font-mono text-[11px] tracking-wide text-ink-muted">
+                {item.subItems.map((subItem, idx) => (
+                  <span key={subItem.to} className="flex items-center gap-3">
+                    <Link
+                      to={subItem.to}
+                      className="hover:text-ink-primary transition-colors hover:underline decoration-paper-border"
+                    >
+                      {subItem.label}
+                    </Link>
+                    {idx < item.subItems.length - 1 && (
+                      <span className="text-paper-border text-[9px]">•</span>
+                    )}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </nav>
+
+        {/* Mobile Viewport Bar */}
+        <div className="flex md:hidden items-center justify-between w-full h-16">
+          <span className="font-mono text-xs font-bold tracking-widest text-ink-primary uppercase">
+            SUMIT KNAYYAR // NAV
+          </span>
+
+          <button
+            onClick={toggleMenu}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            className="relative z-50 p-2 -mr-2 tap-highlight-transparent"
+          >
+            <MenuIcon open={menuOpen} />
+          </button>
         </div>
       </div>
 
@@ -214,7 +190,7 @@ const Header = () => {
               {NAV_HIERARCHY.map((item, i) => (
                 <motion.div key={item.label} variants={slatVariant}>
                   <div className="mb-2">
-                    <span className="text-xs font-mono tracking-widest text-ink-muted uppercase block mb-1">
+                    <span className="text-xs font-mono tracking-widest text-ink-primary uppercase font-bold block mb-1">
                       0{i + 1} // {item.label}
                     </span>
                     <div className="flex flex-col gap-1 pl-3 border-l-2 border-paper-border">
@@ -223,7 +199,7 @@ const Header = () => {
                           key={subItem.to}
                           to={subItem.to}
                           onClick={() => setMenuOpen(false)}
-                          className="py-2 text-base font-display font-semibold text-ink-primary hover:text-primary transition-colors flex items-center justify-between"
+                          className="py-2 text-base font-mono text-ink-muted hover:text-ink-primary transition-colors flex items-center justify-between"
                         >
                           <span>{subItem.label}</span>
                           <span className="text-xs font-mono text-ink-muted">
