@@ -21,30 +21,35 @@ const Projects = () => {
   };
 
   const projectsData = [
-    {
-      index: "01",
-      label: "01 // OPTMYZR",
-      slug: "optmyzr-dashboard-migration",
-      title: "Migrating Legacy Analytics with Config-Driven React & AI Refactoring",
-      metricBanner: "Compressed load times from 8–10s to <1s while building human-in-the-loop AI refactoring scripts to safely convert thousands of legacy templates without breaking production logic.",
-      tags: ["React", "TypeScript", "AI Refactoring", "System Architecture"],
-      cover: optmyzrProject?.cover,
-    },
+    // {
+    //   index: "01",
+    //   label: "01 // OPTMYZR",
+    //   slug: "optmyzr-dashboard-migration",
+    //   title: "Migrating Legacy Analytics with Config-Driven React & AI Refactoring",
+    //   metricBanner: "Compressed load times from 8–10s to <1s while building human-in-the-loop AI refactoring scripts to safely convert thousands of legacy templates without breaking production logic.",
+    //   tags: ["React", "TypeScript", "AI Refactoring", "System Architecture"],
+    //   cover: optmyzrProject?.cover,
+    // },
     {
       index: "02",
       label: "02 // EDIAQI",
       slug: "ediaqi-decision-support-system",
-      title: "Translating Scientific Environmental Complexity into Low-Cognitive-Load Interfaces",
-      metricBanner: "Architected a progressive decision-support interface that bridges complex environmental data models with intuitive human workflows, preventing cognitive overload for non-technical researchers.",
+      title:
+        "Making the Invisible Visible: A Decision-Support System for Environmental Data",
+      metricBanner:
+        "Designed and developed a decision-support interface that turns complex environmental data models into simple language status updates, preventing cognitive overload for non-technical occupants.",
       tags: ["Interaction Architecture", "Data Visualization", "HCI Research"],
       cover: ediaqiProject?.cover,
+      link: "https://fourth-yew-1cd.notion.site/EDIAQI-Designing-a-Decision-Support-System-for-Indoor-Air-Quality-39cfd7140ca780139055cfcda74c2841",
     },
     {
       index: "03",
       label: "03 // YOU (SUPEREGO)",
       slug: "super-ego-app",
-      title: "YOU (SuperEgo) — OS-Level Assistant for Preconscious Habit Alignment",
-      metricBanner: "Designed a human-first behavioral nudge assistant that interprets passive telemetry into subtle, ethical interface interactions that prioritize user agency over algorithmic intrusion.",
+      title:
+        "YOU (SuperEgo) — OS-Level Assistant for Preconscious Habit Alignment",
+      metricBanner:
+        "Designed a human-first behavioral nudge assistant that interprets passive telemetry into subtle, ethical interface interactions that prioritize user agency over algorithmic intrusion.",
       tags: ["Behavioral Design", "Interaction Logic", "Social Psychology"],
       cover: superEgoProject?.cover,
     },
@@ -54,7 +59,7 @@ const Projects = () => {
     <section
       id="projects"
       onMouseMove={handleMouseMove}
-      className="relative py-24 md:py-36 bg-paper-bg border-t border-paper-border"
+      className="relative pt-24 md:pt-36 bg-paper-bg border-t border-paper-border"
     >
       <div className="max-w-6xl mx-auto px-4 md:px-8 relative">
         {/* Section Header */}
@@ -66,10 +71,10 @@ const Projects = () => {
           className="mb-16 md:mb-20"
         >
           <span className="font-mono text-xs tracking-widest text-ink-muted uppercase block mb-2">
-            Selected Projects // Engineered Systems &amp; Product Oversight
+            Selected Projects
           </span>
           <h2 className="text-3xl md:text-5xl font-bold font-display text-ink-primary tracking-tighter">
-            Editorial Project Showcase
+            Project Showcase
           </h2>
         </motion.div>
 
@@ -86,7 +91,12 @@ const Projects = () => {
                 y: mousePos.y - 120,
               }}
               exit={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
-              transition={{ type: "spring", stiffness: 350, damping: 25, mass: 0.5 }}
+              transition={{
+                type: "spring",
+                stiffness: 350,
+                damping: 25,
+                mass: 0.5,
+              }}
               className="pointer-events-none absolute z-50 w-[360px] aspect-[16/10] bg-paper-card p-2 rounded-xl border border-paper-border shadow-xl overflow-hidden hidden lg:block"
               style={{
                 left: 0,
@@ -110,7 +120,11 @@ const Projects = () => {
               initial={{ opacity: 0, filter: "blur(6px)", y: 20 }}
               whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                duration: 0.7,
+                delay: index * 0.1,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
               className="border-t border-paper-border py-8 md:py-12 group transition-colors duration-300 hover:bg-paper-card/40"
