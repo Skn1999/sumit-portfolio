@@ -30,3 +30,5 @@ This file is updated by AI agents after each task is attempted or completed. It 
 | 2026-06-26 | `tasks/task_013_homepage_academic_cohorts_and_credentials.md` | Redesigned secondary modules, adding Academic Cohorts and scroll-pinned Certifications gallery.     | Completed |
 | 2026-07-10 | `tasks/task_016_project_rewrite_layout_system.md`             | Added 4-zone editorial layout components (ProjectHeader, ContextStrip, WorkSection, OutcomeFooter) to CaseStudyLayout.tsx. Added editorial CSS tokens to index.css. Build passes. | Completed |
 | 2026-07-11 | `tasks/task_017_project_rewrite_optmyzr_case_study.md`        | Rewrote Optmyzr MDX from blog-post format to 4-zone editorial layout: Zone 1 ProjectHeader, Zone 2 ContextStrip, Zone 3 four WorkSections (right/full/left/full), Zone 4 OutcomeFooter with metrics. Build passes. | Completed |
+| 2026-07-29 | `tasks/task_022_homepage_copy_ai_human_oversight.md`          | Optimized homepage copy across SEO, Hero, Projects, Secondary Modules, and Contact to position Sumit as a Human-in-the-Loop AI & Product Architect. Build passes. | Completed |
+

@@ -54,12 +54,12 @@ const Contact = () => {
               // CONNECT
             </span>
             <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mb-4 tracking-tighter">
-              Coffee? Chat? Let's{" "}
-              <span className="text-primary underline">Talk</span>.
+              Need Human Oversight in Your AI &amp; Product Pipeline?
             </h2>
             <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 font-body-narrative leading-relaxed max-w-xl">
-              I bring curiosity, code, and coffee. Let's build something we're
-              proud of. Click anywhere in this block to send me an email.
+              Whether you're building next-gen AI tools or scaling complex enterprise
+              interfaces, I ensure your product delivers velocity without sacrificing UX
+              rigor or code quality. Click anywhere in this block to send me an email.
             </p>
             <a
               ref={mailToButtonRef}

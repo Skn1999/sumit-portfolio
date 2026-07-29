@@ -83,3 +83,11 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Errors or surprises:** The Optmyzr project had no live demo URL in the `links` frontmatter key. Used the GitHub repository URL as the CTA fallback. The `legacy-dashboard.svg` was used for the AI Workflow slide — it is the best available visual for showing the legacy architecture.
 - **Resolution:** All four work sections and the outcome footer rendered cleanly. Build passed in 2.98s.
 - **Future instruction:** When writing MDX body content, `body` props should be JSX fragments (`<>...</>`) not plain strings — this preserves em-dashes and special characters correctly. The `imagePosition` alternation pattern for the Optmyzr case is: right → full → left → full.
+
+### 2026-07-29 - `tasks/task_022_homepage_copy_ai_human_oversight.md`
+
+- **Lessons learned:** For hero landing copy targeting tech recruiters, hero body paragraphs must be ultra-concise (< 25 words / < 5-second scan time) while keeping a high-impact hook. Complex sentences dilute message retention.
+- **Errors or surprises:** Escaping ampersands (`&amp;`) in JSX TSX text strings prevents HTML entity syntax issues.
+- **Resolution:** Used Option 3 for Hero body copy ("AI is the big boom, but costly when it fails. I oversee the design and dev process so your product keeps its human touch.") and updated SEO, Projects, Secondary Modules, and Contact sections to maintain narrative alignment.
+- **Future instruction:** Keep copy updates synchronized across SEO metadata (`src/pages/Index.tsx`) and UI components (`HeroSection.tsx`, `Projects.tsx`, `SecondaryModules.tsx`, `Contact.tsx`) so search engines and site visitors see consistent positioning.
+

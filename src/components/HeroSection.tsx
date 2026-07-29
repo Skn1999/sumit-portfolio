@@ -48,12 +48,12 @@ const HeroSection: React.FC = () => {
               transition={{ delay: 0.1, duration: 0.5 }}
               className="font-label uppercase tracking-widest text-[10px] md:text-xs font-semibold text-slate-500 mb-6 flex items-center gap-2 flex-wrap"
             >
-              <span>LOCATION: HELSINKI, FI // WORK RIGHTS:</span>
+              <span>LOCATION: HELSINKI, FI // FOCUS:</span>
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span>IMMEDIATE AVAILABILITY</span>
+              <span>HUMAN-IN-THE-LOOP AI & SYSTEM OVERSIGHT</span>
             </motion.div>
 
             {/* Primary Display Title */}
@@ -67,7 +67,7 @@ const HeroSection: React.FC = () => {
               }}
               className="font-display tracking-tighter font-bold text-4xl md:text-6xl text-foreground leading-[1.1] mb-8"
             >
-              Hi, I'm Sumit. I am a UX Architect.
+              Hi, I'm Sumit. AI builds fast — I make sure it builds right.
             </motion.h1>
 
             {/* Primary Description Narrative */}
@@ -77,9 +77,8 @@ const HeroSection: React.FC = () => {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="font-body-narrative leading-[1.8] text-base md:text-lg text-slate-500 dark:text-slate-400"
             >
-              I design scalable interface systems and data workflows. Blending 4
-              years of enterprise frontend execution with an HCI Master's from
-              Aalto University and University of Trento.
+              AI is the big boom, but costly when it fails. I oversee the design
+              and dev process so your product keeps its human touch.
             </motion.p>
 
             {/* View Resume Button */}

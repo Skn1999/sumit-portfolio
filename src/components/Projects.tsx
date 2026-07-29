@@ -14,27 +14,27 @@ const Projects = () => {
     {
       project: optmyzrProject,
       slug: "optmyzr-dashboard-migration",
-      monospaceHeader: "PROJECT 01 // PRODUCTION SYSTEM MIGRATION",
-      title: "Migrating Legacy Ad Analytics to a Config-Driven React Architecture",
-      metricBanner: "Dashboard initialization compressed from eight to ten seconds down to under one second across enterprise account lines, establishing a flexible design blueprint used for downstream corporate tool development.",
-      skillTags: ["React", "TypeScript", "Redux Toolkit", "State Optimization", "Component Engineering"],
+      monospaceHeader: "PROJECT 01 // PRODUCTION SYSTEM & AI AUTOMATION",
+      title: "Migrating Legacy Analytics with Config-Driven React & AI Refactoring",
+      metricBanner: "Compressed load times from 8–10s to <1s while building human-in-the-loop AI refactoring scripts to safely convert thousands of legacy templates without breaking production logic.",
+      skillTags: ["React", "TypeScript", "AI Refactoring", "State Optimization", "System Architecture"],
       imageSide: "right",
     },
     {
       project: ediaqiProject,
       slug: "ediaqi-decision-support-system",
-      monospaceHeader: "PROJECT 02 // COGNITIVE WORKFLOW HCI",
+      monospaceHeader: "PROJECT 02 // COGNITIVE WORKFLOW & DATA HCI",
       title: "Translating Scientific Environmental Complexity into Low-Cognitive-Load Interfaces",
-      metricBanner: "Architected a progressive, multi-stakeholder user platform to render high-volume, messy environmental datasets actionable for non-technical research pipelines without performance lag.",
+      metricBanner: "Architected a progressive decision-support interface that bridges complex environmental data models with intuitive human workflows, preventing cognitive overload for non-technical researchers.",
       skillTags: ["Interaction Architecture", "User Testing Systems", "Data Visualization", "HCI Research"],
       imageSide: "left",
     },
     {
       project: superEgoProject,
       slug: "super-ego-app",
-      monospaceHeader: "PROJECT 03 // BEHAVIORAL INTERACTION SYSTEM",
+      monospaceHeader: "PROJECT 03 // HUMAN-CENTERED BEHAVIORAL SYSTEMS",
       title: "YOU (SuperEgo) — OS-Level Assistant for Preconscious Habit Alignment",
-      metricBanner: "Designed and prototyped an operating-system-level assistant that translates quiet behavioral signals into personalized, friction-based nudges adapting to emotional awareness.",
+      metricBanner: "Designed a human-first behavioral nudge assistant that interprets passive telemetry into subtle, ethical interface interactions that prioritize user agency over algorithmic intrusion.",
       skillTags: ["Behavioral Design", "Interaction Logic", "Prototyping", "Social Psychology"],
       imageSide: "right",
     },
@@ -47,7 +47,7 @@ const Projects = () => {
         <div className="mb-16 md:mb-24 px-4 lg:px-0">
           <span className="font-label text-xs tracking-widest text-slate-500 uppercase">Selected Projects</span>
           <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mt-2">
-            Engineered Interfaces
+            Engineered Systems & Product Oversight
           </h2>
         </div>
 

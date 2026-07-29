@@ -15,15 +15,16 @@ const IndexContent = () => {
   return (
     <Layout>
       <SEO
-        title="Sumit Knayyar Product Designer & UX Strategist"
+        title="Sumit Knayyar | AI-Era Product Designer & UX Architect (HCI + Frontend)"
         rawTitle
-        description="Product Designer & UX Strategist with 4+ years of experience designing digital products that solve real problems. Research-driven, systems-thinking, and design-focused."
+        description="Product Designer & UX Architect bridging HCI research and enterprise frontend execution. I oversee AI-assisted design and dev pipelines to deliver high-velocity products with uncompromised human quality and zero costly failures."
         path="/"
         keywords={[
           "portfolio",
           "product designer",
-          "UX designer",
-          "UX strategist",
+          "AI product designer",
+          "human in the loop AI",
+          "UX architect",
           "design systems",
           "HCI",
           "React",

@@ -16,7 +16,7 @@ export const AcademicCohorts: React.FC = () => {
     {
       title: "UX Bites",
       focus:
-        "Rapid Frontend Prototypes and design explorations where I take random Saas products and try to do a small UX improvement..",
+        "Targeted UX & AI interaction audits isolating subtle friction points in modern SaaS platforms to restore human clarity and intuitive flow.",
       deliverable: "Small audits. Sharp observations. Joyful fixes.",
       link: "/ux-bites",
     },
@@ -31,7 +31,7 @@ export const AcademicCohorts: React.FC = () => {
             // ACADEMIC PORTFOLIO
           </span>
           <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mt-2 tracking-tighter">
-            Side-Quest Cohorts
+            Human Audits &amp; UX Research
           </h2>
         </div>
 
