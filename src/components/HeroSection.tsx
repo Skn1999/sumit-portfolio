@@ -61,7 +61,7 @@ const HeroSection: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4 md:px-8 w-full relative z-10 my-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left Column: Text Content (Stays static across page transitions) */}
-          <div className="lg:col-span-8 flex flex-col text-left">
+          <div className="lg:col-span-6 flex flex-col text-left">
             {/* Monospace tracking tag */}
             <motion.div
               custom={0.1}
@@ -117,7 +117,7 @@ const HeroSection: React.FC = () => {
           </div>
 
           {/* Right Column: 3D Particle Canvas & Solidified Models (Re-triggers morph animation on route navigation) */}
-          <div className="lg:col-span-4 flex justify-center lg:justify-end">
+          <div className="lg:col-span-6 flex justify-center lg:justify-end">
             <div className="relative w-full max-w-[280px] sm:max-w-[320px] lg:max-w-full aspect-[3/4]">
               <HeroParticleCanvas
                 key={location.pathname + location.search}
