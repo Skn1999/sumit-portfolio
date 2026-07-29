@@ -49,10 +49,6 @@ const ParticleMorphShader = {
 
       vec3 currentPos = mix(aStartPosition, aTargetPosition, easeP) + noise;
 
-      // Interactive mouse wave displacement when settled
-      vec2 distMouse = (aTargetPosition.xy - uMouse) * 0.08 * easeP;
-      currentPos.z += sin(length(distMouse) * 8.0 - uTime * 2.0) * 0.02 * easeP;
-
       vec4 mvPosition = modelViewMatrix * vec4(currentPos, 1.0);
 
       // Particle size expands slightly as they settle to form a continuous grid
@@ -116,20 +112,11 @@ const SolidifiedImageShader = {
     uMouse: { value: new THREE.Vector2(0, 0) },
   },
   vertexShader: `
-    uniform float uTime;
-    uniform vec2 uMouse;
-
     varying vec2 vUv;
 
     void main() {
       vUv = uv;
-      vec3 pos = position;
-
-      // Subtle mouse tilt distortion on solid surface
-      vec2 distMouse = (pos.xy - uMouse) * 0.05;
-      pos.z += sin(length(distMouse) * 6.0 - uTime * 2.0) * 0.015;
-
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
   `,
   fragmentShader: `
