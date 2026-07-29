@@ -395,6 +395,24 @@ All colors MUST be HSL.
     }
   }
 
+  /* ===== INK-FADE SCROLL REVEAL (v2 Japanese Minimalism) ===== */
+  .ink-fade-reveal {
+    animation: ink-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes ink-fade-in {
+    from {
+      opacity: 0;
+      filter: blur(4px);
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0px);
+      transform: translateY(0);
+    }
+  }
+
   /* ===== TYPOGRAPHY ===== */
   .heading-primary {
     @apply font-display tracking-tighter leading-[1.1] font-bold;

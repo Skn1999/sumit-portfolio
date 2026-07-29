@@ -126,3 +126,10 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Resolution:** Wrapped matrix table in an overflow container.
 - **Future instruction:** Ensure all multi-column tabular data sections have mobile overflow wrappers.
 
+### 2026-07-29 - `tasks/task_029_v2_living_motion_dynamics_and_verification.md`
+
+- **Lessons learned:** Utilizing CSS blur-dissolve keyframes (`filter: blur(4px)` to `blur(0px)`) combined with subtle opacity fade transitions produces an organic ink-dissolve aesthetic consistent with Japanese Wabi-Sabi design principles.
+- **Errors or surprises:** None.
+- **Resolution:** Updated `src/index.css` and verified full site build.
+- **Future instruction:** Keep motion keyframes quiet and organic, avoiding high-velocity bouncy spring physics.
+

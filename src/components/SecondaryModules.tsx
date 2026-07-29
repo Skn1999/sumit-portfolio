@@ -355,16 +355,17 @@ export const ProfessionalCredentials: React.FC = () => {
 
   // Lock background scroll when modal opens
   useEffect(() => {
+    const win = window as unknown as { lenis?: { stop: () => void; start: () => void } };
     if (selectedCred) {
       document.body.style.overflow = "hidden";
-      (window as any).lenis?.stop();
+      win.lenis?.stop();
     } else {
       document.body.style.overflow = "";
-      (window as any).lenis?.start();
+      win.lenis?.start();
     }
     return () => {
       document.body.style.overflow = "";
-      (window as any).lenis?.start();
+      win.lenis?.start();
     };
   }, [selectedCred]);
 
