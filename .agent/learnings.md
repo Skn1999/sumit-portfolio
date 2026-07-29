@@ -140,3 +140,10 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Resolution:** Re-architected `SecondaryModules.tsx` with `ServiceOfferings` component and aliased `AcademicCohorts`.
 - **Future instruction:** Keep `behanceUrl` property configurable per skill group so portfolio links can be updated modularly.
 
+### 2026-07-29 - `tasks/task_031_ia_navigation_and_homepage_structure.md`
+
+- **Lessons learned:** Multi-level navigation dropdowns in a fixed header require explicit mouse event handling (`onMouseEnter`, `onMouseLeave`, `onClick`) and clean Framer Motion `AnimatePresence` wrappers to ensure sub-menu items transition smoothly without layout shifting.
+- **Errors or surprises:** None.
+- **Resolution:** Updated `Header.tsx` to support the multi-level IA hierarchy (Sumit Nayyar, UX Design, Visual Design, Writings), created `AboutSection.tsx`, `AchievementsSection.tsx`, `WritingsPage.tsx`, and updated `Index.tsx` and `App.tsx`.
+- **Future instruction:** Keep sub-navigation link paths aligned with both page routes (`/projects`, `/writings/publication`, `/writings/research`) and section hash targets (`/#about`, `/#contact`).
+

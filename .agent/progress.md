@@ -38,4 +38,22 @@ This file is updated by AI agents after each task is attempted or completed. It 
 | 2026-07-29 | `tasks/task_028_v2_secondary_academic_and_sandbox_modules.md` | Consolidated `SecondaryModules.tsx` into an Academic HCI Matrix (3-column table for Usability Engineering, Ubiquitous Computing, Experimental HCI Methods) & Technical Sandbox list (Rapid Frontend LLM Sandbox, Design System Component Tokens Engine). Build passes. | Completed |
 | 2026-07-29 | `tasks/task_029_v2_living_motion_dynamics_and_verification.md` | Configured `ink-fade-reveal` animation keyframes in `src/index.css`, verified ambient cursor radial glow tracking and floating paper card hover physics, tested multi-viewport responsive layout (mobile ~375px, tablet ~768px, desktop ~1280px+), and confirmed clean build & type safety. Build passes. | Completed |
 | 2026-07-29 | `tasks/task_030_v2_service_offerings_section.md`          | Re-architected `SecondaryModules.tsx` into a recruiter-facing `ServiceOfferings` component featuring 3 core pillars (Human-in-the-Loop AI & System Oversight, UX Architecture & Cognitive Workflows, Usability Engineering & HCI Audits) extracted into target roles, skill groups, and configurable portfolio links. Build passes. | Completed |
+| 2026-07-29 | `tasks/task_031_ia_navigation_and_homepage_structure.md`  | Restructured site Information Architecture (IA), header navigation dropdown hierarchy (Sumit Nayyar, UX Design, Visual Design, Writings), page routes, and sequential homepage sections (Hero with bottom location/availability bar, About, Achievements 2-column split, Contact). Build passes. | Completed |
+
+### 2026-07-29 - `tasks/task_031_ia_navigation_and_homepage_structure.md`
+
+- Status: Completed
+- Summary: Restructured site Information Architecture (IA), header navigation dropdown hierarchy, page routes, and sequential homepage section order (Hero with bottom viewport location/status strip, About & AI Philosophy, Achievements 2-column split, Contact).
+- Files changed:
+  - `src/components/Header.tsx`
+  - `src/components/HeroSection.tsx`
+  - `src/components/AboutSection.tsx`
+  - `src/components/AchievementsSection.tsx`
+  - `src/components/Contact.tsx`
+  - `src/pages/Index.tsx`
+  - `src/pages/WritingsPage.tsx`
+  - `src/App.tsx`
+- Tests run: `npm run build` (Passed in 3.00s)
+- Acceptance criteria: 100% met.
+- Follow-ups / risks: None.
 

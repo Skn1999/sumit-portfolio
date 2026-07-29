@@ -1,30 +1,43 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence, Variants } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
-/* ── Desktop nav link ── */
-const NavLink = ({
-  to,
-  children,
-}: {
+interface SubNavItem {
   to: string;
-  children: React.ReactNode;
-}) => (
-  <Link
-    to={to}
-    className="relative font-mono text-xs tracking-wider font-medium text-ink-muted hover:text-ink-primary transition-colors py-1"
-  >
-    {children}
-  </Link>
-);
+  label: string;
+}
 
-/* ── Navigation items ── */
-const NAV_ITEMS = [
-  { to: "/#projects", label: "01. WORK" },
-  { to: "/ux-bites", label: "02. LABS" },
-  { to: "/#about", label: "03. ABOUT" },
-  { to: "/#contact", label: "04. CONTACT" },
+interface NavItem {
+  label: string;
+  subItems: SubNavItem[];
+}
+
+/* ── Navigation Items Hierarchy (from IA Vision) ── */
+const NAV_HIERARCHY: NavItem[] = [
+  {
+    label: "Sumit Nayyar",
+    subItems: [
+      { to: "/#about", label: "About" },
+      { to: "/#contact", label: "Contact" },
+    ],
+  },
+  {
+    label: "UX Design",
+    subItems: [{ to: "/projects", label: "Projects" }],
+  },
+  {
+    label: "Visual Design",
+    subItems: [{ to: "/projects?category=visual-design", label: "Projects" }],
+  },
+  {
+    label: "Writings",
+    subItems: [
+      { to: "/writings/publication", label: "Publication" },
+      { to: "/writings/research", label: "Research" },
+    ],
+  },
 ];
 
 /* ── Hamburger / X icon ── */
@@ -48,7 +61,6 @@ const MenuIcon = ({ open }: { open: boolean }) => (
   </div>
 );
 
-/* ── Blinds-slat animation variants ── */
 const blindsContainer = {
   hidden: {},
   show: {
@@ -90,15 +102,15 @@ const slatVariant: Variants = {
 const Header = () => {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   const toggleMenu = useCallback(() => setMenuOpen((v) => !v), []);
 
-  // Close menu on route change
   useEffect(() => {
     setMenuOpen(false);
+    setActiveDropdown(null);
   }, [location.pathname, location.hash]);
 
-  // Lock body scroll when menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
@@ -107,27 +119,69 @@ const Header = () => {
   }, [menuOpen]);
 
   return (
-    <header className="w-full border-b border-paper-border bg-paper-bg/80 backdrop-blur-md sticky top-0 z-40">
+    <header className="w-full border-b border-paper-border bg-paper-bg/90 backdrop-blur-md fixed top-0 left-0 right-0 z-50">
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Left Side: Fixed Name & Discipline Marker */}
+          {/* Brand Logo / Home trigger */}
           <Link
             to="/"
             className="font-mono text-xs font-semibold tracking-widest text-ink-primary hover:text-ink-primary/80 transition-colors uppercase"
           >
-            SUMIT KNAYYAR // UX ARCHITECT &amp; HCI
+            SUMIT KNAYYAR
           </Link>
 
-          {/* Right Side: Desktop Navigation Links & Theme Toggle */}
+          {/* Desktop Navigation Hierarchy with Dropdowns */}
           <div className="hidden md:flex items-center gap-8">
             <nav
               className="flex items-center gap-6"
               aria-label="Primary navigation"
             >
-              {NAV_ITEMS.map((item) => (
-                <NavLink key={item.to} to={item.to}>
-                  {item.label}
-                </NavLink>
+              {NAV_HIERARCHY.map((item) => (
+                <div
+                  key={item.label}
+                  className="relative"
+                  onMouseEnter={() => setActiveDropdown(item.label)}
+                  onMouseLeave={() => setActiveDropdown(null)}
+                >
+                  <button
+                    onClick={() =>
+                      setActiveDropdown(
+                        activeDropdown === item.label ? null : item.label
+                      )
+                    }
+                    className="flex items-center gap-1 font-mono text-xs tracking-wider font-medium text-ink-muted hover:text-ink-primary transition-colors py-2 uppercase"
+                  >
+                    <span>{item.label}</span>
+                    <ChevronDown
+                      className={`w-3 h-3 transition-transform duration-200 ${
+                        activeDropdown === item.label ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  <AnimatePresence>
+                    {activeDropdown === item.label && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 6, scale: 0.98 }}
+                        transition={{ duration: 0.15, ease: "easeOut" }}
+                        className="absolute top-full left-0 mt-1 w-48 rounded-xl border border-paper-border bg-paper-card shadow-lg p-2 z-50"
+                      >
+                        {item.subItems.map((subItem) => (
+                          <Link
+                            key={subItem.to}
+                            to={subItem.to}
+                            onClick={() => setActiveDropdown(null)}
+                            className="block px-3 py-2 rounded-lg text-xs font-mono tracking-wide text-ink-primary hover:bg-paper-bg transition-colors"
+                          >
+                            → {subItem.label}
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               ))}
             </nav>
             <ThemeToggle />
@@ -149,7 +203,7 @@ const Header = () => {
         </div>
       </div>
 
-      {/* ── Mobile blinds menu ── */}
+      {/* ── Mobile blinds menu with collapsible categories ── */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -164,29 +218,31 @@ const Header = () => {
               initial="hidden"
               animate="show"
               exit="exit"
-              className="flex flex-col px-6 pt-8 gap-1 bg-background"
+              className="flex flex-col px-6 pt-6 pb-12 gap-6 bg-paper-bg h-[calc(100vh-4rem)] overflow-y-auto"
               aria-label="Mobile navigation"
             >
-              {NAV_ITEMS.map((item, i) => (
-                <motion.div
-                  key={item.to}
-                  variants={slatVariant}
-                  style={{ transformOrigin: "top center", perspective: 800 }}
-                >
-                  <Link
-                    to={item.to}
-                    onClick={() => setMenuOpen(false)}
-                    className="block px-4 py-4 text-lg font-semibold tracking-tight rounded-xl transition-colors font-display hover:bg-primary/5"
-                  >
-                    <span className="flex items-center justify-between">
-                      <span>{item.label}</span>
-                      <span className="text-xs font-normal text-muted-foreground uppercase tracking-widest">
-                        0{i + 1}
-                      </span>
+              {NAV_HIERARCHY.map((item, i) => (
+                <motion.div key={item.label} variants={slatVariant}>
+                  <div className="mb-2">
+                    <span className="text-xs font-mono tracking-widest text-ink-muted uppercase block mb-1">
+                      0{i + 1} // {item.label}
                     </span>
-                    {/* Slat divider line */}
-                    <span className="block mt-4 h-[1px] w-full bg-border/40" />
-                  </Link>
+                    <div className="flex flex-col gap-1 pl-3 border-l-2 border-paper-border">
+                      {item.subItems.map((subItem) => (
+                        <Link
+                          key={subItem.to}
+                          to={subItem.to}
+                          onClick={() => setMenuOpen(false)}
+                          className="py-2 text-base font-display font-semibold text-ink-primary hover:text-primary transition-colors flex items-center justify-between"
+                        >
+                          <span>{subItem.label}</span>
+                          <span className="text-xs font-mono text-ink-muted">
+                            →
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </motion.nav>

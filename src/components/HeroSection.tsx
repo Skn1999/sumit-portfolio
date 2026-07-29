@@ -35,7 +35,7 @@ const HeroSection: React.FC = () => {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative min-h-[60svh] md:min-h-[65svh] flex flex-col justify-center py-24 md:py-36 bg-paper-bg overflow-hidden"
+      className="relative min-h-[60svh] md:min-h-[65svh] flex flex-col justify-between py-24 md:py-32 bg-paper-bg overflow-hidden pt-28"
     >
       {/* Dynamic Cursor Ambient Radial Aura */}
       <div
@@ -46,7 +46,7 @@ const HeroSection: React.FC = () => {
         }}
       />
 
-      <div className="max-w-6xl mx-auto px-4 md:px-8 w-full relative z-10">
+      <div className="max-w-6xl mx-auto px-4 md:px-8 w-full relative z-10 my-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left Column: Text Content */}
           <div className="lg:col-span-8 flex flex-col text-left">
@@ -129,6 +129,22 @@ const HeroSection: React.FC = () => {
               />
             </div>
           </motion.div>
+        </div>
+      </div>
+
+      {/* Viewport Bottom Strip: Location Left / Availability Status Right */}
+      <div className="max-w-6xl mx-auto px-4 md:px-8 w-full relative z-10 pt-12 border-t border-paper-border/60">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 font-mono text-[11px] tracking-widest text-ink-muted uppercase">
+          <div className="flex items-center gap-2">
+            <span>LOCATION: HELSINKI, FINLAND</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span>STATUS: IMMEDIATE AVAILABILITY // OPEN FOR ROLES</span>
+          </div>
         </div>
       </div>
     </section>

@@ -11,9 +11,9 @@ import ResumePage from "./pages/ResumePage";
 import UxBitesList from "./pages/UxBitesList";
 import UxBitePage from "./pages/UxBitePage";
 import ProjectList from "./components/ProjectList";
+import { PublicationPage, ResearchPage } from "./pages/WritingsPage";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { TransitionProvider } from "./contexts/TransitionContext";
-import PageTransition from "./components/PageTransition";
 import { AnimatePresence } from "framer-motion";
 import SmoothScroll from "./components/SmoothScroll";
 
@@ -46,6 +46,8 @@ const AnimatedRoutes = () => {
         <Route path="/resume" element={<ResumePage />} />
         <Route path="/projects" element={<ProjectList />} />
         <Route path="/projects/:slug" element={<ProjectPage />} />
+        <Route path="/writings/publication" element={<PublicationPage />} />
+        <Route path="/writings/research" element={<ResearchPage />} />
         <Route path="/ux-bites" element={<UxBitesList />} />
         <Route path="/ux-bites/:slug" element={<UxBitePage />} />
         <Route path="*" element={<NotFound />} />
