@@ -119,3 +119,10 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Resolution:** Rebuilt `Projects.tsx` with responsive layout logic (floating card for desktop `lg:block`, static cover aspect frame for mobile `lg:hidden`).
 - **Future instruction:** Use `pointer-events-none` on floating hover cards to ensure links under the cursor remain clickable.
 
+### 2026-07-29 - `tasks/task_028_v2_secondary_academic_and_sandbox_modules.md`
+
+- **Lessons learned:** Presenting academic HCI research competencies in a high-density 3-column table alongside technical experiments in a simple list maintains strong recruiter readability and clear evidence of research-to-code capabilities.
+- **Errors or surprises:** On narrow mobile screens, 3-column tables need an `overflow-x-auto` wrapper with `min-w-[640px]` table width to prevent horizontal cell distortion.
+- **Resolution:** Wrapped matrix table in an overflow container.
+- **Future instruction:** Ensure all multi-column tabular data sections have mobile overflow wrappers.
+

@@ -5,82 +5,117 @@ import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 
 export const AcademicCohorts: React.FC = () => {
-  const cohorts = [
+  const experiments = [
     {
-      title: "Mesa Te Club",
-      focus:
-        "A participatory design proposal that uses tea gatherings and playful co-design tools to help social housing residents, municipalities, and developers collaboratively shape common areas.",
-      deliverable: "Co-Design Case Study & Proposal",
-      link: "/projects/social-integration-pd",
+      title: "Rapid Frontend LLM Sandbox",
+      description:
+        "Interface testing for streaming API responses, latency feedback indicators, and real-time state synchronization.",
+      tags: ["React", "TypeScript", "LLM Streaming", "WebSockets"],
     },
     {
-      title: "UX Bites",
-      focus:
-        "Targeted UX & AI interaction audits isolating subtle friction points in modern SaaS platforms to restore human clarity and intuitive flow.",
-      deliverable: "Small audits. Sharp observations. Joyful fixes.",
-      link: "/ux-bites",
+      title: "Design System Component Tokens Engine",
+      description:
+        "Automated processing scripts parsing raw design tokens into React CSS variables and Tailwind theme configurations.",
+      tags: ["Node.js", "AST Parsing", "Tailwind CSS", "Design Systems"],
     },
   ];
 
   return (
-    <div className="py-16 md:py-24 bg-background border-t border-border/40">
-      <div className="max-w-6xl mx-auto px-4 lg:px-0">
+    <div className="py-24 md:py-36 bg-paper-bg border-t border-paper-border">
+      <div className="max-w-6xl mx-auto px-4 md:px-8">
         {/* Header */}
-        <div className="mb-12 md:mb-16">
-          <span className="font-label text-xs tracking-widest text-slate-500 uppercase font-semibold">
-            // ACADEMIC PORTFOLIO
+        <div className="mb-16 md:mb-20">
+          <span className="font-mono text-xs tracking-widest text-ink-muted uppercase block mb-2">
+            ACADEMIC RESEARCH &amp; PRACTICAL EXPERIMENTS
           </span>
-          <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mt-2 tracking-tighter">
-            Human Audits &amp; UX Research
+          <h2 className="text-3xl md:text-5xl font-bold font-display text-ink-primary tracking-tighter">
+            Academic HCI Matrix &amp; Technical Sandbox
           </h2>
+          <p className="font-body-narrative text-base md:text-lg text-ink-muted mt-4 max-w-2xl">
+            Documenting Master's track evaluations at Aalto University &amp; University of Trento alongside hands-on frontend engineering experiments.
+          </p>
         </div>
 
-        {/* Rows Container */}
-        <div className="border-t border-border/60">
-          {cohorts.map((cohort, index) => (
-            <div
-              key={index}
-              className="group border-b border-border/60 py-8 md:py-10 transition-colors duration-300 hover:bg-[hsl(var(--card))]/40 px-4 md:px-6 -mx-4 md:-mx-6 rounded-xl"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
-                {/* Column 1: Title */}
-                <div className="lg:col-span-4 flex flex-col gap-2">
-                  <span className="font-label text-[10px] tracking-widest text-[hsl(var(--primary))] uppercase font-bold">
-                    COHORT {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="text-lg md:text-xl font-bold font-display text-foreground group-hover:text-[hsl(var(--primary))] transition-colors duration-300 leading-tight">
-                    {cohort.title}
-                  </h3>
-                </div>
+        {/* Part 1: Academic & HCI Research Labs Matrix Table */}
+        <div className="mb-16">
+          <h3 className="font-mono text-xs font-semibold tracking-widest text-ink-primary uppercase mb-6">
+            // Part 1: HCI &amp; Systems Research Labs (Aalto &amp; Trento Master's Track)
+          </h3>
+          <div className="overflow-x-auto border border-paper-border rounded-xl bg-paper-card">
+            <table className="w-full text-left border-collapse min-w-[640px]">
+              <thead>
+                <tr className="border-b border-paper-border bg-paper-bg/50">
+                  <th className="p-4 md:p-6 font-mono text-xs font-bold text-ink-primary uppercase tracking-wider w-1/3">
+                    Usability Engineering
+                  </th>
+                  <th className="p-4 md:p-6 font-mono text-xs font-bold text-ink-primary uppercase tracking-wider w-1/3 border-l border-paper-border">
+                    Ubiquitous Computing
+                  </th>
+                  <th className="p-4 md:p-6 font-mono text-xs font-bold text-ink-primary uppercase tracking-wider w-1/3 border-l border-paper-border">
+                    Experimental HCI Methods
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-paper-border font-body-narrative text-xs md:text-sm text-ink-muted">
+                <tr>
+                  <td className="p-4 md:p-6 align-top">
+                    Heuristic evaluations, cognitive walkthroughs, and interface deficit audits for enterprise software.
+                  </td>
+                  <td className="p-4 md:p-6 align-top border-l border-paper-border">
+                    IoT sensor data pipelines, environmental telemetry, and real-time web interface dashboards.
+                  </td>
+                  <td className="p-4 md:p-6 align-top border-l border-paper-border">
+                    Quantitative user testing protocols, independent variable tracking, and statistical task analysis.
+                  </td>
+                </tr>
+                <tr>
+                  <td className="p-4 md:p-6 align-top font-mono text-[11px]">
+                    Nielsen's 10 Heuristics • ISO 9241-11 • Task Efficiency Analysis
+                  </td>
+                  <td className="p-4 md:p-6 align-top font-mono text-[11px] border-l border-paper-border">
+                    Sensor Telemetry • WebSocket Data Views • Low-Cognitive Load UI
+                  </td>
+                  <td className="p-4 md:p-6 align-top font-mono text-[11px] border-l border-paper-border">
+                    A/B Trial Protocols • Task Completion Metrics • Error Rate Tracking
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-                {/* Column 2: Context / Focus */}
-                <div className="lg:col-span-5">
-                  <p className="font-body-narrative text-sm md:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
-                    {cohort.focus}
+        {/* Part 2: Practical Engineering Experiments List */}
+        <div>
+          <h3 className="font-mono text-xs font-semibold tracking-widest text-ink-primary uppercase mb-6">
+            // Part 2: Practical Engineering Sandbox &amp; Experiments
+          </h3>
+          <div className="flex flex-col border-b border-paper-border">
+            {experiments.map((exp, index) => (
+              <div
+                key={index}
+                className="border-t border-paper-border py-6 md:py-8 flex flex-col md:flex-row md:items-center justify-between gap-4"
+              >
+                <div className="flex flex-col gap-2 max-w-2xl">
+                  <h4 className="text-lg md:text-xl font-bold font-display text-ink-primary">
+                    {exp.title}
+                  </h4>
+                  <p className="font-body-narrative text-sm md:text-base text-ink-muted leading-relaxed">
+                    {exp.description}
                   </p>
                 </div>
-
-                {/* Column 3: Deliverable */}
-                <div className="lg:col-span-3 flex justify-start lg:justify-end">
-                  {cohort.link ? (
-                    <Link
-                      to={cohort.link}
-                      className="inline-flex items-center gap-2 font-label font-bold text-xs text-[hsl(var(--primary))] uppercase tracking-wider group/link hover:opacity-85 transition-opacity"
+                <div className="flex flex-wrap gap-1.5 self-start md:self-center">
+                  {exp.tags.map((tag, tIdx) => (
+                    <span
+                      key={tIdx}
+                      className="px-2.5 py-1 rounded bg-paper-card text-ink-muted border border-paper-border text-xs font-mono tracking-wider"
                     >
-                      <span className="border-b border-[hsl(var(--primary))]/30 group-hover:border-[hsl(var(--primary))] pb-0.5">
-                        {cohort.deliverable}
-                      </span>
-                      <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
-                    </Link>
-                  ) : (
-                    <div className="font-engineer text-[10px] md:text-xs text-slate-600 dark:text-slate-400 border border-border/40 bg-[hsl(var(--card))] px-3 py-1.5 rounded-lg shadow-sm">
-                      {cohort.deliverable}
-                    </div>
-                  )}
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
