@@ -130,12 +130,12 @@ const Header = () => {
                 </NavLink>
               ))}
             </nav>
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
           </div>
 
           {/* Mobile Right Side: Theme + Hamburger */}
           <div className="flex md:hidden items-center gap-3">
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
 
             <button
               onClick={toggleMenu}
