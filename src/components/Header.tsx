@@ -13,7 +13,7 @@ const NavLink = ({
 }) => (
   <Link
     to={to}
-    className="relative text-sm font-medium text-foreground/70 hover:text-foreground transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-primary after:transition-all hover:after:w-full"
+    className="relative font-mono text-xs tracking-wider font-medium text-ink-muted hover:text-ink-primary transition-colors py-1"
   >
     {children}
   </Link>
@@ -21,10 +21,10 @@ const NavLink = ({
 
 /* ── Navigation items ── */
 const NAV_ITEMS = [
-  { to: "/#projects", label: "Projects" },
-  { to: "/ux-bites", label: "UX Bites" },
-  { to: "/resume", label: "Resume" },
-  { to: "/#contact", label: "Contact" },
+  { to: "/#projects", label: "01. WORK" },
+  { to: "/ux-bites", label: "02. LABS" },
+  { to: "/#about", label: "03. ABOUT" },
+  { to: "/#contact", label: "04. CONTACT" },
 ];
 
 /* ── Hamburger / X icon ── */
@@ -33,17 +33,17 @@ const MenuIcon = ({ open }: { open: boolean }) => (
     <motion.span
       animate={open ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="block h-[2px] w-full bg-foreground rounded-full origin-center"
+      className="block h-[2px] w-full bg-ink-primary rounded-full origin-center"
     />
     <motion.span
       animate={open ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
       transition={{ duration: 0.2 }}
-      className="block h-[2px] w-full bg-foreground rounded-full"
+      className="block h-[2px] w-full bg-ink-primary rounded-full"
     />
     <motion.span
       animate={open ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="block h-[2px] w-full bg-foreground rounded-full origin-center"
+      className="block h-[2px] w-full bg-ink-primary rounded-full origin-center"
     />
   </div>
 );
@@ -107,26 +107,21 @@ const Header = () => {
   }, [menuOpen]);
 
   return (
-    <header className="w-full border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-40">
-      <div className="container mx-auto px-4 md:px-6">
+    <header className="w-full border-b border-paper-border bg-paper-bg/80 backdrop-blur-md sticky top-0 z-40">
+      <div className="container mx-auto px-4 md:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo + desktop nav */}
-          <div className="flex items-center gap-8">
-            <Link
-              to="/"
-              className="text-xl font-bold tracking-tight transition-all hover:scale-105 font-display"
-            >
-              <div className="w-12 md:w-16 h-auto">
-                <img
-                  className="w-full h-full"
-                  src={`${import.meta.env.BASE_URL}images/logo.png`}
-                  alt=""
-                />
-              </div>
-            </Link>
+          {/* Left Side: Fixed Name & Discipline Marker */}
+          <Link
+            to="/"
+            className="font-mono text-xs font-semibold tracking-widest text-ink-primary hover:text-ink-primary/80 transition-colors uppercase"
+          >
+            SUMIT KNAYYAR // UX ARCHITECT &amp; HCI
+          </Link>
 
+          {/* Right Side: Desktop Navigation Links & Theme Toggle */}
+          <div className="hidden md:flex items-center gap-8">
             <nav
-              className="hidden md:flex items-center gap-6"
+              className="flex items-center gap-6"
               aria-label="Primary navigation"
             >
               {NAV_ITEMS.map((item) => (
@@ -135,17 +130,18 @@ const Header = () => {
                 </NavLink>
               ))}
             </nav>
+            <ThemeToggle />
           </div>
 
-          {/* Right side: theme + hamburger */}
-          <div className="flex items-center gap-3">
+          {/* Mobile Right Side: Theme + Hamburger */}
+          <div className="flex md:hidden items-center gap-3">
             <ThemeToggle />
 
             <button
               onClick={toggleMenu}
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
-              className="md:hidden relative z-50 p-2 -mr-2 tap-highlight-transparent"
+              className="relative z-50 p-2 -mr-2 tap-highlight-transparent"
             >
               <MenuIcon open={menuOpen} />
             </button>

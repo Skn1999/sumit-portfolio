@@ -98,3 +98,10 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Resolution:** Updated `src/index.css` and `tailwind.config.ts`.
 - **Future instruction:** Use `bg-paper-bg`, `bg-paper-card`, `text-ink-primary`, `text-ink-muted`, and `border-paper-border` for v2 Japanese minimalist component styling.
 
+### 2026-07-29 - `tasks/task_025_v2_asymmetric_header_and_footer.md`
+
+- **Lessons learned:** Numbers embedded in monospace navigation strings (`01. WORK`, `02. LABS`, `03. ABOUT`, `04. CONTACT`) establish a calm architectural index framing that sets expectations for an editorial publication layout.
+- **Errors or surprises:** None. Hash link targets (`/#projects`, `/#about`, `/#contact`) and route targets (`/ux-bites`) remain fully functional.
+- **Resolution:** Rebuilt `Header.tsx` and updated `Contact.tsx` Footer to 2-column layout.
+- **Future instruction:** Ensure mobile menu drawers use `bg-paper-bg` and `border-paper-border` so mobile overlay navigation matches desktop slate paper styling.
+

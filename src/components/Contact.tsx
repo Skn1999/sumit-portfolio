@@ -152,10 +152,36 @@ export const UnsaidMoments = () => {
 
 export const Footer = () => {
   return (
-    <footer className="py-8 border-t border-border/20 text-center">
-      <p className="text-xs md:text-sm text-slate-400 font-label tracking-wider uppercase">
-        © 2026 Sumit Knayyar. Designed with intention, built with care.
-      </p>
+    <footer className="py-8 md:py-12 border-t border-paper-border bg-paper-bg text-ink-muted text-xs font-mono">
+      <div className="container mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p className="text-center md:text-left tracking-wide">
+          Helsinki, FI // Concluding Master's Thesis at Aalto University. Available for team deployment.
+        </p>
+        <div className="flex items-center gap-6">
+          <a
+            href="mailto:sknayyar.sk@gmail.com"
+            className="hover:text-ink-primary transition-colors tracking-widest uppercase"
+          >
+            Email
+          </a>
+          <a
+            href="https://www.linkedin.com/in/sumitnayyar-ux/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-ink-primary transition-colors tracking-widest uppercase"
+          >
+            LinkedIn
+          </a>
+          <a
+            href="https://github.com/Skn1999"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-ink-primary transition-colors tracking-widest uppercase"
+          >
+            GitHub
+          </a>
+        </div>
+      </div>
     </footer>
   );
 };
