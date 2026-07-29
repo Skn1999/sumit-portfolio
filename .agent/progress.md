@@ -43,7 +43,7 @@ This file is updated by AI agents after each task is attempted or completed. It 
 ### 2026-07-29 - `tasks/task_031_ia_navigation_and_homepage_structure.md`
 
 - Status: Completed
-- Summary: Restructured site Information Architecture (IA), header navigation dropdown hierarchy, page routes, and sequential homepage section order (Hero with bottom viewport location/status strip, About & AI Philosophy, Achievements 2-column split, Contact).
+- Summary: Restructured site Information Architecture (IA), header navigation dropdown hierarchy, page routes, and sequential homepage section order (Hero with bottom viewport location/status strip, About & AI Philosophy open layout without white box backgrounds, Achievements 2-column split populated with exact details from `public/Resume-Design-Engineer.pdf`, Contact).
 - Files changed:
   - `src/components/Header.tsx`
   - `src/components/HeroSection.tsx`
@@ -53,7 +53,7 @@ This file is updated by AI agents after each task is attempted or completed. It 
   - `src/pages/Index.tsx`
   - `src/pages/WritingsPage.tsx`
   - `src/App.tsx`
-- Tests run: `npm run build` (Passed in 3.00s)
+- Tests run: `npm run build` (Passed in 2.89s)
 - Acceptance criteria: 100% met.
 - Follow-ups / risks: None.
 

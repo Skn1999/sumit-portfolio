@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Briefcase, Award, Globe, Code2 } from "lucide-react";
+import { Briefcase, GraduationCap, Code2, Globe } from "lucide-react";
 
 const AchievementsSection: React.FC = () => {
   const inkFadeVariant = {
@@ -19,40 +19,76 @@ const AchievementsSection: React.FC = () => {
 
   const experiences = [
     {
-      role: "Frontend Engineer / UX Architect",
-      organization: "Optmyzr",
-      period: "2021 — Present",
+      role: "Design Engineer",
+      organization: "Groundwork",
+      location: "Remote",
+      period: "2025 — Present",
       description:
-        "Led frontend architecture migration for enterprise analytics applications. Compressed load times from 8–10s to <1s while supporting multi-platform scaling.",
+        "Led design and strategy focused on accessibility in regulated digital products. Co-designed tools and workshops for disabled participants, translating regulatory requirements into actionable product practice. 2nd place award at EIT Jumpstarter (New European Bauhaus).",
     },
     {
-      role: "HCI & UX Research Collaborator",
-      organization: "EDIAQI (EU Horizon Europe)",
-      period: "2024 — 2025",
+      role: "Service Design Intern",
+      organization: "Dedanext S.p.a",
+      location: "Trento, Italy",
+      period: "Mar 2024 — May 2024",
       description:
-        "Architected Decision Support Systems translating multi-sensor indoor air quality telemetry into actionable, low-cognitive-load guidance for non-technical users.",
+        "Conducted card-sorting and category ranking studies to map mental models for multi-stakeholder environmental platforms. Built and tested interface prototypes across 4 real-world interactive scenarios to measure human comprehension speed.",
     },
     {
-      role: "Double Master's Candidate in HCI",
-      organization: "Aalto University (FI) & University of Trento (IT)",
+      role: "Frontend Engineer (Core Systems)",
+      organization: "Optmyzr Inc.",
+      location: "Hyderabad, India",
+      period: "May 2020 — July 2023",
+      description:
+        "Redesigned onboarding journey into a 3-step configuration wizard. Co-authored the core Design System React & TypeScript component library and optimized high-density data layouts for 10,000+ rows of analytical metrics.",
+    },
+  ];
+
+  const education = [
+    {
+      degree: "Double-degree M.Sc. Human-Computer Interaction & Design",
+      institutions: "Aalto University (Finland) | University of Trento (Italy)",
       period: "2023 — 2025",
-      description:
-        "Specialized track in Human-Computer Interaction, behavioral ergonomics, interaction architecture, and ubiquitous computing ecosystems.",
+      focus:
+        "User-Centered Design, Interface Engineering, UI Construction, Usability Testing, Social Cognition, Digital Nudging, Participatory Design, Attention Computing.",
     },
   ];
 
   const skillGroups = [
     {
-      title: "Frontend Engineering",
-      items: ["React", "TypeScript", "Redux Toolkit", "Vite", "Tailwind CSS", "Next.js", "Three.js / R3F"],
+      title: "Core Methodologies",
+      items: [
+        "Data Schema Design",
+        "Information Architecture",
+        "React",
+        "TypeScript",
+        "Interaction Testing",
+        "Usability Evaluation",
+      ],
     },
     {
-      title: "Design & Research",
-      items: ["Interaction Design", "User Research", "Heuristic Evaluation", "Figma", "Information Architecture", "Service Design"],
+      title: "Design Skills",
+      items: [
+        "Figma",
+        "Design Systems",
+        "Component Architecture",
+        "Prototyping",
+        "WCAG",
+        "Interaction Design",
+      ],
     },
     {
-      title: "System Architecture",
-      items: ["Design Systems", "Component Engineering", "State Optimization", "API Integration", "AI Workflow Refactoring"],
+      title: "Technical Stack",
+      items: [
+        "React",
+        "TypeScript",
+        "JavaScript",
+        "Next.js",
+        "Node.js",
+        "Design Tokens",
+        "Git",
+        "Claude AI",
+      ],
     },
   ];
 
@@ -85,11 +121,11 @@ const AchievementsSection: React.FC = () => {
               Achievements
             </h2>
             <p className="font-body-narrative text-base md:text-lg text-ink-muted leading-relaxed">
-              An overview of my credentials and skills. Sourced directly from my professional CV and academic track record.
+              An overview of my credentials and skills, sourced directly from my official Design Engineer resume.
             </p>
           </motion.div>
 
-          {/* Right Column: Experience, Skills, Languages */}
+          {/* Right Column: Experience, Education, Skills, Languages (Clean borderless layout) */}
           <div className="lg:col-span-8 flex flex-col gap-12">
             {/* 1. Experience */}
             <motion.div
@@ -107,15 +143,15 @@ const AchievementsSection: React.FC = () => {
                 </h3>
               </div>
 
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-8 pl-4 border-l border-paper-border">
                 {experiences.map((exp, idx) => (
-                  <div
-                    key={idx}
-                    className="p-6 rounded-xl bg-paper-card border border-paper-border flex flex-col gap-2"
-                  >
+                  <div key={idx} className="flex flex-col gap-1.5">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                       <h4 className="font-display font-bold text-lg text-ink-primary">
-                        {exp.role} <span className="text-ink-muted font-normal">@ {exp.organization}</span>
+                        {exp.role}{" "}
+                        <span className="text-ink-muted font-normal">
+                          @ {exp.organization} ({exp.location})
+                        </span>
                       </h4>
                       <span className="font-mono text-xs text-ink-muted">
                         {exp.period}
@@ -129,7 +165,45 @@ const AchievementsSection: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* 2. Skills */}
+            {/* 2. Education */}
+            <motion.div
+              custom={0.25}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={inkFadeVariant}
+              className="flex flex-col gap-6"
+            >
+              <div className="flex items-center gap-2 pb-2 border-b border-paper-border">
+                <GraduationCap className="w-4 h-4 text-ink-muted" />
+                <h3 className="font-mono text-xs tracking-widest uppercase font-semibold text-ink-primary">
+                  2. Education
+                </h3>
+              </div>
+
+              <div className="flex flex-col gap-6 pl-4 border-l border-paper-border">
+                {education.map((edu, idx) => (
+                  <div key={idx} className="flex flex-col gap-1.5">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                      <h4 className="font-display font-bold text-lg text-ink-primary">
+                        {edu.degree}
+                      </h4>
+                      <span className="font-mono text-xs text-ink-muted">
+                        {edu.period}
+                      </span>
+                    </div>
+                    <p className="font-mono text-xs text-ink-muted font-medium">
+                      {edu.institutions}
+                    </p>
+                    <p className="font-body-narrative text-sm text-ink-muted leading-relaxed">
+                      {edu.focus}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* 3. Skills */}
             <motion.div
               custom={0.3}
               initial="hidden"
@@ -141,16 +215,13 @@ const AchievementsSection: React.FC = () => {
               <div className="flex items-center gap-2 pb-2 border-b border-paper-border">
                 <Code2 className="w-4 h-4 text-ink-muted" />
                 <h3 className="font-mono text-xs tracking-widest uppercase font-semibold text-ink-primary">
-                  2. Skills
+                  3. Skills
                 </h3>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {skillGroups.map((group, idx) => (
-                  <div
-                    key={idx}
-                    className="p-5 rounded-xl bg-paper-card border border-paper-border flex flex-col gap-3"
-                  >
+                  <div key={idx} className="flex flex-col gap-2">
                     <h4 className="font-mono text-xs font-semibold text-ink-primary uppercase tracking-wider">
                       {group.title}
                     </h4>
@@ -158,7 +229,7 @@ const AchievementsSection: React.FC = () => {
                       {group.items.map((item, itemIdx) => (
                         <span
                           key={itemIdx}
-                          className="px-2.5 py-1 rounded bg-paper-bg text-ink-primary border border-paper-border text-xs font-mono"
+                          className="px-2 py-1 rounded border border-paper-border text-xs font-mono text-ink-primary"
                         >
                           {item}
                         </span>
@@ -169,7 +240,7 @@ const AchievementsSection: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* 3. Languages */}
+            {/* 4. Languages */}
             <motion.div
               custom={0.4}
               initial="hidden"
@@ -181,16 +252,13 @@ const AchievementsSection: React.FC = () => {
               <div className="flex items-center gap-2 pb-2 border-b border-paper-border">
                 <Globe className="w-4 h-4 text-ink-muted" />
                 <h3 className="font-mono text-xs tracking-widest uppercase font-semibold text-ink-primary">
-                  3. Languages
+                  4. Languages
                 </h3>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {languages.map((lang, idx) => (
-                  <div
-                    key={idx}
-                    className="p-4 rounded-xl bg-paper-card border border-paper-border flex flex-col gap-1"
-                  >
+                  <div key={idx} className="flex flex-col gap-0.5">
                     <span className="font-display font-bold text-base text-ink-primary">
                       {lang.name}
                     </span>

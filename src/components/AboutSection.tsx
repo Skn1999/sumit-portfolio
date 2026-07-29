@@ -45,13 +45,14 @@ const AboutSection: React.FC = () => {
             Design Engineering &amp; Human-Computer Interaction
           </motion.h2>
 
+          {/* Clean, open narrative without white background box */}
           <motion.div
             custom={0.3}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={inkFadeVariant}
-            className="p-8 md:p-12 rounded-2xl bg-paper-card border border-paper-border shadow-sm"
+            className="pl-6 border-l-2 border-paper-border"
           >
             <p className="font-body-narrative text-base md:text-xl text-ink-primary leading-relaxed">
               I am an User Experience and Behavioural Design graduate from Aalto
