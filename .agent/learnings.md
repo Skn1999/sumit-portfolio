@@ -133,10 +133,11 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Resolution:** Updated `src/index.css` and verified full site build.
 - **Future instruction:** Keep motion keyframes quiet and organic, avoiding high-velocity bouncy spring physics.
 
-### 2026-07-29 - `tasks/task_030_v2_service_offerings_section.md`
+### 2026-07-29 - `tasks/29July2026/task_001_navigation_and_design_system.md`
 
-- **Lessons learned:** Converting generic academic descriptions into targeted roles and skill groups with individual portfolio link triggers allows recruiters to quickly match job requisitions with specific engineering & design capabilities.
-- **Errors or surprises:** None.
-- **Resolution:** Re-architected `SecondaryModules.tsx` with `ServiceOfferings` component and aliased `AcademicCohorts`.
-- **Future instruction:** Keep `behanceUrl` property configurable per skill group so portfolio links can be updated modularly.
+- **Lessons learned:** Building a fixed glassmorphic header with hover-triggered dropdown sub-menus requires a short mouseleave delay (~150ms timeout) so users can transition from parent nav items to dropdown panels without premature closing.
+- **Errors or surprises:** `write_to_file` requires omitting `ArtifactMetadata` when editing files inside the project workspace directory (it is reserved for brain artifacts).
+- **Resolution:** Updated `index.html`, `tailwind.config.ts`, `src/index.css`, and `src/components/Header.tsx`. Targeted ESLint and `npm run build` both passed cleanly.
+- **Future instruction:** Ensure glass dropdown containers use high-blur backdrop values (`backdrop-blur-2xl`) and dark translucent surfaces (`rgba(15,17,26,0.92)`) for high contrast text readability over 3D WebGL canvases.
+
 

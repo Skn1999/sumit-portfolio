@@ -78,56 +78,56 @@ All colors MUST be HSL.
     --sidebar-ring: 270 90% 50%;
   }
 
-  /* ===== DARK MODE — Tea Ceremony (warm charcoal, aligned with UX Bites) ===== */
+  /* ===== DARK MODE — Dark Organic Void & Neural Amber ===== */
   .dark {
-    --background: 28 12% 9%;
+    --background: 228 28% 5%; /* #090A0F Deep Charcoal Void */
     --foreground: 220 15% 96%;
 
-    --card: 28 10% 13%;
+    --card: 228 20% 8%;
     --card-foreground: 220 15% 96%;
 
-    --popover: 28 10% 13%;
+    --popover: 228 20% 8%;
     --popover-foreground: 220 15% 96%;
 
-    --primary: 270 90% 65%;
-    --primary-foreground: 28 12% 9%;
+    --primary: 41 100% 50%; /* #FFB000 Neural Amber */
+    --primary-foreground: 228 28% 5%;
 
-    --secondary: 28 10% 16%;
+    --secondary: 228 15% 12%;
     --secondary-foreground: 220 15% 96%;
 
-    --muted: 28 10% 15%;
-    --muted-foreground: 28 10% 65%;
+    --muted: 228 15% 12%;
+    --muted-foreground: 220 10% 65%;
 
-    --accent: 290 90% 65%;
-    --accent-foreground: 28 12% 9%;
+    --accent: 41 100% 50%; /* #FFB000 Neural Amber */
+    --accent-foreground: 228 28% 5%;
 
     --destructive: 0 65% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 30 10% 22%;
-    --input: 30 10% 22%;
-    --ring: 270 90% 65%;
+    --border: 228 15% 18%;
+    --input: 228 15% 18%;
+    --ring: 41 100% 50%;
 
-    --engineer-primary: 270 90% 65%;
-    --engineer-accent: 290 90% 65%;
-    --engineer-surface: 28 10% 13%;
-    --engineer-glow: 270 90% 65%;
+    --engineer-primary: 41 100% 50%;
+    --engineer-accent: 41 100% 50%;
+    --engineer-surface: 228 20% 8%;
+    --engineer-glow: 41 100% 50%;
 
-    --designer-primary: 270 90% 65%;
-    --designer-accent: 290 90% 65%;
-    --designer-surface: 28 10% 13%;
-    --designer-glow: 270 90% 65%;
+    --designer-primary: 41 100% 50%;
+    --designer-accent: 41 100% 50%;
+    --designer-surface: 228 20% 8%;
+    --designer-glow: 41 100% 50%;
     --designer-border: 220 15% 96%;
     --designer-shadow: 220 15% 96%;
 
-    --sidebar-background: 28 12% 10%;
+    --sidebar-background: 228 28% 5%;
     --sidebar-foreground: 220 15% 96%;
-    --sidebar-primary: 270 90% 65%;
-    --sidebar-primary-foreground: 28 12% 9%;
-    --sidebar-accent: 28 10% 16%;
+    --sidebar-primary: 41 100% 50%;
+    --sidebar-primary-foreground: 228 28% 5%;
+    --sidebar-accent: 228 15% 12%;
     --sidebar-accent-foreground: 220 15% 96%;
-    --sidebar-border: 30 10% 22%;
-    --sidebar-ring: 270 90% 65%;
+    --sidebar-border: 228 15% 18%;
+    --sidebar-ring: 41 100% 50%;
 
     color-scheme: dark;
   }

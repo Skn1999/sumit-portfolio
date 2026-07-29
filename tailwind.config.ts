@@ -21,12 +21,12 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ["Inter", "sans-serif"],
+        body: ["Manrope", "Inter", "sans-serif"],
         engineer: ["Space Mono", "monospace"],
-        designer: ["Space Grotesk", "sans-serif"],
-        display: ["Space Grotesk", "sans-serif"],
+        designer: ["Manrope", "Space Grotesk", "sans-serif"],
+        display: ["Manrope", "Inter", "sans-serif"],
         label: ["Space Mono", "monospace"],
-        "body-narrative": ["Inter", "sans-serif"],
+        "body-narrative": ["Manrope", "Inter", "sans-serif"],
         "bite-display": ["JetBrains Mono", "ui-monospace", "monospace"],
         "bite-body": ["IBM Plex Mono", "ui-monospace", "monospace"],
       },
