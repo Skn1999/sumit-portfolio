@@ -34,14 +34,6 @@ const AchievementsSection: React.FC = () => {
     },
   ];
 
-  const education = [
-    {
-      what: "Double-degree M.Sc. Human-Computer Interaction & Design",
-      where: "Aalto University (FI) & University of Trento (IT)",
-      when: "2023 — 2025",
-    },
-  ];
-
   const skillGroups = [
     {
       category: "Core Methodologies",
@@ -108,7 +100,7 @@ const AchievementsSection: React.FC = () => {
             <h2 className="text-3xl md:text-5xl font-bold font-display text-ink-primary tracking-tighter mb-4">
               Achievements
             </h2>
-            <p className="font-body-narrative text-base md:text-lg text-ink-muted leading-relaxed">
+            <p className="font-body-narrative text-base md:text-lg text-ink-muted leading-[1.8]">
               An overview of my credentials, skills, and background formatted for quick scanning.
             </p>
           </motion.div>
@@ -156,46 +148,7 @@ const AchievementsSection: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* 2. Education (3-Column Layout: What, Where, When) */}
-            <motion.div
-              custom={0.25}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={inkFadeVariant}
-              className="flex flex-col gap-6"
-            >
-              <h3 className="font-display text-xl font-bold text-ink-primary pb-3 border-b border-paper-border">
-                Education
-              </h3>
-
-              <div className="flex flex-col gap-5">
-                <div className="hidden sm:grid grid-cols-12 gap-4 font-mono text-xs text-ink-muted uppercase tracking-wider font-semibold pb-1">
-                  <div className="col-span-5">What</div>
-                  <div className="col-span-4">Where</div>
-                  <div className="col-span-3 text-right">When</div>
-                </div>
-
-                {education.map((edu, idx) => (
-                  <div
-                    key={idx}
-                    className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-4 py-3 border-b border-paper-border/60 items-baseline"
-                  >
-                    <div className="sm:col-span-5 font-body-narrative font-semibold text-base text-ink-primary">
-                      {edu.what}
-                    </div>
-                    <div className="sm:col-span-4 font-body-narrative text-sm text-ink-muted">
-                      {edu.where}
-                    </div>
-                    <div className="sm:col-span-3 font-mono text-xs text-ink-muted sm:text-right">
-                      {edu.when}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* 3. Skills (2-Column Layout: Category & Technologies) */}
+            {/* 2. Skills (2-Column Layout: Category & Technologies) */}
             <motion.div
               custom={0.3}
               initial="hidden"
@@ -230,7 +183,7 @@ const AchievementsSection: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* 4. Languages (2-Column Layout: Language & Proficiency) */}
+            {/* 3. Languages (2-Column Layout: Language & Proficiency) */}
             <motion.div
               custom={0.35}
               initial="hidden"

@@ -45,7 +45,7 @@ const AboutSection: React.FC = () => {
             Design Engineering &amp; Human-Computer Interaction
           </motion.h2>
 
-          {/* Clean, open narrative without white background box */}
+          {/* Body text matches Hero section font size (text-base md:text-lg text-ink-muted leading-[1.8]) */}
           <motion.div
             custom={0.3}
             initial="hidden"
@@ -54,7 +54,7 @@ const AboutSection: React.FC = () => {
             variants={inkFadeVariant}
             className="pl-6 border-l-2 border-paper-border"
           >
-            <p className="font-body-narrative text-base md:text-xl text-ink-primary leading-relaxed">
+            <p className="font-body-narrative text-base md:text-lg text-ink-muted leading-[1.8] max-w-3xl">
               I am an User Experience and Behavioural Design graduate from Aalto
               University, Finland and University of Trento, Italy. Recently, I
               collaborated with EU Horizon Project to work on Indoor Air Quality
