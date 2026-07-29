@@ -133,3 +133,10 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Resolution:** Updated `src/index.css` and verified full site build.
 - **Future instruction:** Keep motion keyframes quiet and organic, avoiding high-velocity bouncy spring physics.
 
+### 2026-07-29 - `tasks/task_030_v2_service_offerings_section.md`
+
+- **Lessons learned:** Converting generic academic descriptions into targeted roles and skill groups with individual portfolio link triggers allows recruiters to quickly match job requisitions with specific engineering & design capabilities.
+- **Errors or surprises:** None.
+- **Resolution:** Re-architected `SecondaryModules.tsx` with `ServiceOfferings` component and aliased `AcademicCohorts`.
+- **Future instruction:** Keep `behanceUrl` property configurable per skill group so portfolio links can be updated modularly.
+

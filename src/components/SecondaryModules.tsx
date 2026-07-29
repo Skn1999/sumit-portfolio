@@ -4,19 +4,88 @@ import { ArrowRight, X, Download, Eye, Grab } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 
-export const AcademicCohorts: React.FC = () => {
-  const experiments = [
+export const ServiceOfferings: React.FC = () => {
+  const servicePillars = [
     {
-      title: "Rapid Frontend LLM Sandbox",
-      description:
-        "Interface testing for streaming API responses, latency feedback indicators, and real-time state synchronization.",
-      tags: ["React", "TypeScript", "LLM Streaming", "WebSockets"],
+      pillarNumber: "01",
+      title: "Human-in-the-Loop AI & System Oversight",
+      roles: ["AI Product Architect", "Senior Frontend Systems Engineer"],
+      groups: [
+        {
+          name: "AI-Assisted UI Migration & Refactoring",
+          skills: [
+            "Config-Driven React Architecture",
+            "AI Refactoring Scripts",
+            "Zero-Downtime Legacy Migration",
+            "State Optimization",
+          ],
+          behanceUrl: "https://www.behance.net/desman_designer",
+        },
+        {
+          name: "Safe LLM Integration & System Oversight",
+          skills: [
+            "Real-Time Streaming API Interfaces",
+            "Latency Feedback Indicators",
+            "Human-in-the-Loop Validation Workflows",
+            "Design Token AST Parsing",
+          ],
+          behanceUrl: "https://www.behance.net/desman_designer",
+        },
+      ],
     },
     {
-      title: "Design System Component Tokens Engine",
-      description:
-        "Automated processing scripts parsing raw design tokens into React CSS variables and Tailwind theme configurations.",
-      tags: ["Node.js", "AST Parsing", "Tailwind CSS", "Design Systems"],
+      pillarNumber: "02",
+      title: "UX Architecture & Cognitive Workflows",
+      roles: ["Senior UX Architect", "Product Designer"],
+      groups: [
+        {
+          name: "High-Density Data Visualization & Telemetry",
+          skills: [
+            "Progressive Disclosure Interfaces",
+            "Environmental Sensor Dashboards",
+            "Complex Workflow Simplification",
+            "Low-Cognitive-Load UI",
+          ],
+          behanceUrl: "https://www.behance.net/desman_designer",
+        },
+        {
+          name: "Interaction Architecture & System Modeling",
+          skills: [
+            "Ecosystem & Stakeholder Mapping",
+            "Interaction Hierarchy Modeling",
+            "User Flow Optimization",
+            "Enterprise Domain Simplification",
+          ],
+          behanceUrl: "https://www.behance.net/desman_designer",
+        },
+      ],
+    },
+    {
+      pillarNumber: "03",
+      title: "Usability Engineering & HCI Audits",
+      roles: ["HCI Researcher", "Usability Specialist"],
+      groups: [
+        {
+          name: "Heuristic Evaluation & Deficit Audits",
+          skills: [
+            "Nielsen's 10 Heuristics",
+            "Cognitive Walkthroughs",
+            "Interface Deficit Audits",
+            "WCAG 2.1 Accessibility",
+          ],
+          behanceUrl: "https://www.behance.net/desman_designer",
+        },
+        {
+          name: "Quantitative User Testing & Behavioral Methods",
+          skills: [
+            "Task Efficiency Metrics",
+            "Statistical Error Tracking",
+            "A/B Trial Protocols",
+            "Behavioral Nudge Design",
+          ],
+          behanceUrl: "https://www.behance.net/desman_designer",
+        },
+      ],
     },
   ];
 
@@ -32,112 +101,95 @@ export const AcademicCohorts: React.FC = () => {
           className="mb-16 md:mb-20"
         >
           <span className="font-mono text-xs tracking-widest text-ink-muted uppercase block mb-2">
-            ACADEMIC RESEARCH &amp; PRACTICAL EXPERIMENTS
+            WHAT I OFFER // SERVICE OFFERINGS &amp; SYSTEM OVERSIGHT
           </span>
           <h2 className="text-3xl md:text-5xl font-bold font-display text-ink-primary tracking-tighter">
-            Academic HCI Matrix &amp; Technical Sandbox
+            How I Help Your Product &amp; Design Teams
           </h2>
           <p className="font-body-narrative text-base md:text-lg text-ink-muted mt-4 max-w-2xl">
-            Documenting Master's track evaluations at Aalto University &amp; University of Trento alongside hands-on frontend engineering experiments.
+            Bridging human-computer interaction research and enterprise frontend engineering to help product teams ship fast without sacrificing UX rigor or system stability.
           </p>
         </motion.div>
 
-        {/* Part 1: Academic & HCI Research Labs Matrix Table */}
-        <motion.div
-          initial={{ opacity: 0, filter: "blur(6px)", y: 20 }}
-          whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16"
-        >
-          <h3 className="font-mono text-xs font-semibold tracking-widest text-ink-primary uppercase mb-6">
-            // Part 1: HCI &amp; Systems Research Labs (Aalto &amp; Trento Master's Track)
-          </h3>
-          <div className="overflow-x-auto border border-paper-border rounded-xl bg-paper-card">
-            <table className="w-full text-left border-collapse min-w-[640px]">
-              <thead>
-                <tr className="border-b border-paper-border bg-paper-bg/50">
-                  <th className="p-4 md:p-6 font-mono text-xs font-bold text-ink-primary uppercase tracking-wider w-1/3">
-                    Usability Engineering
-                  </th>
-                  <th className="p-4 md:p-6 font-mono text-xs font-bold text-ink-primary uppercase tracking-wider w-1/3 border-l border-paper-border">
-                    Ubiquitous Computing
-                  </th>
-                  <th className="p-4 md:p-6 font-mono text-xs font-bold text-ink-primary uppercase tracking-wider w-1/3 border-l border-paper-border">
-                    Experimental HCI Methods
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-paper-border font-body-narrative text-xs md:text-sm text-ink-muted">
-                <tr>
-                  <td className="p-4 md:p-6 align-top">
-                    Heuristic evaluations, cognitive walkthroughs, and interface deficit audits for enterprise software.
-                  </td>
-                  <td className="p-4 md:p-6 align-top border-l border-paper-border">
-                    IoT sensor data pipelines, environmental telemetry, and real-time web interface dashboards.
-                  </td>
-                  <td className="p-4 md:p-6 align-top border-l border-paper-border">
-                    Quantitative user testing protocols, independent variable tracking, and statistical task analysis.
-                  </td>
-                </tr>
-                <tr>
-                  <td className="p-4 md:p-6 align-top font-mono text-[11px]">
-                    Nielsen's 10 Heuristics • ISO 9241-11 • Task Efficiency Analysis
-                  </td>
-                  <td className="p-4 md:p-6 align-top font-mono text-[11px] border-l border-paper-border">
-                    Sensor Telemetry • WebSocket Data Views • Low-Cognitive Load UI
-                  </td>
-                  <td className="p-4 md:p-6 align-top font-mono text-[11px] border-l border-paper-border">
-                    A/B Trial Protocols • Task Completion Metrics • Error Rate Tracking
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </motion.div>
-
-        {/* Part 2: Practical Engineering Experiments List */}
-        <motion.div
-          initial={{ opacity: 0, filter: "blur(6px)", y: 20 }}
-          whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <h3 className="font-mono text-xs font-semibold tracking-widest text-ink-primary uppercase mb-6">
-            // Part 2: Practical Engineering Sandbox &amp; Experiments
-          </h3>
-          <div className="flex flex-col border-b border-paper-border">
-            {experiments.map((exp, index) => (
-              <div
-                key={index}
-                className="border-t border-paper-border py-6 md:py-8 flex flex-col md:flex-row md:items-center justify-between gap-4"
-              >
-                <div className="flex flex-col gap-2 max-w-2xl">
-                  <h4 className="text-lg md:text-xl font-bold font-display text-ink-primary">
-                    {exp.title}
-                  </h4>
-                  <p className="font-body-narrative text-sm md:text-base text-ink-muted leading-relaxed">
-                    {exp.description}
-                  </p>
+        {/* Core Service Pillars */}
+        <div className="flex flex-col gap-12">
+          {servicePillars.map((pillar, pIdx) => (
+            <motion.div
+              key={pillar.pillarNumber}
+              initial={{ opacity: 0, filter: "blur(6px)", y: 20 }}
+              whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: pIdx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="border-t border-paper-border pt-8 md:pt-10 flex flex-col gap-6"
+            >
+              {/* Pillar Header & Roles */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <span className="font-mono text-xs font-semibold tracking-widest text-ink-muted uppercase block mb-1">
+                    PILLAR {pillar.pillarNumber}
+                  </span>
+                  <h3 className="text-2xl md:text-3xl font-bold font-display text-ink-primary">
+                    {pillar.title}
+                  </h3>
                 </div>
-                <div className="flex flex-wrap gap-1.5 self-start md:self-center">
-                  {exp.tags.map((tag, tIdx) => (
+                <div className="flex flex-wrap gap-2">
+                  {pillar.roles.map((role, rIdx) => (
                     <span
-                      key={tIdx}
-                      className="px-2.5 py-1 rounded bg-paper-card text-ink-muted border border-paper-border text-xs font-mono tracking-wider"
+                      key={rIdx}
+                      className="px-3 py-1 rounded-full bg-paper-card text-ink-primary border border-paper-border text-xs font-mono font-semibold tracking-wide"
                     >
-                      {tag}
+                      {role}
                     </span>
                   ))}
                 </div>
               </div>
-            ))}
-          </div>
-        </motion.div>
+
+              {/* Skill Groups Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
+                {pillar.groups.map((group, gIdx) => (
+                  <div
+                    key={gIdx}
+                    className="p-6 rounded-xl border border-paper-border bg-paper-card flex flex-col justify-between gap-4"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-3">
+                        <h4 className="font-bold font-display text-base md:text-lg text-ink-primary">
+                          {group.name}
+                        </h4>
+                        {group.behanceUrl && (
+                          <a
+                            href={group.behanceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-mono text-[11px] text-ink-muted hover:text-ink-primary underline tracking-wider uppercase shrink-0"
+                          >
+                            Portfolio Link ↗
+                          </a>
+                        )}
+                      </div>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {group.skills.map((skill, sIdx) => (
+                          <span
+                            key={sIdx}
+                            className="px-2.5 py-1 rounded bg-paper-bg text-ink-muted border border-paper-border text-xs font-mono"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
+
+export const AcademicCohorts = ServiceOfferings;
 
 interface CredentialItem {
   scope: string;
