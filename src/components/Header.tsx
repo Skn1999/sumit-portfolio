@@ -9,13 +9,15 @@ interface SubNavItem {
 
 interface NavItem {
   label: string;
+  mainRoute: string;
   subItems: SubNavItem[];
 }
 
-/* ── Navigation Items Hierarchy ── */
+/* ── Navigation Items Hierarchy with Main Routes & Section Anchors ── */
 const NAV_HIERARCHY: NavItem[] = [
   {
     label: "Sumit Nayyar",
+    mainRoute: "/",
     subItems: [
       { to: "/#about", label: "About" },
       { to: "/#contact", label: "Contact" },
@@ -23,14 +25,17 @@ const NAV_HIERARCHY: NavItem[] = [
   },
   {
     label: "UX Design",
+    mainRoute: "/projects",
     subItems: [{ to: "/projects", label: "Projects" }],
   },
   {
     label: "Visual Design",
+    mainRoute: "/projects?category=visual-design",
     subItems: [{ to: "/projects?category=visual-design", label: "Projects" }],
   },
   {
     label: "Writings",
+    mainRoute: "/writings/publication",
     subItems: [
       { to: "/writings/publication", label: "Publication" },
       { to: "/writings/research", label: "Research" },
@@ -117,7 +122,7 @@ const Header = () => {
   return (
     <header className="w-full border-b border-paper-border bg-paper-bg/95 backdrop-blur-md fixed top-0 left-0 right-0 z-50">
       <div className="w-full px-4 md:px-8">
-        {/* Desktop Navigation: 4 Equal Viewport Columns with Main Item & Sub-Items Underneath */}
+        {/* Desktop Navigation: Left-aligned 4 Equal Viewport Columns */}
         <nav
           className="hidden md:grid grid-cols-4 w-full divide-x divide-paper-border/60"
           aria-label="Primary navigation"
@@ -125,15 +130,18 @@ const Header = () => {
           {NAV_HIERARCHY.map((item) => (
             <div
               key={item.label}
-              className="flex flex-col items-center justify-center py-3.5 px-2 text-center"
+              className="flex flex-col items-start justify-center py-3.5 px-6 text-left"
             >
-              {/* Main Category Header (Top Level Hierarchy: Bold Monospace Uppercase) */}
-              <span className="font-mono text-xs font-bold tracking-widest text-ink-primary uppercase mb-1">
+              {/* Main Category Header acting as Main Route (Bold Monospace Uppercase) */}
+              <Link
+                to={item.mainRoute}
+                className="font-mono text-xs font-bold tracking-widest text-ink-primary uppercase mb-1 hover:text-ink-primary/70 transition-colors"
+              >
                 {item.label}
-              </span>
+              </Link>
 
-              {/* Sub Nav Items Underneath (Secondary Hierarchy: Small Muted Monospace) */}
-              <div className="flex items-center justify-center gap-3 font-mono text-[11px] tracking-wide text-ink-muted">
+              {/* Sub Nav Items Underneath acting as Sections within that route */}
+              <div className="flex items-center gap-3 font-mono text-[11px] tracking-wide text-ink-muted">
                 {item.subItems.map((subItem, idx) => (
                   <span key={subItem.to} className="flex items-center gap-3">
                     <Link
@@ -154,9 +162,12 @@ const Header = () => {
 
         {/* Mobile Viewport Bar */}
         <div className="flex md:hidden items-center justify-between w-full h-16">
-          <span className="font-mono text-xs font-bold tracking-widest text-ink-primary uppercase">
-            SUMIT KNAYYAR // NAV
-          </span>
+          <Link
+            to="/"
+            className="font-mono text-xs font-bold tracking-widest text-ink-primary uppercase"
+          >
+            SUMIT KNAYYAR
+          </Link>
 
           <button
             onClick={toggleMenu}
@@ -190,9 +201,13 @@ const Header = () => {
               {NAV_HIERARCHY.map((item, i) => (
                 <motion.div key={item.label} variants={slatVariant}>
                   <div className="mb-2">
-                    <span className="text-xs font-mono tracking-widest text-ink-primary uppercase font-bold block mb-1">
+                    <Link
+                      to={item.mainRoute}
+                      onClick={() => setMenuOpen(false)}
+                      className="text-xs font-mono tracking-widest text-ink-primary uppercase font-bold block mb-1 hover:underline"
+                    >
                       0{i + 1} // {item.label}
-                    </span>
+                    </Link>
                     <div className="flex flex-col gap-1 pl-3 border-l-2 border-paper-border">
                       {item.subItems.map((subItem) => (
                         <Link
