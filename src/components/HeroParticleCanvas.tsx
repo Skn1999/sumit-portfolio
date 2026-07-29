@@ -302,7 +302,7 @@ const SolidHeroShader = {
   fragmentShader: `
     uniform sampler2D uTexture;
     uniform float uProgress;
-    uniform float uMouse;
+    uniform vec2 uMouse;
 
     varying vec2 vUv;
 
