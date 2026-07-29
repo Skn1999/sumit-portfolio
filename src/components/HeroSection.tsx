@@ -77,9 +77,9 @@ const HeroSection: React.FC = () => {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="font-body-narrative leading-[1.8] text-base md:text-lg text-slate-500 dark:text-slate-400"
             >
-              Hi, I'm Sumit. AI is the big boom, but costly when it fails. I
-              oversee the design and dev process so your product keeps its human
-              touch.
+              Hi, I'm Sumit. <br /> AI is the big boom, but costly when it
+              fails. I oversee the design and dev process so your product keeps
+              its human touch.
             </motion.p>
 
             {/* View Resume Button */}
@@ -91,13 +91,13 @@ const HeroSection: React.FC = () => {
             >
               <MagneticButton
                 size="lg"
-                variant="outline"
+                variant="default"
                 className="font-label text-xs tracking-wider uppercase font-semibold border-border/80 hover:border-primary/50"
                 asChild
               >
                 <Link to="/resume" className="flex items-center gap-2">
                   <FileText className="w-4 h-4" />
-                  View Resume
+                  See How
                 </Link>
               </MagneticButton>
             </motion.div>
