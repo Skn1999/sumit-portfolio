@@ -3,7 +3,6 @@ import { ArrowLeft, ArrowRight, ExternalLink, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProjectMeta } from "@/lib/projects";
 import { visibleProjects } from "@/lib/projects";
-import { useMode } from "@/contexts/ModeContext";
 import { motion } from "framer-motion";
 import MagneticButton from "../MagneticButton";
 
@@ -12,8 +11,6 @@ interface ProjectFooterProps {
 }
 
 export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
-  const { mode } = useMode();
-  const isDesigner = mode === "designer";
   const currentIndex = visibleProjects.findIndex(
     (p) => p.slug === project.slug,
   );
@@ -25,7 +22,7 @@ export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
       : null;
 
   return (
-    <footer className="pt-12 md:pt-24 pb-12 md:pb-16 max-w-7xl mx-auto scroll-snap-item scroll-mt-24">
+    <footer className="pt-12 md:pt-24 pb-12 md:pb-16 max-w-7xl mx-auto scroll-snap-item scroll-mt-24 px-4 md:px-6">
       {/* Links Section */}
       {project.links && Object.keys(project.links).length > 0 && (
         <motion.div
@@ -44,7 +41,6 @@ export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
                 key={key}
                 variant={key === "github" ? "outline" : "default"}
                 size="lg"
-                className={isDesigner ? "neubrutalism-button" : ""}
                 asChild
               >
                 <a href={url} target="_blank" rel="noopener noreferrer">
@@ -70,14 +66,14 @@ export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: 0.1 }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center"
+        className="flex justify-center"
       >
         {/* Previous Project */}
-        <div className="order-2 md:order-1">
+        {/* <div className="order-2 md:order-1">
           {prevProject ? (
             <Link
               to={`/projects/${prevProject.slug}`}
-              className={`card-styled group p-6 rounded-xl block transition-all hover:scale-[1.02]`}
+              className="group p-6 rounded-xl block transition-all hover:scale-[1.02] bg-[hsl(var(--card))] border border-border/80 hover:border-[hsl(var(--primary))] shadow-sm"
             >
               <div className="flex items-start gap-4">
                 <ArrowLeft className="w-5 h-5 mt-1 text-muted-foreground group-hover:text-primary group-hover:-translate-x-1 transition-all" />
@@ -99,7 +95,7 @@ export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
           ) : (
             <div />
           )}
-        </div>
+        </div> */}
 
         {/* Back to Projects */}
         <div className="text-center order-1 md:order-2">
@@ -107,21 +103,19 @@ export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
             <Button
               variant="ghost"
               size="lg"
-              className={`text-sm ${
-                isDesigner ? "font-designer" : "font-engineer"
-              }`}
+              className="text-xs font-label uppercase tracking-widest font-bold"
             >
               ← Back to All Projects
             </Button>
           </Link>
         </div>
 
-        {/* Next Project */}
+        {/* Next Project
         <div className="order-3">
           {nextProject ? (
             <Link
               to={`/projects/${nextProject.slug}`}
-              className={`card-styled group p-6 rounded-xl block transition-all hover:scale-[1.02]`}
+              className="group p-6 rounded-xl block transition-all hover:scale-[1.02] bg-[hsl(var(--card))] border border-border/80 hover:border-[hsl(var(--primary))] shadow-sm"
             >
               <div className="flex items-start gap-4 text-right">
                 <div className="flex-1">
@@ -143,7 +137,7 @@ export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
           ) : (
             <div />
           )}
-        </div>
+        </div> */}
       </motion.div>
     </footer>
   );

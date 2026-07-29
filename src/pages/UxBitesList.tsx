@@ -47,7 +47,7 @@ const UxBitesList: React.FC = () => {
         path="/ux-bites"
       />
       <UxBitesSkin marker="UX BITES">
-        <main className="min-h-[calc(100vh-4rem)] container mx-auto px-4 md:px-6 py-12 md:py-20">
+        <main className="min-h-[calc(100vh-4rem)] container mx-auto px-4 md:px-6 py-12 md:py-20 scroll-blur-content">
           <header className="max-w-2xl mx-auto text-center mb-12 md:mb-16">
             {/* <div className="flex items-center justify-center gap-3 mb-5 font-bite-display text-[11px] uppercase tracking-[0.28em] bite-ink-soft">
               <span aria-hidden className="w-8 border-t bite-rule" />

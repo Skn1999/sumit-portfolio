@@ -1,6 +1,6 @@
 # Learnings
 
-This file is updated by AI agents after each task is attempted or completed. It preserves concrete lessons about this codebase, especially errors, surprises, and resolutions that future agents should remember.
+This file acts as a reference of concrete lessons, guidelines, and surprises encountered during development. Future agents should review this reference and append new entries using the template below.
 
 ## Entry Template
 
@@ -13,39 +13,130 @@ This file is updated by AI agents after each task is attempted or completed. It 
 - Future instruction:
 ```
 
-## Log
+---
 
-### 2026-06-22 - Agent Setup
+## 💡 Developer Guidelines & Rules Reference
 
-- Lessons learned: The repo already has `.agent/architecture.md` and `.agent/tech-stack.md`, and future task-running agents should read both before editing source files.
-- Errors or surprises: `.agent/learnings.md` was empty and `.agent/progress.md` only contained a short plain-language note.
-- Resolution: Added structured templates so future agents can append consistent progress and learning entries.
-- Future instruction: Always append to `.agent/progress.md` and `.agent/learnings.md` after attempting a task, even when the task is blocked.
+### 1. Workflow & Tooling
 
-### 2026-06-23 - tasks/task_002_create_case_study_mdx_layout_components.md
+- **Required Context**: Read `.agent/architecture.md` and `.agent/tech-stack.md` before starting source file changes.
+- **Progress Reporting**: Always update `.agent/progress.md` and `.agent/learnings.md` at the end of each task (or when blocked).
+- **Git Check**: Running `npm run build` runs image optimization prebuild hooks, which may rewrite unrelated assets. Check `git status` post-build.
+- **Targeted Linting**: If the workspace contains pre-existing lint issues in unrelated legacy/third-party files, test modifications specifically via targeted commands (e.g. `./node_modules/.bin/eslint <file_path>`).
 
-- Lessons learned: Project MDX can import named React components directly from `src/components/projects` with the `@` alias, and layout wrappers inside the article should use `not-prose` only for framed layout surfaces while reintroducing `prose` inside text wrappers when Markdown children need normal typography.
-- Errors or surprises: The full lint script currently scans unrelated generated/reference and shadcn-style files with pre-existing rule violations, so a new clean component can still be hidden behind repo-wide lint failures.
-- Resolution: Ran a targeted ESLint check against `src/components/projects/CaseStudyLayout.tsx` to confirm the new file is clean, then ran `npm run build` to verify TypeScript/Vite/MDX compilation.
-- Future instruction: When a task requires `npm run build`, check `git status` afterward because `prebuild` runs image optimization and may rewrite source images unrelated to the task.
+### 2. React & TypeScript
 
-### 2026-06-23 - tasks/task_003_update_optmyzr_mdx_structure.md
+- **Hook Rules**: Always declare React hooks at the top level of components, prior to any conditional returns. Put conditional logic inside hook callbacks.
+- **Static Declarations**: Declare static configurations and data arrays _outside_ of component functions (module scope) to prevent `react-hooks/exhaustive-deps` loops and redundant re-renders.
+- **Window Extensions**: Extend the global `Window` interface in TypeScript for dynamic libraries (e.g. `window.lenis`) instead of casting `window` to `any` (which triggers ESLint errors).
+- **Layout Mounting**: Reading elements' `clientWidth`/`clientHeight` on mount can fail or return `0`/`NaN` before layout completes. Wrap initial dimension checks in a brief `setTimeout` (~150ms).
 
-- Lessons learned: The CaseStudyLayout components provide a clean, responsive pattern for splitting content and media, and the ImpactMetricBanner creates an excellent way to surface key metrics prominently. The split layout works well for technical content where code examples need visual pairing with explanatory text. It's important to be selective about when to use split layouts - not every section benefits from them. Code examples should be extracted into collapsible elements to keep the main flow clean and focused.
-- Errors or surprises: None encountered. The MDX compilation and build process handled the new component imports smoothly.
-- Resolution: Successfully imported all required CaseStudyLayout components and structured the MDX content to use them effectively, maintaining the technical accuracy while improving scannability. Applied split layouts selectively to Engineering & Architecture Decisions sections only. Extracted code block into collapsible "Sample Code Snippet" element and expanded CaseStudySplit width to accommodate 2-column layout.
-- Future instruction: Use CaseStudySplit for technical explanations that benefit from text/media pairing, and ImpactMetricBanner for key metrics that should stand out from the main content flow. Don't apply split layouts to every section - use them selectively where they add value. Extract code examples into collapsible elements to keep the main flow clean and focused.
+### 3. Styling & Layout (CSS & Tailwind CSS)
 
-### 2026-06-24 - tasks/task_004_refine_project_article_typography.md
+- **CSS Shorthand Restrictions**: Do not use Tailwind utility shorthands (like `max-w-full`, `h-auto`) as raw property names inside plain `.css` files. Use standard CSS property declarations (e.g., `max-width: 100%`, `height: auto`).
+- **Responsive Grids**: Grid specifications in MDX/React tags (e.g., `grid-cols-3`) need viewport prefixes (e.g., `md:grid-cols-3`) to prevent horizontal layout crushing on mobile devices.
+- **Scroll Snapping**: For long articles, use `scroll-snap-type: y proximity` (rather than `mandatory`) to avoid locking viewports on sections taller than the screen.
+- **Header Calculations**: Constrain full-screen page routes using CSS calculations like `h-[calc(100vh-HeaderHeight)]` and `min-h-[calc(100vh-HeaderHeight)]` instead of `min-h-screen` to prevent global page overflows under navigation bars.
+- **CSS Filters & Position Fixed**: Applying filters (like blur/blur-backdrop) to a container establishes a new containing block context. This breaks nested `position: fixed` relative coordinates. Place sticky/fixed elements outside filtered container trees.
+- **Luminance & Contrast**: Adjust brand token HSL values for dark mode (e.g. shifting `hsl(270, 90%, 50%)` to `hsl(270, 90%, 65%)`) to satisfy the WCAG 4.5:1 relative contrast ratio requirement on dark backgrounds.
 
-- Lessons learned: Native CSS scroll timelines (`animation-timeline: view()`) are highly performant and can be applied elegantly inside CSS without touching MDX templates, but an IntersectionObserver fallback is required for Firefox/older browsers. Additionally, setting up scroll-snapping on a long-form article page requires `scroll-snap-type: y proximity` (instead of `mandatory`) to prevent layout lockouts where sections are taller than the user's viewport.
-- Errors or surprises: Encountered a react-hooks/rules-of-hooks error because the `useEffect` hook in `ProjectPage.tsx` was placed after an early `if (!project)` return.
-- Resolution: Moved the `useEffect` hook above the early return and added a simple `if (!project) return;` guard check inside the hook callback.
-- Future instruction: Always place React hooks at the very top level of a component before any early returns, adding conditional guards inside the hook bodies if necessary.
+### 4. Interactive Canvases & Motion
 
-### 2026-06-25 - tasks/task_005_verify_project_layout_responsiveness.md
+- **Nested Animators**: When implementing Framer Motion `drag` alongside scroll-driven animations, nest the draggable element inside a scroll-animated parent to prevent coordinate override conflicts.
+- **Scroll Pass-Through**: For interactive canvases, apply `pointer-events-none` to the canvas wrapper and `pointer-events-auto` to child cards. This lets users scroll the page naturally while retaining drag gestures on interactive cards.
+- **Absolute Centering**: Center elements using `left-1/2 top-1/2` combined with negative margins (`-ml` / `-mt`) equivalent to half the item's width/height.
+- **Dynamic Scale & Zoom**: Calculate pan zoom fits using element size vs container bounds: `Math.min(0.9, (container.clientWidth - 48) / frame.w)`.
+- **Canvas Paths**: Render SVG lines/connectors directly within the transform-scaled stage so paths translate and scale organically alongside canvas objects.
+- **Click Outside**: Implement click-outside handlers by placing click triggers on the canvas viewport wrapper, using `e.stopPropagation()` on individual interactive elements to prevent bubble triggers.
 
-- Lessons learned: MDX details panels using `not-prose` bypass standard Tailwind Typography styling, which can cause internal `<pre>` blocks to overflow on mobile if generic responsive CSS rules aren't applied. Also, hardcoded column grids (e.g. `grid-cols-3` in HTML/JSX tags inside MDX) must have responsive viewport prefixes (like `md:grid-cols-3`) to prevent horizontal layout squishing on mobile.
-- Errors or surprises: PostCSS build compilation failed when using Tailwind-specific utility class name `max-w-full` directly inside raw CSS (`src/index.css`) rather than standard CSS property `max-width: 100%`.
-- Resolution: Corrected the invalid CSS rule in `src/index.css` to use `max-width: 100%`.
-- Future instruction: Never use Tailwind-specific utility shorthand class names (like `max-w-full`, `h-auto`) as raw property names inside plain CSS files; always write standard CSS properties (e.g. `max-width: 100%`, `height: auto`).
+### 5. MDX Case Studies
+
+- **Imports**: MDX articles can import layout components from `src/components/projects` using the `@` alias.
+- **Prose Resetting**: MDX containers utilizing `not-prose` bypass standard Tailwind Typography styles. Ensure custom styles (like scroll or sizing limits) are added to child `<pre>` blocks to prevent code overflow on mobile. Nest `<div className="prose">` blocks inside layout nodes for text that needs normal typography.
+- **Layout Choices**: Use `CaseStudySplit` selectively for sections that benefit from text/media layout. Avoid overusing it globally.
+- **Metrics**: Utilize `ImpactMetricBanner` to highlight project outcomes. Collapsibles should wrap large code snippets to keep articles readable.
+- **Syncing & Printing**: Create hidden semantic `print:block` print sheets to cleanly export interactive components as multi-page PDFs.
+
+---
+
+## 🗄️ Historical Log Summary (June 2026)
+
+- **2026-06-22**: Initial agent setup, progress/learnings template conventions established.
+- **2026-06-23**: MDX layouts integration (Tailwind Typography prose resets, `@` imports, split layout blocks, and metric banners).
+- **2026-06-24**: Typography refinement, scroll snapping (proximity), and React Hook ordering resolution.
+- **2026-06-25**: Layout responsiveness verification, grid adjustments, PostCSS build fix for Tailwind shorthands in CSS, and multi-mode token setup (Deep Purple/luminance contrast adjustments).
+- **2026-06-25**: Hero section simplified into single typographic editorial block.
+- **2026-06-26**: Smooth inertia scrolling (Lenis) and velocity-based motion blur SVG filter implemented.
+- **2026-06-26**: Secondary modules redesigned (AcademicCohorts list, ProfessionalCredentials scroll-pinned draggable card gallery with spring physics, lightbox viewer).
+- **2026-06-28**: Copy audits and interactive resume canvas refinement (zoom viewport scaling, SVG paths, click-outside, PDF printing stylesheet).
+
+### 2026-07-10 - `tasks/task_016_project_rewrite_layout_system.md`
+
+- **Lessons learned:** The v2 redesign spec (`project-layout-redesign-v2.md`) explicitly dropped the slide-deck metaphor (no scroll-snap, no corner numbers, no C-A-M pill labels). New components are `ProjectHeader`, `ContextStrip`, `WorkSection`, and `OutcomeFooter` — all conventional `<section>` elements styled as an editorial magazine spread.
+- **Errors or surprises:** `ProjectImageAsset` takes a relative `src` string resolved from `src/content/projects/`. Passing absolute paths will break silently. The `priority` prop needs to be added to the existing interface to support eager loading for above-the-fold `ProjectHeader` cover images — it was already present on the component.
+- **Resolution:** Imported `ProjectImageAsset` directly into `CaseStudyLayout.tsx` so that `WorkSection` and `ProjectHeader` handle their own image rendering without requiring MDX authors to import it separately.
+- **Future instruction:** When implementing tasks 017–019 (case study MDX rewrites), import only `ProjectHeader`, `ContextStrip`, `WorkSection`, and `OutcomeFooter` from `@/components/projects/CaseStudyLayout`. Do not use scroll-snap, slide numbers, or C-A-M bullet prefixes. Enforce 2-sentence body discipline through content, not React runtime logic.
+
+### 2026-07-11 - `tasks/task_017_project_rewrite_optmyzr_case_study.md`
+
+- **Lessons learned:** MDX body content can directly use JSX components without any prose wrapper. The old file had `import { ProjectImageAsset }` — this is no longer needed because `WorkSection` and `ProjectHeader` handle images internally. Removing unused imports keeps the MDX clean and avoids confusion.
+- **Errors or surprises:** The Optmyzr project had no live demo URL in the `links` frontmatter key. Used the GitHub repository URL as the CTA fallback. The `legacy-dashboard.svg` was used for the AI Workflow slide — it is the best available visual for showing the legacy architecture.
+- **Resolution:** All four work sections and the outcome footer rendered cleanly. Build passed in 2.98s.
+- **Future instruction:** When writing MDX body content, `body` props should be JSX fragments (`<>...</>`) not plain strings — this preserves em-dashes and special characters correctly. The `imagePosition` alternation pattern for the Optmyzr case is: right → full → left → full.
+
+### 2026-07-29 - `tasks/task_022_homepage_copy_ai_human_oversight.md`
+
+- **Lessons learned:** For hero landing copy targeting tech recruiters, hero body paragraphs must be ultra-concise (< 25 words / < 5-second scan time) while keeping a high-impact hook. Complex sentences dilute message retention.
+- **Errors or surprises:** Escaping ampersands (`&amp;`) in JSX TSX text strings prevents HTML entity syntax issues.
+- **Resolution:** Used Option 3 for Hero body copy ("AI is the big boom, but costly when it fails. I oversee the design and dev process so your product keeps its human touch.") and updated SEO, Projects, Secondary Modules, and Contact sections to maintain narrative alignment.
+- **Future instruction:** Keep copy updates synchronized across SEO metadata (`src/pages/Index.tsx`) and UI components (`HeroSection.tsx`, `Projects.tsx`, `SecondaryModules.tsx`, `Contact.tsx`) so search engines and site visitors see consistent positioning.
+
+### 2026-07-29 - `tasks/task_024_v2_design_tokens_and_paper_canvas.md`
+
+- **Lessons learned:** Defining semantic HSL custom properties (`--paper-bg`, `--paper-card`, `--ink-primary`, `--ink-muted`, `--paper-border`) at the root level and mapping them in `tailwind.config.ts` allows all existing Tailwind utility classes (like `bg-background`, `border-paper-border`, `text-ink-primary`) to seamlessly adapt to the Japanese tactile paper aesthetic.
+- **Errors or surprises:** None. Build compiled cleanly.
+- **Resolution:** Updated `src/index.css` and `tailwind.config.ts`.
+- **Future instruction:** Use `bg-paper-bg`, `bg-paper-card`, `text-ink-primary`, `text-ink-muted`, and `border-paper-border` for v2 Japanese minimalist component styling.
+
+### 2026-07-29 - `tasks/task_025_v2_asymmetric_header_and_footer.md`
+
+- **Lessons learned:** Numbers embedded in monospace navigation strings (`01. WORK`, `02. LABS`, `03. ABOUT`, `04. CONTACT`) establish a calm architectural index framing that sets expectations for an editorial publication layout.
+- **Errors or surprises:** None. Hash link targets (`/#projects`, `/#about`, `/#contact`) and route targets (`/ux-bites`) remain fully functional.
+- **Resolution:** Rebuilt `Header.tsx` and updated `Contact.tsx` Footer to 2-column layout.
+- **Future instruction:** Ensure mobile menu drawers use `bg-paper-bg` and `border-paper-border` so mobile overlay navigation matches desktop slate paper styling.
+
+### 2026-07-29 - `tasks/task_026_v2_editorial_hero_section.md`
+
+- **Lessons learned:** Utilizing generous vertical section padding (`py-24 md:py-36`) on a seamless slate paper canvas (`bg-paper-bg`) highlights the typographic contrast and provides spatial breathing room (*Ma*) without heavy shadows or neubrutalistic borders.
+- **Errors or surprises:** None. Headline and narrative copy were preserved verbatim while tag text was updated to `LOCATION: HELSINKI, FI // FOCUS: HCI & FRONTEND SYSTEMS`.
+- **Resolution:** Refactored `HeroSection.tsx`.
+- **Future instruction:** Avoid magnetic button hover pulls in hero triggers to maintain a quiet, calm visual aesthetic.
+
+### 2026-07-29 - `tasks/task_027_v2_editorial_index_project_showcase.md`
+
+- **Lessons learned:** Re-engineering project displays from traditional card grids into text-first editorial index lists with cursor-following floating paper cards gives high density for scanning titles and outcomes while preserving visual preview impact.
+- **Errors or surprises:** Mobile viewports require static inline thumbnails since hover cursor positioning is unavailable on touch devices.
+- **Resolution:** Rebuilt `Projects.tsx` with responsive layout logic (floating card for desktop `lg:block`, static cover aspect frame for mobile `lg:hidden`).
+- **Future instruction:** Use `pointer-events-none` on floating hover cards to ensure links under the cursor remain clickable.
+
+### 2026-07-29 - `tasks/task_028_v2_secondary_academic_and_sandbox_modules.md`
+
+- **Lessons learned:** Presenting academic HCI research competencies in a high-density 3-column table alongside technical experiments in a simple list maintains strong recruiter readability and clear evidence of research-to-code capabilities.
+- **Errors or surprises:** On narrow mobile screens, 3-column tables need an `overflow-x-auto` wrapper with `min-w-[640px]` table width to prevent horizontal cell distortion.
+- **Resolution:** Wrapped matrix table in an overflow container.
+- **Future instruction:** Ensure all multi-column tabular data sections have mobile overflow wrappers.
+
+### 2026-07-29 - `tasks/task_029_v2_living_motion_dynamics_and_verification.md`
+
+- **Lessons learned:** Utilizing CSS blur-dissolve keyframes (`filter: blur(4px)` to `blur(0px)`) combined with subtle opacity fade transitions produces an organic ink-dissolve aesthetic consistent with Japanese Wabi-Sabi design principles.
+- **Errors or surprises:** None.
+- **Resolution:** Updated `src/index.css` and verified full site build.
+- **Future instruction:** Keep motion keyframes quiet and organic, avoiding high-velocity bouncy spring physics.
+
+### 2026-07-29 - `tasks/task_030_v2_service_offerings_section.md`
+
+- **Lessons learned:** Converting generic academic descriptions into targeted roles and skill groups with individual portfolio link triggers allows recruiters to quickly match job requisitions with specific engineering & design capabilities.
+- **Errors or surprises:** None.
+- **Resolution:** Re-architected `SecondaryModules.tsx` with `ServiceOfferings` component and aliased `AcademicCohorts`.
+- **Future instruction:** Keep `behanceUrl` property configurable per skill group so portfolio links can be updated modularly.
+

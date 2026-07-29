@@ -1,5 +1,4 @@
 import { ProjectMeta } from "@/lib/projects";
-import { useMode } from "@/contexts/ModeContext";
 import { Calendar, Briefcase, Code2, Award } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -8,9 +7,6 @@ interface MetadataStripProps {
 }
 
 export const MetadataStrip: React.FC<MetadataStripProps> = ({ project }) => {
-  const { mode } = useMode();
-  const isDesigner = mode === "designer";
-
   const metadataItems = [];
 
   if (project.roles && project.roles.length > 0) {
@@ -78,11 +74,7 @@ export const MetadataStrip: React.FC<MetadataStripProps> = ({ project }) => {
               {project.tech.map((tech, index) => (
                 <span
                   key={index}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-transform hover:scale-105 ${
-                    isDesigner
-                      ? "bg-[hsl(var(--designer-surface))] text-[hsl(var(--designer-primary))] border-2 border-[hsl(var(--designer-border))]"
-                      : "bg-muted text-foreground border border-border"
-                  }`}
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-transform hover:scale-105 bg-primary/10 text-primary border border-primary/20"
                 >
                   {tech}
                 </span>
@@ -94,13 +86,7 @@ export const MetadataStrip: React.FC<MetadataStripProps> = ({ project }) => {
         {/* Metric/Impact */}
         {project.metric && (
           <div className="text-center mt-8 pt-8 border-t border-border/10">
-            <div
-              className={`inline-block px-6 py-3 rounded-xl font-bold text-sm ${
-                isDesigner
-                  ? "bg-[hsl(var(--designer-primary))] text-white border-3 border-[hsl(var(--designer-border))] shadow-[4px_4px_0px_hsl(var(--designer-border))]"
-                  : "bg-primary text-primary-foreground shadow-lg"
-              }`}
-            >
+            <div className="inline-block px-6 py-3 rounded-xl font-bold text-sm bg-[hsl(var(--card))] text-[hsl(var(--foreground))] border-l-4 border-[hsl(var(--primary))] shadow-sm text-left max-w-xl">
               {project.metric}
             </div>
           </div>

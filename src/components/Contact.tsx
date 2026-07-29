@@ -1,110 +1,148 @@
-import { useMode } from "@/contexts/ModeContext";
-import { Mail, Linkedin, FileText } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import MagneticButton from "./MagneticButton";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Linkedin, Mail, Github } from "lucide-react";
 
 const Contact = () => {
-  const { mode } = useMode();
-  const isEngineer = mode === "engineer";
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setMousePos({ x, y });
+  };
 
   return (
-    <section id="contact" className="py-12 md:py-24">
-      <div className="max-w-4xl mx-auto text-center">
-        <h2
-          className={`heading-primary text-4xl md:text-5xl font-bold mb-6 mode-transition ${
-            isEngineer ? "text-gradient-engineer" : "text-gradient-designer"
-          }`}
+    <section
+      id="contact"
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="py-24 md:py-36 relative overflow-hidden bg-paper-bg border-t border-paper-border"
+    >
+      <div className="max-w-6xl mx-auto px-4 md:px-8 w-full relative z-10">
+        <motion.div
+          initial={{ opacity: 0, filter: "blur(6px)", y: 20 }}
+          whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="rounded-2xl border border-paper-border bg-paper-card p-8 md:p-12"
         >
-          {isEngineer
-            ? "Coffee? Chat? Let's Talk."
-            : "Your Project Needs This Energy"}
-        </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+            {/* Left Column: Heading & Subheading */}
+            <div className="lg:col-span-8 flex flex-col text-left">
+              <span className="font-mono text-xs tracking-widest text-ink-muted uppercase font-semibold mb-3">
+                04. CONTACT // GET IN TOUCH
+              </span>
+              <h2 className="text-3xl md:text-5xl font-bold font-display text-ink-primary mb-4 tracking-tighter">
+                Need Human Oversight in Your AI &amp; Product Pipeline?
+              </h2>
+              <p className="text-sm md:text-base text-ink-muted font-body-narrative leading-relaxed max-w-xl">
+                Whether you're building next-gen AI tools or scaling complex enterprise
+                interfaces, I ensure your product delivers velocity without sacrificing UX
+                rigor or code quality.
+              </p>
+            </div>
 
-        <p className="text-lg md:text-xl text-muted-foreground mb-8 md:mb-12 max-w-2xl mx-auto leading-relaxed">
-          {isEngineer
-            ? "I bring curiosity, code, and coffee. Let's build something you're proud of."
-            : "I bring empathy, research, and imagination. Let's create experiences people love."}
-        </p>
-
-        <div className="flex flex-wrap gap-4 justify-center">
-          <MagneticButton
-            size="lg"
-            className={`${
-              isEngineer
-                ? "font-engineer"
-                : "font-designer neubrutalism-button bg-[hsl(var(--designer-primary))] text-primary-foreground"
-            }`}
-            asChild
-          >
-            <a href="mailto:sknayyar.sk@gmail.com">
-              <Mail className="w-5 h-5 mr-2" />
-              Email Me
-            </a>
-          </MagneticButton>
-
-          <MagneticButton
-            size="lg"
-            variant="outline"
-            className={`${
-              isEngineer ? "font-engineer" : "font-designer neubrutalism-button"
-            }`}
-            asChild
-          >
-            <a
-              href="https://www.linkedin.com/in/sumitnayyar-ux/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Linkedin className="w-5 h-5 mr-2" />
-              LinkedIn
-            </a>
-          </MagneticButton>
-
-          <MagneticButton
-            size="lg"
-            variant="outline"
-            className={`${
-              isEngineer ? "font-engineer" : "font-designer neubrutalism-button"
-            }`}
-            asChild
-          >
-            <Link to="/resume">
-              <FileText className="w-5 h-5 mr-2" />
-              Resume
-            </Link>
-          </MagneticButton>
-        </div>
-
-        {/* ── Substack Subscribe ── */}
-        <div className="mt-16 mx-auto text-center">
-          {/* <p className="text-sm text-muted-foreground font-body mb-1">
-            I also write about the quiet, unfiltered side of life.
-          </p>
-          <p className="text-base font-heading font-semibold text-foreground mb-4">
-            awkward silences, unspoken kindnesses, and moments we replay in our
-            heads.
-          </p> */}
-          <div className="rounded-2xl overflow-hidden border border-border shadow-sm">
-            <iframe
-              src="https://sumit6131.substack.com/embed"
-              width="100%"
-              height="320"
-              style={{ border: "none", background: "white" }}
-              frameBorder="0"
-              scrolling="no"
-              title="Subscribe to Unsaid Moments on Substack"
-            />
+            {/* Right Column: Direct Contact Links */}
+            <div className="lg:col-span-4 flex flex-col gap-4 w-full">
+              <a
+                href="mailto:sknayyar.sk@gmail.com"
+                className="inline-flex items-center justify-center gap-3 px-6 py-4 rounded-xl border border-paper-border bg-paper-bg hover:border-ink-primary text-ink-primary font-mono text-xs uppercase tracking-wider font-semibold transition-all"
+              >
+                <Mail className="w-4 h-4" />
+                Send Email
+              </a>
+              <a
+                href="https://www.linkedin.com/in/sumitnayyar-ux/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-3 px-6 py-4 rounded-xl border border-paper-border bg-paper-bg hover:border-ink-primary text-ink-primary font-mono text-xs uppercase tracking-wider font-semibold transition-all"
+              >
+                <Linkedin className="w-4 h-4" />
+                Connect on LinkedIn
+              </a>
+              <a
+                href="https://github.com/Skn1999"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-3 px-6 py-4 rounded-xl border border-paper-border bg-paper-bg hover:border-ink-primary text-ink-primary font-mono text-xs uppercase tracking-wider font-semibold transition-all"
+              >
+                <Github className="w-4 h-4" />
+                GitHub Profile
+              </a>
+            </div>
           </div>
-        </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
 
-        <div className="mt-16 pt-8 border-t">
-          <p className="text-sm text-muted-foreground">
-            © 2026 Sumit Knayyar. Designed with intention, built with care.
-          </p>
+export const UnsaidMoments = () => {
+  return (
+    <section id="unsaid-moments" className="py-16 md:py-24 text-center">
+      <div className="max-w-4xl mx-auto px-4 md:px-0">
+        <span className="font-label text-[10px] md:text-xs tracking-widest text-slate-500 uppercase font-semibold block mb-3">
+          // MY NEWSLETTER
+        </span>
+        <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mb-4 tracking-tighter">
+          Unsaid Moments
+        </h2>
+        <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto font-body-narrative leading-relaxed">
+          A small publication where I explore my passion for writing about
+          complex yet thoughtful moments.
+        </p>
+        <div className="mx-auto max-w-xl rounded-2xl overflow-hidden border border-border/60 shadow-sm bg-white dark:bg-white">
+          <iframe
+            src="https://sumit6131.substack.com/embed"
+            width="100%"
+            height="320"
+            style={{ border: "none", background: "white" }}
+            frameBorder="0"
+            scrolling="no"
+            title="Subscribe to Unsaid Moments on Substack"
+          />
         </div>
       </div>
     </section>
+  );
+};
+
+export const Footer = () => {
+  return (
+    <footer className="py-8 md:py-12 border-t border-paper-border bg-paper-bg text-ink-muted text-xs font-mono">
+      <div className="container mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p className="text-center md:text-left tracking-wide">
+          Helsinki, FI // Concluding Master's Thesis at Aalto University. Available for team deployment.
+        </p>
+        <div className="flex items-center gap-6">
+          <a
+            href="mailto:sknayyar.sk@gmail.com"
+            className="hover:text-ink-primary transition-colors tracking-widest uppercase"
+          >
+            Email
+          </a>
+          <a
+            href="https://www.linkedin.com/in/sumitnayyar-ux/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-ink-primary transition-colors tracking-widest uppercase"
+          >
+            LinkedIn
+          </a>
+          <a
+            href="https://github.com/Skn1999"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-ink-primary transition-colors tracking-widest uppercase"
+          >
+            GitHub
+          </a>
+        </div>
+      </div>
+    </footer>
   );
 };
 

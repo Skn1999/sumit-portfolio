@@ -11,11 +11,11 @@ import ResumePage from "./pages/ResumePage";
 import UxBitesList from "./pages/UxBitesList";
 import UxBitePage from "./pages/UxBitePage";
 import ProjectList from "./components/ProjectList";
-import { TransitionProvider } from "./contexts/TransitionContext";
-import { ModeProvider } from "./contexts/ModeContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { TransitionProvider } from "./contexts/TransitionContext";
 import PageTransition from "./components/PageTransition";
 import { AnimatePresence } from "framer-motion";
+import SmoothScroll from "./components/SmoothScroll";
 
 const queryClient = new QueryClient();
 
@@ -64,12 +64,11 @@ const App = () => {
           <Sonner />
           <ThemeProvider>
             <TransitionProvider>
-              <ModeProvider>
-                <BrowserRouter basename={basename}>
-                  <ScrollToHash />
-                  <AnimatedRoutes />
-                </BrowserRouter>
-              </ModeProvider>
+              <BrowserRouter basename={basename}>
+                <ScrollToHash />
+                <SmoothScroll />
+                <AnimatedRoutes />
+              </BrowserRouter>
             </TransitionProvider>
           </ThemeProvider>
         </TooltipProvider>

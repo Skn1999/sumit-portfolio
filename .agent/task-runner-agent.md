@@ -46,7 +46,7 @@ Use `architecture.md` to understand how the app is wired, `tech-stack.md` to cho
    - what files are likely involved
    - what is explicitly out of scope
 8. Implement the task with small, focused edits.
-9. Run the tests listed in the task file whenever feasible.
+9. Run the tests listed in the task file whenever feasible. For small fixes, skip running the tests in local environment to save tokens.
 10. If a listed test cannot be run, record why in the final response and in `.agent/progress.md`.
 11. Manually inspect or reason through each acceptance criterion.
 12. Update `.agent/progress.md`.

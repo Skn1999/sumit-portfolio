@@ -1,28 +1,30 @@
-import { ModeProvider, useMode } from "@/contexts/ModeContext";
-import ModeToggle from "@/components/ModeToggle";
 import { Layout, Container } from "@/components/Layout";
 import Projects from "@/components/Projects";
-import Contact from "@/components/Contact";
+import Contact, { UnsaidMoments, Footer } from "@/components/Contact";
 import HeroSection from "@/components/HeroSection";
+import {
+  AcademicCohorts,
+  ProfessionalCredentials,
+  LogisticsCleardown,
+} from "@/components/SecondaryModules";
 import ScrollProgress from "@/components/ScrollProgress";
 import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
 
 const IndexContent = () => {
-  const { mode } = useMode();
-
   return (
     <Layout>
       <SEO
-        title="Sumit Knayyar Product Designer & UX Strategist"
+        title="Sumit Knayyar | AI-Era Product Designer & UX Architect (HCI + Frontend)"
         rawTitle
-        description="Product Designer & UX Strategist with 4+ years of experience designing digital products that solve real problems. Research-driven, systems-thinking, and design-focused."
+        description="Product Designer & UX Architect bridging HCI research and enterprise frontend execution. I oversee AI-assisted design and dev pipelines to deliver high-velocity products with uncompromised human quality and zero costly failures."
         path="/"
         keywords={[
           "portfolio",
           "product designer",
-          "UX designer",
-          "UX strategist",
+          "AI product designer",
+          "human in the loop AI",
+          "UX architect",
           "design systems",
           "HCI",
           "React",
@@ -32,11 +34,11 @@ const IndexContent = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        className="mode-transition relative mode-dependent-content"
+        className="relative"
       >
         <ScrollProgress />
-        <div className="relative z-10">
-          <Container>
+        <div className="relative z-10 scroll-blur-content">
+          <Container className="overflow-x-visible">
             <HeroSection />
           </Container>
 
@@ -46,8 +48,22 @@ const IndexContent = () => {
           </Container>
 
           <Container>
+            <AcademicCohorts />
+          </Container>
+
+          <ProfessionalCredentials />
+
+          <Container>
             <Contact />
           </Container>
+
+          <Container>
+            <UnsaidMoments />
+          </Container>
+
+          {/* <LogisticsCleardown /> */}
+
+          <Footer />
         </div>
       </motion.div>
     </Layout>
