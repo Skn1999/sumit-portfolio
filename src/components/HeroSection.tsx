@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FileText } from "lucide-react";
 import { Link } from "react-router-dom";
+import HeroParticleCanvas from "./HeroParticleCanvas";
 
 const HeroSection: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -121,11 +122,9 @@ const HeroSection: React.FC = () => {
             variants={inkFadeVariant}
             className="lg:col-span-4 flex justify-center lg:justify-end"
           >
-            <div className="relative overflow-hidden rounded-xl border border-paper-border bg-paper-card aspect-[3/4] w-full max-w-[280px] sm:max-w-[320px] lg:max-w-full">
-              <img
-                src={`${import.meta.env.BASE_URL}images/about/hero.jpg`}
-                alt="Sumit profile"
-                className="w-full h-full object-cover"
+            <div className="relative overflow-hidden rounded-xl border border-paper-border bg-paper-card aspect-[3/4] w-full max-w-[280px] sm:max-w-[320px] lg:max-w-full shadow-lg">
+              <HeroParticleCanvas
+                imagePath={`${import.meta.env.BASE_URL}images/about/hero.jpg`}
               />
             </div>
           </motion.div>
