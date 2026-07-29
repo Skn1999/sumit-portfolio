@@ -122,27 +122,24 @@ function samplePointsFromGLTFScene(scene: THREE.Object3D, count: number) {
   return { positions, isOutline };
 }
 
-// Prepare 3D GLTF models with Glass UI Material for Solidified State
-function prepareGlassModel(originalScene: THREE.Object3D) {
+// Prepare 3D GLTF models with Polished Silver Instrument Material
+function prepareSilverInstrumentMaterial(originalScene: THREE.Object3D) {
   const scene = originalScene.clone();
+
   scene.traverse((child) => {
     if ((child as THREE.Mesh).isMesh) {
       const mesh = child as THREE.Mesh;
-      mesh.material = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(0xecf4fb),
-        metalness: 0.1,
-        roughness: 0.15,
-        transmission: 0.7,
-        transparent: true,
-        opacity: 0.95,
-        ior: 1.5,
-        clearcoat: 1.0,
-        clearcoatRoughness: 0.1,
+      mesh.geometry.computeVertexNormals();
+
+      mesh.material = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(0xdce4ec),       // Silver instrument metal tone
+        metalness: 0.95,                         // High metallic reflectiveness
+        roughness: 0.12,                         // Mirror shine like silver flutes/saxophones
+        envMapIntensity: 2.5,
       });
     }
   });
 
-  // Center and scale scene
   const box = new THREE.Box3().setFromObject(scene);
   const center = new THREE.Vector3();
   box.getCenter(center);
@@ -261,15 +258,15 @@ const OutlineParticleShader = {
 
       float alphaEdge = smoothstep(0.25, 0.05, dot(coord, coord));
 
-      vec3 finalColor = vec3(0.98, 0.85, 0.55);
+      vec3 finalColor = vec3(0.92, 0.95, 0.98);
       float finalAlpha = 1.0;
 
       if (uTargetIndex == 0) {
         vec4 texColor = texture2D(uTexture, vUv);
         finalColor = texColor.rgb;
       } else {
-        vec3 cyanGlow = vec3(0.40, 0.85, 0.95);
-        finalColor = mix(vec3(0.98, 0.85, 0.55), cyanGlow, vRandom);
+        vec3 silverShine = vec3(0.95, 0.97, 1.0);
+        finalColor = mix(vec3(0.85, 0.90, 0.95), silverShine, vRandom);
       }
 
       if (vIsOutline > 0.5) {
@@ -340,10 +337,10 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const tvGLTF = useGLTF(`${import.meta.env.BASE_URL}models/tv-screen.glb`);
   const docGLTF = useGLTF(`${import.meta.env.BASE_URL}models/document.glb`);
 
-  // Prepare solid 3D models with Apple Glass UI material
-  const handScene = useMemo(() => prepareGlassModel(handGLTF.scene), [handGLTF]);
-  const tvScene = useMemo(() => prepareGlassModel(tvGLTF.scene), [tvGLTF]);
-  const docScene = useMemo(() => prepareGlassModel(docGLTF.scene), [docGLTF]);
+  // Prepare solid 3D models with Polished Silver Instrument Material
+  const handScene = useMemo(() => prepareSilverInstrumentMaterial(handGLTF.scene), [handGLTF]);
+  const tvScene = useMemo(() => prepareSilverInstrumentMaterial(tvGLTF.scene), [tvGLTF]);
+  const docScene = useMemo(() => prepareSilverInstrumentMaterial(docGLTF.scene), [docGLTF]);
 
   const location = useLocation();
   const { intendedRoute } = useNavIntent();
@@ -423,7 +420,6 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
       solidMaterialRef.current.uniforms.uMouse.value.lerp(targetMouse, 0.08);
     }
 
-    // Slow rotation on solid 3D GLTF model objects
     const currentRot = elapsedTime * 0.3;
     if (handRef.current) handRef.current.rotation.y = currentRot;
     if (tvRef.current) tvRef.current.rotation.y = currentRot;
@@ -440,10 +436,11 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
 
   return (
     <group>
-      {/* Lights for 3D Glass UI rendering */}
-      <ambientLight intensity={1.4} />
-      <directionalLight position={[2, 4, 3]} intensity={2.2} color="#fff4e0" />
-      <pointLight position={[-3, -2, 2]} intensity={1.8} color="#60a5fa" />
+      {/* Studio Lighting for Silver Instrument Specular Shine */}
+      <ambientLight intensity={0.9} />
+      <directionalLight position={[3, 5, 4]} intensity={3.2} color="#ffffff" />
+      <directionalLight position={[-3, -2, 2]} intensity={2.0} color="#cbd5e1" />
+      <pointLight position={[0, 4, -3]} intensity={2.5} color="#f8fafc" />
 
       {/* 1. Wireframe Outline Particle Swarm (Active on Hover) */}
       <points>
@@ -478,21 +475,21 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
         />
       </mesh>
 
-      {/* 3. Solidified 3D Glass Model: UX Design Pointing Hand (👆🏻) */}
+      {/* 3. Solidified Silver Instrument 3D Model: UX Design Pointing Hand (👆🏻) */}
       {showSolidUX && (
         <group ref={handRef}>
           <primitive object={handScene} />
         </group>
       )}
 
-      {/* 4. Solidified 3D Glass Model: Visual Design TV Monitor (📺) */}
+      {/* 4. Solidified Silver Instrument 3D Model: Visual Design TV Monitor (📺) */}
       {showSolidVisual && (
         <group ref={tvRef}>
           <primitive object={tvScene} />
         </group>
       )}
 
-      {/* 5. Solidified 3D Glass Model: Writings Document Sheet (📝) */}
+      {/* 5. Solidified Silver Instrument 3D Model: Writings Document Sheet (📝) */}
       {showSolidWritings && (
         <group ref={docRef}>
           <primitive object={docScene} />
