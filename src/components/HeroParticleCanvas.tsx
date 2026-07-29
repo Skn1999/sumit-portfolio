@@ -1,7 +1,8 @@
 import React, { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useTexture } from "@react-three/drei";
+import { useTexture, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
+import { MeshSurfaceSampler } from "three/examples/jsm/math/MeshSurfaceSampler.js";
 import { useLocation } from "react-router-dom";
 import { useNavIntent } from "@/contexts/NavIntentContext";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
@@ -24,8 +25,6 @@ function categoryToIndex(cat: CategoryKey): number {
     case "writings": return 3;
   }
 }
-
-/* ── High-Precision Vector THREE.Shape Generators ── */
 
 // 1. Hero Grid (Profile Photo)
 function generateHeroGrid(count: number, cols: number, rows: number) {
@@ -51,136 +50,78 @@ function generateHeroGrid(count: number, cols: number, rows: number) {
     uvs[i * 2] = u;
     uvs[i * 2 + 1] = v;
 
-    // Edge boundary marked as outline
     isOutline[i] = (col === 0 || col === cols - 1 || row === 0 || row === rows - 1) ? 1.0 : 0.0;
   }
   return { positions, uvs, isOutline };
 }
 
-// 2. UX Design: 👆🏻 Pointing Hand Vector Shape
-function generatePointingHandShape(count: number) {
+// 2. 3D GLTF Mesh Surface Point Sampler
+function samplePointsFromGLTFScene(scene: THREE.Object3D, count: number) {
   const positions = new Float32Array(count * 3);
   const isOutline = new Float32Array(count);
 
-  // Construct precise 2D vector path for pointing hand
-  const shape = new THREE.Shape();
-  // Extended Index Finger
-  shape.moveTo(-0.06, 0.72);
-  shape.absarc(0.0, 0.72, 0.06, Math.PI, 0, true);
-  shape.lineTo(0.06, 0.1);
-  // Folded Middle Finger
-  shape.absarc(0.14, 0.1, 0.08, Math.PI, 0, true);
-  shape.lineTo(0.22, -0.15);
-  // Folded Ring Finger
-  shape.absarc(0.28, -0.15, 0.07, Math.PI, 0, true);
-  shape.lineTo(0.35, -0.38);
-  // Folded Pinky Finger
-  shape.absarc(0.40, -0.38, 0.06, Math.PI, 0, true);
-  shape.lineTo(0.44, -0.62);
-  // Wrist & Base
-  shape.bezierCurveTo(0.38, -0.85, -0.22, -0.85, -0.32, -0.62);
-  // Thumb Contour
-  shape.bezierCurveTo(-0.38, -0.32, -0.26, 0.0, -0.16, 0.12);
-  shape.lineTo(-0.06, 0.1);
-  shape.closePath();
+  const meshes: THREE.Mesh[] = [];
+  scene.traverse((child) => {
+    if ((child as THREE.Mesh).isMesh && (child as THREE.Mesh).geometry) {
+      meshes.push(child as THREE.Mesh);
+    }
+  });
 
-  const numOutline = Math.floor(count * 0.25);
-  const outlinePoints = shape.getSpacedPoints(numOutline);
+  if (meshes.length === 0) {
+    return { positions, isOutline };
+  }
 
-  for (let i = 0; i < count; i++) {
-    if (i < outlinePoints.length) {
-      // Razor-sharp outline points along vector contour
-      const pt = outlinePoints[i];
-      positions[i * 3] = pt.x;
-      positions[i * 3 + 1] = pt.y;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.02;
-      isOutline[i] = 1.0;
-    } else {
-      // Interior fill points
-      const rx = -0.35 + Math.random() * 0.8;
-      const ry = -0.8 + Math.random() * 1.5;
-      positions[i * 3] = rx * 0.65;
-      positions[i * 3 + 1] = ry * 0.65;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.1;
-      isOutline[i] = 0.0;
+  // Find primary or merged mesh
+  let targetMesh = meshes[0];
+  for (const m of meshes) {
+    if (m.geometry.attributes.position.count > targetMesh.geometry.attributes.position.count) {
+      targetMesh = m;
     }
   }
-  return { positions, isOutline };
-}
 
-// 3. Visual Design: 📺 Display Screen Vector Shape
-function generateTVScreenShape(count: number) {
-  const positions = new Float32Array(count * 3);
-  const isOutline = new Float32Array(count);
+  targetMesh.geometry.computeBoundingBox();
+  const box = targetMesh.geometry.boundingBox || new THREE.Box3();
+  const center = new THREE.Vector3();
+  box.getCenter(center);
+  const size = new THREE.Vector3();
+  box.getSize(size);
+  const maxDim = Math.max(size.x, size.y, size.z) || 1.0;
+  const scale = 1.4 / maxDim;
 
-  const shape = new THREE.Shape();
-  const w = 0.9, h = 0.65, r = 0.08;
-  shape.moveTo(-w / 2 + r, h / 2);
-  shape.lineTo(w / 2 - r, h / 2);
-  shape.quadraticCurveTo(w / 2, h / 2, w / 2, h / 2 - r);
-  shape.lineTo(w / 2, -h / 2 + r);
-  shape.quadraticCurveTo(w / 2, -h / 2, w / 2 - r, -h / 2);
-  shape.lineTo(-w / 2 + r, -h / 2);
-  shape.quadraticCurveTo(-w / 2, -h / 2, -w / 2, -h / 2 + r);
-  shape.lineTo(-w / 2, h / 2 - r);
-  shape.quadraticCurveTo(-w / 2, h / 2, -w / 2 + r, h / 2);
-  shape.closePath();
+  try {
+    const sampler = new MeshSurfaceSampler(targetMesh).build();
+    const tempPos = new THREE.Vector3();
+    const tempNorm = new THREE.Vector3();
 
-  const numOutline = Math.floor(count * 0.25);
-  const outlinePoints = shape.getSpacedPoints(numOutline);
+    for (let i = 0; i < count; i++) {
+      sampler.sample(tempPos, tempNorm);
+      tempPos.sub(center).multiplyScalar(scale);
 
-  for (let i = 0; i < count; i++) {
-    if (i < outlinePoints.length) {
-      const pt = outlinePoints[i];
-      positions[i * 3] = pt.x;
-      positions[i * 3 + 1] = pt.y + 0.08;
-      positions[i * 3 + 2] = 0;
-      isOutline[i] = 1.0;
-    } else {
-      const u = (Math.random() - 0.5) * (w - 0.05);
-      const v = 0.08 + (Math.random() - 0.5) * (h - 0.05);
-      positions[i * 3] = u;
-      positions[i * 3 + 1] = v;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.06;
-      isOutline[i] = 0.0;
+      positions[i * 3] = tempPos.x;
+      positions[i * 3 + 1] = tempPos.y;
+      positions[i * 3 + 2] = tempPos.z;
+
+      // Edge/silhouette normals tagged as outline
+      const dotZ = Math.abs(tempNorm.z);
+      isOutline[i] = (dotZ < 0.4 || i % 4 === 0) ? 1.0 : 0.0;
+    }
+  } catch (e) {
+    console.warn("MeshSurfaceSampler fallback:", e);
+    // Fallback vertex sampling
+    const posAttr = targetMesh.geometry.attributes.position;
+    const vCount = posAttr.count;
+    for (let i = 0; i < count; i++) {
+      const idx = i % vCount;
+      const x = (posAttr.getX(idx) - center.x) * scale;
+      const y = (posAttr.getY(idx) - center.y) * scale;
+      const z = (posAttr.getZ(idx) - center.z) * scale;
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = z;
+      isOutline[i] = (i % 4 === 0) ? 1.0 : 0.0;
     }
   }
-  return { positions, isOutline };
-}
 
-// 4. Writings: 📝 Memo Document Vector Shape
-function generateMemoDocShape(count: number) {
-  const positions = new Float32Array(count * 3);
-  const isOutline = new Float32Array(count);
-
-  const shape = new THREE.Shape();
-  const pw = 0.72, ph = 0.95;
-  shape.moveTo(-pw / 2, ph / 2);
-  shape.lineTo(pw / 2 - 0.2, ph / 2);
-  shape.lineTo(pw / 2, ph / 2 - 0.2);
-  shape.lineTo(pw / 2, -ph / 2);
-  shape.lineTo(-pw / 2, -ph / 2);
-  shape.closePath();
-
-  const numOutline = Math.floor(count * 0.25);
-  const outlinePoints = shape.getSpacedPoints(numOutline);
-
-  for (let i = 0; i < count; i++) {
-    if (i < outlinePoints.length) {
-      const pt = outlinePoints[i];
-      positions[i * 3] = pt.x;
-      positions[i * 3 + 1] = pt.y;
-      positions[i * 3 + 2] = 0;
-      isOutline[i] = 1.0;
-    } else {
-      const u = (Math.random() - 0.5) * (pw - 0.04);
-      const v = (Math.random() - 0.5) * (ph - 0.04);
-      positions[i * 3] = u;
-      positions[i * 3 + 1] = v;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
-      isOutline[i] = 0.0;
-    }
-  }
   return { positions, isOutline };
 }
 
@@ -250,10 +191,19 @@ const MultiCategoryParticleShader = {
       ) * (1.0 - easeP);
 
       vec3 currentPos = mix(startP, targetP, easeP) + noise;
+
+      // Slow idle 3D rotation for GLTF 3D models when morphed
+      if (uTargetIndex != 0) {
+        float angle = uTime * 0.4 * easeP;
+        float cosA = cos(angle);
+        float sinA = sin(angle);
+        mat2 rot = mat2(cosA, -sinA, sinA, cosA);
+        currentPos.xz = rot * currentPos.xz;
+      }
+
       vec4 mvPosition = modelViewMatrix * vec4(currentPos, 1.0);
 
-      // Size calculation: glowing outline particles pop larger when hovering
-      float baseSize = mix(8.0, 5.0, easeP);
+      float baseSize = mix(8.0, 4.5, easeP);
       if (uIsHovering > 0.5 && aIsOutline > 0.5) {
         baseSize += 3.5;
       }
@@ -304,7 +254,7 @@ const MultiCategoryParticleShader = {
         finalColor = mix(texColor.rgb, metallicShine, 0.4);
         finalAlpha = texColor.a;
       } else {
-        // Apple Glass UI Translucent Spheres for 👆🏻, 📺, 📝
+        // Apple Glass UI Translucent Spheres for GLTF 3D Models (👆🏻, 📺, 📝)
         vec3 glassBody = vec3(0.85, 0.92, 0.98);
         vec3 goldAccent = vec3(0.95, 0.82, 0.50);
         vec3 cyanGlow = vec3(0.40, 0.85, 0.95);
@@ -316,10 +266,10 @@ const MultiCategoryParticleShader = {
         finalAlpha = mix(0.65, 0.95, uSolidifyProgress);
       }
 
-      // OUTLINE HOVER MODE (When user hovers on header item)
+      // OUTLINE HOVER MODE (When user hovers on header navigation item)
       if (uIsHovering > 0.5) {
         if (vIsOutline > 0.5) {
-          // Outline particles glow brightly to outline intended target shape
+          // Outline particles glow brightly to outline 3D model wireframe contour
           finalColor = mix(finalColor, vec3(0.98, 0.85, 0.55), 0.75);
           finalAlpha = 0.95;
         } else {
@@ -385,6 +335,12 @@ interface SceneContentProps {
 
 const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const texture = useTexture(imagePath);
+
+  // Load user 3D GLTF models from public/models/
+  const handGLTF = useGLTF(`${import.meta.env.BASE_URL}models/pointing-hand.glb`);
+  const tvGLTF = useGLTF(`${import.meta.env.BASE_URL}models/tv-screen.glb`);
+  const docGLTF = useGLTF(`${import.meta.env.BASE_URL}models/document.glb`);
+
   const location = useLocation();
   const { intendedRoute } = useNavIntent();
 
@@ -403,12 +359,12 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const rows = 146;
   const count = cols * rows;
 
-  // Pre-generate all 4 target shape point buffers with high-precision vector shapes
+  // Extract exact 3D surface mesh vertices from loaded 3D GLTF models
   const { posHero, uvs, posUX, posVisual, posWritings, isOutline, randoms } = useMemo(() => {
     const hero = generateHeroGrid(count, cols, rows);
-    const ux = generatePointingHandShape(count);
-    const vis = generateTVScreenShape(count);
-    const wr = generateMemoDocShape(count);
+    const ux = samplePointsFromGLTFScene(handGLTF.scene, count);
+    const vis = samplePointsFromGLTFScene(tvGLTF.scene, count);
+    const wr = samplePointsFromGLTFScene(docGLTF.scene, count);
 
     const randArray = new Float32Array(count);
     for (let i = 0; i < count; i++) randArray[i] = Math.random();
@@ -422,7 +378,7 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
       isOutline: ux.isOutline,
       randoms: randArray,
     };
-  }, [count, cols, rows]);
+  }, [count, cols, rows, handGLTF, tvGLTF, docGLTF]);
 
   useEffect(() => {
     if (intendedCategory !== prevCategoryRef.current) {
@@ -467,7 +423,7 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
 
   return (
     <group>
-      {/* 1. Multi-Category Morphing Vector Glass & Metallic Particles */}
+      {/* 1. Multi-Category Morphing Particles (Using GLTF 3D Surface Sampling) */}
       <points>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[posHero, 3]} />
@@ -488,7 +444,7 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
         />
       </points>
 
-      {/* 2. Solidified Image Mesh (Only for Hero Photo on Homepage when not hovering) */}
+      {/* 2. Solidified Image Mesh (For Hero Photo on Homepage when not hovering) */}
       <mesh position={[0, 0, 0.001]}>
         <planeGeometry args={[planeWidth, planeHeight, 32, 32]} />
         <shaderMaterial
@@ -548,5 +504,10 @@ export const HeroParticleCanvas: React.FC<{ imagePath: string }> = ({
     </div>
   );
 };
+
+// Preload 3D GLTF models for instant morphing
+useGLTF.preload(`${import.meta.env.BASE_URL}models/pointing-hand.glb`);
+useGLTF.preload(`${import.meta.env.BASE_URL}models/tv-screen.glb`);
+useGLTF.preload(`${import.meta.env.BASE_URL}models/document.glb`);
 
 export default HeroParticleCanvas;
