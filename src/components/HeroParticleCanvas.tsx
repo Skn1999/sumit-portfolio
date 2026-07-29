@@ -55,8 +55,47 @@ function generateHeroGrid(count: number, cols: number, rows: number) {
   return { positions, uvs, isOutline };
 }
 
-// 2. 3D GLTF Mesh Surface Point Sampler
-function samplePointsFromGLTFScene(scene: THREE.Object3D, count: number) {
+// Normalize 3D GLTF Scene Scale & Center to exact target size
+function prepareNormalizedMetalModel(originalScene: THREE.Object3D, targetSize = 0.95) {
+  const scene = originalScene.clone();
+
+  // Apply Glossy Solid Metal Shader
+  scene.traverse((child) => {
+    if ((child as THREE.Mesh).isMesh) {
+      const mesh = child as THREE.Mesh;
+      mesh.geometry.computeVertexNormals();
+
+      mesh.material = new THREE.MeshPhysicalMaterial({
+        color: new THREE.Color(0xe2e8f0),        // Platinum / Liquid Silver metallic tone
+        metalness: 1.0,                            // 100% Solid Metal Piece
+        roughness: 0.06,                           // High glossy mirror shine
+        clearcoat: 1.0,                            // Glossy lacquer topcoat
+        clearcoatRoughness: 0.04,
+        ior: 2.5,
+        reflectivity: 1.0,
+      });
+    }
+  });
+
+  // Calculate bounding box and scale to exact target bounds
+  const box = new THREE.Box3().setFromObject(scene);
+  const center = new THREE.Vector3();
+  box.getCenter(center);
+  const size = new THREE.Vector3();
+  box.getSize(size);
+
+  const maxDim = Math.max(size.x, size.y, size.z) || 1.0;
+  const scale = targetSize / maxDim;
+
+  scene.position.set(-center.x * scale, -center.y * scale, -center.z * scale);
+  scene.scale.set(scale, scale, scale);
+  scene.updateMatrixWorld(true);
+
+  return scene;
+}
+
+// Sample Surface Points from the EXACT same normalized 3D Model
+function samplePointsFromNormalizedScene(scene: THREE.Object3D, count: number) {
   const positions = new Float32Array(count * 3);
   const isOutline = new Float32Array(count);
 
@@ -78,27 +117,21 @@ function samplePointsFromGLTFScene(scene: THREE.Object3D, count: number) {
     }
   }
 
-  targetMesh.geometry.computeBoundingBox();
-  const box = targetMesh.geometry.boundingBox || new THREE.Box3();
-  const center = new THREE.Vector3();
-  box.getCenter(center);
-  const size = new THREE.Vector3();
-  box.getSize(size);
-  const maxDim = Math.max(size.x, size.y, size.z) || 1.0;
-  const scale = 1.4 / maxDim;
-
   try {
     const sampler = new MeshSurfaceSampler(targetMesh).build();
     const tempPos = new THREE.Vector3();
     const tempNorm = new THREE.Vector3();
+    const worldPos = new THREE.Vector3();
 
     for (let i = 0; i < count; i++) {
       sampler.sample(tempPos, tempNorm);
-      tempPos.sub(center).multiplyScalar(scale);
+      // Transform local sampled position to normalized world position
+      worldPos.copy(tempPos);
+      targetMesh.localToWorld(worldPos);
 
-      positions[i * 3] = tempPos.x;
-      positions[i * 3 + 1] = tempPos.y;
-      positions[i * 3 + 2] = tempPos.z;
+      positions[i * 3] = worldPos.x;
+      positions[i * 3 + 1] = worldPos.y;
+      positions[i * 3 + 2] = worldPos.z;
 
       const dotZ = Math.abs(tempNorm.z);
       isOutline[i] = (dotZ < 0.35 || i % 3 === 0) ? 1.0 : 0.0;
@@ -107,51 +140,21 @@ function samplePointsFromGLTFScene(scene: THREE.Object3D, count: number) {
     console.warn("MeshSurfaceSampler fallback:", e);
     const posAttr = targetMesh.geometry.attributes.position;
     const vCount = posAttr.count;
+    const worldPos = new THREE.Vector3();
+
     for (let i = 0; i < count; i++) {
       const idx = i % vCount;
-      const x = (posAttr.getX(idx) - center.x) * scale;
-      const y = (posAttr.getY(idx) - center.y) * scale;
-      const z = (posAttr.getZ(idx) - center.z) * scale;
-      positions[i * 3] = x;
-      positions[i * 3 + 1] = y;
-      positions[i * 3 + 2] = z;
+      worldPos.set(posAttr.getX(idx), posAttr.getY(idx), posAttr.getZ(idx));
+      targetMesh.localToWorld(worldPos);
+
+      positions[i * 3] = worldPos.x;
+      positions[i * 3 + 1] = worldPos.y;
+      positions[i * 3 + 2] = worldPos.z;
       isOutline[i] = (i % 3 === 0) ? 1.0 : 0.0;
     }
   }
 
   return { positions, isOutline };
-}
-
-// Prepare 3D GLTF models with Polished Silver Instrument Material
-function prepareSilverInstrumentMaterial(originalScene: THREE.Object3D) {
-  const scene = originalScene.clone();
-
-  scene.traverse((child) => {
-    if ((child as THREE.Mesh).isMesh) {
-      const mesh = child as THREE.Mesh;
-      mesh.geometry.computeVertexNormals();
-
-      mesh.material = new THREE.MeshStandardMaterial({
-        color: new THREE.Color(0xdce4ec),       // Silver instrument metal tone
-        metalness: 0.95,                         // High metallic reflectiveness
-        roughness: 0.12,                         // Mirror shine like silver flutes/saxophones
-        envMapIntensity: 2.5,
-      });
-    }
-  });
-
-  const box = new THREE.Box3().setFromObject(scene);
-  const center = new THREE.Vector3();
-  box.getCenter(center);
-  const size = new THREE.Vector3();
-  box.getSize(size);
-  const maxDim = Math.max(size.x, size.y, size.z) || 1.0;
-  const scale = 1.4 / maxDim;
-
-  scene.position.sub(center.multiplyScalar(scale));
-  scene.scale.set(scale, scale, scale);
-
-  return scene;
 }
 
 /* ── Wireframe Outline Particle Shader ── */
@@ -337,10 +340,10 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const tvGLTF = useGLTF(`${import.meta.env.BASE_URL}models/tv-screen.glb`);
   const docGLTF = useGLTF(`${import.meta.env.BASE_URL}models/document.glb`);
 
-  // Prepare solid 3D models with Polished Silver Instrument Material
-  const handScene = useMemo(() => prepareSilverInstrumentMaterial(handGLTF.scene), [handGLTF]);
-  const tvScene = useMemo(() => prepareSilverInstrumentMaterial(tvGLTF.scene), [tvGLTF]);
-  const docScene = useMemo(() => prepareSilverInstrumentMaterial(docGLTF.scene), [docGLTF]);
+  // Prepare normalized solid 3D models with Glossy Chrome Metal Material
+  const handScene = useMemo(() => prepareNormalizedMetalModel(handGLTF.scene, 0.95), [handGLTF]);
+  const tvScene = useMemo(() => prepareNormalizedMetalModel(tvGLTF.scene, 0.95), [tvGLTF]);
+  const docScene = useMemo(() => prepareNormalizedMetalModel(docGLTF.scene, 0.95), [docGLTF]);
 
   const location = useLocation();
   const { intendedRoute } = useNavIntent();
@@ -365,11 +368,12 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const rows = 146;
   const count = cols * rows;
 
+  // Sample outline surface points from the exact same normalized 3D models
   const { posHero, uvs, posUX, posVisual, posWritings, isOutline, randoms } = useMemo(() => {
     const hero = generateHeroGrid(count, cols, rows);
-    const ux = samplePointsFromGLTFScene(handGLTF.scene, count);
-    const vis = samplePointsFromGLTFScene(tvGLTF.scene, count);
-    const wr = samplePointsFromGLTFScene(docGLTF.scene, count);
+    const ux = samplePointsFromNormalizedScene(handScene, count);
+    const vis = samplePointsFromNormalizedScene(tvScene, count);
+    const wr = samplePointsFromNormalizedScene(docScene, count);
 
     const randArray = new Float32Array(count);
     for (let i = 0; i < count; i++) randArray[i] = Math.random();
@@ -383,7 +387,7 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
       isOutline: ux.isOutline,
       randoms: randArray,
     };
-  }, [count, cols, rows, handGLTF, tvGLTF, docGLTF]);
+  }, [count, cols, rows, handScene, tvScene, docScene]);
 
   useEffect(() => {
     if (intendedCategory !== targetCategoryRef.current) {
@@ -436,11 +440,11 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
 
   return (
     <group>
-      {/* Studio Lighting for Silver Instrument Specular Shine */}
-      <ambientLight intensity={0.9} />
-      <directionalLight position={[3, 5, 4]} intensity={3.2} color="#ffffff" />
-      <directionalLight position={[-3, -2, 2]} intensity={2.0} color="#cbd5e1" />
-      <pointLight position={[0, 4, -3]} intensity={2.5} color="#f8fafc" />
+      {/* Studio Metallic Lighting for Glossy Chrome Metal Reflections */}
+      <ambientLight intensity={1.0} />
+      <directionalLight position={[3, 5, 4]} intensity={3.5} color="#ffffff" />
+      <directionalLight position={[-3, -2, 2]} intensity={2.2} color="#cbd5e1" />
+      <pointLight position={[0, 4, -3]} intensity={2.8} color="#f8fafc" />
 
       {/* 1. Wireframe Outline Particle Swarm (Active on Hover) */}
       <points>
@@ -475,21 +479,21 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
         />
       </mesh>
 
-      {/* 3. Solidified Silver Instrument 3D Model: UX Design Pointing Hand (👆🏻) */}
+      {/* 3. Solidified Glossy Chrome Metal 3D Model: UX Design Pointing Hand (👆🏻) */}
       {showSolidUX && (
         <group ref={handRef}>
           <primitive object={handScene} />
         </group>
       )}
 
-      {/* 4. Solidified Silver Instrument 3D Model: Visual Design TV Monitor (📺) */}
+      {/* 4. Solidified Glossy Chrome Metal 3D Model: Visual Design TV Monitor (📺) */}
       {showSolidVisual && (
         <group ref={tvRef}>
           <primitive object={tvScene} />
         </group>
       )}
 
-      {/* 5. Solidified Silver Instrument 3D Model: Writings Document Sheet (📝) */}
+      {/* 5. Solidified Glossy Chrome Metal 3D Model: Writings Document Sheet (📝) */}
       {showSolidWritings && (
         <group ref={docRef}>
           <primitive object={docScene} />
