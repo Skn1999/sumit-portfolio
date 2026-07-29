@@ -55,9 +55,10 @@ function generateHeroGrid(count: number, cols: number, rows: number) {
   return { positions, uvs, isOutline };
 }
 
-// Prepare 3D GLTF model with baked geometry scale & Silver Metal Material
+// Prepare 3D GLTF model with baked geometry matrices & Silver Metal Material
 function processGLTFModel(originalScene: THREE.Object3D, targetSize = 0.85) {
   const scene = originalScene.clone();
+  scene.updateMatrixWorld(true);
 
   // Find primary mesh
   const meshes: THREE.Mesh[] = [];
@@ -68,7 +69,8 @@ function processGLTFModel(originalScene: THREE.Object3D, targetSize = 0.85) {
   });
 
   if (meshes.length === 0) {
-    return { scene, positions: new Float32Array(0), isOutline: new Float32Array(0) };
+    const fallbackMesh = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5));
+    return { solidMesh: fallbackMesh };
   }
 
   let targetMesh = meshes[0];
@@ -78,38 +80,36 @@ function processGLTFModel(originalScene: THREE.Object3D, targetSize = 0.85) {
     }
   }
 
-  // Clone geometry so we don't mutate original
-  targetMesh.geometry = targetMesh.geometry.clone();
-  targetMesh.geometry.computeBoundingBox();
+  // Clone geometry and apply world matrix to bake any parent node transforms
+  const geometry = targetMesh.geometry.clone();
+  targetMesh.updateMatrixWorld(true);
+  geometry.applyMatrix4(targetMesh.matrixWorld);
 
-  const box = targetMesh.geometry.boundingBox || new THREE.Box3();
-  const center = new THREE.Vector3();
-  box.getCenter(center);
+  // Center & scale geometry directly in vertex coordinates
+  geometry.center();
+  geometry.computeBoundingBox();
+
+  const box = geometry.boundingBox || new THREE.Box3();
   const size = new THREE.Vector3();
   box.getSize(size);
 
   const maxDim = Math.max(size.x, size.y, size.z) || 1.0;
   const scale = targetSize / maxDim;
+  geometry.scale(scale, scale, scale);
+  geometry.computeVertexNormals();
 
-  // Center and scale geometry directly in vertex coordinates
-  targetMesh.geometry.center();
-  targetMesh.geometry.scale(scale, scale, scale);
-  targetMesh.geometry.computeVertexNormals();
+  // Create solid mesh with Bright Silver Metal Material
+  const solidMesh = new THREE.Mesh(
+    geometry,
+    new THREE.MeshStandardMaterial({
+      color: new THREE.Color(0xe2e8f0),        // Bright Lustrous Silver Metal
+      metalness: 0.85,                           // Polished Silver Metal
+      roughness: 0.20,                           // Satin Silver Sheen
+      envMapIntensity: 2.0,
+    })
+  );
 
-  // Apply Bright Silver Metal Material
-  targetMesh.material = new THREE.MeshStandardMaterial({
-    color: new THREE.Color(0xe2e8f0),        // Bright Lustrous Silver Metal
-    metalness: 0.85,                           // Polished Silver Metal
-    roughness: 0.20,                           // Satin Silver Sheen
-    envMapIntensity: 2.0,
-  });
-
-  // Reset parent object transforms to avoid double scaling
-  scene.position.set(0, 0, 0);
-  scene.rotation.set(0, 0, 0);
-  scene.scale.set(1, 1, 1);
-
-  return { scene, targetMesh };
+  return { solidMesh };
 }
 
 // Sample points from the exact same baked 3D mesh geometry
@@ -217,8 +217,11 @@ const OutlineParticleShader = {
         float angle = uTime * 0.3 * easeP;
         float cosA = cos(angle);
         float sinA = sin(angle);
-        mat2 rot = mat2(cosA, -sinA, sinA, cosA);
-        currentPos.xz = rot * currentPos.xz;
+        // Synchronized Y-axis rotation matching Three.js group.rotation.y:
+        currentPos.xz = vec2(
+          currentPos.x * cosA + currentPos.z * sinA,
+          -currentPos.x * sinA + currentPos.z * cosA
+        );
       }
 
       vec4 mvPosition = modelViewMatrix * vec4(currentPos, 1.0);
@@ -332,16 +335,16 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const tvGLTF = useGLTF(`${import.meta.env.BASE_URL}models/tv-screen.glb`);
   const docGLTF = useGLTF(`${import.meta.env.BASE_URL}models/document.glb`);
 
-  // Process GLTF models & bake exact normalized geometry scale
-  const { scene: handScene, targetMesh: handMesh } = useMemo(
+  // Process GLTF models & bake exact normalized geometry matrices
+  const { solidMesh: handMesh } = useMemo(
     () => processGLTFModel(handGLTF.scene, 0.85),
     [handGLTF]
   );
-  const { scene: tvScene, targetMesh: tvMesh } = useMemo(
+  const { solidMesh: tvMesh } = useMemo(
     () => processGLTFModel(tvGLTF.scene, 0.85),
     [tvGLTF]
   );
-  const { scene: docScene, targetMesh: docMesh } = useMemo(
+  const { solidMesh: docMesh } = useMemo(
     () => processGLTFModel(docGLTF.scene, 0.85),
     [docGLTF]
   );
@@ -486,21 +489,21 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
       {/* 3. Solidified Silver Metal 3D Model: UX Design Pointing Hand (👆🏻) */}
       {showSolidUX && (
         <group ref={handRef}>
-          <primitive object={handScene} />
+          <primitive object={handMesh} />
         </group>
       )}
 
       {/* 4. Solidified Silver Metal 3D Model: Visual Design TV Monitor (📺) */}
       {showSolidVisual && (
         <group ref={tvRef}>
-          <primitive object={tvScene} />
+          <primitive object={tvMesh} />
         </group>
       )}
 
       {/* 5. Solidified Silver Metal 3D Model: Writings Document Sheet (📝) */}
       {showSolidWritings && (
         <group ref={docRef}>
-          <primitive object={docScene} />
+          <primitive object={docMesh} />
         </group>
       )}
     </group>
