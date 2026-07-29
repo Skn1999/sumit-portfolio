@@ -1,6 +1,5 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Briefcase, GraduationCap, Code2, Globe } from "lucide-react";
 
 const AchievementsSection: React.FC = () => {
   const inkFadeVariant = {
@@ -19,45 +18,34 @@ const AchievementsSection: React.FC = () => {
 
   const experiences = [
     {
-      role: "Design Engineer",
-      organization: "Groundwork",
-      location: "Remote",
-      period: "2025 — Present",
-      description:
-        "Led design and strategy focused on accessibility in regulated digital products. Co-designed tools and workshops for disabled participants, translating regulatory requirements into actionable product practice. 2nd place award at EIT Jumpstarter (New European Bauhaus).",
+      what: "Design Engineer",
+      where: "Groundwork (Remote)",
+      when: "2025 — Present",
     },
     {
-      role: "Service Design Intern",
-      organization: "Dedanext S.p.a",
-      location: "Trento, Italy",
-      period: "Mar 2024 — May 2024",
-      description:
-        "Conducted card-sorting and category ranking studies to map mental models for multi-stakeholder environmental platforms. Built and tested interface prototypes across 4 real-world interactive scenarios to measure human comprehension speed.",
+      what: "Service Design Intern",
+      where: "Dedanext S.p.a (Trento, Italy)",
+      when: "Mar 2024 — May 2024",
     },
     {
-      role: "Frontend Engineer (Core Systems)",
-      organization: "Optmyzr Inc.",
-      location: "Hyderabad, India",
-      period: "May 2020 — July 2023",
-      description:
-        "Redesigned onboarding journey into a 3-step configuration wizard. Co-authored the core Design System React & TypeScript component library and optimized high-density data layouts for 10,000+ rows of analytical metrics.",
+      what: "Frontend Engineer (Core Systems)",
+      where: "Optmyzr Inc. (Hyderabad, India)",
+      when: "May 2020 — July 2023",
     },
   ];
 
   const education = [
     {
-      degree: "Double-degree M.Sc. Human-Computer Interaction & Design",
-      institutions: "Aalto University (Finland) | University of Trento (Italy)",
-      period: "2023 — 2025",
-      focus:
-        "User-Centered Design, Interface Engineering, UI Construction, Usability Testing, Social Cognition, Digital Nudging, Participatory Design, Attention Computing.",
+      what: "Double-degree M.Sc. Human-Computer Interaction & Design",
+      where: "Aalto University (FI) & University of Trento (IT)",
+      when: "2023 — 2025",
     },
   ];
 
   const skillGroups = [
     {
-      title: "Core Methodologies",
-      items: [
+      category: "Core Methodologies",
+      technologies: [
         "Data Schema Design",
         "Information Architecture",
         "React",
@@ -67,8 +55,8 @@ const AchievementsSection: React.FC = () => {
       ],
     },
     {
-      title: "Design Skills",
-      items: [
+      category: "Design Skills",
+      technologies: [
         "Figma",
         "Design Systems",
         "Component Architecture",
@@ -78,8 +66,8 @@ const AchievementsSection: React.FC = () => {
       ],
     },
     {
-      title: "Technical Stack",
-      items: [
+      category: "Technical Stack",
+      technologies: [
         "React",
         "TypeScript",
         "JavaScript",
@@ -105,7 +93,7 @@ const AchievementsSection: React.FC = () => {
     >
       <div className="max-w-6xl mx-auto px-4 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-          {/* Left Column: Heading & Overview Description */}
+          {/* Left Column: Section Heading */}
           <motion.div
             custom={0.1}
             initial="hidden"
@@ -121,13 +109,13 @@ const AchievementsSection: React.FC = () => {
               Achievements
             </h2>
             <p className="font-body-narrative text-base md:text-lg text-ink-muted leading-relaxed">
-              An overview of my credentials and skills, sourced directly from my official Design Engineer resume.
+              An overview of my credentials, skills, and background formatted for quick scanning.
             </p>
           </motion.div>
 
-          {/* Right Column: Experience, Education, Skills, Languages (Clean borderless layout) */}
-          <div className="lg:col-span-8 flex flex-col gap-12">
-            {/* 1. Experience */}
+          {/* Right Column: Clean Scannable Sub-sections */}
+          <div className="lg:col-span-8 flex flex-col gap-14">
+            {/* 1. Experience (3-Column Layout: What, Where, When) */}
             <motion.div
               custom={0.2}
               initial="hidden"
@@ -136,36 +124,39 @@ const AchievementsSection: React.FC = () => {
               variants={inkFadeVariant}
               className="flex flex-col gap-6"
             >
-              <div className="flex items-center gap-2 pb-2 border-b border-paper-border">
-                <Briefcase className="w-4 h-4 text-ink-muted" />
-                <h3 className="font-mono text-xs tracking-widest uppercase font-semibold text-ink-primary">
-                  1. Experience
-                </h3>
-              </div>
+              <h3 className="font-display text-xl font-bold text-ink-primary pb-3 border-b border-paper-border">
+                Experience
+              </h3>
 
-              <div className="flex flex-col gap-8 pl-4 border-l border-paper-border">
+              <div className="flex flex-col gap-5">
+                {/* 3 Column Grid Header */}
+                <div className="hidden sm:grid grid-cols-12 gap-4 font-mono text-xs text-ink-muted uppercase tracking-wider font-semibold pb-1">
+                  <div className="col-span-5">What</div>
+                  <div className="col-span-4">Where</div>
+                  <div className="col-span-3 text-right">When</div>
+                </div>
+
+                {/* Rows */}
                 {experiences.map((exp, idx) => (
-                  <div key={idx} className="flex flex-col gap-1.5">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                      <h4 className="font-display font-bold text-lg text-ink-primary">
-                        {exp.role}{" "}
-                        <span className="text-ink-muted font-normal">
-                          @ {exp.organization} ({exp.location})
-                        </span>
-                      </h4>
-                      <span className="font-mono text-xs text-ink-muted">
-                        {exp.period}
-                      </span>
+                  <div
+                    key={idx}
+                    className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-4 py-3 border-b border-paper-border/60 items-baseline"
+                  >
+                    <div className="sm:col-span-5 font-body-narrative font-semibold text-base text-ink-primary">
+                      {exp.what}
                     </div>
-                    <p className="font-body-narrative text-sm text-ink-muted leading-relaxed">
-                      {exp.description}
-                    </p>
+                    <div className="sm:col-span-4 font-body-narrative text-sm text-ink-muted">
+                      {exp.where}
+                    </div>
+                    <div className="sm:col-span-3 font-mono text-xs text-ink-muted sm:text-right">
+                      {exp.when}
+                    </div>
                   </div>
                 ))}
               </div>
             </motion.div>
 
-            {/* 2. Education */}
+            {/* 2. Education (3-Column Layout: What, Where, When) */}
             <motion.div
               custom={0.25}
               initial="hidden"
@@ -174,36 +165,37 @@ const AchievementsSection: React.FC = () => {
               variants={inkFadeVariant}
               className="flex flex-col gap-6"
             >
-              <div className="flex items-center gap-2 pb-2 border-b border-paper-border">
-                <GraduationCap className="w-4 h-4 text-ink-muted" />
-                <h3 className="font-mono text-xs tracking-widest uppercase font-semibold text-ink-primary">
-                  2. Education
-                </h3>
-              </div>
+              <h3 className="font-display text-xl font-bold text-ink-primary pb-3 border-b border-paper-border">
+                Education
+              </h3>
 
-              <div className="flex flex-col gap-6 pl-4 border-l border-paper-border">
+              <div className="flex flex-col gap-5">
+                <div className="hidden sm:grid grid-cols-12 gap-4 font-mono text-xs text-ink-muted uppercase tracking-wider font-semibold pb-1">
+                  <div className="col-span-5">What</div>
+                  <div className="col-span-4">Where</div>
+                  <div className="col-span-3 text-right">When</div>
+                </div>
+
                 {education.map((edu, idx) => (
-                  <div key={idx} className="flex flex-col gap-1.5">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                      <h4 className="font-display font-bold text-lg text-ink-primary">
-                        {edu.degree}
-                      </h4>
-                      <span className="font-mono text-xs text-ink-muted">
-                        {edu.period}
-                      </span>
+                  <div
+                    key={idx}
+                    className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-4 py-3 border-b border-paper-border/60 items-baseline"
+                  >
+                    <div className="sm:col-span-5 font-body-narrative font-semibold text-base text-ink-primary">
+                      {edu.what}
                     </div>
-                    <p className="font-mono text-xs text-ink-muted font-medium">
-                      {edu.institutions}
-                    </p>
-                    <p className="font-body-narrative text-sm text-ink-muted leading-relaxed">
-                      {edu.focus}
-                    </p>
+                    <div className="sm:col-span-4 font-body-narrative text-sm text-ink-muted">
+                      {edu.where}
+                    </div>
+                    <div className="sm:col-span-3 font-mono text-xs text-ink-muted sm:text-right">
+                      {edu.when}
+                    </div>
                   </div>
                 ))}
               </div>
             </motion.div>
 
-            {/* 3. Skills */}
+            {/* 3. Skills (2-Column Layout: Category & Technologies) */}
             <motion.div
               custom={0.3}
               initial="hidden"
@@ -212,59 +204,62 @@ const AchievementsSection: React.FC = () => {
               variants={inkFadeVariant}
               className="flex flex-col gap-6"
             >
-              <div className="flex items-center gap-2 pb-2 border-b border-paper-border">
-                <Code2 className="w-4 h-4 text-ink-muted" />
-                <h3 className="font-mono text-xs tracking-widest uppercase font-semibold text-ink-primary">
-                  3. Skills
-                </h3>
-              </div>
+              <h3 className="font-display text-xl font-bold text-ink-primary pb-3 border-b border-paper-border">
+                Skills
+              </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="flex flex-col gap-4">
+                <div className="hidden sm:grid grid-cols-12 gap-4 font-mono text-xs text-ink-muted uppercase tracking-wider font-semibold pb-1">
+                  <div className="col-span-4">Category</div>
+                  <div className="col-span-8">Technologies</div>
+                </div>
+
                 {skillGroups.map((group, idx) => (
-                  <div key={idx} className="flex flex-col gap-2">
-                    <h4 className="font-mono text-xs font-semibold text-ink-primary uppercase tracking-wider">
-                      {group.title}
-                    </h4>
-                    <div className="flex flex-wrap gap-1.5">
-                      {group.items.map((item, itemIdx) => (
-                        <span
-                          key={itemIdx}
-                          className="px-2 py-1 rounded border border-paper-border text-xs font-mono text-ink-primary"
-                        >
-                          {item}
-                        </span>
-                      ))}
+                  <div
+                    key={idx}
+                    className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-4 py-3 border-b border-paper-border/60 items-baseline"
+                  >
+                    <div className="sm:col-span-4 font-body-narrative font-semibold text-base text-ink-primary">
+                      {group.category}
+                    </div>
+                    <div className="sm:col-span-8 font-body-narrative text-sm text-ink-muted leading-relaxed">
+                      {group.technologies.join(", ")}
                     </div>
                   </div>
                 ))}
               </div>
             </motion.div>
 
-            {/* 4. Languages */}
+            {/* 4. Languages (2-Column Layout: Language & Proficiency) */}
             <motion.div
-              custom={0.4}
+              custom={0.35}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               variants={inkFadeVariant}
               className="flex flex-col gap-6"
             >
-              <div className="flex items-center gap-2 pb-2 border-b border-paper-border">
-                <Globe className="w-4 h-4 text-ink-muted" />
-                <h3 className="font-mono text-xs tracking-widest uppercase font-semibold text-ink-primary">
-                  4. Languages
-                </h3>
-              </div>
+              <h3 className="font-display text-xl font-bold text-ink-primary pb-3 border-b border-paper-border">
+                Languages
+              </h3>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="flex flex-col gap-4">
+                <div className="hidden sm:grid grid-cols-12 gap-4 font-mono text-xs text-ink-muted uppercase tracking-wider font-semibold pb-1">
+                  <div className="col-span-6">Language</div>
+                  <div className="col-span-6">Proficiency</div>
+                </div>
+
                 {languages.map((lang, idx) => (
-                  <div key={idx} className="flex flex-col gap-0.5">
-                    <span className="font-display font-bold text-base text-ink-primary">
+                  <div
+                    key={idx}
+                    className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-4 py-3 border-b border-paper-border/60 items-baseline"
+                  >
+                    <div className="sm:col-span-6 font-body-narrative font-semibold text-base text-ink-primary">
                       {lang.name}
-                    </span>
-                    <span className="font-mono text-xs text-ink-muted">
+                    </div>
+                    <div className="sm:col-span-6 font-body-narrative text-sm text-ink-muted">
                       {lang.level}
-                    </span>
+                    </div>
                   </div>
                 ))}
               </div>
