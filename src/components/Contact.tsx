@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Linkedin } from "lucide-react";
-import MagneticButton from "./MagneticButton";
+import { motion } from "framer-motion";
+import { Linkedin, Mail, Github } from "lucide-react";
 
 const Contact = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
-  const [isOverInteractive, setIsOverInteractive] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -14,107 +13,68 @@ const Contact = () => {
     setMousePos({ x, y });
   };
 
-  const handleSectionClick = () => {
-    if (!isOverInteractive && mailToButtonRef.current) {
-      mailToButtonRef.current.click();
-    }
-  };
-
-  const mailToButtonRef = React.useRef<HTMLAnchorElement>(null);
-
   return (
     <section
       id="contact"
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={handleSectionClick}
-      className={`py-16 md:py-24 relative overflow-hidden border border-border/40 select-none transition-colors duration-300 hover:bg-[hsl(var(--card))]/35 bg-[hsl(var(--card))]/10 rounded-[24px] px-6 md:px-10 ${
-        isHovered && !isOverInteractive ? "cursor-none" : ""
-      }`}
+      className="py-24 md:py-36 relative overflow-hidden bg-paper-bg border-t border-paper-border"
     >
-      {/* Custom hover cursor follow */}
-      {isHovered && !isOverInteractive && (
-        <div
-          className="pointer-events-none absolute z-50 w-24 h-24 rounded-full bg-[hsl(var(--primary))] text-primary-foreground text-[10px] font-label font-bold uppercase tracking-widest flex items-center justify-center text-center p-2 shadow-2xl select-none -translate-x-1/2 -translate-y-1/2"
-          style={{
-            left: `${mousePos.x}px`,
-            top: `${mousePos.y}px`,
-          }}
+      <div className="max-w-6xl mx-auto px-4 md:px-8 w-full relative z-10">
+        <motion.div
+          initial={{ opacity: 0, filter: "blur(6px)", y: 20 }}
+          whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="rounded-2xl border border-paper-border bg-paper-card p-8 md:p-12"
         >
-          Reach out
-        </div>
-      )}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+            {/* Left Column: Heading & Subheading */}
+            <div className="lg:col-span-8 flex flex-col text-left">
+              <span className="font-mono text-xs tracking-widest text-ink-muted uppercase font-semibold mb-3">
+                04. CONTACT // GET IN TOUCH
+              </span>
+              <h2 className="text-3xl md:text-5xl font-bold font-display text-ink-primary mb-4 tracking-tighter">
+                Need Human Oversight in Your AI &amp; Product Pipeline?
+              </h2>
+              <p className="text-sm md:text-base text-ink-muted font-body-narrative leading-relaxed max-w-xl">
+                Whether you're building next-gen AI tools or scaling complex enterprise
+                interfaces, I ensure your product delivers velocity without sacrificing UX
+                rigor or code quality.
+              </p>
+            </div>
 
-      <div className="max-w-6xl mx-auto w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
-          {/* Left Column: Heading & Subheading */}
-          <div className="lg:col-span-8 flex flex-col text-left">
-            <span className="font-label text-[10px] md:text-xs tracking-widest text-slate-500 uppercase font-semibold mb-3">
-              // CONNECT
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mb-4 tracking-tighter">
-              Need Human Oversight in Your AI &amp; Product Pipeline?
-            </h2>
-            <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 font-body-narrative leading-relaxed max-w-xl">
-              Whether you're building next-gen AI tools or scaling complex enterprise
-              interfaces, I ensure your product delivers velocity without sacrificing UX
-              rigor or code quality. Click anywhere in this block to send me an email.
-            </p>
-            <a
-              ref={mailToButtonRef}
-              href="mailto:sknayyar.sk@gmail.com"
-              className="invisible"
-            ></a>
-          </div>
-
-          {/* Right Column: Social Links */}
-          <div
-            className="lg:col-span-4 flex flex-row lg:justify-end gap-4 w-full pointer-events-auto"
-            onMouseEnter={() => setIsOverInteractive(true)}
-            onMouseLeave={() => setIsOverInteractive(false)}
-          >
-            <MagneticButton
-              size="icon"
-              variant="outline"
-              className="rounded-full w-12 h-12 border-border/80 hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 flex items-center justify-center shrink-0"
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(
-                  "https://www.linkedin.com/in/sumitnayyar-ux/",
-                  "_blank",
-                  "noopener,noreferrer",
-                );
-              }}
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="w-5 h-5" />
-            </MagneticButton>
-
-            <MagneticButton
-              size="icon"
-              variant="outline"
-              className="rounded-full w-12 h-12 border-border/80 hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 flex items-center justify-center shrink-0"
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(
-                  "https://www.behance.net/desman_designer",
-                  "_blank",
-                  "noopener,noreferrer",
-                );
-              }}
-              aria-label="Behance"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                className="w-5 h-5 fill-current"
-                xmlns="http://www.w3.org/2000/svg"
+            {/* Right Column: Direct Contact Links */}
+            <div className="lg:col-span-4 flex flex-col gap-4 w-full">
+              <a
+                href="mailto:sknayyar.sk@gmail.com"
+                className="inline-flex items-center justify-center gap-3 px-6 py-4 rounded-xl border border-paper-border bg-paper-bg hover:border-ink-primary text-ink-primary font-mono text-xs uppercase tracking-wider font-semibold transition-all"
               >
-                <path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988H0V5.021h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zM3 11h3.584c2.508 0 2.906-3-.312-3H3v3zm3.391 3H3v3.016h3.341c3.055 0 2.868-3.016.05-3.016z" />
-              </svg>
-            </MagneticButton>
+                <Mail className="w-4 h-4" />
+                Send Email
+              </a>
+              <a
+                href="https://www.linkedin.com/in/sumitnayyar-ux/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-3 px-6 py-4 rounded-xl border border-paper-border bg-paper-bg hover:border-ink-primary text-ink-primary font-mono text-xs uppercase tracking-wider font-semibold transition-all"
+              >
+                <Linkedin className="w-4 h-4" />
+                Connect on LinkedIn
+              </a>
+              <a
+                href="https://github.com/Skn1999"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-3 px-6 py-4 rounded-xl border border-paper-border bg-paper-bg hover:border-ink-primary text-ink-primary font-mono text-xs uppercase tracking-wider font-semibold transition-all"
+              >
+                <Github className="w-4 h-4" />
+                GitHub Profile
+              </a>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

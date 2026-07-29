@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FileText } from "lucide-react";
 import { Link } from "react-router-dom";
-import DotGridBackground from "./DotGridBackground";
-import MagneticButton from "./MagneticButton";
 
 const HeroSection: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -16,6 +14,20 @@ const HeroSection: React.FC = () => {
     setMousePos({ x, y });
   };
 
+  const inkFadeVariant = {
+    hidden: { opacity: 0, filter: "blur(8px)", y: 16 },
+    visible: (customDelay: number) => ({
+      opacity: 1,
+      filter: "blur(0px)",
+      y: 0,
+      transition: {
+        delay: customDelay,
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    }),
+  };
+
   return (
     <section
       id="about"
@@ -25,15 +37,12 @@ const HeroSection: React.FC = () => {
       onMouseLeave={() => setIsHovered(false)}
       className="relative min-h-[60svh] md:min-h-[65svh] flex flex-col justify-center py-24 md:py-36 bg-paper-bg overflow-hidden"
     >
-      {/* Interactive Dot Grid Background */}
-      <DotGridBackground />
-
       {/* Dynamic Cursor Ambient Radial Aura */}
       <div
         className="absolute inset-0 pointer-events-none transition-opacity duration-500 ease-out"
         style={{
           opacity: isHovered ? 1 : 0,
-          background: `radial-gradient(circle 350px at ${mousePos.x}px ${mousePos.y}px, hsl(var(--paper-border)), transparent 70%)`,
+          background: `radial-gradient(circle 380px at ${mousePos.x}px ${mousePos.y}px, hsl(var(--paper-border)), transparent 70%)`,
         }}
       />
 
@@ -43,9 +52,11 @@ const HeroSection: React.FC = () => {
           <div className="lg:col-span-8 flex flex-col text-left">
             {/* Monospace tracking tag */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.5 }}
+              custom={0.1}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={inkFadeVariant}
               className="font-mono uppercase tracking-widest text-xs font-semibold text-ink-muted mb-6 flex items-center gap-2 flex-wrap"
             >
               <span>LOCATION: HELSINKI, FI // FOCUS:</span>
@@ -58,13 +69,11 @@ const HeroSection: React.FC = () => {
 
             {/* Primary Display Title */}
             <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: 0.2,
-                duration: 0.7,
-                ease: [0.16, 1, 0.3, 1],
-              }}
+              custom={0.25}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={inkFadeVariant}
               className="font-display tracking-tighter font-bold text-4xl md:text-6xl text-ink-primary leading-[1.1] mb-8"
             >
               AI builds fast. <br /> I make sure it builds right.
@@ -72,9 +81,11 @@ const HeroSection: React.FC = () => {
 
             {/* Primary Description Narrative */}
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
+              custom={0.4}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={inkFadeVariant}
               className="font-body-narrative leading-[1.8] text-base md:text-lg text-ink-muted max-w-2xl"
             >
               Hi, I'm Sumit. <br /> AI is the big boom, but costly when it
@@ -84,9 +95,11 @@ const HeroSection: React.FC = () => {
 
             {/* Action Button */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
+              custom={0.55}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={inkFadeVariant}
               className="mt-8"
             >
               <Link
@@ -101,9 +114,11 @@ const HeroSection: React.FC = () => {
 
           {/* Right Column: Profile Image */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
+            custom={0.35}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={inkFadeVariant}
             className="lg:col-span-4 flex justify-center lg:justify-end"
           >
             <div className="relative overflow-hidden rounded-xl border border-paper-border bg-paper-card aspect-[3/4] w-full max-w-[280px] sm:max-w-[320px] lg:max-w-full">

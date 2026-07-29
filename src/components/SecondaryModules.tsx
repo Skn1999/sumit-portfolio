@@ -24,7 +24,13 @@ export const AcademicCohorts: React.FC = () => {
     <div className="py-24 md:py-36 bg-paper-bg border-t border-paper-border">
       <div className="max-w-6xl mx-auto px-4 md:px-8">
         {/* Header */}
-        <div className="mb-16 md:mb-20">
+        <motion.div
+          initial={{ opacity: 0, filter: "blur(6px)", y: 16 }}
+          whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-16 md:mb-20"
+        >
           <span className="font-mono text-xs tracking-widest text-ink-muted uppercase block mb-2">
             ACADEMIC RESEARCH &amp; PRACTICAL EXPERIMENTS
           </span>
@@ -34,10 +40,16 @@ export const AcademicCohorts: React.FC = () => {
           <p className="font-body-narrative text-base md:text-lg text-ink-muted mt-4 max-w-2xl">
             Documenting Master's track evaluations at Aalto University &amp; University of Trento alongside hands-on frontend engineering experiments.
           </p>
-        </div>
+        </motion.div>
 
         {/* Part 1: Academic & HCI Research Labs Matrix Table */}
-        <div className="mb-16">
+        <motion.div
+          initial={{ opacity: 0, filter: "blur(6px)", y: 20 }}
+          whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-16"
+        >
           <h3 className="font-mono text-xs font-semibold tracking-widest text-ink-primary uppercase mb-6">
             // Part 1: HCI &amp; Systems Research Labs (Aalto &amp; Trento Master's Track)
           </h3>
@@ -82,10 +94,15 @@ export const AcademicCohorts: React.FC = () => {
               </tbody>
             </table>
           </div>
-        </div>
+        </motion.div>
 
         {/* Part 2: Practical Engineering Experiments List */}
-        <div>
+        <motion.div
+          initial={{ opacity: 0, filter: "blur(6px)", y: 20 }}
+          whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        >
           <h3 className="font-mono text-xs font-semibold tracking-widest text-ink-primary uppercase mb-6">
             // Part 2: Practical Engineering Sandbox &amp; Experiments
           </h3>
@@ -116,7 +133,7 @@ export const AcademicCohorts: React.FC = () => {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

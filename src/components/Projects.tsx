@@ -58,27 +58,34 @@ const Projects = () => {
     >
       <div className="max-w-6xl mx-auto px-4 md:px-8 relative">
         {/* Section Header */}
-        <div className="mb-16 md:mb-20">
+        <motion.div
+          initial={{ opacity: 0, filter: "blur(6px)", y: 16 }}
+          whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-16 md:mb-20"
+        >
           <span className="font-mono text-xs tracking-widest text-ink-muted uppercase block mb-2">
             Selected Projects // Engineered Systems &amp; Product Oversight
           </span>
           <h2 className="text-3xl md:text-5xl font-bold font-display text-ink-primary tracking-tighter">
             Editorial Project Showcase
           </h2>
-        </div>
+        </motion.div>
 
         {/* Floating Paper Image Preview Card on Desktop Hover */}
         <AnimatePresence>
           {hoveredIndex !== null && projectsData[hoveredIndex]?.cover && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
               animate={{
                 opacity: 1,
                 scale: 1,
+                filter: "blur(0px)",
                 x: mousePos.x + 24,
                 y: mousePos.y - 120,
               }}
-              exit={{ opacity: 0, scale: 0.95 }}
+              exit={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
               transition={{ type: "spring", stiffness: 350, damping: 25, mass: 0.5 }}
               className="pointer-events-none absolute z-50 w-[360px] aspect-[16/10] bg-paper-card p-2 rounded-xl border border-paper-border shadow-xl overflow-hidden hidden lg:block"
               style={{
@@ -98,8 +105,12 @@ const Projects = () => {
         {/* Minimalist Editorial Index List */}
         <div className="flex flex-col border-b border-paper-border">
           {projectsData.map((project, index) => (
-            <article
+            <motion.article
               key={project.slug}
+              initial={{ opacity: 0, filter: "blur(6px)", y: 20 }}
+              whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
               className="border-t border-paper-border py-8 md:py-12 group transition-colors duration-300 hover:bg-paper-card/40"
@@ -150,7 +161,7 @@ const Projects = () => {
                   )}
                 </div>
               </div>
-            </article>
+            </motion.article>
           ))}
         </div>
       </div>
