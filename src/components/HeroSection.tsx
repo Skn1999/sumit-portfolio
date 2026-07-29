@@ -15,7 +15,7 @@ const HeroSection: React.FC = () => {
   };
 
   const inkFadeVariant = {
-    hidden: { opacity: 0, filter: "blur(8px)", y: 16 },
+    hidden: { opacity: 0, filter: "blur(8px)", y: 0 },
     visible: (customDelay: number) => ({
       opacity: 1,
       filter: "blur(0px)",
