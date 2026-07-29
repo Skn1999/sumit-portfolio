@@ -67,7 +67,7 @@ const HeroSection: React.FC = () => {
               }}
               className="font-display tracking-tighter font-bold text-4xl md:text-6xl text-foreground leading-[1.1] mb-8"
             >
-              Hi, I'm Sumit. AI builds fast — I make sure it builds right.
+              AI builds fast. <br /> I make sure it builds right.
             </motion.h1>
 
             {/* Primary Description Narrative */}
@@ -77,8 +77,9 @@ const HeroSection: React.FC = () => {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="font-body-narrative leading-[1.8] text-base md:text-lg text-slate-500 dark:text-slate-400"
             >
-              AI is the big boom, but costly when it fails. I oversee the design
-              and dev process so your product keeps its human touch.
+              Hi, I'm Sumit. AI is the big boom, but costly when it fails. I
+              oversee the design and dev process so your product keeps its human
+              touch.
             </motion.p>
 
             {/* View Resume Button */}
