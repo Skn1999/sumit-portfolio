@@ -2,7 +2,6 @@ import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import ThemeToggle from "./ThemeToggle";
 
 interface SubNavItem {
   to: string;
@@ -120,76 +119,67 @@ const Header = () => {
 
   return (
     <header className="w-full border-b border-paper-border bg-paper-bg/90 backdrop-blur-md fixed top-0 left-0 right-0 z-50">
-      <div className="container mx-auto px-4 md:px-8">
+      <div className="w-full px-4 md:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Brand Logo / Home trigger */}
-          <Link
-            to="/"
-            className="font-mono text-xs font-semibold tracking-widest text-ink-primary hover:text-ink-primary/80 transition-colors uppercase"
+          {/* Desktop Navigation Spanning Full Width Equally (4 equal columns) */}
+          <nav
+            className="hidden md:grid grid-cols-4 w-full h-full items-center text-center divide-x divide-paper-border/60"
+            aria-label="Primary navigation"
           >
-            SUMIT KNAYYAR
-          </Link>
-
-          {/* Desktop Navigation Hierarchy with Dropdowns */}
-          <div className="hidden md:flex items-center gap-8">
-            <nav
-              className="flex items-center gap-6"
-              aria-label="Primary navigation"
-            >
-              {NAV_HIERARCHY.map((item) => (
-                <div
-                  key={item.label}
-                  className="relative"
-                  onMouseEnter={() => setActiveDropdown(item.label)}
-                  onMouseLeave={() => setActiveDropdown(null)}
+            {NAV_HIERARCHY.map((item) => (
+              <div
+                key={item.label}
+                className="relative h-full flex items-center justify-center"
+                onMouseEnter={() => setActiveDropdown(item.label)}
+                onMouseLeave={() => setActiveDropdown(null)}
+              >
+                <button
+                  onClick={() =>
+                    setActiveDropdown(
+                      activeDropdown === item.label ? null : item.label
+                    )
+                  }
+                  className="w-full h-full flex items-center justify-center gap-1.5 font-mono text-xs tracking-widest font-semibold text-ink-muted hover:text-ink-primary transition-colors uppercase px-4"
                 >
-                  <button
-                    onClick={() =>
-                      setActiveDropdown(
-                        activeDropdown === item.label ? null : item.label
-                      )
-                    }
-                    className="flex items-center gap-1 font-mono text-xs tracking-wider font-medium text-ink-muted hover:text-ink-primary transition-colors py-2 uppercase"
-                  >
-                    <span>{item.label}</span>
-                    <ChevronDown
-                      className={`w-3 h-3 transition-transform duration-200 ${
-                        activeDropdown === item.label ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
+                  <span>{item.label}</span>
+                  <ChevronDown
+                    className={`w-3 h-3 transition-transform duration-200 ${
+                      activeDropdown === item.label ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
 
-                  <AnimatePresence>
-                    {activeDropdown === item.label && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 8, scale: 0.98 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 6, scale: 0.98 }}
-                        transition={{ duration: 0.15, ease: "easeOut" }}
-                        className="absolute top-full left-0 mt-1 w-48 rounded-xl border border-paper-border bg-paper-card shadow-lg p-2 z-50"
-                      >
-                        {item.subItems.map((subItem) => (
-                          <Link
-                            key={subItem.to}
-                            to={subItem.to}
-                            onClick={() => setActiveDropdown(null)}
-                            className="block px-3 py-2 rounded-lg text-xs font-mono tracking-wide text-ink-primary hover:bg-paper-bg transition-colors"
-                          >
-                            → {subItem.label}
-                          </Link>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
-            </nav>
-            <ThemeToggle />
-          </div>
+                <AnimatePresence>
+                  {activeDropdown === item.label && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 6, scale: 0.98 }}
+                      transition={{ duration: 0.15, ease: "easeOut" }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-48 rounded-xl border border-paper-border bg-paper-card shadow-lg p-2 z-50 text-left"
+                    >
+                      {item.subItems.map((subItem) => (
+                        <Link
+                          key={subItem.to}
+                          to={subItem.to}
+                          onClick={() => setActiveDropdown(null)}
+                          className="block px-3 py-2 rounded-lg text-xs font-mono tracking-wide text-ink-primary hover:bg-paper-bg transition-colors"
+                        >
+                          → {subItem.label}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </nav>
 
-          {/* Mobile Right Side: Theme + Hamburger */}
-          <div className="flex md:hidden items-center gap-3">
-            <ThemeToggle />
+          {/* Mobile Viewport Bar */}
+          <div className="flex md:hidden items-center justify-between w-full h-16">
+            <span className="font-mono text-xs font-semibold tracking-widest text-ink-primary uppercase">
+              NAVIGATION
+            </span>
 
             <button
               onClick={toggleMenu}

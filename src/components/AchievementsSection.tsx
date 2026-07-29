@@ -78,6 +78,8 @@ const AchievementsSection: React.FC = () => {
     { name: "Finnish", level: "Basic / Learning" },
   ];
 
+  const resumePdfUrl = `${import.meta.env.BASE_URL}Resume-Design-Engineer.pdf`;
+
   return (
     <section
       id="achievements"
@@ -100,13 +102,25 @@ const AchievementsSection: React.FC = () => {
             <h2 className="text-3xl md:text-5xl font-bold font-display text-ink-primary tracking-tighter mb-4">
               Achievements
             </h2>
-            <p className="font-body-narrative text-base md:text-lg text-ink-muted leading-[1.8]">
+            <p className="font-body-narrative text-base md:text-lg text-ink-muted leading-[1.8] mb-6">
               An overview of my credentials, skills, and background formatted for quick scanning.
             </p>
           </motion.div>
 
           {/* Right Column: Clean Scannable Sub-sections */}
           <div className="lg:col-span-8 flex flex-col gap-14">
+            {/* Top Bar Action: Open Curriculum Vitae */}
+            <div className="flex justify-end pb-2 border-b border-paper-border">
+              <a
+                href={resumePdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-xs text-ink-primary hover:text-ink-primary/70 uppercase tracking-widest font-semibold underline decoration-paper-border hover:decoration-ink-primary transition-all"
+              >
+                open curriculum vitae →
+              </a>
+            </div>
+
             {/* 1. Experience (3-Column Layout: What, Where, When) */}
             <motion.div
               custom={0.2}
