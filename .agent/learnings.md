@@ -91,3 +91,10 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Resolution:** Used Option 3 for Hero body copy ("AI is the big boom, but costly when it fails. I oversee the design and dev process so your product keeps its human touch.") and updated SEO, Projects, Secondary Modules, and Contact sections to maintain narrative alignment.
 - **Future instruction:** Keep copy updates synchronized across SEO metadata (`src/pages/Index.tsx`) and UI components (`HeroSection.tsx`, `Projects.tsx`, `SecondaryModules.tsx`, `Contact.tsx`) so search engines and site visitors see consistent positioning.
 
+### 2026-07-29 - `tasks/task_024_v2_design_tokens_and_paper_canvas.md`
+
+- **Lessons learned:** Defining semantic HSL custom properties (`--paper-bg`, `--paper-card`, `--ink-primary`, `--ink-muted`, `--paper-border`) at the root level and mapping them in `tailwind.config.ts` allows all existing Tailwind utility classes (like `bg-background`, `border-paper-border`, `text-ink-primary`) to seamlessly adapt to the Japanese tactile paper aesthetic.
+- **Errors or surprises:** None. Build compiled cleanly.
+- **Resolution:** Updated `src/index.css` and `tailwind.config.ts`.
+- **Future instruction:** Use `bg-paper-bg`, `bg-paper-card`, `text-ink-primary`, `text-ink-muted`, and `border-paper-border` for v2 Japanese minimalist component styling.
+
