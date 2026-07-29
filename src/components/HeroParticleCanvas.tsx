@@ -71,7 +71,6 @@ function samplePointsFromGLTFScene(scene: THREE.Object3D, count: number) {
     return { positions, isOutline };
   }
 
-  // Find primary or merged mesh
   let targetMesh = meshes[0];
   for (const m of meshes) {
     if (m.geometry.attributes.position.count > targetMesh.geometry.attributes.position.count) {
@@ -101,13 +100,11 @@ function samplePointsFromGLTFScene(scene: THREE.Object3D, count: number) {
       positions[i * 3 + 1] = tempPos.y;
       positions[i * 3 + 2] = tempPos.z;
 
-      // Edge/silhouette normals tagged as outline
       const dotZ = Math.abs(tempNorm.z);
-      isOutline[i] = (dotZ < 0.4 || i % 4 === 0) ? 1.0 : 0.0;
+      isOutline[i] = (dotZ < 0.35 || i % 3 === 0) ? 1.0 : 0.0;
     }
   } catch (e) {
     console.warn("MeshSurfaceSampler fallback:", e);
-    // Fallback vertex sampling
     const posAttr = targetMesh.geometry.attributes.position;
     const vCount = posAttr.count;
     for (let i = 0; i < count; i++) {
@@ -118,7 +115,7 @@ function samplePointsFromGLTFScene(scene: THREE.Object3D, count: number) {
       positions[i * 3] = x;
       positions[i * 3 + 1] = y;
       positions[i * 3 + 2] = z;
-      isOutline[i] = (i % 4 === 0) ? 1.0 : 0.0;
+      isOutline[i] = (i % 3 === 0) ? 1.0 : 0.0;
     }
   }
 
@@ -183,7 +180,6 @@ const MultiCategoryParticleShader = {
       vec3 startP = getPosForIndex(uCurrentIndex);
       vec3 targetP = getPosForIndex(uTargetIndex);
 
-      // Swirling noise during morphing transition
       vec3 noise = vec3(
         sin(startP.y * 5.0 + uTime * 2.0) * 0.12,
         cos(startP.x * 5.0 + uTime * 2.0) * 0.12,
@@ -192,9 +188,9 @@ const MultiCategoryParticleShader = {
 
       vec3 currentPos = mix(startP, targetP, easeP) + noise;
 
-      // Slow idle 3D rotation for GLTF 3D models when morphed
+      // Slow 3D rotation for GLTF 3D models
       if (uTargetIndex != 0) {
-        float angle = uTime * 0.4 * easeP;
+        float angle = uTime * 0.3 * easeP;
         float cosA = cos(angle);
         float sinA = sin(angle);
         mat2 rot = mat2(cosA, -sinA, sinA, cosA);
@@ -203,9 +199,18 @@ const MultiCategoryParticleShader = {
 
       vec4 mvPosition = modelViewMatrix * vec4(currentPos, 1.0);
 
+      // Point size logic:
+      // When Hovering (uIsHovering > 0.5): Outline particles pop to 9.0px, fill particles shrink to 3.0px.
+      // When Solidified (uIsHovering == 0.0): Points expand to 10.5px to form a dense solid 3D surface!
       float baseSize = mix(8.0, 4.5, easeP);
-      if (uIsHovering > 0.5 && aIsOutline > 0.5) {
-        baseSize += 3.5;
+      if (uIsHovering > 0.5) {
+        if (aIsOutline > 0.5) {
+          baseSize = 9.0;
+        } else {
+          baseSize = 2.5;
+        }
+      } else {
+        baseSize = mix(baseSize, 10.5, uSolidifyProgress);
       }
 
       gl_PointSize = baseSize * (1.0 / -mvPosition.z);
@@ -263,18 +268,21 @@ const MultiCategoryParticleShader = {
         float spec = pow(max(dot(vec3(0.0, 0.0, 1.0), lightDir), 0.0), 12.0);
 
         finalColor = mix(glassBody, goldAccent, vRandom * 0.5) + cyanGlow * spec * 0.8;
-        finalAlpha = mix(0.65, 0.95, uSolidifyProgress);
       }
 
-      // OUTLINE HOVER MODE (When user hovers on header navigation item)
+      // OUTLINE VS SOLIDIFICATION STATE
       if (uIsHovering > 0.5) {
+        // HOVER INTENT MODE: Show ONLY glowing outline wireframe
         if (vIsOutline > 0.5) {
-          // Outline particles glow brightly to outline 3D model wireframe contour
-          finalColor = mix(finalColor, vec3(0.98, 0.85, 0.55), 0.75);
-          finalAlpha = 0.95;
+          finalColor = mix(finalColor, vec3(0.98, 0.85, 0.55), 0.85);
+          finalAlpha = 0.98;
         } else {
-          // Fill particles dim to reveal wireframe outline
-          finalAlpha = 0.12;
+          finalAlpha = 0.05; // Interior fill particles dim almost completely
+        }
+      } else {
+        // SOLIDIFIED MODE (Navigation complete): All particles fill in to form solid 3D object
+        if (uTargetIndex != 0) {
+          finalAlpha = mix(0.05, 0.98, uSolidifyProgress);
         }
       }
 
@@ -336,7 +344,6 @@ interface SceneContentProps {
 const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const texture = useTexture(imagePath);
 
-  // Load user 3D GLTF models from public/models/
   const handGLTF = useGLTF(`${import.meta.env.BASE_URL}models/pointing-hand.glb`);
   const tvGLTF = useGLTF(`${import.meta.env.BASE_URL}models/tv-screen.glb`);
   const docGLTF = useGLTF(`${import.meta.env.BASE_URL}models/document.glb`);
@@ -352,14 +359,14 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const solidMaterialRef = useRef<THREE.ShaderMaterial>(null!);
 
   const prevCategoryRef = useRef<CategoryKey>(activeCategory);
+  const targetCategoryRef = useRef<CategoryKey>(intendedCategory);
   const morphProgressRef = useRef<number>(1.0);
-  const solidifyProgressRef = useRef<number>(1.0);
+  const solidifyProgressRef = useRef<number>(isHovering ? 0.0 : 1.0);
 
   const cols = 110;
   const rows = 146;
   const count = cols * rows;
 
-  // Extract exact 3D surface mesh vertices from loaded 3D GLTF models
   const { posHero, uvs, posUX, posVisual, posWritings, isOutline, randoms } = useMemo(() => {
     const hero = generateHeroGrid(count, cols, rows);
     const ux = samplePointsFromGLTFScene(handGLTF.scene, count);
@@ -380,8 +387,11 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
     };
   }, [count, cols, rows, handGLTF, tvGLTF, docGLTF]);
 
+  // When intended category or active route changes, trigger morph & solidification animation
   useEffect(() => {
-    if (intendedCategory !== prevCategoryRef.current) {
+    if (intendedCategory !== targetCategoryRef.current) {
+      prevCategoryRef.current = targetCategoryRef.current;
+      targetCategoryRef.current = intendedCategory;
       morphProgressRef.current = 0.0;
     }
   }, [intendedCategory]);
@@ -391,17 +401,15 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
     const targetMouse = new THREE.Vector2(mousePos.x, mousePos.y);
 
     if (morphProgressRef.current < 1.0) {
-      morphProgressRef.current = Math.min(morphProgressRef.current + delta / 1.2, 1.0);
-    } else {
-      prevCategoryRef.current = intendedCategory;
+      morphProgressRef.current = Math.min(morphProgressRef.current + delta / 1.0, 1.0);
     }
 
     const targetSolidify = isHovering ? 0.0 : 1.0;
-    solidifyProgressRef.current += (targetSolidify - solidifyProgressRef.current) * Math.min(delta * 5.0, 1.0);
+    solidifyProgressRef.current += (targetSolidify - solidifyProgressRef.current) * Math.min(delta * 4.0, 1.0);
 
     if (particleMaterialRef.current) {
       particleMaterialRef.current.uniforms.uCurrentIndex.value = categoryToIndex(prevCategoryRef.current);
-      particleMaterialRef.current.uniforms.uTargetIndex.value = categoryToIndex(intendedCategory);
+      particleMaterialRef.current.uniforms.uTargetIndex.value = categoryToIndex(targetCategoryRef.current);
       particleMaterialRef.current.uniforms.uMorphProgress.value = morphProgressRef.current;
       particleMaterialRef.current.uniforms.uIsHovering.value = isHovering ? 1.0 : 0.0;
       particleMaterialRef.current.uniforms.uSolidifyProgress.value = solidifyProgressRef.current;
@@ -423,7 +431,7 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
 
   return (
     <group>
-      {/* 1. Multi-Category Morphing Particles (Using GLTF 3D Surface Sampling) */}
+      {/* 1. Multi-Category Morphing Particles */}
       <points>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[posHero, 3]} />
@@ -505,7 +513,6 @@ export const HeroParticleCanvas: React.FC<{ imagePath: string }> = ({
   );
 };
 
-// Preload 3D GLTF models for instant morphing
 useGLTF.preload(`${import.meta.env.BASE_URL}models/pointing-hand.glb`);
 useGLTF.preload(`${import.meta.env.BASE_URL}models/tv-screen.glb`);
 useGLTF.preload(`${import.meta.env.BASE_URL}models/document.glb`);
