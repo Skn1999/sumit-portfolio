@@ -22,39 +22,36 @@ const AboutSection: React.FC = () => {
       className="py-20 md:py-32 bg-paper-bg border-t border-paper-border"
     >
       <div className="max-w-6xl mx-auto px-4 md:px-8">
-        <div className="max-w-4xl">
-          <motion.span
+        {/* 2-Column Layout with 40/60 split (lg:col-span-5 left, lg:col-span-7 right) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Left Column (40% split): Heading & Tag */}
+          <motion.div
             custom={0.1}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={inkFadeVariant}
-            className="font-mono text-xs tracking-widest text-ink-muted uppercase block mb-4"
+            className="lg:col-span-5 flex flex-col"
           >
-            02 // ABOUT &amp; AI PHILOSOPHY
-          </motion.span>
+            <span className="font-mono text-xs tracking-widest text-ink-muted uppercase block mb-3">
+              02 // ABOUT &amp; AI PHILOSOPHY
+            </span>
 
-          <motion.h2
-            custom={0.2}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={inkFadeVariant}
-            className="text-2xl md:text-4xl font-bold font-display text-ink-primary tracking-tighter mb-8"
-          >
-            Design Engineering &amp; Human-Computer Interaction
-          </motion.h2>
+            <h2 className="text-3xl md:text-5xl font-bold font-display text-ink-primary tracking-tighter mb-4">
+              Design Engineering &amp; Human-Computer Interaction
+            </h2>
+          </motion.div>
 
-          {/* Body text matches Hero section font size (text-base md:text-lg text-ink-muted leading-[1.8]) */}
+          {/* Right Column (60% split): Bio Description Narrative */}
           <motion.div
             custom={0.3}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={inkFadeVariant}
-            className="pl-6 border-l-2 border-paper-border"
+            className="lg:col-span-7 flex flex-col justify-center pt-2 lg:pt-8"
           >
-            <p className="font-body-narrative text-base md:text-lg text-ink-muted leading-[1.8] max-w-3xl">
+            <p className="font-body-narrative text-base md:text-lg text-ink-muted leading-[1.8]">
               I am an User Experience and Behavioural Design graduate from Aalto
               University, Finland and University of Trento, Italy. Recently, I
               collaborated with EU Horizon Project to work on Indoor Air Quality
