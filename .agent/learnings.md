@@ -112,3 +112,10 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Resolution:** Refactored `HeroSection.tsx`.
 - **Future instruction:** Avoid magnetic button hover pulls in hero triggers to maintain a quiet, calm visual aesthetic.
 
+### 2026-07-29 - `tasks/task_027_v2_editorial_index_project_showcase.md`
+
+- **Lessons learned:** Re-engineering project displays from traditional card grids into text-first editorial index lists with cursor-following floating paper cards gives high density for scanning titles and outcomes while preserving visual preview impact.
+- **Errors or surprises:** Mobile viewports require static inline thumbnails since hover cursor positioning is unavailable on touch devices.
+- **Resolution:** Rebuilt `Projects.tsx` with responsive layout logic (floating card for desktop `lg:block`, static cover aspect frame for mobile `lg:hidden`).
+- **Future instruction:** Use `pointer-events-none` on floating hover cards to ensure links under the cursor remain clickable.
+
