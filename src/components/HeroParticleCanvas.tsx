@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useTexture, useGLTF } from "@react-three/drei";
+import { useTexture, useGLTF, Environment } from "@react-three/drei";
 import * as THREE from "three";
 import { MeshSurfaceSampler } from "three/examples/jsm/math/MeshSurfaceSampler.js";
 import { useLocation } from "react-router-dom";
@@ -55,50 +55,11 @@ function generateHeroGrid(count: number, cols: number, rows: number) {
   return { positions, uvs, isOutline };
 }
 
-// Normalize 3D GLTF Scene Scale & Center to exact target size
-function prepareNormalizedMetalModel(originalScene: THREE.Object3D, targetSize = 0.95) {
+// Prepare 3D GLTF model with baked geometry scale & Silver Metal Material
+function processGLTFModel(originalScene: THREE.Object3D, targetSize = 0.85) {
   const scene = originalScene.clone();
 
-  // Apply Glossy Solid Metal Shader
-  scene.traverse((child) => {
-    if ((child as THREE.Mesh).isMesh) {
-      const mesh = child as THREE.Mesh;
-      mesh.geometry.computeVertexNormals();
-
-      mesh.material = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(0xe2e8f0),        // Platinum / Liquid Silver metallic tone
-        metalness: 1.0,                            // 100% Solid Metal Piece
-        roughness: 0.06,                           // High glossy mirror shine
-        clearcoat: 1.0,                            // Glossy lacquer topcoat
-        clearcoatRoughness: 0.04,
-        ior: 2.5,
-        reflectivity: 1.0,
-      });
-    }
-  });
-
-  // Calculate bounding box and scale to exact target bounds
-  const box = new THREE.Box3().setFromObject(scene);
-  const center = new THREE.Vector3();
-  box.getCenter(center);
-  const size = new THREE.Vector3();
-  box.getSize(size);
-
-  const maxDim = Math.max(size.x, size.y, size.z) || 1.0;
-  const scale = targetSize / maxDim;
-
-  scene.position.set(-center.x * scale, -center.y * scale, -center.z * scale);
-  scene.scale.set(scale, scale, scale);
-  scene.updateMatrixWorld(true);
-
-  return scene;
-}
-
-// Sample Surface Points from the EXACT same normalized 3D Model
-function samplePointsFromNormalizedScene(scene: THREE.Object3D, count: number) {
-  const positions = new Float32Array(count * 3);
-  const isOutline = new Float32Array(count);
-
+  // Find primary mesh
   const meshes: THREE.Mesh[] = [];
   scene.traverse((child) => {
     if ((child as THREE.Mesh).isMesh && (child as THREE.Mesh).geometry) {
@@ -107,7 +68,7 @@ function samplePointsFromNormalizedScene(scene: THREE.Object3D, count: number) {
   });
 
   if (meshes.length === 0) {
-    return { positions, isOutline };
+    return { scene, positions: new Float32Array(0), isOutline: new Float32Array(0) };
   }
 
   let targetMesh = meshes[0];
@@ -117,21 +78,56 @@ function samplePointsFromNormalizedScene(scene: THREE.Object3D, count: number) {
     }
   }
 
+  // Clone geometry so we don't mutate original
+  targetMesh.geometry = targetMesh.geometry.clone();
+  targetMesh.geometry.computeBoundingBox();
+
+  const box = targetMesh.geometry.boundingBox || new THREE.Box3();
+  const center = new THREE.Vector3();
+  box.getCenter(center);
+  const size = new THREE.Vector3();
+  box.getSize(size);
+
+  const maxDim = Math.max(size.x, size.y, size.z) || 1.0;
+  const scale = targetSize / maxDim;
+
+  // Center and scale geometry directly in vertex coordinates
+  targetMesh.geometry.center();
+  targetMesh.geometry.scale(scale, scale, scale);
+  targetMesh.geometry.computeVertexNormals();
+
+  // Apply Bright Silver Metal Material
+  targetMesh.material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0xe2e8f0),        // Bright Lustrous Silver Metal
+    metalness: 0.85,                           // Polished Silver Metal
+    roughness: 0.20,                           // Satin Silver Sheen
+    envMapIntensity: 2.0,
+  });
+
+  // Reset parent object transforms to avoid double scaling
+  scene.position.set(0, 0, 0);
+  scene.rotation.set(0, 0, 0);
+  scene.scale.set(1, 1, 1);
+
+  return { scene, targetMesh };
+}
+
+// Sample points from the exact same baked 3D mesh geometry
+function samplePointsFromMesh(targetMesh: THREE.Mesh, count: number) {
+  const positions = new Float32Array(count * 3);
+  const isOutline = new Float32Array(count);
+
   try {
     const sampler = new MeshSurfaceSampler(targetMesh).build();
     const tempPos = new THREE.Vector3();
     const tempNorm = new THREE.Vector3();
-    const worldPos = new THREE.Vector3();
 
     for (let i = 0; i < count; i++) {
       sampler.sample(tempPos, tempNorm);
-      // Transform local sampled position to normalized world position
-      worldPos.copy(tempPos);
-      targetMesh.localToWorld(worldPos);
 
-      positions[i * 3] = worldPos.x;
-      positions[i * 3 + 1] = worldPos.y;
-      positions[i * 3 + 2] = worldPos.z;
+      positions[i * 3] = tempPos.x;
+      positions[i * 3 + 1] = tempPos.y;
+      positions[i * 3 + 2] = tempPos.z;
 
       const dotZ = Math.abs(tempNorm.z);
       isOutline[i] = (dotZ < 0.35 || i % 3 === 0) ? 1.0 : 0.0;
@@ -140,16 +136,12 @@ function samplePointsFromNormalizedScene(scene: THREE.Object3D, count: number) {
     console.warn("MeshSurfaceSampler fallback:", e);
     const posAttr = targetMesh.geometry.attributes.position;
     const vCount = posAttr.count;
-    const worldPos = new THREE.Vector3();
 
     for (let i = 0; i < count; i++) {
       const idx = i % vCount;
-      worldPos.set(posAttr.getX(idx), posAttr.getY(idx), posAttr.getZ(idx));
-      targetMesh.localToWorld(worldPos);
-
-      positions[i * 3] = worldPos.x;
-      positions[i * 3 + 1] = worldPos.y;
-      positions[i * 3 + 2] = worldPos.z;
+      positions[i * 3] = posAttr.getX(idx);
+      positions[i * 3 + 1] = posAttr.getY(idx);
+      positions[i * 3 + 2] = posAttr.getZ(idx);
       isOutline[i] = (i % 3 === 0) ? 1.0 : 0.0;
     }
   }
@@ -340,10 +332,19 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const tvGLTF = useGLTF(`${import.meta.env.BASE_URL}models/tv-screen.glb`);
   const docGLTF = useGLTF(`${import.meta.env.BASE_URL}models/document.glb`);
 
-  // Prepare normalized solid 3D models with Glossy Chrome Metal Material
-  const handScene = useMemo(() => prepareNormalizedMetalModel(handGLTF.scene, 0.95), [handGLTF]);
-  const tvScene = useMemo(() => prepareNormalizedMetalModel(tvGLTF.scene, 0.95), [tvGLTF]);
-  const docScene = useMemo(() => prepareNormalizedMetalModel(docGLTF.scene, 0.95), [docGLTF]);
+  // Process GLTF models & bake exact normalized geometry scale
+  const { scene: handScene, targetMesh: handMesh } = useMemo(
+    () => processGLTFModel(handGLTF.scene, 0.85),
+    [handGLTF]
+  );
+  const { scene: tvScene, targetMesh: tvMesh } = useMemo(
+    () => processGLTFModel(tvGLTF.scene, 0.85),
+    [tvGLTF]
+  );
+  const { scene: docScene, targetMesh: docMesh } = useMemo(
+    () => processGLTFModel(docGLTF.scene, 0.85),
+    [docGLTF]
+  );
 
   const location = useLocation();
   const { intendedRoute } = useNavIntent();
@@ -368,12 +369,12 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const rows = 146;
   const count = cols * rows;
 
-  // Sample outline surface points from the exact same normalized 3D models
+  // Sample outline surface points from the exact same baked 3D mesh geometry
   const { posHero, uvs, posUX, posVisual, posWritings, isOutline, randoms } = useMemo(() => {
     const hero = generateHeroGrid(count, cols, rows);
-    const ux = samplePointsFromNormalizedScene(handScene, count);
-    const vis = samplePointsFromNormalizedScene(tvScene, count);
-    const wr = samplePointsFromNormalizedScene(docScene, count);
+    const ux = samplePointsFromMesh(handMesh, count);
+    const vis = samplePointsFromMesh(tvMesh, count);
+    const wr = samplePointsFromMesh(docMesh, count);
 
     const randArray = new Float32Array(count);
     for (let i = 0; i < count; i++) randArray[i] = Math.random();
@@ -387,7 +388,7 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
       isOutline: ux.isOutline,
       randoms: randArray,
     };
-  }, [count, cols, rows, handScene, tvScene, docScene]);
+  }, [count, cols, rows, handMesh, tvMesh, docMesh]);
 
   useEffect(() => {
     if (intendedCategory !== targetCategoryRef.current) {
@@ -440,8 +441,11 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
 
   return (
     <group>
-      {/* Studio Metallic Lighting for Glossy Chrome Metal Reflections */}
-      <ambientLight intensity={1.0} />
+      {/* Environment Map for Bright Metallic Silver Specular Reflections */}
+      <Environment preset="studio" />
+
+      {/* Studio Metallic Lighting */}
+      <ambientLight intensity={1.2} />
       <directionalLight position={[3, 5, 4]} intensity={3.5} color="#ffffff" />
       <directionalLight position={[-3, -2, 2]} intensity={2.2} color="#cbd5e1" />
       <pointLight position={[0, 4, -3]} intensity={2.8} color="#f8fafc" />
@@ -479,21 +483,21 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
         />
       </mesh>
 
-      {/* 3. Solidified Glossy Chrome Metal 3D Model: UX Design Pointing Hand (👆🏻) */}
+      {/* 3. Solidified Silver Metal 3D Model: UX Design Pointing Hand (👆🏻) */}
       {showSolidUX && (
         <group ref={handRef}>
           <primitive object={handScene} />
         </group>
       )}
 
-      {/* 4. Solidified Glossy Chrome Metal 3D Model: Visual Design TV Monitor (📺) */}
+      {/* 4. Solidified Silver Metal 3D Model: Visual Design TV Monitor (📺) */}
       {showSolidVisual && (
         <group ref={tvRef}>
           <primitive object={tvScene} />
         </group>
       )}
 
-      {/* 5. Solidified Glossy Chrome Metal 3D Model: Writings Document Sheet (📝) */}
+      {/* 5. Solidified Silver Metal 3D Model: Writings Document Sheet (📝) */}
       {showSolidWritings && (
         <group ref={docRef}>
           <primitive object={docScene} />
