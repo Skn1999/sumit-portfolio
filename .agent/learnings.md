@@ -105,3 +105,10 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Resolution:** Rebuilt `Header.tsx` and updated `Contact.tsx` Footer to 2-column layout.
 - **Future instruction:** Ensure mobile menu drawers use `bg-paper-bg` and `border-paper-border` so mobile overlay navigation matches desktop slate paper styling.
 
+### 2026-07-29 - `tasks/task_026_v2_editorial_hero_section.md`
+
+- **Lessons learned:** Utilizing generous vertical section padding (`py-24 md:py-36`) on a seamless slate paper canvas (`bg-paper-bg`) highlights the typographic contrast and provides spatial breathing room (*Ma*) without heavy shadows or neubrutalistic borders.
+- **Errors or surprises:** None. Headline and narrative copy were preserved verbatim while tag text was updated to `LOCATION: HELSINKI, FI // FOCUS: HCI & FRONTEND SYSTEMS`.
+- **Resolution:** Refactored `HeroSection.tsx`.
+- **Future instruction:** Avoid magnetic button hover pulls in hero triggers to maintain a quiet, calm visual aesthetic.
+
