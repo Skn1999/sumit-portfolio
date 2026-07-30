@@ -112,15 +112,15 @@ const slatVariant: Variants = {
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { intendedRoute, setIntendedRoute } = useNavIntent();
+  const { intendedRoute, setHoverIntent, cancelHoverIntent } = useNavIntent();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = useCallback(() => setMenuOpen((v) => !v), []);
 
   useEffect(() => {
     setMenuOpen(false);
-    setIntendedRoute(null);
-  }, [location.pathname, location.hash, location.search, setIntendedRoute]);
+    cancelHoverIntent();
+  }, [location.pathname, location.hash, location.search, cancelHoverIntent]);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -129,23 +129,36 @@ const Header = () => {
     };
   }, [menuOpen]);
 
-  const handleHeaderMouseLeave = useCallback(() => {
-    const currentRoute = location.pathname + location.search;
-    if (intendedRoute && intendedRoute !== currentRoute) {
-      navigate(intendedRoute);
-    }
-    setIntendedRoute(null);
-  }, [
-    intendedRoute,
-    location.pathname,
-    location.search,
-    navigate,
-    setIntendedRoute,
-  ]);
+  const handleHeaderMouseLeave = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      // 1. Top Edge Guard: Cancel intent if cursor exits toward browser address bar / tabs
+      const headerRect = e.currentTarget.getBoundingClientRect();
+      const isExitingTop = e.clientY <= headerRect.top + 5 || e.clientY <= 10;
+
+      if (isExitingTop) {
+        cancelHoverIntent();
+        return;
+      }
+
+      // 2. Normal Intent Navigation when cursor leaves bottom of header into page content
+      const currentRoute = location.pathname + location.search;
+      if (intendedRoute && intendedRoute !== currentRoute) {
+        navigate(intendedRoute);
+      }
+      cancelHoverIntent();
+    },
+    [
+      intendedRoute,
+      location.pathname,
+      location.search,
+      navigate,
+      cancelHoverIntent,
+    ]
+  );
 
   const handleExplicitClick = useCallback(() => {
-    setIntendedRoute(null);
-  }, [setIntendedRoute]);
+    cancelHoverIntent();
+  }, [cancelHoverIntent]);
 
   return (
     <header className="w-full border-b border-paper-border bg-paper-bg/95 backdrop-blur-md fixed top-0 left-0 right-0 z-50">
@@ -159,7 +172,7 @@ const Header = () => {
           {NAV_HIERARCHY.map((item) => (
             <div
               key={item.label}
-              onMouseEnter={() => setIntendedRoute(item.mainRoute)}
+              onMouseEnter={() => setHoverIntent(item.mainRoute, 200)}
               className="flex flex-col items-start justify-start py-3.5 px-6 text-left cursor-pointer"
             >
               {/* Main Category Header acting as Main Route (Bold Monospace Uppercase) */}
