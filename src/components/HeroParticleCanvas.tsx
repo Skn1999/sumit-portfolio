@@ -5,7 +5,7 @@ import * as THREE from "three";
 import { MeshSurfaceSampler } from "three/examples/jsm/math/MeshSurfaceSampler.js";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
-import fontData from "three/examples/fonts/helvetiker_bold.typeface.json";
+import cursiveFontData from "@/assets/fonts/cursive.json";
 import { useLocation } from "react-router-dom";
 import { useNavIntent } from "@/contexts/NavIntentContext";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
@@ -40,16 +40,18 @@ function categoryToIndex(cat: CategoryKey): number {
   }
 }
 
-// 1. Create 3D Text Mesh for "me"
+// 1. Create 3D Cursive Text Mesh for "me" using Dancing Script typeface
 function create3DTextMesh(text = "me", targetSize = 0.85) {
   const fontLoader = new FontLoader();
-  const font = fontLoader.parse(fontData);
+  const font = fontLoader.parse(
+    cursiveFontData as unknown as Parameters<FontLoader["parse"]>[0],
+  );
 
   const textGeometry = new TextGeometry(text, {
     font: font,
-    size: 0.6,
+    size: 0.7,
     height: 0.25,
-    curveSegments: 12,
+    curveSegments: 16,
     bevelEnabled: true,
     bevelThickness: 0.04,
     bevelSize: 0.03,
@@ -175,7 +177,7 @@ function samplePointsFromMesh(targetMesh: THREE.Mesh, count: number) {
   return { positions, isOutline };
 }
 
-/* ── Wireframe Outline Particle Shader with Organic Vibration Jitter ── */
+/* ── Wireframe Outline Particle Shader with Continuous Y-Axis Rotation & Organic Micro-Vibration ── */
 const OutlineParticleShader = {
   uniforms: {
     uCurrentIndex: { value: 0 },
@@ -238,23 +240,14 @@ const OutlineParticleShader = {
 
       vec3 currentPos = mix(startP, targetP, easeP) + noise;
 
-      if (uTargetIndex != 0) {
-        float angle = uTime * 0.3 * easeP;
-        float cosA = cos(angle);
-        float sinA = sin(angle);
-        currentPos.xz = vec2(
-          currentPos.x * cosA + currentPos.z * sinA,
-          -currentPos.x * sinA + currentPos.z * cosA
-        );
-      } else {
-        float angle = uTime * 0.3 * (1.0 - easeP);
-        float cosA = cos(angle);
-        float sinA = sin(angle);
-        currentPos.xz = vec2(
-          currentPos.x * cosA + currentPos.z * sinA,
-          -currentPos.x * sinA + currentPos.z * cosA
-        );
-      }
+      // Continuous Y-axis rotation matching the solid 3D mesh rotation speed
+      float angle = uTime * 0.3;
+      float cosA = cos(angle);
+      float sinA = sin(angle);
+      currentPos.xz = vec2(
+        currentPos.x * cosA + currentPos.z * sinA,
+        -currentPos.x * sinA + currentPos.z * cosA
+      );
 
       // Organic micro-vibration jitter for outline particles to feel alive
       if (aIsOutline > 0.5) {
@@ -445,7 +438,7 @@ const SceneContent: React.FC<SceneContentProps> = ({ mousePos }) => {
       />
       <pointLight position={[0, 4, -3]} intensity={2.8} color="#f8fafc" />
 
-      {/* 1. Wireframe Outline Particle Swarm with Micro-Vibration */}
+      {/* 1. Wireframe Outline Particle Swarm with Continuous Y-Axis Rotation */}
       <points>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[posHero, 3]} />
@@ -474,7 +467,7 @@ const SceneContent: React.FC<SceneContentProps> = ({ mousePos }) => {
         />
       </points>
 
-      {/* 2. Solidified Silver Metal 3D Text Model: Hero "me" */}
+      {/* 2. Solidified Cursive Silver Metal 3D Text Model: Hero "me" */}
       {showSolidHero && (
         <group ref={meRef}>
           <primitive object={meMesh} />

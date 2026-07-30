@@ -168,11 +168,12 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Resolution:** Rewrote `optmyzr-dashboard-migration/index.mdx` into standard MDX sections and deleted `CaseStudyLayout.tsx`.
 - **Future instruction:** Maintain standard Markdown headings (`## 01 // CONTEXT`, `## 02 // PROBLEM`, `## 03 // APPROACH`, `## 04 // IMPACT`) and `ProjectImageAsset` across all future project MDX files.
 
-### 2026-07-30 - `HeroParticleCanvas 3D "me" Text Node & Silver Metal Solidification`
+### 2026-07-30 - `HeroParticleCanvas 3D Cursive "me" Text Node & Continuous Outline Rotation`
 
-- **Lessons learned:** Extruding 3D text via Three.js `TextGeometry` and `FontLoader` with a typeface JSON allows `MeshSurfaceSampler` to sample 3D points directly from text surfaces, enabling seamless wireframe particle outline morphing and solid 3D silver metal rendering without relying on 2D image plane shaders.
+- **Lessons learned:** 
+  1. Converting Google Fonts (such as Dancing Script) to Three.js Typeface JSON using `opentype.js` allows custom cursive 3D text generation for `TextGeometry`.
+  2. To sync particle swarm rotation with solid 3D models in WebGL GLSL shaders, apply continuous Y-axis rotation `float angle = uTime * 0.3;` in `OutlineParticleShader.vertexShader` directly rather than dampening `angle` by morphing progress (`easeP`).
 - **Errors or surprises:** None.
-- **Resolution:** Created `create3DTextMesh("me", 0.85)` in `HeroParticleCanvas.tsx`, updated particle shader to silver shine, and enabled `showSolidHero` with standard silver metal material.
-- **Future instruction:** Keep 3D text geometry centered (`textGeometry.center()`) before scaling to ensure bounding box alignment matches GLTF models.
+- **Resolution:** Generated `src/assets/fonts/cursive.json` via `scripts/convert-cursive-font.cjs`, updated `create3DTextMesh` in `HeroParticleCanvas.tsx`, and updated shader Y-axis rotation.
+- **Future instruction:** Ensure vertex shader particle rotation speed (`uTime * 0.3`) matches Three.js object group rotation speed (`rotation.y = elapsedTime * 0.3`) to prevent visual desynchronization during particle morphing transitions.
 
-- **Future instruction:** Maintain standard Markdown headings (`## 01 // CONTEXT`, `## 02 // PROBLEM`, `## 03 // APPROACH`, `## 04 // IMPACT`) and `ProjectImageAsset` across all future project MDX files.
