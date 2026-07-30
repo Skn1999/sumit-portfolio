@@ -28,8 +28,8 @@ const NAV_HIERARCHY: NavItem[] = [
     label: "Design",
     mainRoute: "/ux-design",
     subItems: [
-      { to: "/ux-design", label: "User Experience" },
-      { to: "/visual-design", label: "Visual Design" },
+      { to: "/ux-design#user-experience", label: "User Experience" },
+      { to: "/ux-design#visual-design", label: "Visual Design" },
     ],
   },
   {
@@ -44,8 +44,8 @@ const NAV_HIERARCHY: NavItem[] = [
     label: "Writings",
     mainRoute: "/writings/publication",
     subItems: [
-      { to: "/writings/publication", label: "Publication" },
-      { to: "/writings/research", label: "Research" },
+      { to: "/writings/publication#publication", label: "Publication" },
+      { to: "/writings/publication#research", label: "Research" },
     ],
   },
 ];

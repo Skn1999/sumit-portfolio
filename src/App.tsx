@@ -51,7 +51,7 @@ const AnimatedRoutes = () => {
         <Route path="/data-engineering" element={<DataEngineeringPage />} />
         <Route path="/projects" element={<UxDesignPage />} />
         <Route path="/projects/:slug" element={<ProjectPage />} />
-        <Route path="/visual-design" element={<VisualDesignPage />} />
+        <Route path="/visual-design" element={<UxDesignPage />} />
         <Route path="/writings/publication" element={<WritingsPage />} />
         <Route path="/writings/research" element={<WritingsPage />} />
         <Route path="/ux-bites" element={<WritingsPage />} />

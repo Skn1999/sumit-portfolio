@@ -57,7 +57,7 @@ const Projects = () => {
 
   return (
     <section
-      id="projects"
+      id="user-experience"
       onMouseMove={handleMouseMove}
       className="relative pt-24 md:pt-36 bg-paper-bg border-t border-paper-border"
     >

@@ -7,10 +7,10 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, ExternalLink } from "lucide-react";
 import designProjects from "@/data/designProjects";
 
-const VisualDesignProjects: React.FC = () => {
+export const VisualDesignProjects: React.FC = () => {
   return (
     <section
-      id="projects"
+      id="visual-design"
       className="relative pt-24 md:pt-36 bg-paper-bg border-t border-paper-border"
     >
       <div className="max-w-6xl mx-auto px-4 md:px-8 relative">
