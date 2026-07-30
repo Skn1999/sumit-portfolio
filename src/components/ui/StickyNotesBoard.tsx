@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
 export interface StickyNoteItem {
-  icon?: string;
   title: string;
   description: string;
   color?: "moss" | "clay" | "sand" | "stone" | "indigo";
@@ -88,29 +87,28 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
 
                 {/* Content Container with Internal Unroll Dynamics */}
                 <div className="relative flex-1 flex flex-col justify-between overflow-hidden">
-                  {/* Top Header: Icon & Title */}
+                  {/* Top Header: Title */}
                   <div
                     className={cn(
                       "transition-all duration-300 ease-out transform",
                       isHovered ? "-translate-y-1" : "translate-y-1"
                     )}
                   >
-                    {note.icon && <div className="text-2xl sm:text-3xl mb-2">{note.icon}</div>}
                     <strong className="block font-display text-base sm:text-lg font-bold leading-tight">
                       {note.title}
                     </strong>
                   </div>
 
-                  {/* Internal Unroll Slide-Up Narrative */}
+                  {/* Internal Unroll Slide-Up Narrative (8-9px text size) */}
                   <div
                     className={cn(
-                      "transition-all duration-300 ease-out overflow-y-auto pr-1 leading-relaxed font-body-narrative",
+                      "transition-all duration-300 ease-out overflow-y-auto pr-1 font-body-narrative",
                       isHovered
                         ? "opacity-100 translate-y-0 max-h-44 mt-3 pt-3 border-t border-current/20"
                         : "opacity-0 translate-y-4 max-h-0 pointer-events-none"
                     )}
                   >
-                    <p className="text-xs sm:text-sm leading-relaxed">
+                    <p className="text-[9px] leading-relaxed tracking-wide">
                       {note.description}
                     </p>
                   </div>
