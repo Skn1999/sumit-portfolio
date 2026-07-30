@@ -86,24 +86,32 @@ Before designing anything, I needed to understand the forces at play. DS19 isn't
 
 I mapped four key actors and what drives (and blocks) each one:
 
-<section className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6 not-prose">
-  <article className="bg-muted rounded-xl p-5 border border-border/10">
-    <strong>Housing Ministry</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Sets guidelines, balances budget with integration goals. Interested in better outcomes but distant from residents' everyday life.</p>
-  </article>
-  <article className="bg-muted rounded-xl p-5 border border-border/10">
-    <strong>Municipalities</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Closest to urban challenges. Genuinely want better tools to support residents, but lack resources and design methods.</p>
-  </article>
-  <article className="bg-muted rounded-xl p-5 border border-border/10">
-    <strong>Developers</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Experts in construction and cost. Reluctant to take on "social" responsibilities or hand future residents any design power.</p>
-  </article>
-  <article className="bg-muted rounded-xl p-5 border border-border/10">
-    <strong>Residents</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Seeking affordable housing, safe spaces for children, places for community. They have the most at stake and the least say.</p>
-  </article>
-</section>
+<StickyNotesBoard
+  title="// STAKEHOLDER MAPPING — KEY ACTORS & DRIVERS"
+  subtitle="Hover over any sticky note to unroll actor constraints"
+  notes={[
+    {
+      title: "Housing Ministry",
+      description: "Sets guidelines, balances budget with integration goals. Interested in better outcomes but distant from residents' everyday life.",
+      color: "stone",
+    },
+    {
+      title: "Municipalities",
+      description: "Closest to urban challenges. Genuinely want better tools to support residents, but lack resources and design methods.",
+      color: "indigo",
+    },
+    {
+      title: "Developers",
+      description: "Experts in construction and cost. Reluctant to take on 'social' responsibilities or hand future residents any design power.",
+      color: "sand",
+    },
+    {
+      title: "Residents",
+      description: "Seeking affordable housing, safe spaces for children, places for community. They have the most at stake and the least say.",
+      color: "clay",
+    },
+  ]}
+/>
 
 <ProjectImageAsset src="social-integration-pd/stakeholder-ecosystem.png" alt="Stakeholder Ecosystem Map" />
 <p className="font-mono text-[11px] text-ink-muted tracking-wide text-center mt-2.5 mb-8">
