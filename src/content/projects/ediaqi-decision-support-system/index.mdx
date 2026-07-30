@@ -1,8 +1,8 @@
 ---
 slug: "ediaqi-decision-support-system"
 title: "EDIAQI: Designing a Decision Support System for Indoor Air Quality"
-tagline: "Translating real-time sensor data into actionable guidance for non-technical users in public schools and municipal buildings."
-date: "2025-04-01"
+tagline: "Designing for actionable guidance for non-technical users in public schools and municipal buildings."
+date: "2026-03-01"
 type: "design"
 subCategory: "ux-design"
 featured: true
@@ -11,19 +11,16 @@ cover:
   alt: "EDIAQI Dashboard V2 wireframe showing IAQ monitoring interface"
 tech:
   - "Figma"
-  - "Service Design"
   - "UX Research"
   - "Information Architecture"
   - "Heuristic Evaluation"
-  - "SensorThings API / FROST Server"
-  - "Horizon Europe"
 metric: "30 usability issues identified; role-separated DSS prototype in progress for 3 stakeholder groups across public schools and municipal offices"
 links:
   prototype: https://www.figma.com/make/NMaJtePg9r2moSJt4pxSZr/Indoor-Air-Quality-Display?fullscreen=1&t=8ZFJ14PVlixDqryN-1&code-node-id=0-9
   dashboard_prototype: https://www.figma.com/make/rGy3EC5u9Kv5cjRtsqL3Nx/Low-Fidelity-Wireframes-for-Dashboard?fullscreen=1&t=TnOHy22IdTdxUu9z-1&code-node-id=0-9
 summary: "A master's internship project designing a Decision Support System (DSS) on top of an IoT sensor dashboard for the EU Horizon Europe EDIAQI project. The system translates 12+ air quality parameters into prioritized, role-appropriate guidance for facility staff, teachers, and civil workers."
 roles:
-  - "UX & Service Design"
+  - "UX Design"
   - "UX Research"
   - "Interaction Design"
 order: 1
@@ -34,7 +31,7 @@ import { ProjectImageAsset } from "@/components/ui/project-image-asset";
 
 ## 01 // CONTEXT
 
-**EDIAQI** (Evidence Driven Indoor Air Quality Improvement) is a **Horizon Europe** research initiative deploying IoT-based indoor air quality (IAQ) monitoring across public schools and municipal offices in **Ferrara, Italy**. The project infrastructure includes 32 NetPID sensors and Radiello passive samplers, streaming 12+ parameters (PM2.5, PM10, CO₂, CO, TVOC, AVOC, NO₂, O₃, humidity, temperature, pressure, and formaldehyde) to a FROST Server via the OGC SensorThings API.
+<a href="https://ediaqi.eu/" target="_blank" rel="noopener noreferrer">**EDIAQI**</a> (Evidence Driven Indoor Air Quality Improvement) is a **Horizon Europe** research initiative deploying IoT-based indoor air quality (IAQ) monitoring across public schools and municipal offices in **Ferrara, Italy**. The project infrastructure includes 32 NetPID sensors and Radiello passive samplers, streaming 12+ parameters (PM2.5, PM10, CO₂, CO, TVOC, AVOC, NO₂, O₃, humidity, temperature, pressure, and formaldehyde) to a FROST Server via the OGC SensorThings API.
 
 The Deda Next team deployed sensors to collect telemetry from participating buildings. The gap was everything that comes after the data: **what should a non-technical user actually do when a threshold is crossed?** My contribution was designing the Decision Support System (DSS) layer that bridges sensor readings and real-world human action.
 
@@ -46,7 +43,7 @@ A dashboard alone does not produce behavior change.
 
 When CO₂ spikes in a classroom, a teacher needs to know: *open the window, for how long, and what to tell the children*. When PM2.5 is elevated across three buildings simultaneously, a facility manager needs prioritization logic, not three identical alerts. When a maintenance action is taken, the documentation trail required by Italian occupational health law (D.Lgs. 81/2008) must be low-friction enough that it actually gets executed.
 
-<ProjectImageAsset src="ediaqi-decision-support-system/problem-hypo.jpg" alt="EDIAQI Problem Hypothesis Framework" />
+<ProjectImageAsset src="ediaqi-decision-support-system/problem-hypo.jpg" alt="EDIAQI Problem Hypothesis Framework" width="wide" />
 <p className="font-mono text-[11px] text-ink-muted tracking-wide text-center mt-2.5 mb-8">
   Fig 01 // Problem hypothesis & stakeholder mapping framework
 </p>
@@ -62,7 +59,7 @@ When CO₂ spikes in a classroom, a teacher needs to know: *open the window, for
 ### Action Protocol Layer
 Drawing from the Boston Public Schools IAQ Response precedent, I designed an explicit action protocol layer surfacing:
 1. Plain-language severity labels
-2. Context-specific action prompts (e.g., *"Open two windows — cross-ventilation recommended"*)
+2. Context-specific action prompts (e.g., *"Open the windows, cross-ventilation recommended"*)
 3. One-tap logging for compliance documentation
 4. Recovery status indicators closing the feedback loop
 
@@ -108,3 +105,14 @@ Conducted a full Nielsen Heuristic Evaluation of the initial dashboard prototype
 - **30 Usability Issues Surfaced & Resolved:** Evaluated existing dashboard against legal and accessibility standards.
 - **Role-Separated DSS Framework:** Delivered lo-fi wireframes and interactive prototypes for 3 distinct stakeholder personas across public schools and municipal offices in Italy.
 - **Institutional Clarity:** Identified Classe II threshold misalignments under Italian occupational health standards (D.Lgs. 81/2008), providing legal and institutional clarity for future deployments.
+
+<div className="my-8 flex justify-center">
+  <a
+    href={"https://fourth-yew-1cd.notion.site/EDIAQI-Designing-a-Decision-Support-System-for-Indoor-Air-Quality-39cfd7140ca780139055cfcda74c2841?source=copy_link"}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center gap-2 font-mono text-xs text-ink-primary hover:text-ink-primary/70 uppercase tracking-widest font-semibold px-5 py-3 rounded-xl border border-paper-border bg-paper-card shadow-sm hover:border-ink-primary/40 transition-all"
+  >
+    📄 Read the Full Study →
+  </a>
+</div>

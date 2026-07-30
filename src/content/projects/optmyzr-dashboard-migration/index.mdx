@@ -2,7 +2,7 @@
 slug: "optmyzr-dashboard-migration"
 title: "Config-Driven React Migration"
 tagline: "Replacing a legacy Backbone.js and jQuery stack with a modular component architecture to eliminate critical UI rendering bottlenecks."
-date: "2026-01-15"
+date: "2023-06-15"
 type: "engineering"
 subCategory: "frontend-engineering"
 featured: true
@@ -29,15 +29,15 @@ import { ProjectImageAsset } from "@/components/ui/project-image-asset";
 
 ## 01 // CONTEXT
 
-Optmyzr relies on high-traffic, data-dense analytics applications to help digital marketers manage multi-platform advertising campaigns. As data volume scaled, legacy Backbone.js and jQuery view layers triggered cascading browser re-renders, driving time-to-interactive benchmarks to 8–10 seconds under enterprise workloads.
+Optmyzr relies on high-traffic, data-dense analytics applications to help digital marketers manage multi-platform advertising campaigns. As data volume scaled, legacy Backbone.js and jQuery view layers triggered cascading browser re-renders, driving time-to-interactive benchmarks to 8-10 seconds under enterprise workloads.
 
-As Frontend Systems Engineer, I refactored the core account dashboard and comparison tool views. I engineered the config-driven layout compiler, built state isolation boundaries, and designed an LLM-assisted migration pipeline to refactor legacy templates into design-token-compliant React components.
+As Frontend Systems Engineer, I refactored the core account dashboard and comparison tool views. I designed the config-driven layout compiler, built state isolation boundaries, and designed an migration pipeline to refactor legacy templates into design-tokens based React components.
 
 ---
 
 ## 02 // PROBLEM
 
-Legacy view layers relied on un-scoped global state triggers. A single data property update triggered cascading re-renders across all mounted widgets, blocking the main looper thread and causing heavy UI latency. Adding support for new ad platforms required intrusive core state modifications and repetitive layout boilerplate.
+Legacy view layers relied on un-scoped state triggers. A single data property update triggered cascading re-renders across all mounted widgets, blocking the main looper thread and causing heavy UI latency. Adding support for new ad platforms required extensive modifications and repetitive layout boilerplate.
 
 <ProjectImageAsset
   src="optmyzr-dashboard-migration/cascade.png"
@@ -55,7 +55,7 @@ Legacy view layers relied on un-scoped global state triggers. A single data prop
 Segmented all data pipelines into isolated Redux Toolkit slices, eliminating cross-component render cascades. Each widget component subscribes strictly to the exact data properties it requires.
 
 ### Viewport-Driven Hydration
-Rebuilt data delivery as a progressive pipeline where critical UI shells mount immediately. Heavy data visualization charts and deep data tables load asynchronously only when scrolled into the viewport.
+Rebuilt data delivery as a progressive pipeline where critical UI shells mount immediately. Heavy data visualizations and data tables load asynchronously only when scrolled into the viewport.
 
 <ProjectImageAsset
   src="optmyzr-dashboard-migration/migrated-dashboard.jpg"
@@ -66,7 +66,7 @@ Rebuilt data delivery as a progressive pipeline where critical UI shells mount i
 </p>
 
 ### Metadata-Driven Runtime Rendering System
-Built a dynamic rendering engine that interprets centralized JSON metadata checklists to assemble layouts at runtime. This eliminated layout boilerplate code and empowered zero-deployment modifications.
+Built a dynamic rendering engine that interprets centralized JSON metadata checklists to assemble layouts at runtime. This eliminated layout boilerplate code and also enabled personalised layouts that users could save for each ad account.
 
 <ProjectImageAsset
   src="optmyzr-dashboard-migration/dynamic-widget-hydration.png"
@@ -75,9 +75,6 @@ Built a dynamic rendering engine that interprets centralized JSON metadata check
 <p className="font-mono text-[11px] text-ink-muted tracking-wide text-center mt-2.5 mb-8">
   Fig 03 // JSON metadata model mapping layout compositions & access rules at runtime
 </p>
-
-### Automated LLM Migration Pipeline
-Engineered a human-in-the-loop AI refactoring pipeline using specialized context prompts. This programmatically converted thousands of legacy visual templates into design-token-compliant React wrappers.
 
 ---
 

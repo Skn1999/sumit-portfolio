@@ -107,11 +107,11 @@ export const ProjectIndexList: React.FC<ProjectIndexListProps> = ({
                 <div className="lg:col-span-9 flex flex-col gap-4">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      {project.tagline && (
+                      {/* {project.tagline && (
                         <span className="font-mono text-xs text-ink-muted uppercase tracking-wider block mb-1">
                           {project.tagline}
                         </span>
-                      )}
+                      )} */}
                       {isExternal ? (
                         <a
                           href={targetUrl}
@@ -160,7 +160,7 @@ export const ProjectIndexList: React.FC<ProjectIndexListProps> = ({
                     </p>
                   )}
 
-                  <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+                  {/* <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
                     {project.metric && (
                       <span className="font-mono text-xs font-semibold text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded border border-emerald-500/20">
                         Impact: {project.metric}
@@ -186,7 +186,7 @@ export const ProjectIndexList: React.FC<ProjectIndexListProps> = ({
                         <ArrowUpRight className="w-3.5 h-3.5" />
                       </Link>
                     )}
-                  </div>
+                  </div> */}
 
                   {/* Static Image Thumbnail on Mobile / Tablet */}
                   {project.cover && (

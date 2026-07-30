@@ -17,23 +17,23 @@ interface StickyNotesBoardProps {
 
 // Japanese Wabi-Sabi stone-washed paper palettes
 const colorStyles = {
-  moss:
-    "bg-[#e3e9e1] dark:bg-[#1d271e]/90 text-[#273528] dark:text-[#d3dfd0] border-[#c0cebe] dark:border-[#344635] shadow-stone-900/5",
-  clay:
-    "bg-[#efe6e2] dark:bg-[#2b211f]/90 text-[#3d2b27] dark:text-[#ebdcd6] border-[#dac9c3] dark:border-[#4d3733] shadow-stone-900/5",
-  sand:
-    "bg-[#f0ebe1] dark:bg-[#28241e]/90 text-[#3a3326] dark:text-[#ebdec9] border-[#dcd2c1] dark:border-[#473e30] shadow-stone-900/5",
+  moss: "bg-[#e3e9e1] dark:bg-[#1d271e]/90 text-[#273528] dark:text-[#d3dfd0] border-[#c0cebe] dark:border-[#344635] shadow-stone-900/5",
+  clay: "bg-[#efe6e2] dark:bg-[#2b211f]/90 text-[#3d2b27] dark:text-[#ebdcd6] border-[#dac9c3] dark:border-[#4d3733] shadow-stone-900/5",
+  sand: "bg-[#f0ebe1] dark:bg-[#28241e]/90 text-[#3a3326] dark:text-[#ebdec9] border-[#dcd2c1] dark:border-[#473e30] shadow-stone-900/5",
   stone:
     "bg-[#e6e6e4] dark:bg-[#222324]/90 text-[#2b2c2e] dark:text-[#dedee0] border-[#cecfd1] dark:border-[#3e4042] shadow-stone-900/5",
   indigo:
     "bg-[#e2e7ed] dark:bg-[#1b222c]/90 text-[#253040] dark:text-[#d1dce9] border-[#c4d0e0] dark:border-[#323f52] shadow-stone-900/5",
 };
 
-const rotations = ["-rotate-2 sm:-rotate-3", "rotate-1 sm:rotate-2", "-rotate-1 sm:-rotate-2"];
+const rotations = [
+  "-rotate-2 sm:-rotate-3",
+  "rotate-1 sm:rotate-2",
+  "-rotate-1 sm:-rotate-2",
+];
 
 export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
   title = "// WHITEBOARD SYNTHESIS — PAIN POINTS",
-  subtitle = "Hover or tap on any sticky note to unroll research details",
   notes,
   className,
 }) => {
@@ -43,7 +43,7 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
     <div
       className={cn(
         "my-14 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] py-12 px-4 sm:px-8 md:px-16 bg-paper-card/30 border-y border-paper-border not-prose backdrop-blur-xs overflow-hidden",
-        className
+        className,
       )}
     >
       {/* Max-Width Inner Container */}
@@ -53,17 +53,14 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
           <span className="font-mono text-xs font-semibold tracking-widest text-ink-muted uppercase">
             {title}
           </span>
-          {subtitle && (
-            <span className="font-mono text-[11px] text-ink-muted/80 tracking-wide">
-              {subtitle}
-            </span>
-          )}
         </div>
 
         {/* Centered Sticky Notes Grid */}
-        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 max-w-5xl mx-auto">
+        <div className="flex flex-wrap items-center justify-center gap-6 max-w-5xl mx-auto">
           {notes.map((note, index) => {
-            const styleKey = note.color || (index === 0 ? "sand" : index === 1 ? "clay" : "moss");
+            const styleKey =
+              note.color ||
+              (index === 0 ? "sand" : index === 1 ? "clay" : "moss");
             const colorClass = colorStyles[styleKey];
             const rotationClass = rotations[index % rotations.length];
             const isHovered = hoveredIndex === index;
@@ -79,7 +76,7 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
                   colorClass,
                   rotationClass,
                   "hover:rotate-0 hover:scale-[1.04] hover:shadow-xl",
-                  isHovered && "rotate-0 scale-[1.04] shadow-xl"
+                  isHovered && "rotate-0 scale-[1.04] shadow-xl",
                 )}
               >
                 {/* Wabi-Sabi Tape Strip at top of Post-it */}
@@ -91,7 +88,7 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
                   <div
                     className={cn(
                       "transition-all duration-300 ease-out transform",
-                      isHovered ? "-translate-y-1" : "translate-y-1"
+                      isHovered ? "-translate-y-1" : "translate-y-1",
                     )}
                   >
                     <strong className="block font-display text-base sm:text-lg font-bold leading-tight">
@@ -105,7 +102,7 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
                       "transition-all duration-300 ease-out overflow-y-auto pr-1 font-body-narrative",
                       isHovered
                         ? "opacity-100 translate-y-0 max-h-44 mt-3 pt-3 border-t border-current/20"
-                        : "opacity-0 translate-y-4 max-h-0 pointer-events-none"
+                        : "opacity-0 translate-y-4 max-h-0 pointer-events-none",
                     )}
                   >
                     <p className="text-[9px] leading-relaxed tracking-wide">
@@ -117,7 +114,7 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
                   <div
                     className={cn(
                       "flex items-center justify-between text-[10px] font-mono tracking-wider uppercase pt-2 border-t border-current/15 transition-opacity duration-300 shrink-0",
-                      isHovered ? "opacity-0" : "opacity-60"
+                      isHovered ? "opacity-0" : "opacity-60",
                     )}
                   >
                     <span>Hover to unroll</span>
