@@ -6,7 +6,7 @@ export interface StickyNoteItem {
   icon?: string;
   title: string;
   description: string;
-  color?: "yellow" | "rose" | "teal" | "amber" | "blue";
+  color?: "moss" | "clay" | "sand" | "stone" | "indigo";
 }
 
 interface StickyNotesBoardProps {
@@ -16,17 +16,18 @@ interface StickyNotesBoardProps {
   className?: string;
 }
 
+// Japanese Wabi-Sabi stone-washed paper palettes
 const colorStyles = {
-  yellow:
-    "bg-amber-100 dark:bg-amber-950/70 text-amber-950 dark:text-amber-100 border-amber-300/80 dark:border-amber-700/60 shadow-amber-900/10",
-  rose:
-    "bg-rose-100 dark:bg-rose-950/70 text-rose-950 dark:text-rose-100 border-rose-300/80 dark:border-rose-700/60 shadow-rose-900/10",
-  teal:
-    "bg-teal-100 dark:bg-teal-950/70 text-teal-950 dark:text-teal-100 border-teal-300/80 dark:border-teal-700/60 shadow-teal-900/10",
-  amber:
-    "bg-amber-200 dark:bg-amber-900/60 text-amber-950 dark:text-amber-100 border-amber-400/80 dark:border-amber-600/60 shadow-amber-950/10",
-  blue:
-    "bg-sky-100 dark:bg-sky-950/70 text-sky-950 dark:text-sky-100 border-sky-300/80 dark:border-sky-700/60 shadow-sky-900/10",
+  moss:
+    "bg-[#e3e9e1] dark:bg-[#1d271e]/90 text-[#273528] dark:text-[#d3dfd0] border-[#c0cebe] dark:border-[#344635] shadow-stone-900/5",
+  clay:
+    "bg-[#efe6e2] dark:bg-[#2b211f]/90 text-[#3d2b27] dark:text-[#ebdcd6] border-[#dac9c3] dark:border-[#4d3733] shadow-stone-900/5",
+  sand:
+    "bg-[#f0ebe1] dark:bg-[#28241e]/90 text-[#3a3326] dark:text-[#ebdec9] border-[#dcd2c1] dark:border-[#473e30] shadow-stone-900/5",
+  stone:
+    "bg-[#e6e6e4] dark:bg-[#222324]/90 text-[#2b2c2e] dark:text-[#dedee0] border-[#cecfd1] dark:border-[#3e4042] shadow-stone-900/5",
+  indigo:
+    "bg-[#e2e7ed] dark:bg-[#1b222c]/90 text-[#253040] dark:text-[#d1dce9] border-[#c4d0e0] dark:border-[#323f52] shadow-stone-900/5",
 };
 
 const rotations = ["-rotate-2 sm:-rotate-3", "rotate-1 sm:rotate-2", "-rotate-1 sm:-rotate-2"];
@@ -63,7 +64,7 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
         {/* Centered Sticky Notes Grid */}
         <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 max-w-5xl mx-auto">
           {notes.map((note, index) => {
-            const styleKey = note.color || (index === 0 ? "yellow" : index === 1 ? "rose" : "teal");
+            const styleKey = note.color || (index === 0 ? "sand" : index === 1 ? "clay" : "moss");
             const colorClass = colorStyles[styleKey];
             const rotationClass = rotations[index % rotations.length];
             const isHovered = hoveredIndex === index;
@@ -75,15 +76,15 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
                 onMouseLeave={() => setHoveredIndex(null)}
                 onClick={() => setHoveredIndex(isHovered ? null : index)}
                 className={cn(
-                  "group relative w-full sm:w-[290px] md:w-[310px] h-[230px] sm:h-[240px] p-6 rounded-xl border shadow-md select-none cursor-pointer overflow-hidden transition-all duration-300 ease-out flex flex-col justify-between",
+                  "group relative w-full sm:w-[280px] md:w-[300px] aspect-square p-6 sm:p-7 rounded-xl border shadow-sm select-none cursor-pointer overflow-hidden transition-all duration-300 ease-out flex flex-col justify-between",
                   colorClass,
                   rotationClass,
                   "hover:rotate-0 hover:scale-[1.04] hover:shadow-xl",
                   isHovered && "rotate-0 scale-[1.04] shadow-xl"
                 )}
               >
-                {/* Tape Strip at top of Post-it */}
-                <div className="w-10 h-3 bg-paper-border/30 dark:bg-white/10 rounded-xs mx-auto -mt-3 mb-2 opacity-80 shrink-0" />
+                {/* Wabi-Sabi Tape Strip at top of Post-it */}
+                <div className="w-10 h-3 bg-paper-border/40 dark:bg-white/10 rounded-xs mx-auto -mt-3 mb-2 opacity-70 shrink-0" />
 
                 {/* Content Container with Internal Unroll Dynamics */}
                 <div className="relative flex-1 flex flex-col justify-between overflow-hidden">
@@ -94,7 +95,7 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
                       isHovered ? "-translate-y-1" : "translate-y-1"
                     )}
                   >
-                    {note.icon && <div className="text-2xl mb-1.5">{note.icon}</div>}
+                    {note.icon && <div className="text-2xl sm:text-3xl mb-2">{note.icon}</div>}
                     <strong className="block font-display text-base sm:text-lg font-bold leading-tight">
                       {note.title}
                     </strong>
@@ -103,9 +104,9 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
                   {/* Internal Unroll Slide-Up Narrative */}
                   <div
                     className={cn(
-                      "transition-all duration-300 ease-out overflow-y-auto pr-1 text-xs leading-relaxed font-body-narrative",
+                      "transition-all duration-300 ease-out overflow-y-auto pr-1 leading-relaxed font-body-narrative",
                       isHovered
-                        ? "opacity-100 translate-y-0 max-h-32 mt-2 pt-2 border-t border-current/20"
+                        ? "opacity-100 translate-y-0 max-h-44 mt-3 pt-3 border-t border-current/20"
                         : "opacity-0 translate-y-4 max-h-0 pointer-events-none"
                     )}
                   >
