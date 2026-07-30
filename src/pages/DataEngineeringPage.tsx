@@ -3,21 +3,14 @@ import { Layout } from "@/components/Layout";
 import HeroSection from "@/components/HeroSection";
 import SEO from "@/components/SEO";
 import { Footer } from "@/components/Contact";
-import { getProjectsBySubCategory, visibleProjects } from "@/lib/projects";
+import { getProjectsBySubCategory } from "@/lib/projects";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Cpu, Layers, Terminal, Sparkles } from "lucide-react";
+import { ArrowUpRight, ExternalLink } from "lucide-react";
 import { ProjectImage } from "@/components/ProjectImage";
 
 export const AiAndDataSection: React.FC = () => {
-  const aiProjects = visibleProjects.filter(
-    (p) =>
-      p.subCategory === "ai-data" ||
-      (p.type === "engineering" && p.subCategory !== "frontend-engineering") ||
-      p.tags?.some((t) =>
-        ["AI", "LLM", "Data", "Python", "Machine Learning"].includes(t)
-      )
-  );
+  const aiProjects = getProjectsBySubCategory("ai-data");
 
   return (
     <section
@@ -25,15 +18,16 @@ export const AiAndDataSection: React.FC = () => {
       className="py-20 md:py-32 bg-paper-bg border-t border-paper-border"
     >
       <div className="max-w-6xl mx-auto px-4 md:px-8">
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, filter: "blur(6px)", y: 16 }}
           whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-12 md:mb-16"
+          className="mb-16 md:mb-20"
         >
           <span className="font-mono text-xs tracking-widest text-ink-muted uppercase block mb-2">
-            // DATA &amp; AI SYSTEMS
+            // DATA & AI SYSTEMS
           </span>
           <h2 className="text-3xl md:text-5xl font-bold font-display text-ink-primary tracking-tighter">
             AI &amp; Data Engineering
@@ -43,129 +37,144 @@ export const AiAndDataSection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* AI Capabilities Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="p-6 rounded-2xl bg-paper-card border border-paper-border flex flex-col justify-between"
-          >
-            <div>
-              <div className="w-10 h-10 rounded-xl bg-paper-bg border border-paper-border flex items-center justify-center text-ink-primary mb-4">
-                <Cpu className="w-5 h-5" />
-              </div>
-              <h3 className="text-xl font-bold font-display text-ink-primary mb-2">
-                LLM Workflows &amp; Agents
-              </h3>
-              <p className="font-body-narrative text-sm text-ink-muted leading-relaxed">
-                Designing deterministic agent chains, structured JSON schema outputs, tool calling mechanisms, and human oversight interfaces.
-              </p>
-            </div>
-            <div className="mt-6 pt-4 border-t border-paper-border/60 font-mono text-[11px] text-ink-muted uppercase">
-              // LangChain • OpenAI • Anthropic • Function Calling
-            </div>
-          </motion.div>
+        {/* Minimalist Editorial Index List for AI & Data */}
+        <div className="flex flex-col border-b border-paper-border">
+          {aiProjects.map((project, index) => {
+            const isExternal = Boolean(project.externalUrl);
+            const targetUrl = project.externalUrl || `/projects/${project.slug}`;
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="p-6 rounded-2xl bg-paper-card border border-paper-border flex flex-col justify-between"
-          >
-            <div>
-              <div className="w-10 h-10 rounded-xl bg-paper-bg border border-paper-border flex items-center justify-center text-ink-primary mb-4">
-                <Sparkles className="w-5 h-5" />
-              </div>
-              <h3 className="text-xl font-bold font-display text-ink-primary mb-2">
-                Prompt Engineering &amp; Eval
-              </h3>
-              <p className="font-body-narrative text-sm text-ink-muted leading-relaxed">
-                System prompt optimization, few-shot contextual conditioning, evaluation metrics, and guardrails for production LLM deployments.
-              </p>
-            </div>
-            <div className="mt-6 pt-4 border-t border-paper-border/60 font-mono text-[11px] text-ink-muted uppercase">
-              // RAG • Context Windows • System Prompts • Guardrails
-            </div>
-          </motion.div>
+            return (
+              <motion.article
+                key={project.slug}
+                initial={{ opacity: 0, filter: "blur(6px)", y: 20 }}
+                whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{
+                  duration: 0.7,
+                  delay: index * 0.1,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className="border-t border-paper-border py-8 md:py-12 group transition-colors duration-300 hover:bg-paper-card/40"
+              >
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                  {/* Monospace Tag & Index */}
+                  <div className="lg:col-span-3 flex items-center justify-between lg:flex-col lg:items-start gap-2">
+                    <span className="font-mono text-xs font-semibold tracking-widest text-ink-muted uppercase">
+                      0{index + 1} // {project.slug.replace(/-/g, " ").toUpperCase()}
+                    </span>
+                    <div className="flex flex-wrap gap-1.5 mt-1">
+                      {project.tech?.map((t, tIdx) => (
+                        <span
+                          key={tIdx}
+                          className="px-2 py-0.5 rounded bg-paper-card text-ink-muted border border-paper-border text-[10px] font-mono tracking-wider"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="p-6 rounded-2xl bg-paper-card border border-paper-border flex flex-col justify-between"
-          >
-            <div>
-              <div className="w-10 h-10 rounded-xl bg-paper-bg border border-paper-border flex items-center justify-center text-ink-primary mb-4">
-                <Terminal className="w-5 h-5" />
-              </div>
-              <h3 className="text-xl font-bold font-display text-ink-primary mb-2">
-                Data Pipelines &amp; Analytics
-              </h3>
-              <p className="font-body-narrative text-sm text-ink-muted leading-relaxed">
-                Real-time sensor telemetry processing, environmental air quality monitoring (EDIAQI EU Horizon), and data visualization dashboards.
-              </p>
-            </div>
-            <div className="mt-6 pt-4 border-t border-paper-border/60 font-mono text-[11px] text-ink-muted uppercase">
-              // Time Series • Telemetry • Python • REST &amp; WebSockets
-            </div>
-          </motion.div>
-        </div>
+                  {/* Title & Summary */}
+                  <div className="lg:col-span-9 flex flex-col gap-4">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        {project.tagline && (
+                          <span className="font-mono text-xs text-ink-muted uppercase tracking-wider block mb-1">
+                            {project.tagline}
+                          </span>
+                        )}
+                        {isExternal ? (
+                          <a
+                            href={targetUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group/title hover:text-ink-primary/70 transition-colors"
+                          >
+                            <h3 className="text-xl md:text-3xl font-bold font-display text-ink-primary leading-tight">
+                              {project.title}
+                            </h3>
+                          </a>
+                        ) : (
+                          <Link
+                            to={targetUrl}
+                            className="group/title hover:text-ink-primary/70 transition-colors"
+                          >
+                            <h3 className="text-xl md:text-3xl font-bold font-display text-ink-primary leading-tight">
+                              {project.title}
+                            </h3>
+                          </Link>
+                        )}
+                      </div>
 
-        {/* AI & Data Projects List */}
-        {aiProjects.length > 0 && (
-          <div>
-            <h3 className="font-mono text-xs tracking-widest text-ink-muted uppercase mb-6">
-              // FEATURED DATA &amp; AI CASE STUDIES
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {aiProjects.map((project, index) => (
-                <motion.div
-                  key={project.slug}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="p-6 md:p-8 rounded-2xl bg-paper-card border border-paper-border flex flex-col justify-between group hover:border-ink-primary/50 transition-colors"
-                >
-                  <div>
-                    <div className="flex items-center justify-between font-mono text-[11px] text-ink-muted uppercase tracking-wider mb-4">
-                      <span>{project.type || "ENGINEERING"}</span>
-                      <span>{project.date}</span>
+                      {isExternal ? (
+                        <a
+                          href={targetUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 rounded-lg border border-paper-border bg-paper-card text-ink-primary hover:border-ink-primary transition-all shrink-0"
+                        >
+                          <ExternalLink className="w-5 h-5" />
+                        </a>
+                      ) : (
+                        <Link
+                          to={targetUrl}
+                          className="p-2 rounded-lg border border-paper-border bg-paper-card text-ink-primary hover:border-ink-primary transition-all shrink-0"
+                        >
+                          <ArrowUpRight className="w-5 h-5" />
+                        </Link>
+                      )}
                     </div>
 
-                    <Link to={`/projects/${project.slug}`} className="block group/link">
-                      <h4 className="text-xl md:text-2xl font-bold font-display text-ink-primary group-hover/link:text-ink-primary/70 transition-colors leading-tight mb-3 flex items-start justify-between gap-3">
-                        <span>{project.title}</span>
-                        <ArrowUpRight className="w-5 h-5 shrink-0 text-ink-muted group-hover/link:text-ink-primary transition-colors" />
-                      </h4>
-                    </Link>
-
                     {project.summary && (
-                      <p className="font-body-narrative text-sm text-ink-muted leading-relaxed mb-6 line-clamp-3">
+                      <p className="text-sm md:text-base font-body-narrative text-ink-muted leading-relaxed">
                         {project.summary}
                       </p>
                     )}
-                  </div>
 
-                  <div className="flex flex-wrap gap-1.5 pt-4 border-t border-paper-border/60">
-                    {project.tech?.slice(0, 4).map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2 py-0.5 rounded bg-paper-bg text-ink-muted border border-paper-border text-[10px] font-mono tracking-wider"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                    <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+                      {project.metric && (
+                        <span className="font-mono text-xs font-semibold text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded border border-emerald-500/20">
+                          Impact: {project.metric}
+                        </span>
+                      )}
+
+                      {isExternal ? (
+                        <a
+                          href={targetUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-ink-primary hover:underline ml-auto"
+                        >
+                          <span>View Presentation</span>
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      ) : (
+                        <Link
+                          to={targetUrl}
+                          className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-ink-primary hover:underline ml-auto"
+                        >
+                          <span>Read Case Study</span>
+                          <ArrowUpRight className="w-3.5 h-3.5" />
+                        </Link>
+                      )}
+                    </div>
+
+                    {/* Image Thumbnail */}
+                    {project.cover && (
+                      <div className="mt-2 rounded-xl border border-paper-border bg-paper-card p-1 overflow-hidden aspect-[16/9] max-w-xl">
+                        <ProjectImage
+                          project={project.slug}
+                          image={project.cover}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      </div>
+                    )}
                   </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        )}
+                </div>
+              </motion.article>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
@@ -180,12 +189,13 @@ export const FrontendEngineeringSection: React.FC = () => {
       className="py-20 md:py-32 bg-paper-bg border-t border-paper-border"
     >
       <div className="max-w-6xl mx-auto px-4 md:px-8">
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, filter: "blur(6px)", y: 16 }}
           whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-12 md:mb-16"
+          className="mb-16 md:mb-20"
         >
           <span className="font-mono text-xs tracking-widest text-ink-muted uppercase block mb-2">
             // FRONT-END ARCHITECTURE
@@ -198,112 +208,131 @@ export const FrontendEngineeringSection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Featured Case Study: Optmyzr */}
-        {feProjects.map((project) => (
-          <motion.div
-            key={project.slug}
-            initial={{ opacity: 0, filter: "blur(6px)", y: 20 }}
-            whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="p-8 rounded-2xl bg-paper-card border border-paper-border mb-12 group hover:border-ink-primary/50 transition-colors"
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-7 flex flex-col gap-4">
-                <span className="font-mono text-xs font-semibold tracking-widest text-ink-muted uppercase">
-                  FEATURED FRONT-END CASE STUDY // {project.slug.replace(/-/g, " ").toUpperCase()}
-                </span>
-                <Link to={`/projects/${project.slug}`} className="group/link">
-                  <h3 className="text-2xl md:text-4xl font-bold font-display text-ink-primary group-hover/link:text-ink-primary/70 transition-colors leading-tight flex items-start justify-between gap-4">
-                    <span>{project.title}</span>
-                    <ArrowUpRight className="w-6 h-6 shrink-0 text-ink-muted group-hover/link:text-ink-primary transition-colors" />
-                  </h3>
-                </Link>
-                {project.summary && (
-                  <p className="font-body-narrative text-base text-ink-muted leading-relaxed">
-                    {project.summary}
-                  </p>
-                )}
-                {project.metric && (
-                  <span className="font-mono text-xs font-semibold text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded border border-emerald-500/20 inline-block w-fit">
-                    Impact: {project.metric}
-                  </span>
-                )}
-              </div>
+        {/* Minimalist Editorial Index List for Front-End Engineering */}
+        <div className="flex flex-col border-b border-paper-border">
+          {feProjects.map((project, index) => {
+            const isExternal = Boolean(project.externalUrl);
+            const targetUrl = project.externalUrl || `/projects/${project.slug}`;
 
-              {project.cover && (
-                <div className="lg:col-span-5 rounded-xl border border-paper-border bg-paper-bg p-1 overflow-hidden aspect-[16/10]">
-                  <ProjectImage
-                    project={project.slug}
-                    image={project.cover}
-                    className="w-full h-full object-cover rounded-lg"
-                  />
+            return (
+              <motion.article
+                key={project.slug}
+                initial={{ opacity: 0, filter: "blur(6px)", y: 20 }}
+                whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{
+                  duration: 0.7,
+                  delay: index * 0.1,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className="border-t border-paper-border py-8 md:py-12 group transition-colors duration-300 hover:bg-paper-card/40"
+              >
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                  {/* Monospace Tag & Index */}
+                  <div className="lg:col-span-3 flex items-center justify-between lg:flex-col lg:items-start gap-2">
+                    <span className="font-mono text-xs font-semibold tracking-widest text-ink-muted uppercase">
+                      0{index + 1} // {project.slug.replace(/-/g, " ").toUpperCase()}
+                    </span>
+                    <div className="flex flex-wrap gap-1.5 mt-1">
+                      {project.tech?.map((t, tIdx) => (
+                        <span
+                          key={tIdx}
+                          className="px-2 py-0.5 rounded bg-paper-card text-ink-muted border border-paper-border text-[10px] font-mono tracking-wider"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Title & Summary */}
+                  <div className="lg:col-span-9 flex flex-col gap-4">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        {project.tagline && (
+                          <span className="font-mono text-xs text-ink-muted uppercase tracking-wider block mb-1">
+                            {project.tagline}
+                          </span>
+                        )}
+                        {isExternal ? (
+                          <a
+                            href={targetUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group/title hover:text-ink-primary/70 transition-colors"
+                          >
+                            <h3 className="text-xl md:text-3xl font-bold font-display text-ink-primary leading-tight">
+                              {project.title}
+                            </h3>
+                          </a>
+                        ) : (
+                          <Link
+                            to={targetUrl}
+                            className="group/title hover:text-ink-primary/70 transition-colors"
+                          >
+                            <h3 className="text-xl md:text-3xl font-bold font-display text-ink-primary leading-tight">
+                              {project.title}
+                            </h3>
+                          </Link>
+                        )}
+                      </div>
+
+                      {isExternal ? (
+                        <a
+                          href={targetUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 rounded-lg border border-paper-border bg-paper-card text-ink-primary hover:border-ink-primary transition-all shrink-0"
+                        >
+                          <ExternalLink className="w-5 h-5" />
+                        </a>
+                      ) : (
+                        <Link
+                          to={targetUrl}
+                          className="p-2 rounded-lg border border-paper-border bg-paper-card text-ink-primary hover:border-ink-primary transition-all shrink-0"
+                        >
+                          <ArrowUpRight className="w-5 h-5" />
+                        </Link>
+                      )}
+                    </div>
+
+                    {project.summary && (
+                      <p className="text-sm md:text-base font-body-narrative text-ink-muted leading-relaxed">
+                        {project.summary}
+                      </p>
+                    )}
+
+                    <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+                      {project.metric && (
+                        <span className="font-mono text-xs font-semibold text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded border border-emerald-500/20">
+                          Impact: {project.metric}
+                        </span>
+                      )}
+
+                      <Link
+                        to={targetUrl}
+                        className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-ink-primary hover:underline ml-auto"
+                      >
+                        <span>Read Case Study</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </Link>
+                    </div>
+
+                    {/* Image Thumbnail */}
+                    {project.cover && (
+                      <div className="mt-2 rounded-xl border border-paper-border bg-paper-card p-1 overflow-hidden aspect-[16/9] max-w-xl">
+                        <ProjectImage
+                          project={project.slug}
+                          image={project.cover}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
-              )}
-            </div>
-          </motion.div>
-        ))}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Component Systems */}
-          <div className="p-8 rounded-2xl bg-paper-card border border-paper-border flex flex-col justify-between">
-            <div>
-              <div className="w-10 h-10 rounded-xl bg-paper-bg border border-paper-border flex items-center justify-center text-ink-primary mb-6">
-                <Layers className="w-5 h-5" />
-              </div>
-              <h3 className="text-2xl font-bold font-display text-ink-primary mb-3">
-                Design System Engine &amp; Component Tokens
-              </h3>
-              <p className="font-body-narrative text-sm text-ink-muted leading-relaxed mb-6">
-                Architecture of scalable CSS custom properties, HSL token pipelines, accessible Radix UI primitives, and Wabi-Sabi paper visual systems.
-              </p>
-            </div>
-
-            <div className="space-y-3 font-mono text-xs text-ink-muted pt-4 border-t border-paper-border/60">
-              <div className="flex justify-between">
-                <span>Architecture</span>
-                <span className="text-ink-primary">TypeScript + React 18</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Styling Engine</span>
-                <span className="text-ink-primary">Tailwind CSS + Tokens</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Primitives</span>
-                <span className="text-ink-primary">Radix UI + Headless</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Interactive WebGL */}
-          <div className="p-8 rounded-2xl bg-paper-card border border-paper-border flex flex-col justify-between">
-            <div>
-              <div className="w-10 h-10 rounded-xl bg-paper-bg border border-paper-border flex items-center justify-center text-ink-primary mb-6">
-                <Cpu className="w-5 h-5" />
-              </div>
-              <h3 className="text-2xl font-bold font-display text-ink-primary mb-3">
-                Interactive 3D WebGL &amp; Graphics
-              </h3>
-              <p className="font-body-narrative text-sm text-ink-muted leading-relaxed mb-6">
-                High-performance 3D particle swarms, GLTF surface mesh sampling, custom GLSL shaders, and React Three Fiber (R3F) canvas integration.
-              </p>
-            </div>
-
-            <div className="space-y-3 font-mono text-xs text-ink-muted pt-4 border-t border-paper-border/60">
-              <div className="flex justify-between">
-                <span>3D Graphics</span>
-                <span className="text-ink-primary">Three.js + R3F</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Shaders</span>
-                <span className="text-ink-primary">GLSL Vert &amp; Frag</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Asset Pipeline</span>
-                <span className="text-ink-primary">GLTF / GLB Mesh</span>
-              </div>
-            </div>
-          </div>
+              </motion.article>
+            );
+          })}
         </div>
       </div>
     </section>
