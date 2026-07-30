@@ -154,4 +154,12 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Resolution:** Managed `intendedRoute` state in `Header.tsx` with React Router `useNavigate()` client-side transitions and `ScrollToHash` for anchor scrolling.
 - **Future instruction:** When implementing intent-driven route transitions, ensure explicit link `onClick` handlers reset intent state to prevent race conditions during direct anchor navigation.
 
+### 2026-07-30 - `tasks/task_033_menu_hierarchy_and_route_pages_update.md`
+
+- **Lessons learned:** When expanding multi-column header navigation and routing structures, keeping main route links (`/data-engineering`, `/ux-design`, `/writings/publication`) mapped consistently across 3D canvas `CategoryKey` helpers, React Router `App.tsx` declarations, and header `NAV_HIERARCHY` items ensures predictable 3D canvas morphing state and instant section scrolling without page refreshes.
+- **Errors or surprises:** None.
+- **Resolution:** Updated `Header.tsx`, created `DataEngineeringPage.tsx` with `#ai-data` and `#frontend-engineering` sections, registered `/data-engineering` and `/design` in `App.tsx`, added `#research` wrapper anchor in `WritingsPage.tsx`, and updated `HeroParticleCanvas.tsx`.
+- **Future instruction:** Ensure all new primary route pages include `HeroSection` as section 1 at the top of the layout tree to maintain 3D canvas navigation continuity across all routes.
+
+
 

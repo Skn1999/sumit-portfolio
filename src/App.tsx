@@ -12,6 +12,7 @@ import UxBitePage from "./pages/UxBitePage";
 import UxDesignPage from "./pages/UxDesignPage";
 import VisualDesignPage from "./pages/VisualDesignPage";
 import WritingsPage from "./pages/WritingsPage";
+import DataEngineeringPage from "./pages/DataEngineeringPage";
 import { NavIntentProvider } from "./contexts/NavIntentContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { TransitionProvider } from "./contexts/TransitionContext";
@@ -45,7 +46,9 @@ const AnimatedRoutes = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Index />} />
         <Route path="/resume" element={<ResumePage />} />
+        <Route path="/design" element={<UxDesignPage />} />
         <Route path="/ux-design" element={<UxDesignPage />} />
+        <Route path="/data-engineering" element={<DataEngineeringPage />} />
         <Route path="/projects" element={<UxDesignPage />} />
         <Route path="/projects/:slug" element={<ProjectPage />} />
         <Route path="/visual-design" element={<VisualDesignPage />} />

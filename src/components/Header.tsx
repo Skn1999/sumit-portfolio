@@ -25,21 +25,27 @@ const NAV_HIERARCHY: NavItem[] = [
     ],
   },
   {
-    label: "UX Design",
+    label: "Design",
     mainRoute: "/ux-design",
-    subItems: [{ to: "/ux-design#projects", label: "Projects" }],
+    subItems: [
+      { to: "/ux-design", label: "User Experience" },
+      { to: "/visual-design", label: "Visual Design" },
+    ],
   },
   {
-    label: "Visual Design",
-    mainRoute: "/visual-design",
-    subItems: [{ to: "/visual-design#projects", label: "Projects" }],
+    label: "Data Engineering",
+    mainRoute: "/data-engineering",
+    subItems: [
+      { to: "/data-engineering#ai-data", label: "AI and Data" },
+      { to: "/data-engineering#frontend-engineering", label: "Front-end Engineering" },
+    ],
   },
   {
     label: "Writings",
     mainRoute: "/writings/publication",
     subItems: [
-      { to: "/writings/publication#publication", label: "Publication" },
-      { to: "/writings/publication#ux-bites", label: "UX Bites" },
+      { to: "/writings/publication", label: "Publication" },
+      { to: "/writings/research", label: "Research" },
     ],
   },
 ];

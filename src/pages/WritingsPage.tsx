@@ -126,8 +126,10 @@ const WritingsPage: React.FC = () => {
             <UnsaidMoments />
           </div>
 
-          {/* Section 3: UX Bites */}
-          <UxBitesSection />
+          {/* Section 3: Research & UX Bites */}
+          <div id="research">
+            <UxBitesSection />
+          </div>
 
           {/* Section 4: Footer */}
           <Footer />

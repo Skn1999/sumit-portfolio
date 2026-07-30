@@ -41,6 +41,22 @@ This file is updated by AI agents after each task is attempted or completed. It 
 | 2026-07-29 | `tasks/task_031_ia_navigation_and_homepage_structure.md`  | Restructured site Information Architecture (IA), header navigation dropdown hierarchy (Sumit Nayyar, UX Design, Visual Design, Writings), page routes, and sequential homepage sections (Hero with bottom location/availability bar, About, Achievements 2-column split, Contact). Build passes. | Completed |
 | 2026-07-29 | `tasks/task_032_intent_based_navigation_and_main_pages.md` | Implemented intent-based header navigation hover-out transition state (`intendedRoute`), explicit sub-item click state resets, smooth anchor scrolling, created `/ux-design`, `/visual-design`, `/writings/publication` main pages with `HeroSection` as section 1 across all routes. Build passes. | Completed |
 | 2026-07-29 | `HeroParticleCanvas 3D GLTF Navigation Morphing & Silver Metal Solidification` | Converted Blender models (`webhand.blend`, `television_02_4k.blend`, `cassette_player_4k.blend`) to GLB (`pointing-hand.glb`, `tv-screen.glb`, `document.glb`), baked geometry matrices (`applyMatrix4`), synchronized Y-axis rotation, and implemented wireframe outline hover morphing + bright silver metallic model solidification on navigation completion. Build passes. | Completed |
+| 2026-07-30 | `tasks/task_033_menu_hierarchy_and_route_pages_update.md` | Updated Header menu hierarchy to 4-column structure (Sumit Nayyar, Design, Data Engineering, Writings), created DataEngineeringPage with AI & Data and Front-End Engineering sections, added /data-engineering and /design routes, and updated 3D particle intent category key. Build passes. | Completed |
+
+### 2026-07-30 - `tasks/task_033_menu_hierarchy_and_route_pages_update.md`
+
+- Status: Completed
+- Summary: Updated Header navigation hierarchy to match the refined 4-column structure from `research/ai-interactive-portfolio-vision.md` (Sumit Nayyar, Design, Data Engineering, Writings). Created `DataEngineeringPage.tsx` with AI & Data and Front-End Engineering sections, added `/data-engineering` and `/design` routes in `App.tsx`, updated section anchors in `WritingsPage.tsx`, and updated 3D canvas `CategoryKey` in `HeroParticleCanvas.tsx`.
+- Files changed:
+  - `src/components/Header.tsx`
+  - `src/App.tsx`
+  - `src/pages/DataEngineeringPage.tsx`
+  - `src/pages/WritingsPage.tsx`
+  - `src/components/HeroParticleCanvas.tsx`
+  - `tasks/task_033_menu_hierarchy_and_route_pages_update.md`
+- Tests run: `npm run build` (Passed cleanly in 3.93s)
+- Acceptance criteria: 100% met.
+- Follow-ups / risks: None.
 
 ### 2026-07-29 - `tasks/task_031_ia_navigation_and_homepage_structure.md`
 

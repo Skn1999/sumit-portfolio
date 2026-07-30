@@ -7,11 +7,12 @@ import { useLocation } from "react-router-dom";
 import { useNavIntent } from "@/contexts/NavIntentContext";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
-type CategoryKey = "hero" | "ux-design" | "visual-design" | "writings";
+type CategoryKey = "hero" | "ux-design" | "visual-design" | "data-engineering" | "writings";
 
 function getCategoryKey(path: string | null): CategoryKey {
   if (!path) return "hero";
-  if (path.startsWith("/ux-design") || path.startsWith("/projects")) return "ux-design";
+  if (path.startsWith("/data-engineering")) return "data-engineering";
+  if (path.startsWith("/ux-design") || path.startsWith("/projects") || path.startsWith("/design")) return "ux-design";
   if (path.startsWith("/visual-design")) return "visual-design";
   if (path.startsWith("/writings") || path.startsWith("/ux-bites")) return "writings";
   return "hero";
@@ -22,6 +23,7 @@ function categoryToIndex(cat: CategoryKey): number {
     case "hero": return 0;
     case "ux-design": return 1;
     case "visual-design": return 2;
+    case "data-engineering": return 1;
     case "writings": return 3;
   }
 }
