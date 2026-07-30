@@ -161,9 +161,9 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Resolution:** Updated `Header.tsx`, created `DataEngineeringPage.tsx` with `#ai-data` and `#frontend-engineering` sections, registered `/data-engineering` and `/design` in `App.tsx`, added `#research` wrapper anchor in `WritingsPage.tsx`, and updated `HeroParticleCanvas.tsx`.
 - **Future instruction:** Ensure all new primary route pages include `HeroSection` as section 1 at the top of the layout tree to maintain 3D canvas navigation continuity across all routes.
 
-### 2026-07-30 - `tasks/task_037_gosta_labs_case_study_integration.md`
+### 2026-07-30 - `tasks/task_038_optmyzr_case_study_streamlining.md`
 
-- **Lessons learned:** Importing PDF assets directly in MDX files (`import finalPresentationPdf from "./final-presentation.pdf"`) allows Vite static bundlers to hash and copy PDF artifacts into the `dist/assets` directory during production builds, enabling reliable external tab opening without hardcoded asset URLs.
+- **Lessons learned:** Deleting single-use legacy layout wrappers (like `CaseStudyLayout.tsx`) once all MDX case studies adopt the standard 4-zone section layout (`01 CONTEXT`, `02 PROBLEM`, `03 APPROACH`, `04 IMPACT`) reduces component surface area and keeps MDX authoring consistent across the entire portfolio.
 - **Errors or surprises:** None.
-- **Resolution:** Created `src/content/projects/gosta-labs/index.mdx` with PDF artifact button link and `subCategory: "ai-data"` frontmatter.
-- **Future instruction:** When adding downloadable/viewable PDF strategy reports or slide decks to case studies, import the `.pdf` file inside the MDX component to leverage Vite's asset processing pipeline.
+- **Resolution:** Rewrote `optmyzr-dashboard-migration/index.mdx` into standard MDX sections and deleted `CaseStudyLayout.tsx`.
+- **Future instruction:** Maintain standard Markdown headings (`## 01 // CONTEXT`, `## 02 // PROBLEM`, `## 03 // APPROACH`, `## 04 // IMPACT`) and `ProjectImageAsset` across all future project MDX files.

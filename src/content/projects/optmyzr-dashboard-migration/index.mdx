@@ -1,6 +1,6 @@
 ---
 slug: "optmyzr-dashboard-migration"
-title: "Optmyzr: Config-Driven React Migration"
+title: "Config-Driven React Migration"
 tagline: "Replacing a legacy Backbone.js and jQuery stack with a modular component architecture to eliminate critical UI rendering bottlenecks."
 date: "2026-01-15"
 type: "engineering"
@@ -14,80 +14,75 @@ tech:
   - "TypeScript"
   - "Redux Toolkit"
   - "Performance Engineering"
-  - "Component Design"
 metric: "Dashboard load times reduced from 8-10s to <1s; zero core state changes required to support new ad platforms"
 links:
-  # prototype: "https://github.com/skn1999/sumit-portfolio"
+  case: "https://github.com/skn1999/sumit-portfolio"
 summary: "A production migration of Optmyzr's two highest-traffic, data-dense analytics applications. Rebuilt legacy corporate dashboards into an optimized React configuration pipeline that handles complex state propagation and multi-platform scaling cleanly."
 roles:
-  - "Frontend Engineering"
+  - "Frontend Systems Engineer"
   - "UI Architecture"
 order: 2
 draft: false
 ---
-import {
-  ProjectHeader,
-  ContextStrip,
-  WorkSection,
-  OutcomeFooter,
-} from "@/components/projects/CaseStudyLayout";
 
-<ProjectHeader
-  label="FRONTEND SYSTEMS ENGINEERING  ·  2024"
-  title="Migrating Legacy Analytics to Config-Driven React"
-  tagline="Replacing a legacy Backbone.js and jQuery stack with a modular component architecture to eliminate critical UI rendering bottlenecks."
-  tags={["React", "TypeScript", "Redux Toolkit", "Performance Engineering", "Component Design"]}
-  coverSrc="optmyzr-dashboard-migration/cover.png"
-  coverAlt="Migrated React dashboard showing core widget architecture layout"
-/>
+import { ProjectImageAsset } from "@/components/ui/project-image-asset";
 
-<ContextStrip
-  problem={<>Legacy Backbone.js view layers triggered cascading browser re-renders, driving time-to-interactive benchmarks to 8–10 seconds under enterprise data loads. We isolated application state slices to restrict component updates to targeted data properties.</>}
-  role={<>As Frontend Systems Engineer, I refactored the core account dashboard and comparison tool views. I also engineered the config-driven layout compiler and the AI-driven migration pipeline.</>}
-/>
+## 01 // CONTEXT
 
-<WorkSection
-  heading="Breaking Reactivity Cascades via Scoped Redux Slices"
-  body={<>Segmented all data pipelines into isolated Redux slices, eliminating cross-component render cascades. Each component subscribes only to the exact data properties it needs — nothing more.</>}
-  imageSrc="optmyzr-dashboard-migration/cascade.png"
-  imageAlt="Redux state isolation barrier comparing global data collapse versus scoped slice filters"
-  imageCaption="Redux state isolation barriers preventing cross-component render cascades under high-volume data streams."
-  imagePosition="right"
-/>
+Optmyzr relies on high-traffic, data-dense analytics applications to help digital marketers manage multi-platform advertising campaigns. As data volume scaled, legacy Backbone.js and jQuery view layers triggered cascading browser re-renders, driving time-to-interactive benchmarks to 8–10 seconds under enterprise workloads.
 
-<WorkSection
-  heading="Compressing Dashboard Load Times with Viewport-Driven Hydration"
-  body={<>Rebuilt data delivery as a progressive pipeline where critical UI shells mount first. Heavy charts and deep tables load asynchronously only when scrolled into the viewport.</>}
-  imageSrc="optmyzr-dashboard-migration/migrated-dashboard.jpg"
-  imageAlt="Migrated dashboard after performance optimisation showing fast initial paint"
-  imageCaption="Progressive component hydration pipeline prioritizing initial paint operations over low-priority offscreen assets."
-  imagePosition="full"
-/>
+As Frontend Systems Engineer, I refactored the core account dashboard and comparison tool views. I engineered the config-driven layout compiler, built state isolation boundaries, and designed an LLM-assisted migration pipeline to refactor legacy templates into design-token-compliant React components.
 
-<WorkSection
-  heading="Abstracting UI Layouts into a Metadata-Driven Runtime Rendering System"
-  body={<>Built a dynamic rendering engine that interprets centralized JSON metadata checklists to assemble layouts at runtime. This eliminated layout boilerplate code and empowered zero-deployment modifications.</>}
-  imageSrc="optmyzr-dashboard-migration/dynamic-widget-hydration.png"
-  imageAlt="Config-driven development workflow for dynamic widget instantiation and webpage hydration"
-  imageCaption="JSON metadata model mapping layout compositions, access rules, and validation criteria at runtime."
-  imagePosition="left"
-/>
+---
 
-<WorkSection
-  heading="Orchestrating Large Language Models to Automate Legacy Codebase Migrations"
-  body={<>Engineered a human-in-the-loop AI refactoring pipeline using specialized context prompts. This programmatically converted thousands of legacy visual templates into design-token-compliant React wrappers.</>}
-  imageSrc="optmyzr-dashboard-migration/legacy-dashboard.svg"
-  imageAlt="Legacy Backbone.js dashboard architecture diagram before migration"
-  imageCaption="Automated refactoring pipeline parsing visual metadata into standardized React component layers."
-  imagePosition="full"
-/>
+## 02 // PROBLEM
 
-<OutcomeFooter
-  metrics={[
-    { value: "< 1s", label: "Dashboard load time" },
-    { value: "0", label: "Core code changes to support new ad platforms" },
-    { value: "3×", label: "Component reuse across account layouts" },
-  ]}
-  ctaLabel="View on GitHub"
-  ctaHref="https://github.com/skn1999/sumit-portfolio"
+Legacy view layers relied on un-scoped global state triggers. A single data property update triggered cascading re-renders across all mounted widgets, blocking the main looper thread and causing heavy UI latency. Adding support for new ad platforms required intrusive core state modifications and repetitive layout boilerplate.
+
+<ProjectImageAsset
+  src="optmyzr-dashboard-migration/cascade.png"
+  alt="Redux state isolation barrier comparing global data collapse versus scoped slice filters"
 />
+<p className="font-mono text-[11px] text-ink-muted tracking-wide text-center mt-2.5 mb-8">
+  Fig 01 // Redux state isolation barriers preventing cross-component render cascades
+</p>
+
+---
+
+## 03 // APPROACH
+
+### Scoped Redux Data Slices
+Segmented all data pipelines into isolated Redux Toolkit slices, eliminating cross-component render cascades. Each widget component subscribes strictly to the exact data properties it requires.
+
+### Viewport-Driven Hydration
+Rebuilt data delivery as a progressive pipeline where critical UI shells mount immediately. Heavy data visualization charts and deep data tables load asynchronously only when scrolled into the viewport.
+
+<ProjectImageAsset
+  src="optmyzr-dashboard-migration/migrated-dashboard.jpg"
+  alt="Migrated dashboard after performance optimization showing fast initial paint"
+/>
+<p className="font-mono text-[11px] text-ink-muted tracking-wide text-center mt-2.5 mb-8">
+  Fig 02 // Progressive component hydration pipeline prioritizing initial paint operations
+</p>
+
+### Metadata-Driven Runtime Rendering System
+Built a dynamic rendering engine that interprets centralized JSON metadata checklists to assemble layouts at runtime. This eliminated layout boilerplate code and empowered zero-deployment modifications.
+
+<ProjectImageAsset
+  src="optmyzr-dashboard-migration/dynamic-widget-hydration.png"
+  alt="Config-driven development workflow for dynamic widget instantiation and webpage hydration"
+/>
+<p className="font-mono text-[11px] text-ink-muted tracking-wide text-center mt-2.5 mb-8">
+  Fig 03 // JSON metadata model mapping layout compositions & access rules at runtime
+</p>
+
+### Automated LLM Migration Pipeline
+Engineered a human-in-the-loop AI refactoring pipeline using specialized context prompts. This programmatically converted thousands of legacy visual templates into design-token-compliant React wrappers.
+
+---
+
+## 04 // IMPACT
+
+- **< 1s Time-to-Interactive:** Compressed enterprise dashboard load times from 8–10s down to under 1 second.
+- **Zero Core State Overhead:** Enabled zero core state changes when onboarding new advertising platforms.
+- **3× Component Reuse:** Standardized widget architecture across all account layouts and reporting tools.

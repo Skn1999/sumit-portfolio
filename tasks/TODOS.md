@@ -24,4 +24,5 @@
 24. [x] Task 035: Visual Language Upgrade for Individual Project Pages (Groundwork, EDIAQI, SuperEgo)
 25. [x] Task 036: Project Categorization, Frontmatter Updates, and Navigation Route Mapping
 26. [x] Task 037: Gosta Labs Case Study Integration
+27. [x] Task 038: Optmyzr Case Study Streamlining & Legacy Layout Cleanup
 
