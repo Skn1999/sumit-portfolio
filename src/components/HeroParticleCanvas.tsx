@@ -1,8 +1,11 @@
 import React, { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useTexture, useGLTF, Environment } from "@react-three/drei";
+import { useGLTF, Environment } from "@react-three/drei";
 import * as THREE from "three";
 import { MeshSurfaceSampler } from "three/examples/jsm/math/MeshSurfaceSampler.js";
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+import fontData from "three/examples/fonts/helvetiker_bold.typeface.json";
 import { useLocation } from "react-router-dom";
 import { useNavIntent } from "@/contexts/NavIntentContext";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
@@ -37,39 +40,49 @@ function categoryToIndex(cat: CategoryKey): number {
   }
 }
 
-// 1. Hero Grid (Profile Photo matching exact 1008x1244 aspect ratio)
-function generateHeroGrid(count: number, cols: number, rows: number) {
-  const positions = new Float32Array(count * 3);
-  const uvs = new Float32Array(count * 2);
-  const isOutline = new Float32Array(count);
+// 1. Create 3D Text Mesh for "me"
+function create3DTextMesh(text = "me", targetSize = 0.85) {
+  const fontLoader = new FontLoader();
+  const font = fontLoader.parse(fontData);
 
-  const aspect = 1008 / 1244; // Exact aspect ratio of new hero.jpg
-  const width = 1.8 * aspect;
-  const height = 1.8;
+  const textGeometry = new TextGeometry(text, {
+    font: font,
+    size: 0.6,
+    height: 0.25,
+    curveSegments: 12,
+    bevelEnabled: true,
+    bevelThickness: 0.04,
+    bevelSize: 0.03,
+    bevelOffset: 0,
+    bevelSegments: 5,
+  });
 
-  for (let i = 0; i < count; i++) {
-    const col = i % cols;
-    const row = Math.floor(i / cols);
+  textGeometry.center();
+  textGeometry.computeBoundingBox();
 
-    const u = col / (cols - 1);
-    const v = 1.0 - row / (rows - 1);
+  const box = textGeometry.boundingBox || new THREE.Box3();
+  const size = new THREE.Vector3();
+  box.getSize(size);
 
-    positions[i * 3] = (u - 0.5) * width;
-    positions[i * 3 + 1] = (v - 0.5) * height;
-    positions[i * 3 + 2] = 0;
+  const maxDim = Math.max(size.x, size.y, size.z) || 1.0;
+  const scale = targetSize / maxDim;
+  textGeometry.scale(scale, scale, scale);
+  textGeometry.computeVertexNormals();
 
-    uvs[i * 2] = u;
-    uvs[i * 2 + 1] = v;
+  const solidMesh = new THREE.Mesh(
+    textGeometry,
+    new THREE.MeshStandardMaterial({
+      color: new THREE.Color(0xe2e8f0), // Bright Lustrous Silver Metal
+      metalness: 0.85, // Polished Silver Metal
+      roughness: 0.2, // Satin Silver Sheen
+      envMapIntensity: 2.0,
+    }),
+  );
 
-    isOutline[i] =
-      col === 0 || col === cols - 1 || row === 0 || row === rows - 1
-        ? 1.0
-        : 0.0;
-  }
-  return { positions, uvs, isOutline };
+  return { solidMesh };
 }
 
-// Prepare 3D GLTF model with baked geometry matrices & Silver Metal Material
+// 2. Prepare 3D GLTF model with baked geometry matrices & Silver Metal Material
 function processGLTFModel(originalScene: THREE.Object3D, targetSize = 0.85) {
   const scene = originalScene.clone();
   scene.updateMatrixWorld(true);
@@ -125,7 +138,7 @@ function processGLTFModel(originalScene: THREE.Object3D, targetSize = 0.85) {
   return { solidMesh };
 }
 
-// Sample points from the exact same baked 3D mesh geometry
+// Sample points from 3D mesh geometry
 function samplePointsFromMesh(targetMesh: THREE.Mesh, count: number) {
   const positions = new Float32Array(count * 3);
   const isOutline = new Float32Array(count);
@@ -165,7 +178,6 @@ function samplePointsFromMesh(targetMesh: THREE.Mesh, count: number) {
 /* ── Wireframe Outline Particle Shader with Organic Vibration Jitter ── */
 const OutlineParticleShader = {
   uniforms: {
-    uTexture: { value: null },
     uCurrentIndex: { value: 0 },
     uTargetIndex: { value: 0 },
     uMorphProgress: { value: 1.0 },
@@ -234,6 +246,14 @@ const OutlineParticleShader = {
           currentPos.x * cosA + currentPos.z * sinA,
           -currentPos.x * sinA + currentPos.z * cosA
         );
+      } else {
+        float angle = uTime * 0.3 * (1.0 - easeP);
+        float cosA = cos(angle);
+        float sinA = sin(angle);
+        currentPos.xz = vec2(
+          currentPos.x * cosA + currentPos.z * sinA,
+          -currentPos.x * sinA + currentPos.z * cosA
+        );
       }
 
       // Organic micro-vibration jitter for outline particles to feel alive
@@ -261,7 +281,6 @@ const OutlineParticleShader = {
     }
   `,
   fragmentShader: `
-    uniform sampler2D uTexture;
     uniform float uMorphProgress;
     uniform float uIsHovering;
     uniform float uTime;
@@ -279,17 +298,10 @@ const OutlineParticleShader = {
 
       float alphaEdge = smoothstep(0.25, 0.05, dot(coord, coord));
 
-      vec3 finalColor = vec3(0.92, 0.95, 0.98);
+      vec3 silverShine = vec3(0.95, 0.97, 1.0);
+      vec3 finalColor = mix(vec3(0.85, 0.90, 0.95), silverShine, vRandom);
+
       float finalAlpha = 1.0;
-
-      if (uTargetIndex == 0) {
-        vec4 texColor = texture2D(uTexture, vUv);
-        finalColor = texColor.rgb;
-      } else {
-        vec3 silverShine = vec3(0.95, 0.97, 1.0);
-        finalColor = mix(vec3(0.85, 0.90, 0.95), silverShine, vRandom);
-      }
-
       if (vIsOutline > 0.5) {
         finalAlpha = 0.98 * uIsHovering;
       } else {
@@ -302,57 +314,12 @@ const OutlineParticleShader = {
   `,
 };
 
-// Solid Plane Shader for Hero Photo
-const SolidHeroShader = {
-  uniforms: {
-    uTexture: { value: null },
-    uProgress: { value: 1.0 },
-    uTime: { value: 0 },
-    uMouse: { value: new THREE.Vector2(0, 0) },
-  },
-  vertexShader: `
-    varying vec2 vUv;
-    void main() {
-      vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-  `,
-  fragmentShader: `
-    uniform sampler2D uTexture;
-    uniform float uProgress;
-    uniform vec2 uMouse;
-
-    varying vec2 vUv;
-
-    void main() {
-      vec4 texColor = texture2D(uTexture, vUv);
-      float luminance = dot(texColor.rgb, vec3(0.299, 0.587, 0.114));
-
-      vec3 antiqueGold = vec3(0.88, 0.72, 0.45);
-      vec3 polishedBronze = vec3(0.98, 0.85, 0.60);
-      vec3 copperReflect = vec3(0.80, 0.55, 0.38);
-
-      vec3 normal = normalize(vec3((luminance - 0.5) * 1.5, (luminance - 0.5) * 1.5, 1.0));
-      vec3 lightDir = normalize(vec3(uMouse.x * 2.5, uMouse.y * 2.5, 1.8));
-      float spec = pow(max(dot(normal, lightDir), 0.0), 16.0);
-      float rim = 1.0 - max(dot(vec3(0.0, 0.0, 1.0), normal), 0.0);
-
-      vec3 metallicShine = antiqueGold * (0.6 + 0.4 * luminance) + polishedBronze * spec * 0.7 + copperReflect * pow(rim, 2.5) * 0.35;
-      vec3 finalColor = mix(texColor.rgb, metallicShine, 0.35);
-
-      float solidAlpha = texColor.a * uProgress;
-      gl_FragColor = vec4(finalColor, solidAlpha);
-    }
-  `,
-};
-
 interface SceneContentProps {
-  imagePath: string;
   mousePos: { x: number; y: number };
 }
 
-const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
-  const texture = useTexture(imagePath);
+const SceneContent: React.FC<SceneContentProps> = ({ mousePos }) => {
+  const meMesh = useMemo(() => create3DTextMesh("me", 0.85).solidMesh, []);
 
   const handGLTF = useGLTF(
     `${import.meta.env.BASE_URL}models/pointing-hand.glb`,
@@ -383,13 +350,12 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const isHovering = intendedRoute !== null;
 
   const particleMaterialRef = useRef<THREE.ShaderMaterial>(null!);
-  const solidMaterialRef = useRef<THREE.ShaderMaterial>(null!);
 
   const prevCategoryRef = useRef<CategoryKey>(activeCategory);
   const targetCategoryRef = useRef<CategoryKey>(intendedCategory);
   const morphProgressRef = useRef<number>(1.0);
-  const solidifyProgressRef = useRef<number>(isHovering ? 0.0 : 1.0);
 
+  const meRef = useRef<THREE.Group>(null!);
   const handRef = useRef<THREE.Group>(null!);
   const tvRef = useRef<THREE.Group>(null!);
   const docRef = useRef<THREE.Group>(null!);
@@ -400,24 +366,25 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
 
   const { posHero, uvs, posUX, posVisual, posWritings, isOutline, randoms } =
     useMemo(() => {
-      const hero = generateHeroGrid(count, cols, rows);
+      const hero = samplePointsFromMesh(meMesh, count);
       const ux = samplePointsFromMesh(handMesh, count);
       const vis = samplePointsFromMesh(tvMesh, count);
       const wr = samplePointsFromMesh(docMesh, count);
 
       const randArray = new Float32Array(count);
       for (let i = 0; i < count; i++) randArray[i] = Math.random();
+      const dummyUvs = new Float32Array(count * 2);
 
       return {
         posHero: hero.positions,
-        uvs: hero.uvs,
+        uvs: dummyUvs,
         posUX: ux.positions,
         posVisual: vis.positions,
         posWritings: wr.positions,
-        isOutline: ux.isOutline,
+        isOutline: hero.isOutline,
         randoms: randArray,
       };
-    }, [count, cols, rows, handMesh, tvMesh, docMesh]);
+    }, [count, meMesh, handMesh, tvMesh, docMesh]);
 
   useEffect(() => {
     if (intendedCategory !== targetCategoryRef.current) {
@@ -438,11 +405,6 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
       );
     }
 
-    const targetSolidify = isHovering ? 0.0 : 1.0;
-    solidifyProgressRef.current +=
-      (targetSolidify - solidifyProgressRef.current) *
-      Math.min(delta * 5.0, 1.0);
-
     if (particleMaterialRef.current) {
       particleMaterialRef.current.uniforms.uCurrentIndex.value =
         categoryToIndex(prevCategoryRef.current);
@@ -458,25 +420,14 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
       particleMaterialRef.current.uniforms.uMouse.value.lerp(targetMouse, 0.08);
     }
 
-    if (solidMaterialRef.current) {
-      const showSolidPlane = activeCategory === "hero" && !isHovering;
-      solidMaterialRef.current.uniforms.uProgress.value = showSolidPlane
-        ? solidifyProgressRef.current
-        : 0.0;
-      solidMaterialRef.current.uniforms.uTime.value = elapsedTime;
-      solidMaterialRef.current.uniforms.uMouse.value.lerp(targetMouse, 0.08);
-    }
-
     const currentRot = elapsedTime * 0.3;
+    if (meRef.current) meRef.current.rotation.y = currentRot;
     if (handRef.current) handRef.current.rotation.y = currentRot;
     if (tvRef.current) tvRef.current.rotation.y = currentRot;
     if (docRef.current) docRef.current.rotation.y = currentRot;
   });
 
-  const aspect = 1008 / 1244;
-  const planeWidth = 1.8 * aspect;
-  const planeHeight = 1.8;
-
+  const showSolidHero = activeCategory === "hero" && !isHovering;
   const showSolidUX = activeCategory === "ux-design" && !isHovering;
   const showSolidVisual = activeCategory === "data-engineering" && !isHovering;
   const showSolidWritings = activeCategory === "writings" && !isHovering;
@@ -518,23 +469,17 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
         <shaderMaterial
           ref={particleMaterialRef}
           args={[OutlineParticleShader]}
-          uniforms-uTexture-value={texture}
           transparent
           depthWrite={false}
         />
       </points>
 
-      {/* 2. Solidified Hero Photo Mesh (Homepage /) */}
-      <mesh position={[0, 0, 0.001]}>
-        <planeGeometry args={[planeWidth, planeHeight, 32, 32]} />
-        <shaderMaterial
-          ref={solidMaterialRef}
-          args={[SolidHeroShader]}
-          uniforms-uTexture-value={texture}
-          transparent
-          depthWrite
-        />
-      </mesh>
+      {/* 2. Solidified Silver Metal 3D Text Model: Hero "me" */}
+      {showSolidHero && (
+        <group ref={meRef}>
+          <primitive object={meMesh} />
+        </group>
+      )}
 
       {/* 3. Solidified Silver Metal 3D Model: UX Design Pointing Hand (👆🏻) */}
       {showSolidUX && (
@@ -543,7 +488,7 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
         </group>
       )}
 
-      {/* 4. Solidified Silver Metal 3D Model: Visual Design TV Monitor (📺) */}
+      {/* 4. Solidified Silver Metal 3D Model: Data Engineering TV Monitor (📺) */}
       {showSolidVisual && (
         <group ref={tvRef}>
           <primitive object={tvMesh} />
@@ -560,7 +505,7 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   );
 };
 
-export const HeroParticleCanvas: React.FC<{ imagePath: string }> = ({
+export const HeroParticleCanvas: React.FC<{ imagePath?: string }> = ({
   imagePath,
 }) => {
   const reduced = useReducedMotion();
@@ -579,13 +524,16 @@ export const HeroParticleCanvas: React.FC<{ imagePath: string }> = ({
   };
 
   if (reduced || !isLoaded) {
-    return (
-      <img
-        src={imagePath}
-        alt="Sumit profile"
-        className="w-full h-full object-cover rounded-xl"
-      />
-    );
+    if (imagePath) {
+      return (
+        <img
+          src={imagePath}
+          alt="Sumit profile"
+          className="w-full h-full object-cover rounded-xl"
+        />
+      );
+    }
+    return null;
   }
 
   return (
@@ -599,7 +547,7 @@ export const HeroParticleCanvas: React.FC<{ imagePath: string }> = ({
         className="w-full h-full rounded-xl"
       >
         <React.Suspense fallback={null}>
-          <SceneContent imagePath={imagePath} mousePos={mousePos} />
+          <SceneContent mousePos={mousePos} />
         </React.Suspense>
       </Canvas>
     </div>

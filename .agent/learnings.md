@@ -167,3 +167,12 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Errors or surprises:** None.
 - **Resolution:** Rewrote `optmyzr-dashboard-migration/index.mdx` into standard MDX sections and deleted `CaseStudyLayout.tsx`.
 - **Future instruction:** Maintain standard Markdown headings (`## 01 // CONTEXT`, `## 02 // PROBLEM`, `## 03 // APPROACH`, `## 04 // IMPACT`) and `ProjectImageAsset` across all future project MDX files.
+
+### 2026-07-30 - `HeroParticleCanvas 3D "me" Text Node & Silver Metal Solidification`
+
+- **Lessons learned:** Extruding 3D text via Three.js `TextGeometry` and `FontLoader` with a typeface JSON allows `MeshSurfaceSampler` to sample 3D points directly from text surfaces, enabling seamless wireframe particle outline morphing and solid 3D silver metal rendering without relying on 2D image plane shaders.
+- **Errors or surprises:** None.
+- **Resolution:** Created `create3DTextMesh("me", 0.85)` in `HeroParticleCanvas.tsx`, updated particle shader to silver shine, and enabled `showSolidHero` with standard silver metal material.
+- **Future instruction:** Keep 3D text geometry centered (`textGeometry.center()`) before scaling to ensure bounding box alignment matches GLTF models.
+
+- **Future instruction:** Maintain standard Markdown headings (`## 01 // CONTEXT`, `## 02 // PROBLEM`, `## 03 // APPROACH`, `## 04 // IMPACT`) and `ProjectImageAsset` across all future project MDX files.
