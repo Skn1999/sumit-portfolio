@@ -4,88 +4,192 @@ import { ArrowRight, X, Download, Eye, Grab } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 
-export const AcademicCohorts: React.FC = () => {
-  const cohorts = [
+export const ServiceOfferings: React.FC = () => {
+  const servicePillars = [
     {
-      title: "Mesa Te Club",
-      focus:
-        "A participatory design proposal that uses tea gatherings and playful co-design tools to help social housing residents, municipalities, and developers collaboratively shape common areas.",
-      deliverable: "Co-Design Case Study & Proposal",
-      link: "/projects/social-integration-pd",
+      pillarNumber: "01",
+      title: "Human-in-the-Loop AI & System Oversight",
+      roles: ["AI Product Architect", "Senior Frontend Systems Engineer"],
+      groups: [
+        {
+          name: "AI-Assisted UI Migration & Refactoring",
+          skills: [
+            "Config-Driven React Architecture",
+            "AI Refactoring Scripts",
+            "Zero-Downtime Legacy Migration",
+            "State Optimization",
+          ],
+          behanceUrl: "https://www.behance.net/desman_designer",
+        },
+        {
+          name: "Safe LLM Integration & System Oversight",
+          skills: [
+            "Real-Time Streaming API Interfaces",
+            "Latency Feedback Indicators",
+            "Human-in-the-Loop Validation Workflows",
+            "Design Token AST Parsing",
+          ],
+          behanceUrl: "https://www.behance.net/desman_designer",
+        },
+      ],
     },
     {
-      title: "UX Bites",
-      focus:
-        "Rapid Frontend Prototypes and design explorations where I take random Saas products and try to do a small UX improvement..",
-      deliverable: "Small audits. Sharp observations. Joyful fixes.",
-      link: "/ux-bites",
+      pillarNumber: "02",
+      title: "UX Architecture & Cognitive Workflows",
+      roles: ["Senior UX Architect", "Product Designer"],
+      groups: [
+        {
+          name: "High-Density Data Visualization & Telemetry",
+          skills: [
+            "Progressive Disclosure Interfaces",
+            "Environmental Sensor Dashboards",
+            "Complex Workflow Simplification",
+            "Low-Cognitive-Load UI",
+          ],
+          behanceUrl: "https://www.behance.net/desman_designer",
+        },
+        {
+          name: "Interaction Architecture & System Modeling",
+          skills: [
+            "Ecosystem & Stakeholder Mapping",
+            "Interaction Hierarchy Modeling",
+            "User Flow Optimization",
+            "Enterprise Domain Simplification",
+          ],
+          behanceUrl: "https://www.behance.net/desman_designer",
+        },
+      ],
+    },
+    {
+      pillarNumber: "03",
+      title: "Usability Engineering & HCI Audits",
+      roles: ["HCI Researcher", "Usability Specialist"],
+      groups: [
+        {
+          name: "Heuristic Evaluation & Deficit Audits",
+          skills: [
+            "Nielsen's 10 Heuristics",
+            "Cognitive Walkthroughs",
+            "Interface Deficit Audits",
+            "WCAG 2.1 Accessibility",
+          ],
+          behanceUrl: "https://www.behance.net/desman_designer",
+        },
+        {
+          name: "Quantitative User Testing & Behavioral Methods",
+          skills: [
+            "Task Efficiency Metrics",
+            "Statistical Error Tracking",
+            "A/B Trial Protocols",
+            "Behavioral Nudge Design",
+          ],
+          behanceUrl: "https://www.behance.net/desman_designer",
+        },
+      ],
     },
   ];
 
   return (
-    <div className="py-16 md:py-24 bg-background border-t border-border/40">
-      <div className="max-w-6xl mx-auto px-4 lg:px-0">
+    <div className="py-24 md:py-36 bg-paper-bg border-t border-paper-border">
+      <div className="max-w-6xl mx-auto px-4 md:px-8">
         {/* Header */}
-        <div className="mb-12 md:mb-16">
-          <span className="font-label text-xs tracking-widest text-slate-500 uppercase font-semibold">
-            // ACADEMIC PORTFOLIO
+        <motion.div
+          initial={{ opacity: 0, filter: "blur(6px)", y: 16 }}
+          whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-16 md:mb-20"
+        >
+          <span className="font-mono text-xs tracking-widest text-ink-muted uppercase block mb-2">
+            WHAT I OFFER // SERVICE OFFERINGS &amp; SYSTEM OVERSIGHT
           </span>
-          <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mt-2 tracking-tighter">
-            Side-Quest Cohorts
+          <h2 className="text-3xl md:text-5xl font-bold font-display text-ink-primary tracking-tighter">
+            How I Help Your Product &amp; Design Teams
           </h2>
-        </div>
+          <p className="font-body-narrative text-base md:text-lg text-ink-muted mt-4 max-w-2xl">
+            Bridging human-computer interaction research and enterprise frontend engineering to help product teams ship fast without sacrificing UX rigor or system stability.
+          </p>
+        </motion.div>
 
-        {/* Rows Container */}
-        <div className="border-t border-border/60">
-          {cohorts.map((cohort, index) => (
-            <div
-              key={index}
-              className="group border-b border-border/60 py-8 md:py-10 transition-colors duration-300 hover:bg-[hsl(var(--card))]/40 px-4 md:px-6 -mx-4 md:-mx-6 rounded-xl"
+        {/* Core Service Pillars */}
+        <div className="flex flex-col gap-12">
+          {servicePillars.map((pillar, pIdx) => (
+            <motion.div
+              key={pillar.pillarNumber}
+              initial={{ opacity: 0, filter: "blur(6px)", y: 20 }}
+              whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: pIdx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="border-t border-paper-border pt-8 md:pt-10 flex flex-col gap-6"
             >
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
-                {/* Column 1: Title */}
-                <div className="lg:col-span-4 flex flex-col gap-2">
-                  <span className="font-label text-[10px] tracking-widest text-[hsl(var(--primary))] uppercase font-bold">
-                    COHORT {String(index + 1).padStart(2, "0")}
+              {/* Pillar Header & Roles */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <span className="font-mono text-xs font-semibold tracking-widest text-ink-muted uppercase block mb-1">
+                    PILLAR {pillar.pillarNumber}
                   </span>
-                  <h3 className="text-lg md:text-xl font-bold font-display text-foreground group-hover:text-[hsl(var(--primary))] transition-colors duration-300 leading-tight">
-                    {cohort.title}
+                  <h3 className="text-2xl md:text-3xl font-bold font-display text-ink-primary">
+                    {pillar.title}
                   </h3>
                 </div>
-
-                {/* Column 2: Context / Focus */}
-                <div className="lg:col-span-5">
-                  <p className="font-body-narrative text-sm md:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
-                    {cohort.focus}
-                  </p>
-                </div>
-
-                {/* Column 3: Deliverable */}
-                <div className="lg:col-span-3 flex justify-start lg:justify-end">
-                  {cohort.link ? (
-                    <Link
-                      to={cohort.link}
-                      className="inline-flex items-center gap-2 font-label font-bold text-xs text-[hsl(var(--primary))] uppercase tracking-wider group/link hover:opacity-85 transition-opacity"
+                <div className="flex flex-wrap gap-2">
+                  {pillar.roles.map((role, rIdx) => (
+                    <span
+                      key={rIdx}
+                      className="px-3 py-1 rounded-full bg-paper-card text-ink-primary border border-paper-border text-xs font-mono font-semibold tracking-wide"
                     >
-                      <span className="border-b border-[hsl(var(--primary))]/30 group-hover:border-[hsl(var(--primary))] pb-0.5">
-                        {cohort.deliverable}
-                      </span>
-                      <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
-                    </Link>
-                  ) : (
-                    <div className="font-engineer text-[10px] md:text-xs text-slate-600 dark:text-slate-400 border border-border/40 bg-[hsl(var(--card))] px-3 py-1.5 rounded-lg shadow-sm">
-                      {cohort.deliverable}
-                    </div>
-                  )}
+                      {role}
+                    </span>
+                  ))}
                 </div>
               </div>
-            </div>
+
+              {/* Skill Groups Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
+                {pillar.groups.map((group, gIdx) => (
+                  <div
+                    key={gIdx}
+                    className="p-6 rounded-xl border border-paper-border bg-paper-card flex flex-col justify-between gap-4"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-3">
+                        <h4 className="font-bold font-display text-base md:text-lg text-ink-primary">
+                          {group.name}
+                        </h4>
+                        {group.behanceUrl && (
+                          <a
+                            href={group.behanceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-mono text-[11px] text-ink-muted hover:text-ink-primary underline tracking-wider uppercase shrink-0"
+                          >
+                            Portfolio Link ↗
+                          </a>
+                        )}
+                      </div>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {group.skills.map((skill, sIdx) => (
+                          <span
+                            key={sIdx}
+                            className="px-2.5 py-1 rounded bg-paper-bg text-ink-muted border border-paper-border text-xs font-mono"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>
     </div>
   );
 };
+
+export const AcademicCohorts = ServiceOfferings;
 
 interface CredentialItem {
   scope: string;
@@ -320,16 +424,17 @@ export const ProfessionalCredentials: React.FC = () => {
 
   // Lock background scroll when modal opens
   useEffect(() => {
+    const win = window as unknown as { lenis?: { stop: () => void; start: () => void } };
     if (selectedCred) {
       document.body.style.overflow = "hidden";
-      (window as any).lenis?.stop();
+      win.lenis?.stop();
     } else {
       document.body.style.overflow = "";
-      (window as any).lenis?.start();
+      win.lenis?.start();
     }
     return () => {
       document.body.style.overflow = "";
-      (window as any).lenis?.start();
+      win.lenis?.start();
     };
   }, [selectedCred]);
 

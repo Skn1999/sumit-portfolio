@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FileText } from "lucide-react";
-import { Link } from "react-router-dom";
-import DotGridBackground from "./DotGridBackground";
-import MagneticButton from "./MagneticButton";
+import { Link, useLocation } from "react-router-dom";
+import HeroParticleCanvas from "./HeroParticleCanvas";
+
+// Module-level flag to ensure hero text only animates on initial site load
+let heroTextHasAnimated = false;
 
 const HeroSection: React.FC = () => {
+  const location = useLocation();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
+  const [isInitialRender, setIsInitialRender] = useState(!heroTextHasAnimated);
+
+  useEffect(() => {
+    heroTextHasAnimated = true;
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -16,6 +24,31 @@ const HeroSection: React.FC = () => {
     setMousePos({ x, y });
   };
 
+  const inkFadeVariant = {
+    hidden: { opacity: 0, filter: "blur(8px)", y: 0 },
+    visible: (customDelay: number) => ({
+      opacity: 1,
+      filter: "blur(0px)",
+      y: 0,
+      transition: {
+        delay: isInitialRender ? customDelay : 0,
+        duration: isInitialRender ? 0.8 : 0,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    }),
+  };
+
+  const textMotionProps = isInitialRender
+    ? {
+        initial: "hidden",
+        whileInView: "visible",
+        viewport: { once: true },
+      }
+    : {
+        initial: "visible",
+        animate: "visible",
+      };
+
   return (
     <section
       id="about"
@@ -23,101 +56,77 @@ const HeroSection: React.FC = () => {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative min-h-[60svh] md:min-h-[65svh] flex flex-col justify-center py-16 md:py-24 mt-6 md:mt-10 lg:mt-12 rounded-[24px] bg-primary/[0.02] dark:bg-primary/[0.03] border border-primary/[0.05] dark:border-primary/[0.08] overflow-hidden"
+      className="relative min-h-[60svh] md:min-h-[65svh] flex flex-col justify-between py-24 md:py-32 bg-paper-bg overflow-hidden pt-28"
     >
-      {/* Interactive Dot Grid Background */}
-      <DotGridBackground />
-
-      {/* Dynamic Cursor Aura / Radial Glow */}
-      <div
-        className="absolute inset-0 pointer-events-none transition-opacity duration-500 ease-out"
-        style={{
-          opacity: isHovered ? 1 : 0,
-          background: `radial-gradient(circle 350px at ${mousePos.x}px ${mousePos.y}px, hsl(var(--primary) / 0.08), transparent 70%)`,
-        }}
-      />
-
-      <div className="max-w-6xl mx-auto px-4 w-full relative z-10">
+      <div className="max-w-6xl mx-auto px-4 md:px-8 w-full relative z-10 my-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Left Column: Text Content */}
-          <div className="lg:col-span-8 flex flex-col">
+          {/* Left Column: Text Content (Stays static across page transitions) */}
+          <div className="lg:col-span-6 flex flex-col text-left">
             {/* Monospace tracking tag */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.5 }}
-              className="font-label uppercase tracking-widest text-[10px] md:text-xs font-semibold text-slate-500 mb-6 flex items-center gap-2 flex-wrap"
-            >
-              <span>LOCATION: HELSINKI, FI // WORK RIGHTS:</span>
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span>IMMEDIATE AVAILABILITY</span>
-            </motion.div>
 
             {/* Primary Display Title */}
             <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: 0.2,
-                duration: 0.7,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="font-display tracking-tighter font-bold text-4xl md:text-6xl text-foreground leading-[1.1] mb-8"
+              custom={0.25}
+              {...textMotionProps}
+              variants={inkFadeVariant}
+              className="font-display tracking-tighter font-bold text-4xl md:text-6xl text-ink-primary leading-[1.1] mb-8"
             >
-              Hi, I'm Sumit. I am a UX Architect.
+              AI builds fast. <br /> I make sure it builds right.
             </motion.h1>
 
             {/* Primary Description Narrative */}
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              className="font-body-narrative leading-[1.8] text-base md:text-lg text-slate-500 dark:text-slate-400"
+              custom={0.4}
+              {...textMotionProps}
+              variants={inkFadeVariant}
+              className="font-body-narrative leading-[1.8] text-base md:text-lg text-ink-muted max-w-2xl"
             >
-              I design scalable interface systems and data workflows. Blending 4
-              years of enterprise frontend execution with an HCI Master's from
-              Aalto University and University of Trento.
+              Hi, I'm Sumit. <br /> I oversee AI-assisted Design and Dev process
+              so your product keeps its human touch.
             </motion.p>
 
-            {/* View Resume Button */}
+            {/* Action Button */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
+              custom={0.55}
+              {...textMotionProps}
+              variants={inkFadeVariant}
               className="mt-8"
             >
-              <MagneticButton
-                size="lg"
-                variant="outline"
-                className="font-label text-xs tracking-wider uppercase font-semibold border-border/80 hover:border-primary/50"
-                asChild
+              <Link
+                to="/resume"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-paper-border bg-paper-card text-ink-primary font-mono text-xs tracking-wider uppercase font-semibold hover:border-ink-primary transition-all"
               >
-                <Link to="/resume" className="flex items-center gap-2">
-                  <FileText className="w-4 h-4" />
-                  View Resume
-                </Link>
-              </MagneticButton>
+                <FileText className="w-4 h-4" />
+                View Resume
+              </Link>
             </motion.div>
           </div>
 
-          {/* Right Column: Profile Image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="lg:col-span-4 flex justify-center lg:justify-end"
-          >
-            <div className="relative overflow-hidden rounded-xl border border-border/85 bg-[hsl(var(--card))] aspect-[3/4] w-full max-w-[280px] sm:max-w-[320px] lg:max-w-full shadow-md">
-              <img
-                src={`${import.meta.env.BASE_URL}images/about/hero.jpg`}
-                alt="Sumit profile"
-                className="w-full h-full object-cover"
+          {/* Right Column: 3D Particle Canvas & Solidified Models (Re-triggers morph animation on route navigation) */}
+          <div className="lg:col-span-6 flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-[280px] sm:max-w-[340px] lg:max-w-full aspect-[1008/1244]">
+              <HeroParticleCanvas
+                key={location.pathname + location.search}
+                imagePath={`${import.meta.env.BASE_URL}images/about/hero.jpg`}
               />
             </div>
-          </motion.div>
+          </div>
+        </div>
+      </div>
+
+      {/* Viewport Bottom Strip: Location Left / Availability Status Right */}
+      <div className="max-w-6xl mx-auto px-4 md:px-8 w-full relative z-10 pt-12">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 font-mono text-[11px] tracking-widest text-ink-muted uppercase">
+          <div className="flex items-center gap-2">
+            <span>LOCATION: HELSINKI, FINLAND</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span>Availability: Available Today // Open for Roles</span>
+          </div>
         </div>
       </div>
     </section>

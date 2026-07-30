@@ -1,12 +1,8 @@
 import { Layout, Container } from "@/components/Layout";
-import Projects from "@/components/Projects";
-import Contact, { UnsaidMoments, Footer } from "@/components/Contact";
 import HeroSection from "@/components/HeroSection";
-import {
-  AcademicCohorts,
-  ProfessionalCredentials,
-  LogisticsCleardown,
-} from "@/components/SecondaryModules";
+import AboutSection from "@/components/AboutSection";
+import AchievementsSection from "@/components/AchievementsSection";
+import Contact, { UnsaidMoments, Footer } from "@/components/Contact";
 import ScrollProgress from "@/components/ScrollProgress";
 import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
@@ -15,18 +11,18 @@ const IndexContent = () => {
   return (
     <Layout>
       <SEO
-        title="Sumit Knayyar Product Designer & UX Strategist"
+        title="Sumit Nayyar | UX & Design Engineer (HCI + Frontend)"
         rawTitle
-        description="Product Designer & UX Strategist with 4+ years of experience designing digital products that solve real problems. Research-driven, systems-thinking, and design-focused."
+        description="User Experience and Behavioral Design graduate bridging HCI research and enterprise frontend execution."
         path="/"
         keywords={[
           "portfolio",
-          "product designer",
           "UX designer",
-          "UX strategist",
-          "design systems",
+          "design engineer",
+          "UX architect",
           "HCI",
           "React",
+          "TypeScript",
         ]}
       />
       <motion.div
@@ -37,30 +33,19 @@ const IndexContent = () => {
       >
         <ScrollProgress />
         <div className="relative z-10 scroll-blur-content">
-          <Container className="overflow-x-visible">
-            <HeroSection />
-          </Container>
+          {/* Section 1: Hero Section */}
+          <HeroSection />
 
-          {/* main sections */}
-          <Container>
-            <Projects />
-          </Container>
+          {/* Section 2: About & AI Philosophy */}
+          <AboutSection />
 
-          <Container>
-            <AcademicCohorts />
-          </Container>
+          {/* Section 3: Achievements */}
+          <AchievementsSection />
 
-          <ProfessionalCredentials />
+          {/* Section 4: Contact */}
+          <Contact />
 
-          <Container>
-            <Contact />
-          </Container>
-
-          <Container>
-            <UnsaidMoments />
-          </Container>
-
-          {/* <LogisticsCleardown /> */}
+          {/* <UnsaidMoments /> */}
 
           <Footer />
         </div>

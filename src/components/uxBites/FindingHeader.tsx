@@ -31,8 +31,13 @@ export const FindingHeader: React.FC<Props> = ({
       : "text-2xl md:text-3xl font-semibold leading-tight";
 
   return (
-    <header className={cn("mb-4", className)}>
-      <p className={cn("flex items-center gap-2 font-bite-display text-[11px] uppercase tracking-[0.28em] mb-3", eyebrowColor)}>
+    <header className={cn("", className)}>
+      <p
+        className={cn(
+          "flex items-center gap-2 font-bite-display text-[11px] uppercase tracking-[0.28em]",
+          eyebrowColor,
+        )}
+      >
         <span className="bite-dot" aria-hidden />
         <span>{eyebrow}</span>
       </p>

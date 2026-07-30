@@ -31,6 +31,11 @@ export default {
         "bite-body": ["IBM Plex Mono", "ui-monospace", "monospace"],
       },
       colors: {
+        "paper-bg": "hsl(var(--paper-bg))",
+        "paper-card": "hsl(var(--paper-card))",
+        "ink-primary": "hsl(var(--ink-primary))",
+        "ink-muted": "hsl(var(--ink-muted))",
+        "paper-border": "hsl(var(--paper-border))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

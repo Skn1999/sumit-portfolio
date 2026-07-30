@@ -8,12 +8,14 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ProjectPage from "./pages/ProjectPage";
 import ResumePage from "./pages/ResumePage";
-import UxBitesList from "./pages/UxBitesList";
 import UxBitePage from "./pages/UxBitePage";
-import ProjectList from "./components/ProjectList";
+import UxDesignPage from "./pages/UxDesignPage";
+import VisualDesignPage from "./pages/VisualDesignPage";
+import WritingsPage from "./pages/WritingsPage";
+import DataEngineeringPage from "./pages/DataEngineeringPage";
+import { NavIntentProvider } from "./contexts/NavIntentContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { TransitionProvider } from "./contexts/TransitionContext";
-import PageTransition from "./components/PageTransition";
 import { AnimatePresence } from "framer-motion";
 import SmoothScroll from "./components/SmoothScroll";
 
@@ -44,9 +46,15 @@ const AnimatedRoutes = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Index />} />
         <Route path="/resume" element={<ResumePage />} />
-        <Route path="/projects" element={<ProjectList />} />
+        <Route path="/design" element={<UxDesignPage />} />
+        <Route path="/ux-design" element={<UxDesignPage />} />
+        <Route path="/data-engineering" element={<DataEngineeringPage />} />
+        <Route path="/projects" element={<UxDesignPage />} />
         <Route path="/projects/:slug" element={<ProjectPage />} />
-        <Route path="/ux-bites" element={<UxBitesList />} />
+        <Route path="/visual-design" element={<UxDesignPage />} />
+        <Route path="/writings/publication" element={<WritingsPage />} />
+        <Route path="/writings/research" element={<WritingsPage />} />
+        <Route path="/ux-bites" element={<WritingsPage />} />
         <Route path="/ux-bites/:slug" element={<UxBitePage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -65,9 +73,11 @@ const App = () => {
           <ThemeProvider>
             <TransitionProvider>
               <BrowserRouter basename={basename}>
-                <ScrollToHash />
-                <SmoothScroll />
-                <AnimatedRoutes />
+                <NavIntentProvider>
+                  <ScrollToHash />
+                  <SmoothScroll />
+                  <AnimatedRoutes />
+                </NavIntentProvider>
               </BrowserRouter>
             </TransitionProvider>
           </ThemeProvider>

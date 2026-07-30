@@ -1,118 +1,107 @@
 import React, { useState } from "react";
-import { Linkedin } from "lucide-react";
-import MagneticButton from "./MagneticButton";
+import { Mail, Linkedin, Github, ExternalLink } from "lucide-react";
 
 const Contact = () => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-  const [isOverInteractive, setIsOverInteractive] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    setMousePos({ x, y });
+  const email = "sknayyar.sk@gmail.com";
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText(email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleSectionClick = () => {
-    if (!isOverInteractive && mailToButtonRef.current) {
-      mailToButtonRef.current.click();
-    }
+  const inkFadeVariant = {
+    hidden: { opacity: 0, filter: "blur(6px)", y: 20 },
+    visible: {
+      opacity: 1,
+      filter: "blur(0px)",
+      y: 0,
+      transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+    },
   };
-
-  const mailToButtonRef = React.useRef<HTMLAnchorElement>(null);
 
   return (
     <section
       id="contact"
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={handleSectionClick}
-      className={`py-16 md:py-24 relative overflow-hidden border border-border/40 select-none transition-colors duration-300 hover:bg-[hsl(var(--card))]/35 bg-[hsl(var(--card))]/10 rounded-[24px] px-6 md:px-10 ${
-        isHovered && !isOverInteractive ? "cursor-none" : ""
-      }`}
+      className="py-20 md:py-32 bg-paper-bg border-t border-paper-border"
     >
-      {/* Custom hover cursor follow */}
-      {isHovered && !isOverInteractive && (
-        <div
-          className="pointer-events-none absolute z-50 w-24 h-24 rounded-full bg-[hsl(var(--primary))] text-primary-foreground text-[10px] font-label font-bold uppercase tracking-widest flex items-center justify-center text-center p-2 shadow-2xl select-none -translate-x-1/2 -translate-y-1/2"
-          style={{
-            left: `${mousePos.x}px`,
-            top: `${mousePos.y}px`,
-          }}
-        >
-          Reach out
-        </div>
-      )}
-
-      <div className="max-w-6xl mx-auto w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
-          {/* Left Column: Heading & Subheading */}
-          <div className="lg:col-span-8 flex flex-col text-left">
-            <span className="font-label text-[10px] md:text-xs tracking-widest text-slate-500 uppercase font-semibold mb-3">
-              // CONNECT
+      <div className="max-w-6xl mx-auto px-4 md:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Left Column */}
+          <div className="lg:col-span-6 flex flex-col text-left">
+            <span className="font-mono text-xs tracking-widest text-ink-muted uppercase font-semibold mb-3">
+              04 // CONTACT
             </span>
-            <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mb-4 tracking-tighter">
-              Coffee? Chat? Let's{" "}
-              <span className="text-primary underline">Talk</span>.
+            <h2 className="text-3xl md:text-5xl font-bold font-display text-ink-primary tracking-tighter mb-4">
+              Let's Connect &amp; Collaborate
             </h2>
-            <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 font-body-narrative leading-relaxed max-w-xl">
-              I bring curiosity, code, and coffee. Let's build something we're
-              proud of. Click anywhere in this block to send me an email.
+            <p className="font-body-narrative text-base md:text-lg text-ink-muted leading-relaxed mb-6 max-w-lg">
+              Whether you're building next-generation products or seeking UX
+              design &amp; engineering leadership, I'm always open to discussing
+              new opportunities.
             </p>
-            <a
-              ref={mailToButtonRef}
-              href="mailto:sknayyar.sk@gmail.com"
-              className="invisible"
-            ></a>
           </div>
 
-          {/* Right Column: Social Links */}
-          <div
-            className="lg:col-span-4 flex flex-row lg:justify-end gap-4 w-full pointer-events-auto"
-            onMouseEnter={() => setIsOverInteractive(true)}
-            onMouseLeave={() => setIsOverInteractive(false)}
-          >
-            <MagneticButton
-              size="icon"
-              variant="outline"
-              className="rounded-full w-12 h-12 border-border/80 hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 flex items-center justify-center shrink-0"
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(
-                  "https://www.linkedin.com/in/sumitnayyar-ux/",
-                  "_blank",
-                  "noopener,noreferrer",
-                );
-              }}
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="w-5 h-5" />
-            </MagneticButton>
+          {/* Right Column: Contact Card */}
+          <div className="lg:col-span-6">
+            <div className="p-8 md:p-10 rounded-2xl bg-paper-card border border-paper-border shadow-sm flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
+                <span className="font-mono text-xs tracking-widest text-ink-muted uppercase">
+                  Direct Email
+                </span>
+                <div className="flex items-center justify-between gap-4 p-4 rounded-xl border border-paper-border bg-paper-bg">
+                  <span className="font-mono text-sm font-semibold text-ink-primary truncate">
+                    {email}
+                  </span>
+                  <button
+                    onClick={handleCopyEmail}
+                    className="px-3 py-1.5 rounded bg-paper-card border border-paper-border text-xs font-mono text-ink-primary hover:border-ink-primary transition-all shrink-0"
+                  >
+                    {copied ? "Copied!" : "Copy"}
+                  </button>
+                </div>
+              </div>
 
-            <MagneticButton
-              size="icon"
-              variant="outline"
-              className="rounded-full w-12 h-12 border-border/80 hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 flex items-center justify-center shrink-0"
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(
-                  "https://www.behance.net/desman_designer",
-                  "_blank",
-                  "noopener,noreferrer",
-                );
-              }}
-              aria-label="Behance"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                className="w-5 h-5 fill-current"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988H0V5.021h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zM3 11h3.584c2.508 0 2.906-3-.312-3H3v3zm3.391 3H3v3.016h3.341c3.055 0 2.868-3.016.05-3.016z" />
-              </svg>
-            </MagneticButton>
+              {/* Social Links */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <a
+                  href="mailto:sknayyar.sk@gmail.com"
+                  className="flex items-center gap-3 p-3.5 rounded-xl border border-paper-border bg-paper-bg hover:border-ink-primary text-ink-primary font-mono text-xs uppercase tracking-wider font-semibold transition-all"
+                >
+                  <Mail className="w-4 h-4 text-ink-muted" />
+                  <span>Email</span>
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/sumitnayyar-ux/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-3.5 rounded-xl border border-paper-border bg-paper-bg hover:border-ink-primary text-ink-primary font-mono text-xs uppercase tracking-wider font-semibold transition-all"
+                >
+                  <Linkedin className="w-4 h-4 text-ink-muted" />
+                  <span>LinkedIn</span>
+                </a>
+                <a
+                  href="https://github.com/Skn1999"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-3.5 rounded-xl border border-paper-border bg-paper-bg hover:border-ink-primary text-ink-primary font-mono text-xs uppercase tracking-wider font-semibold transition-all"
+                >
+                  <Github className="w-4 h-4 text-ink-muted" />
+                  <span>GitHub</span>
+                </a>
+                <a
+                  href="https://www.behance.net/sumitnayyar"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-3.5 rounded-xl border border-paper-border bg-paper-bg hover:border-ink-primary text-ink-primary font-mono text-xs uppercase tracking-wider font-semibold transition-all"
+                >
+                  <ExternalLink className="w-4 h-4 text-ink-muted" />
+                  <span>Behance</span>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -122,19 +111,22 @@ const Contact = () => {
 
 export const UnsaidMoments = () => {
   return (
-    <section id="unsaid-moments" className="py-16 md:py-24 text-center">
+    <section
+      id="unsaid-moments"
+      className="py-16 md:py-24 text-center bg-paper-bg border-t border-paper-border"
+    >
       <div className="max-w-4xl mx-auto px-4 md:px-0">
-        <span className="font-label text-[10px] md:text-xs tracking-widest text-slate-500 uppercase font-semibold block mb-3">
-          // MY NEWSLETTER
+        <span className="font-mono text-xs tracking-widest text-ink-muted uppercase font-semibold block mb-3">
+          // PUBLICATION
         </span>
-        <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mb-4 tracking-tighter">
+        <h2 className="text-3xl md:text-5xl font-bold font-display text-ink-primary mb-4 tracking-tighter">
           Unsaid Moments
         </h2>
-        <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto font-body-narrative leading-relaxed">
-          A small publication where I explore my passion for writing about
-          complex yet thoughtful moments.
+        <p className="text-sm md:text-base text-ink-muted mb-8 max-w-lg mx-auto font-body-narrative leading-relaxed">
+          A publication where I explore writing about complex yet thoughtful
+          design and human interactions.
         </p>
-        <div className="mx-auto max-w-xl rounded-2xl overflow-hidden border border-border/60 shadow-sm bg-white dark:bg-white">
+        <div className="mx-auto max-w-xl rounded-2xl overflow-hidden border border-paper-border shadow-sm bg-paper-card">
           <iframe
             src="https://sumit6131.substack.com/embed"
             width="100%"
@@ -152,10 +144,38 @@ export const UnsaidMoments = () => {
 
 export const Footer = () => {
   return (
-    <footer className="py-8 border-t border-border/20 text-center">
-      <p className="text-xs md:text-sm text-slate-400 font-label tracking-wider uppercase">
-        © 2026 Sumit Knayyar. Designed with intention, built with care.
-      </p>
+    <footer className="py-8 md:py-12 border-t border-paper-border bg-paper-bg text-ink-muted text-xs font-mono">
+      <div className="container mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p className="text-center md:text-left tracking-wide">
+          Helsinki, FI // Available for new roles.
+        </p>
+        <div className="flex items-center gap-6">
+          <a
+            href="https://www.linkedin.com/in/sumitnayyar-ux/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-ink-primary transition-colors"
+          >
+            LinkedIn
+          </a>
+          <a
+            href="https://github.com/Skn1999"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-ink-primary transition-colors"
+          >
+            GitHub
+          </a>
+          <a
+            href="https://www.behance.net/sumitnayyar"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-ink-primary transition-colors"
+          >
+            Behance
+          </a>
+        </div>
+      </div>
     </footer>
   );
 };
