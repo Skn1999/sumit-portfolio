@@ -161,5 +161,9 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Resolution:** Updated `Header.tsx`, created `DataEngineeringPage.tsx` with `#ai-data` and `#frontend-engineering` sections, registered `/data-engineering` and `/design` in `App.tsx`, added `#research` wrapper anchor in `WritingsPage.tsx`, and updated `HeroParticleCanvas.tsx`.
 - **Future instruction:** Ensure all new primary route pages include `HeroSection` as section 1 at the top of the layout tree to maintain 3D canvas navigation continuity across all routes.
 
+### 2026-07-30 - `tasks/task_034_groundwork_case_study_integration.md`
 
-
+- **Lessons learned:** Authoring MDX case studies with strict image positioning (`ProjectImageAsset`) and standard markdown prose inside `<article className="mx-auto max-w-4xl prose prose-lg">` preserves single-column wide editorial readability while allowing the build pipeline (`import.meta.glob`) to automatically discover and compile new case studies into static HTML routes.
+- **Errors or surprises:** None.
+- **Resolution:** Created `src/content/projects/groundwork/index.mdx` with complete frontmatter, quote callouts, Problem section image (`metrics.avif`), and Approach section image (`methodology.avif`).
+- **Future instruction:** When adding MDX case studies, always ensure image paths passed to `<ProjectImageAsset src="..." />` are relative to `src/content/projects/` (e.g. `groundwork/metrics.avif`) to avoid path resolution failures.

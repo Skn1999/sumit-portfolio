@@ -42,6 +42,8 @@ This file is updated by AI agents after each task is attempted or completed. It 
 | 2026-07-29 | `tasks/task_032_intent_based_navigation_and_main_pages.md` | Implemented intent-based header navigation hover-out transition state (`intendedRoute`), explicit sub-item click state resets, smooth anchor scrolling, created `/ux-design`, `/visual-design`, `/writings/publication` main pages with `HeroSection` as section 1 across all routes. Build passes. | Completed |
 | 2026-07-29 | `HeroParticleCanvas 3D GLTF Navigation Morphing & Silver Metal Solidification` | Converted Blender models (`webhand.blend`, `television_02_4k.blend`, `cassette_player_4k.blend`) to GLB (`pointing-hand.glb`, `tv-screen.glb`, `document.glb`), baked geometry matrices (`applyMatrix4`), synchronized Y-axis rotation, and implemented wireframe outline hover morphing + bright silver metallic model solidification on navigation completion. Build passes. | Completed |
 | 2026-07-30 | `tasks/task_033_menu_hierarchy_and_route_pages_update.md` | Updated Header menu hierarchy to 4-column structure (Sumit Nayyar, Design, Data Engineering, Writings), created DataEngineeringPage with AI & Data and Front-End Engineering sections, added /data-engineering and /design routes, and updated 3D particle intent category key. Build passes. | Completed |
+| 2026-07-30 | `tasks/task_034_groundwork_case_study_integration.md` | Created Groundwork case study MDX at `src/content/projects/groundwork/index.mdx` using production copy, EIT Jumpstarter 2nd place metric, cover image, and inline metrics/methodology visuals in a single-column wide layout. Build passes. | Completed |
+
 
 ### 2026-07-30 - `tasks/task_033_menu_hierarchy_and_route_pages_update.md`
 
@@ -108,6 +110,20 @@ This file is updated by AI agents after each task is attempted or completed. It 
 - Tests run: `npm run build` (Passed in 9.69s), `./node_modules/.bin/eslint` (Passed cleanly)
 - Acceptance criteria: 100% met.
 - Follow-ups / risks: None.
+
+### 2026-07-30 - `tasks/task_034_groundwork_case_study_integration.md`
+
+- Status: Completed
+- Summary: Created `src/content/projects/groundwork/index.mdx` using production-ready markdown copy from `research/groundwork-case-study.md`. Formatted metadata frontmatter with `type: "design"`, `featured: true`, cover image (`cover.jpg`), and key achievement metric. Placed `metrics.avif` directly under the Problem section and `methodology.avif` in the Approach section in a simple, wide single-column editorial layout.
+- Files changed:
+  - `src/content/projects/groundwork/index.mdx`
+  - `tasks/task_034_groundwork_case_study_integration.md`
+  - `tasks/TODO.md`
+  - `.agent/progress.md`
+- Tests run: `npm run build` (Passed in 4.12s, generated static page `dist/projects/groundwork/index.html`)
+- Acceptance criteria: 100% met.
+- Follow-ups / risks: None.
+
 
 
 
