@@ -55,6 +55,7 @@ const AchievementsSection: React.FC = () => {
         "Prototyping",
         "WCAG",
         "Interaction Design",
+        "User Research",
       ],
     },
     {
@@ -62,10 +63,10 @@ const AchievementsSection: React.FC = () => {
       technologies: [
         "React",
         "TypeScript",
-        "JavaScript",
-        "Next.js",
         "Node.js",
-        "Design Tokens",
+        ".NET Framework",
+        "PHP",
+        "REST APIs",
         "Git",
         "Claude AI",
       ],
@@ -81,10 +82,7 @@ const AchievementsSection: React.FC = () => {
   const resumePdfUrl = `${import.meta.env.BASE_URL}Resume-Design-Engineer.pdf`;
 
   return (
-    <section
-      id="achievements"
-      className="py-20 md:py-32 bg-paper-bg border-t border-paper-border"
-    >
+    <section id="achievements" className="py-20 md:py-32 bg-paper-bg">
       <div className="max-w-6xl mx-auto px-4 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Left Column: Section Heading */}
@@ -103,24 +101,13 @@ const AchievementsSection: React.FC = () => {
               Achievements
             </h2>
             <p className="font-body-narrative text-base md:text-lg text-ink-muted leading-[1.8] mb-6">
-              An overview of my credentials, skills, and background formatted for quick scanning.
+              An overview of my credentials, skills, and background formatted
+              for quick scanning.
             </p>
           </motion.div>
 
           {/* Right Column: Tightened Scannable Sub-sections */}
           <div className="lg:col-span-8 flex flex-col gap-8">
-            {/* Top Bar Action: Open Curriculum Vitae */}
-            <div className="flex justify-end pb-1.5 border-b border-paper-border">
-              <a
-                href={resumePdfUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-mono text-xs text-ink-primary hover:text-ink-primary/70 uppercase tracking-widest font-semibold underline decoration-paper-border hover:decoration-ink-primary transition-all"
-              >
-                open curriculum vitae →
-              </a>
-            </div>
-
             {/* 1. Experience (3-Column Layout: What, Where, When) */}
             <motion.div
               custom={0.2}
@@ -231,6 +218,18 @@ const AchievementsSection: React.FC = () => {
                 ))}
               </div>
             </motion.div>
+
+            {/* Top Bar Action: Open Curriculum Vitae */}
+            <div className="flex justify-end pb-1.5">
+              <a
+                href={resumePdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-xs text-ink-primary hover:text-ink-primary/70 uppercase tracking-widest font-semibold underline decoration-paper-border hover:decoration-ink-primary transition-all"
+              >
+                open curriculum vitae →
+              </a>
+            </div>
           </div>
         </div>
       </div>

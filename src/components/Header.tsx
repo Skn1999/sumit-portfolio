@@ -129,7 +129,13 @@ const Header = () => {
       navigate(intendedRoute);
     }
     setIntendedRoute(null);
-  }, [intendedRoute, location.pathname, location.search, navigate, setIntendedRoute]);
+  }, [
+    intendedRoute,
+    location.pathname,
+    location.search,
+    navigate,
+    setIntendedRoute,
+  ]);
 
   const handleExplicitClick = useCallback(() => {
     setIntendedRoute(null);
@@ -154,13 +160,13 @@ const Header = () => {
               <Link
                 to={item.mainRoute}
                 onClick={handleExplicitClick}
-                className="font-mono text-xs font-bold tracking-widest text-ink-primary uppercase mb-1 hover:text-ink-primary/70 transition-colors"
+                className="font-mono text-sm font-bold tracking-widest text-ink-primary uppercase mb-1 hover:text-ink-primary/70 transition-colors"
               >
                 {item.label}
               </Link>
 
               {/* Sub Nav Items Underneath acting as Sections within that route */}
-              <div className="flex flex-col items-start font-mono text-[11px] tracking-wide text-ink-muted">
+              <div className="flex flex-col items-start font-mono text-xs tracking-wide text-ink-muted gap-y-2 mt-2">
                 {item.subItems.map((subItem, idx) => (
                   <span key={subItem.to} className="flex items-center">
                     <Link
