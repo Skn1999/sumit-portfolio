@@ -110,7 +110,7 @@ const ProjectPage: React.FC = () => {
       />
       <ReadingProgress />
       <TableOfContents />
-      <div className="min-h-screen relative project-page-snap-container bg-paper-bg">
+      <div className="min-h-screen relative project-page-snap-container bg-paper-bg overflow-x-hidden">
         {/* Text-first Hero Section */}
         <ProjectHero project={project} />
 

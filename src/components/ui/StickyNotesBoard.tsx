@@ -54,22 +54,10 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
     <div
       onMouseMove={handleMouseMove}
       className={cn(
-        "my-10 w-full p-6 sm:p-10 rounded-2xl bg-paper-card/40 border border-paper-border relative overflow-hidden not-prose backdrop-blur-xs",
+        "my-14 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] py-12 px-4 sm:px-8 md:px-16 bg-paper-card/30 border-y border-paper-border not-prose backdrop-blur-xs overflow-hidden",
         className
       )}
     >
-      {/* Header Monospace Label */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-8 pb-4 border-b border-paper-border/60">
-        <span className="font-mono text-xs font-semibold tracking-widest text-ink-muted uppercase">
-          {title}
-        </span>
-        {subtitle && (
-          <span className="font-mono text-[11px] text-ink-muted/80 tracking-wide hidden md:block">
-            {subtitle}
-          </span>
-        )}
-      </div>
-
       {/* Floating Ghost Sticky Note following cursor on desktop */}
       <AnimatePresence>
         {hoveredIndex !== null && activeNote && (
@@ -79,7 +67,7 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
               opacity: 1,
               scale: 1,
               filter: "blur(0px)",
-              x: mousePos.x + 20,
+              x: mousePos.x + 24,
               y: mousePos.y - 90,
             }}
             exit={{ opacity: 0, scale: 0.9, filter: "blur(4px)" }}
@@ -112,63 +100,78 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Centered Sticky Notes Grid */}
-      <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 max-w-5xl mx-auto">
-        {notes.map((note, index) => {
-          const styleKey = note.color || (index === 0 ? "yellow" : index === 1 ? "rose" : "teal");
-          const colorClass = colorStyles[styleKey];
-          const rotationClass = rotations[index % rotations.length];
-          const isHovered = hoveredIndex === index;
-          const isMobileExpanded = mobileExpandedIndex === index;
+      {/* Max-Width Inner Container */}
+      <div className="max-w-6xl mx-auto relative">
+        {/* Header Monospace Label */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-10 pb-4 border-b border-paper-border/60">
+          <span className="font-mono text-xs font-semibold tracking-widest text-ink-muted uppercase">
+            {title}
+          </span>
+          {subtitle && (
+            <span className="font-mono text-[11px] text-ink-muted/80 tracking-wide hidden md:block">
+              {subtitle}
+            </span>
+          )}
+        </div>
 
-          return (
-            <motion.div
-              key={index}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              onClick={() => setMobileExpandedIndex(isMobileExpanded ? null : index)}
-              className={cn(
-                "group relative w-full sm:w-[280px] md:w-[290px] h-auto md:h-[190px] p-6 rounded-xl border shadow-md select-none cursor-pointer transition-all duration-300 ease-out flex flex-col justify-between",
-                colorClass,
-                rotationClass,
-                "hover:rotate-0 hover:scale-[1.04] hover:shadow-xl",
-                isHovered && "rotate-0 scale-[1.04] shadow-xl"
-              )}
-            >
-              {/* Tape Strip at top of Post-it */}
-              <div className="w-10 h-3 bg-paper-border/30 dark:bg-white/10 rounded-xs mx-auto -mt-3 mb-2 opacity-80" />
+        {/* Centered Sticky Notes Grid */}
+        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 max-w-5xl mx-auto">
+          {notes.map((note, index) => {
+            const styleKey = note.color || (index === 0 ? "yellow" : index === 1 ? "rose" : "teal");
+            const colorClass = colorStyles[styleKey];
+            const rotationClass = rotations[index % rotations.length];
+            const isHovered = hoveredIndex === index;
+            const isMobileExpanded = mobileExpandedIndex === index;
 
-              <div>
-                {note.icon && <div className="text-2xl mb-2">{note.icon}</div>}
-                <strong className="block font-display text-lg font-bold leading-tight">
-                  {note.title}
-                </strong>
-              </div>
-
-              {/* Desktop Monospace Hint */}
-              <div className="hidden md:flex items-center justify-between mt-4 text-[10px] font-mono tracking-wider opacity-60 uppercase pt-2 border-t border-current/15">
-                <span>Hover for details</span>
-                <span>→</span>
-              </div>
-
-              {/* Mobile Inline Expansion */}
-              <div
+            return (
+              <motion.div
+                key={index}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                onClick={() => setMobileExpandedIndex(isMobileExpanded ? null : index)}
                 className={cn(
-                  "md:hidden overflow-hidden transition-all duration-300 ease-out",
-                  isMobileExpanded ? "max-h-96 opacity-100 mt-3 pt-3 border-t border-current/20" : "max-h-0 opacity-0"
+                  "group relative w-full sm:w-[280px] md:w-[300px] h-auto md:h-[200px] p-6 rounded-xl border shadow-md select-none cursor-pointer transition-all duration-300 ease-out flex flex-col justify-between",
+                  colorClass,
+                  rotationClass,
+                  "hover:rotate-0 hover:scale-[1.04] hover:shadow-xl",
+                  isHovered && "rotate-0 scale-[1.04] shadow-xl"
                 )}
               >
-                <p className="font-body-narrative text-xs leading-relaxed">
-                  {note.description}
-                </p>
-              </div>
+                {/* Tape Strip at top of Post-it */}
+                <div className="w-10 h-3 bg-paper-border/30 dark:bg-white/10 rounded-xs mx-auto -mt-3 mb-2 opacity-80" />
 
-              <div className="md:hidden mt-2 text-[10px] font-mono tracking-wider opacity-60 uppercase">
-                {isMobileExpanded ? "Tap to collapse ▲" : "Tap for details ▼"}
-              </div>
-            </motion.div>
-          );
-        })}
+                <div>
+                  {note.icon && <div className="text-2xl mb-2">{note.icon}</div>}
+                  <strong className="block font-display text-lg font-bold leading-tight">
+                    {note.title}
+                  </strong>
+                </div>
+
+                {/* Desktop Monospace Hint */}
+                <div className="hidden md:flex items-center justify-between mt-4 text-[10px] font-mono tracking-wider opacity-60 uppercase pt-2 border-t border-current/15">
+                  <span>Hover for details</span>
+                  <span>→</span>
+                </div>
+
+                {/* Mobile Inline Expansion */}
+                <div
+                  className={cn(
+                    "md:hidden overflow-hidden transition-all duration-300 ease-out",
+                    isMobileExpanded ? "max-h-96 opacity-100 mt-3 pt-3 border-t border-current/20" : "max-h-0 opacity-0"
+                  )}
+                >
+                  <p className="font-body-narrative text-xs leading-relaxed">
+                    {note.description}
+                  </p>
+                </div>
+
+                <div className="md:hidden mt-2 text-[10px] font-mono tracking-wider opacity-60 uppercase">
+                  {isMobileExpanded ? "Tap to collapse ▲" : "Tap for details ▼"}
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
