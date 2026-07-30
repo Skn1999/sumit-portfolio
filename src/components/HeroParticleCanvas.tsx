@@ -7,24 +7,33 @@ import { useLocation } from "react-router-dom";
 import { useNavIntent } from "@/contexts/NavIntentContext";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
-type CategoryKey = "hero" | "ux-design" | "visual-design" | "data-engineering" | "writings";
+type CategoryKey = "hero" | "ux-design" | "data-engineering" | "writings";
 
 function getCategoryKey(path: string | null): CategoryKey {
   if (!path) return "hero";
   if (path.startsWith("/data-engineering")) return "data-engineering";
-  if (path.startsWith("/ux-design") || path.startsWith("/projects") || path.startsWith("/design")) return "ux-design";
-  if (path.startsWith("/visual-design")) return "visual-design";
-  if (path.startsWith("/writings") || path.startsWith("/ux-bites")) return "writings";
+  if (
+    path.startsWith("/ux-design") ||
+    path.startsWith("/projects") ||
+    path.startsWith("/design")
+  )
+    return "ux-design";
+  if (path.startsWith("/visual-design")) return "ux-design";
+  if (path.startsWith("/writings") || path.startsWith("/ux-bites"))
+    return "writings";
   return "hero";
 }
 
 function categoryToIndex(cat: CategoryKey): number {
   switch (cat) {
-    case "hero": return 0;
-    case "ux-design": return 1;
-    case "visual-design": return 2;
-    case "data-engineering": return 1;
-    case "writings": return 3;
+    case "hero":
+      return 0;
+    case "ux-design":
+      return 1;
+    case "data-engineering":
+      return 2;
+    case "writings":
+      return 3;
   }
 }
 
@@ -52,7 +61,10 @@ function generateHeroGrid(count: number, cols: number, rows: number) {
     uvs[i * 2] = u;
     uvs[i * 2 + 1] = v;
 
-    isOutline[i] = (col === 0 || col === cols - 1 || row === 0 || row === rows - 1) ? 1.0 : 0.0;
+    isOutline[i] =
+      col === 0 || col === cols - 1 || row === 0 || row === rows - 1
+        ? 1.0
+        : 0.0;
   }
   return { positions, uvs, isOutline };
 }
@@ -76,7 +88,10 @@ function processGLTFModel(originalScene: THREE.Object3D, targetSize = 0.85) {
 
   let targetMesh = meshes[0];
   for (const m of meshes) {
-    if (m.geometry.attributes.position.count > targetMesh.geometry.attributes.position.count) {
+    if (
+      m.geometry.attributes.position.count >
+      targetMesh.geometry.attributes.position.count
+    ) {
       targetMesh = m;
     }
   }
@@ -100,11 +115,11 @@ function processGLTFModel(originalScene: THREE.Object3D, targetSize = 0.85) {
   const solidMesh = new THREE.Mesh(
     geometry,
     new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0xe2e8f0),        // Bright Lustrous Silver Metal
-      metalness: 0.85,                           // Polished Silver Metal
-      roughness: 0.20,                           // Satin Silver Sheen
+      color: new THREE.Color(0xe2e8f0), // Bright Lustrous Silver Metal
+      metalness: 0.85, // Polished Silver Metal
+      roughness: 0.2, // Satin Silver Sheen
       envMapIntensity: 2.0,
-    })
+    }),
   );
 
   return { solidMesh };
@@ -128,7 +143,7 @@ function samplePointsFromMesh(targetMesh: THREE.Mesh, count: number) {
       positions[i * 3 + 2] = tempPos.z;
 
       const dotZ = Math.abs(tempNorm.z);
-      isOutline[i] = (dotZ < 0.35 || i % 3 === 0) ? 1.0 : 0.0;
+      isOutline[i] = dotZ < 0.35 || i % 3 === 0 ? 1.0 : 0.0;
     }
   } catch (e) {
     console.warn("MeshSurfaceSampler fallback:", e);
@@ -140,7 +155,7 @@ function samplePointsFromMesh(targetMesh: THREE.Mesh, count: number) {
       positions[i * 3] = posAttr.getX(idx);
       positions[i * 3 + 1] = posAttr.getY(idx);
       positions[i * 3 + 2] = posAttr.getZ(idx);
-      isOutline[i] = (i % 3 === 0) ? 1.0 : 0.0;
+      isOutline[i] = i % 3 === 0 ? 1.0 : 0.0;
     }
   }
 
@@ -339,28 +354,32 @@ interface SceneContentProps {
 const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const texture = useTexture(imagePath);
 
-  const handGLTF = useGLTF(`${import.meta.env.BASE_URL}models/pointing-hand.glb`);
+  const handGLTF = useGLTF(
+    `${import.meta.env.BASE_URL}models/pointing-hand.glb`,
+  );
   const tvGLTF = useGLTF(`${import.meta.env.BASE_URL}models/tv-screen.glb`);
   const docGLTF = useGLTF(`${import.meta.env.BASE_URL}models/document.glb`);
 
   const { solidMesh: handMesh } = useMemo(
     () => processGLTFModel(handGLTF.scene, 0.85),
-    [handGLTF]
+    [handGLTF],
   );
   const { solidMesh: tvMesh } = useMemo(
     () => processGLTFModel(tvGLTF.scene, 0.85),
-    [tvGLTF]
+    [tvGLTF],
   );
   const { solidMesh: docMesh } = useMemo(
     () => processGLTFModel(docGLTF.scene, 0.85),
-    [docGLTF]
+    [docGLTF],
   );
 
   const location = useLocation();
   const { intendedRoute } = useNavIntent();
 
   const activeCategory = getCategoryKey(location.pathname);
-  const intendedCategory = intendedRoute ? getCategoryKey(intendedRoute) : activeCategory;
+  const intendedCategory = intendedRoute
+    ? getCategoryKey(intendedRoute)
+    : activeCategory;
   const isHovering = intendedRoute !== null;
 
   const particleMaterialRef = useRef<THREE.ShaderMaterial>(null!);
@@ -379,25 +398,26 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const rows = 146;
   const count = cols * rows;
 
-  const { posHero, uvs, posUX, posVisual, posWritings, isOutline, randoms } = useMemo(() => {
-    const hero = generateHeroGrid(count, cols, rows);
-    const ux = samplePointsFromMesh(handMesh, count);
-    const vis = samplePointsFromMesh(tvMesh, count);
-    const wr = samplePointsFromMesh(docMesh, count);
+  const { posHero, uvs, posUX, posVisual, posWritings, isOutline, randoms } =
+    useMemo(() => {
+      const hero = generateHeroGrid(count, cols, rows);
+      const ux = samplePointsFromMesh(handMesh, count);
+      const vis = samplePointsFromMesh(tvMesh, count);
+      const wr = samplePointsFromMesh(docMesh, count);
 
-    const randArray = new Float32Array(count);
-    for (let i = 0; i < count; i++) randArray[i] = Math.random();
+      const randArray = new Float32Array(count);
+      for (let i = 0; i < count; i++) randArray[i] = Math.random();
 
-    return {
-      posHero: hero.positions,
-      uvs: hero.uvs,
-      posUX: ux.positions,
-      posVisual: vis.positions,
-      posWritings: wr.positions,
-      isOutline: ux.isOutline,
-      randoms: randArray,
-    };
-  }, [count, cols, rows, handMesh, tvMesh, docMesh]);
+      return {
+        posHero: hero.positions,
+        uvs: hero.uvs,
+        posUX: ux.positions,
+        posVisual: vis.positions,
+        posWritings: wr.positions,
+        isOutline: ux.isOutline,
+        randoms: randArray,
+      };
+    }, [count, cols, rows, handMesh, tvMesh, docMesh]);
 
   useEffect(() => {
     if (intendedCategory !== targetCategoryRef.current) {
@@ -412,24 +432,37 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
     const targetMouse = new THREE.Vector2(mousePos.x, mousePos.y);
 
     if (morphProgressRef.current < 1.0) {
-      morphProgressRef.current = Math.min(morphProgressRef.current + delta / 1.0, 1.0);
+      morphProgressRef.current = Math.min(
+        morphProgressRef.current + delta / 1.0,
+        1.0,
+      );
     }
 
     const targetSolidify = isHovering ? 0.0 : 1.0;
-    solidifyProgressRef.current += (targetSolidify - solidifyProgressRef.current) * Math.min(delta * 5.0, 1.0);
+    solidifyProgressRef.current +=
+      (targetSolidify - solidifyProgressRef.current) *
+      Math.min(delta * 5.0, 1.0);
 
     if (particleMaterialRef.current) {
-      particleMaterialRef.current.uniforms.uCurrentIndex.value = categoryToIndex(prevCategoryRef.current);
-      particleMaterialRef.current.uniforms.uTargetIndex.value = categoryToIndex(targetCategoryRef.current);
-      particleMaterialRef.current.uniforms.uMorphProgress.value = morphProgressRef.current;
-      particleMaterialRef.current.uniforms.uIsHovering.value = isHovering ? 1.0 : 0.0;
+      particleMaterialRef.current.uniforms.uCurrentIndex.value =
+        categoryToIndex(prevCategoryRef.current);
+      particleMaterialRef.current.uniforms.uTargetIndex.value = categoryToIndex(
+        targetCategoryRef.current,
+      );
+      particleMaterialRef.current.uniforms.uMorphProgress.value =
+        morphProgressRef.current;
+      particleMaterialRef.current.uniforms.uIsHovering.value = isHovering
+        ? 1.0
+        : 0.0;
       particleMaterialRef.current.uniforms.uTime.value = elapsedTime;
       particleMaterialRef.current.uniforms.uMouse.value.lerp(targetMouse, 0.08);
     }
 
     if (solidMaterialRef.current) {
       const showSolidPlane = activeCategory === "hero" && !isHovering;
-      solidMaterialRef.current.uniforms.uProgress.value = showSolidPlane ? solidifyProgressRef.current : 0.0;
+      solidMaterialRef.current.uniforms.uProgress.value = showSolidPlane
+        ? solidifyProgressRef.current
+        : 0.0;
       solidMaterialRef.current.uniforms.uTime.value = elapsedTime;
       solidMaterialRef.current.uniforms.uMouse.value.lerp(targetMouse, 0.08);
     }
@@ -445,7 +478,7 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
   const planeHeight = 1.8;
 
   const showSolidUX = activeCategory === "ux-design" && !isHovering;
-  const showSolidVisual = activeCategory === "visual-design" && !isHovering;
+  const showSolidVisual = activeCategory === "data-engineering" && !isHovering;
   const showSolidWritings = activeCategory === "writings" && !isHovering;
 
   return (
@@ -454,7 +487,11 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
 
       <ambientLight intensity={1.2} />
       <directionalLight position={[3, 5, 4]} intensity={3.5} color="#ffffff" />
-      <directionalLight position={[-3, -2, 2]} intensity={2.2} color="#cbd5e1" />
+      <directionalLight
+        position={[-3, -2, 2]}
+        intensity={2.2}
+        color="#cbd5e1"
+      />
       <pointLight position={[0, 4, -3]} intensity={2.8} color="#f8fafc" />
 
       {/* 1. Wireframe Outline Particle Swarm with Micro-Vibration */}
@@ -463,11 +500,20 @@ const SceneContent: React.FC<SceneContentProps> = ({ imagePath, mousePos }) => {
           <bufferAttribute attach="attributes-position" args={[posHero, 3]} />
           <bufferAttribute attach="attributes-aPosHero" args={[posHero, 3]} />
           <bufferAttribute attach="attributes-aPosUX" args={[posUX, 3]} />
-          <bufferAttribute attach="attributes-aPosVisual" args={[posVisual, 3]} />
-          <bufferAttribute attach="attributes-aPosWritings" args={[posWritings, 3]} />
+          <bufferAttribute
+            attach="attributes-aPosVisual"
+            args={[posVisual, 3]}
+          />
+          <bufferAttribute
+            attach="attributes-aPosWritings"
+            args={[posWritings, 3]}
+          />
           <bufferAttribute attach="attributes-aUv" args={[uvs, 2]} />
           <bufferAttribute attach="attributes-aRandom" args={[randoms, 1]} />
-          <bufferAttribute attach="attributes-aIsOutline" args={[isOutline, 1]} />
+          <bufferAttribute
+            attach="attributes-aIsOutline"
+            args={[isOutline, 1]}
+          />
         </bufferGeometry>
         <shaderMaterial
           ref={particleMaterialRef}
