@@ -42,6 +42,11 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
     Boolean(timeline) ||
     linkEntries.length > 0;
 
+  const isContain =
+    project.cover?.fit === "contain" ||
+    project.cover?.aspectRatio === "ultrawide";
+  const coverHeightVal = isContain ? "clamp(220px, 35vh, 380px)" : "50vh";
+
   React.useEffect(() => {
     if (!project.cover || CSS.supports("animation-timeline: scroll()")) {
       return;
@@ -53,11 +58,20 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
       const endScroll = 550;
 
       // Calculate scroll fraction (0 to 1)
-      const fraction = Math.min(1, Math.max(0, (scrollY - startScroll) / (endScroll - startScroll)));
+      const fraction = Math.min(
+        1,
+        Math.max(0, (scrollY - startScroll) / (endScroll - startScroll))
+      );
 
-      const inner = document.querySelector(".cinematic-hero-inner") as HTMLElement;
-      const img = document.querySelector(".cinematic-hero-image") as HTMLElement;
-      const overlay = document.querySelector(".cinematic-hero-overlay") as HTMLElement;
+      const inner = document.querySelector(
+        ".cinematic-hero-inner"
+      ) as HTMLElement;
+      const img = document.querySelector(
+        ".cinematic-hero-image"
+      ) as HTMLElement;
+      const overlay = document.querySelector(
+        ".cinematic-hero-overlay"
+      ) as HTMLElement;
 
       if (inner) {
         // Interpolate border radius: 16px (rounded-2xl) -> 0px
@@ -73,8 +87,7 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
         })();
         const maxWVal = fraction > 0.99 ? "100vw" : "64rem";
         const transformY = -fraction * 60;
-        // Keep height at 50vh (do not exceed half of the viewport height)
-        const heightVal = "50vh";
+        const heightVal = coverHeightVal;
 
         inner.style.borderRadius = `${radius}px`;
         inner.style.width = widthVal;
@@ -99,27 +112,41 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
     handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [project]);
+  }, [project, coverHeightVal]);
 
   return (
     <header className="relative w-full overflow-hidden">
       {/* 1. Cover Image: Sticky flow underlay */}
       {project.cover && (
-        <div className="cinematic-hero-wrapper pointer-events-none">
-          <div className="overflow-hidden rounded-2xl border border-border/60 bg-muted/40 shadow-lg cinematic-hero-inner">
+        <div
+          className="cinematic-hero-wrapper pointer-events-none"
+          style={{ height: coverHeightVal }}
+        >
+          <div className="overflow-hidden rounded-2xl border border-border/60 bg-muted/40 shadow-lg cinematic-hero-inner relative">
+            {isContain && (
+              <ProjectImageAsset
+                src={`${project.slug}/${project.cover.filename}`}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-45 scale-110 pointer-events-none"
+              />
+            )}
             <ProjectImageAsset
               src={`${project.slug}/${project.cover.filename}`}
               alt={project.cover.alt || project.title}
-              className="w-full h-full object-cover cinematic-hero-image"
+              className={cn(
+                "w-full h-full cinematic-hero-image relative z-10",
+                isContain ? "object-contain p-2 md:p-4" : "object-cover"
+              )}
               priority
             />
             {/* Dark base layer to ensure absolute legibility of light text in both modes */}
-            <div className="absolute inset-0 bg-black/15 dark:bg-black/40 pointer-events-none" />
+            <div className="absolute inset-0 bg-black/15 dark:bg-black/40 pointer-events-none z-10" />
             {/* Premium gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/25 opacity-0 cinematic-hero-overlay pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/25 opacity-0 cinematic-hero-overlay pointer-events-none z-10" />
           </div>
         </div>
       )}
+
 
       {/* 2. Foreground Content: Sit below cover image on page load, scrolls OVER it on scroll */}
       <div className="relative z-20 max-w-6xl mx-auto px-4 md:px-6 pt-16 pb-20 flex flex-col gap-10 md:gap-12 pointer-events-auto bg-transparent text-foreground">

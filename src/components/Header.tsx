@@ -32,12 +32,16 @@ const NAV_HIERARCHY: NavItem[] = [
       { to: "/ux-design#visual-design", label: "Visual Design" },
     ],
   },
+
   {
     label: "Data Engineering",
     mainRoute: "/data-engineering",
     subItems: [
       { to: "/data-engineering#ai-data", label: "AI and Data" },
-      { to: "/data-engineering#frontend-engineering", label: "Front-end Engineering" },
+      {
+        to: "/data-engineering#frontend-engineering",
+        label: "Front-end Engineering",
+      },
     ],
   },
   {
@@ -153,7 +157,7 @@ const Header = () => {
       location.search,
       navigate,
       cancelHoverIntent,
-    ]
+    ],
   );
 
   const handleExplicitClick = useCallback(() => {

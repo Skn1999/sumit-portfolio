@@ -2,7 +2,10 @@ export interface ProjectImage {
   filename: string;
   alt: string;
   caption?: string;
+  fit?: "cover" | "contain" | "scale-down";
+  aspectRatio?: "wide" | "ultrawide" | "video" | "standard" | string;
 }
+
 
 export type ProjectMeta = {
   slug: string;

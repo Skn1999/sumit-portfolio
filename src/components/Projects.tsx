@@ -6,6 +6,7 @@ import { ProjectImage } from "./ProjectImage";
 import { getProjectBySlug } from "@/lib/projects";
 
 const Projects = () => {
+  const groundworkProject = getProjectBySlug("groundwork");
   const optmyzrProject = getProjectBySlug("optmyzr-dashboard-migration");
   const ediaqiProject = getProjectBySlug("ediaqi-decision-support-system");
   const superEgoProject = getProjectBySlug("super-ego-app");
@@ -21,15 +22,18 @@ const Projects = () => {
   };
 
   const projectsData = [
-    // {
-    //   index: "01",
-    //   label: "01 // OPTMYZR",
-    //   slug: "optmyzr-dashboard-migration",
-    //   title: "Migrating Legacy Analytics with Config-Driven React & AI Refactoring",
-    //   metricBanner: "Compressed load times from 8–10s to <1s while building human-in-the-loop AI refactoring scripts to safely convert thousands of legacy templates without breaking production logic.",
-    //   tags: ["React", "TypeScript", "AI Refactoring", "System Architecture"],
-    //   cover: optmyzrProject?.cover,
-    // },
+    {
+      index: "01",
+      label: "01 // GROUNDWORK",
+      slug: "groundwork",
+      title:
+        groundworkProject?.title ||
+        "Groundwork: Inclusive Design & Digital Accessibility Framework",
+      metricBanner:
+        "Selected from 900+ European applicants into EIT Jumpstarter 2025 Grand Final (2nd Place). Co-designed an open-source delivery framework and workshop model to embed accessibility into everyday product workflows.",
+      tags: ["Inclusive Design", "Accessibility", "WCAG / EAA", "Co-Design"],
+      cover: groundworkProject?.cover,
+    },
     {
       index: "02",
       label: "02 // EDIAQI",
@@ -54,6 +58,7 @@ const Projects = () => {
       cover: superEgoProject?.cover,
     },
   ];
+
 
   return (
     <section
