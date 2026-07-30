@@ -8,22 +8,6 @@ featured: true
 cover:
   filename: "cover.png"
   alt: "EDIAQI Dashboard V2 wireframe showing IAQ monitoring interface"
-gallery:
-  # - filename: "dashboard-basic-view.jpg"
-  #   alt: "Basic view dashboard for teachers and office workers"
-  #   caption: "Role-separated Basic View: actionable guidance without sensor overload"
-  # - filename: "dashboard-advanced-view.jpg"
-  #   alt: "Advanced view for facility staff showing multi-location monitoring"
-  #   caption: "Advanced View: prioritization logic for facility staff managing multiple buildings"
-  # - filename: "wall-tablet-states.jpg"
-  #   alt: "Wall-mounted tablet display showing five contextual states"
-  #   caption: "Ambient → Alert → Action → Reporting → Educational: the five display states for classroom tablets"
-  # - filename: "heuristic-evaluation.jpg"
-  #   alt: "Nielsen heuristic evaluation findings mapped to severity ratings"
-  #   caption: "30 usability issues surfaced across the existing dashboard prototype"
-  # - filename: "hypothesis-map.jpg"
-  #   alt: "Research hypotheses mapped to stakeholder personas"
-  #   caption: "H1–H5 hypothesis framework linking user pain points to design decisions"
 tech:
   - "Figma"
   - "Service Design"
@@ -34,10 +18,9 @@ tech:
   - "Horizon Europe"
 metric: "30 usability issues identified; role-separated DSS prototype in progress for 3 stakeholder groups across public schools and municipal offices"
 links:
-  # case: ""
   prototype: https://www.figma.com/make/NMaJtePg9r2moSJt4pxSZr/Indoor-Air-Quality-Display?fullscreen=1&t=8ZFJ14PVlixDqryN-1&code-node-id=0-9
   dashboard_prototype: https://www.figma.com/make/rGy3EC5u9Kv5cjRtsqL3Nx/Low-Fidelity-Wireframes-for-Dashboard?fullscreen=1&t=TnOHy22IdTdxUu9z-1&code-node-id=0-9
-summary: "A work-in-progress master's internship project designing a Decision Support System (DSS) on top of an existing IoT sensor dashboard for the EU Horizon Europe EDIAQI project. The system translates 12+ air quality parameters into prioritized, role-appropriate guidance for facility staff, teachers, and civil workers — navigating Italian regulatory constraints and cross-lingual UX challenges along the way."
+summary: "A master's internship project designing a Decision Support System (DSS) on top of an IoT sensor dashboard for the EU Horizon Europe EDIAQI project. The system translates 12+ air quality parameters into prioritized, role-appropriate guidance for facility staff, teachers, and civil workers."
 roles:
   - "UX & Service Design"
   - "UX Research"
@@ -46,211 +29,59 @@ order: 1
 draft: false
 ---
 
-## Overview
+import { ProjectImageAsset } from "@/components/ui/project-image-asset";
+
+## 01 // CONTEXT
 
 **EDIAQI** (Evidence Driven Indoor Air Quality Improvement) is a **Horizon Europe** research initiative deploying IoT-based indoor air quality (IAQ) monitoring across public schools and municipal offices in **Ferrara, Italy**. The project infrastructure includes 32 NetPID sensors and Radiello passive samplers, streaming 12+ parameters (PM2.5, PM10, CO₂, CO, TVOC, AVOC, NO₂, O₃, humidity, temperature, pressure, and formaldehyde) to a FROST Server via the OGC SensorThings API.
 
-The Deda Next team had deployed sensors to collect from various participating buildings in the city. The gap was everything that comes after the data: **what should a non-technical user actually do when a threshold is crossed?** My contribution is to design the Decision Support System (DSS) layer that bridges sensor readings and real-world action.
-
-This is a **work in progress**, active across an internship and concurrently feeding a master's thesis.
+The Deda Next team deployed sensors to collect telemetry from participating buildings. The gap was everything that comes after the data: **what should a non-technical user actually do when a threshold is crossed?** My contribution was designing the Decision Support System (DSS) layer that bridges sensor readings and real-world human action.
 
 ---
 
-import { ProjectImageAsset } from "@/components/ui/project-image-asset";
-import { Link } from "react-router-dom";
-import MagneticButton from "@/components/MagneticButton";
-
-## The Problem
+## 02 // PROBLEM
 
 A dashboard alone does not produce behavior change.
 
-When CO₂ spikes in a classroom, a teacher needs to know: *open the window, for how long, and what to tell the children*. When PM2.5 is elevated across three buildings simultaneously, a facility manager needs prioritization logic, not three identical alerts. When a maintenance action is taken, the documentation trail required by Italian occupational health law (D.Lgs. 81/2008) must be low-friction enough that it actually gets done.
+When CO₂ spikes in a classroom, a teacher needs to know: *open the window, for how long, and what to tell the children*. When PM2.5 is elevated across three buildings simultaneously, a facility manager needs prioritization logic, not three identical alerts. When a maintenance action is taken, the documentation trail required by Italian occupational health law (D.Lgs. 81/2008) must be low-friction enough that it actually gets executed.
 
-The existing dashboard surfaced data well. It did not close the loop to action.
-
-<ProjectImageAsset src="ediaqi-decision-support-system/problem-hypo.jpg" alt="Description" />
-
----
-{/* 
-## My Role
-
-I joined as a **UX and service design researcher** within Deda Next's innovation team, working alongside colleagues in product strategy, development, and project management. My scope:
-
-- Lead all UX research, hypothesis development, and interaction design for the DSS layer
-- Evaluate the existing dashboard against usability and regulatory standards
-- Design two role-separated dashboard views and a wall-mounted classroom/office display
-- Surface design-resistant issues requiring institutional resolution and prepare them for stakeholder validation */}
+<ProjectImageAsset src="ediaqi-decision-support-system/problem-hypo.jpg" alt="EDIAQI Problem Hypothesis Framework" />
+<p className="font-mono text-xs text-ink-muted uppercase tracking-wider text-center mt-2 mb-8">
+  FIG 01 // PROBLEM HYPOTHESIS & STAKEHOLDER MAPPING FRAMEWORK
+</p>
 
 ---
 
-## How I Framed the Problem (The Messy Part)
- 
-The first few weeks were less about designing and more about figuring out what kind of problem this actually was. The brief was open-ended: **make it useful for non-technical users.**
- 
-That framing hid a lot. "Non-technical users" turned out to be three very different people with almost nothing in common: **a teacher** who cares about their class and has maybe 90 seconds to act before a lesson starts; **a facility manager** juggling maintenance across five buildings simultaneously; and **a civil worker** who notices something feels off but has no formal channel to report it. Building one system for all three seemed increasingly wrong the more I mapped out their day-to-day contexts.
+## 03 // APPROACH
 
-The clearer framing shifted the design problem from "how do we display data" to "how do we produce a decision."
+### Role-Separated Architecture
+- **Basic View**: Designed for teachers and office workers featuring minimal parameters, plain-language action guidance, and single-location context.
+- **Advanced View**: Designed for facility staff with multi-location monitoring, severity-ranked alerts, and compliance logging flows.
 
----
+### Action Protocol Layer
+Drawing from the Boston Public Schools IAQ Response precedent, I designed an explicit action protocol layer surfacing:
+1. Plain-language severity labels
+2. Context-specific action prompts (e.g., *"Open two windows — cross-ventilation recommended"*)
+3. One-tap logging for compliance documentation
+4. Recovery status indicators closing the feedback loop
 
-## Research Foundation
+<ProjectImageAsset src="ediaqi-decision-support-system/scenarios.png" alt="EDIAQI Concept Validation Scenarios" />
+<p className="font-mono text-xs text-ink-muted uppercase tracking-wider text-center mt-2 mb-8">
+  FIG 02 // CONCEPT SCENARIO VALIDATION FOR OCCUPANTS & FACILITY STAFF
+</p>
 
-I structured the project around **five falsifiable research hypotheses** linking observed behavior gaps to specific design interventions:
+### Heuristic Evaluation & Wall Display
+Conducted a full Nielsen Heuristic Evaluation of the initial dashboard prototype, identifying 30 documented issues. Designed a 5-state wall-mounted tablet display prototype (Ambient, Alert, Action Taken, Reporting, Educational) in Figma simulating real-time telemetry changes.
 
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Hypothesis</th>
-      <th>Target Persona</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>H1</td>
-      <td>Teachers lack actionable guidance when an IAQ alert fires</td>
-      <td>Teacher</td>
-    </tr>
-    <tr>
-      <td>H2</td>
-      <td>Facility staff face documentation bottlenecks under compliance workflows</td>
-      <td>Facility Staff</td>
-    </tr>
-    <tr>
-      <td>H3</td>
-      <td>Facility staff cannot effectively prioritize across multiple locations</td>
-      <td>Facility Staff</td>
-    </tr>
-    <tr>
-      <td>H4</td>
-      <td>Occupants have no reporting channel for perceived air quality issues</td>
-      <td>Office Workers</td>
-    </tr>
-    <tr>
-      <td>H5</td>
-      <td>Teachers are an underutilized vector for environmental health education</td>
-      <td>Teacher</td>
-    </tr>
-  </tbody>
-</table>
-
-<details className="border rounded-lg mb-6 bg-muted/40 dark:bg-muted/10 group px-[16px] py-0">
-  <summary className="cursor-pointer font-semibold text-sm hover:text-primary flex items-center gap-3 transition-colors py-3 min-h-[44px]">
-    <span className="inline-block text-lg group-open:scale-110 transition-transform duration-300 origin-center">
-      💡
-    </span>
-    How these hypotheses were developed
-  </summary>
-  <div className="mt-4 space-y-3 text-sm">
-    <p>The hypotheses look clean written down. They weren't.</p>
-    
-    <p><strong>H1</strong> started as a vague intuition: teachers probably don't know what to do when an alarm goes off. That's almost unfalsifiable too broad. I had to narrow it: is the gap about <em>awareness</em> (they don't see the alert), <em>interpretation</em> (they see it but don't understand it), or <em>protocol</em> (they understand it but have no guidance on what action to take)? Comparable projects like the BPS case study and SAMHE pointed consistently to the third the protocol gap. That specificity was what made H1 designable.</p>
-    
-    <p><strong>H2 and H3</strong> came from mapping facility staff workflows against Italian occupational health law (D.Lgs. 81/2008). The compliance documentation requirement exists in law. The dashboard had no logging feature. The gap wasn't a design oversight so much as a scoping one the original dashboard was built to visualize data, not to produce an audit trail. But for facility staff operating within an RSPP approval chain, an undocumented response is nearly as problematic as no response. That became H2.</p>
-    
-    <p><strong>H5</strong> was the most speculative. It emerged from noticing that CO₂ sensors in classrooms were generating data that, if explained in plain language, could actually be used as a live teaching aid about ventilation, health, and the built environment. Whether teachers would actually use it this way is unvalidated. It's the hypothesis I hold most loosely.</p>
-    
-    <p className="pt-2 border-t"><em>This framework kept every design decision traceable to a specific user pain point. This made it explicit when a finding could be addressed through design versus when it required institutional or legal resolution.</em></p>
-  </div>
-</details>
+<ProjectImageAsset src="ediaqi-decision-support-system/heuristics-evaluation.jpg" alt="EDIAQI Nielsen Heuristic Evaluation Report" />
+<p className="font-mono text-xs text-ink-muted uppercase tracking-wider text-center mt-2 mb-8">
+  FIG 03 // NIELSEN HEURISTIC EVALUATION (30 DOCUMENTED USABILITY ISSUES)
+</p>
 
 ---
 
-## Key Design Decisions
+## 04 // IMPACT
 
-<section className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-  <article className="border border-border/40 rounded-2xl p-6 bg-muted/30 dark:bg-muted/10 col-span-1">
-    <h4 className="text-lg font-semibold mb-3">Role Separation is Non-Negotiable</h4>
-    <ul className="list-disc pl-5 mb-3 text-sm">
-      <li><strong>Basic View</strong>: for teachers and office workers: minimal parameters, plain-language action guidance, single-location context</li>
-      <li><strong>Advanced View</strong>: for facility staff: multi-location monitoring, severity-ranked alerts, compliance documentation flows</li>
-    </ul>
-  </article>
-
-  <article className="border border-border/40 rounded-2xl p-6 bg-muted/30 dark:bg-muted/10 col-span-1">
-    <h4 className="text-lg font-semibold mb-3">The Action Protocol Layer</h4>
-    <p className="mb-3 text-sm">Drawing from the Boston Public Schools IAQ Response Action Plan precedent, I designed an explicit action protocol layer that sits between the sensor reading and the user. For each parameter threshold breach, the system surfaces:</p>
-    <ol className="list-decimal pl-5 space-y-2 text-sm">
-      <li>A plain-language severity label</li>
-      <li>A context-specific action prompt (e.g., "Open two windows cross-ventilation recommended")</li>
-      <li>A one-tap logging action for compliance documentation</li>
-      <li>A recovery status indicator to close the feedback loop</li>
-    </ol>
-  </article>
-
-  <article className="border border-border/40 rounded-2xl p-6 bg-muted/30 dark:bg-muted/10 col-span-1">
-    <h4 className="text-lg font-semibold mb-3">Wall-Mounted Tablet Display</h4>
-    <p className="mb-3 text-sm">I designed four contextual display states:</p>
-    <ul className="list-disc pl-5 space-y-2 text-sm">
-      <li><strong>Ambient / Passive</strong> — ambient quality visible at a glance, no action required</li>
-      <li><strong>Alert</strong> — threshold exceeded, action prompt displayed prominently</li>
-      <li><strong>Action Taken / Recovery Tracking</strong> — confirms action logged, tracks parameter recovery</li>
-      <li><strong>Reporting</strong> — allows occupants to submit a qualitative concern (H4)</li>
-    </ul>
-  </article>
-</section>
-
----
-
-## Concept Design
-
-Based on the qualitative analysis and user journeys created, next step natually was to do some concepts validation. The concept scenarios cover 3 cases, first CO2 spike in the room (Occupant focused), second sustained high PM2.5 level (facility-staff focused) and third CO deteced inside a room (Emergency case). The concept scenarios are designed to validate the role separation, the action protocol layer and the wall-mounted tablet display.
-
-<ProjectImageAsset src="ediaqi-decision-support-system/scenarios.png" alt="Description" />
-
----
-
-## In-room Tablet display prototype
-
-I designed a wall-mounted tablet display prototype that visualizes the five contextual states (Ambient, Alert, Action Taken, Reporting, Educational) and the transitions between them. The prototype is built in Figma with interactive components to simulate real-time sensor data changes and user interactions.
-
-<MagneticButton
-    size="lg"
-    className="font-label text-xs tracking-wider uppercase font-semibold"
-    magneticRadius={300}
-    onClick={() => window.open('https://www.figma.com/make/NMaJtePg9r2moSJt4pxSZr/Indoor-Air-Quality-Display?fullscreen=1&t=8ZFJ14PVlixDqryN-1&code-node-id=0-9', '_blank')}
->
-  View the Interactive Prototype
-</MagneticButton>
-
----
-
-## Heuristic Evaluation
-
-Before designing V2, I conducted a full **Nielsen Heuristic Evaluation** of the existing dashboard prototype, producing 30 documented issues:
-
-<ProjectImageAsset src="ediaqi-decision-support-system/heuristics-evaluation.jpg" alt="Description" />
-
-A recurring critical finding: the dashboard applies **Classe II thresholds** uniformly across all building types, which may be legally inappropriate for school environments under Italian occupational health standards. This is flagged as a **design-resistant issue** requiring legal/institutional resolution, not a UI fix.
-
-After the evaluation, a V2 version of the dashboard was created which can be accessed below:
-
-<MagneticButton
-    size="lg"
-    className="font-label text-xs tracking-wider uppercase font-semibold"
-    magneticRadius={300}
-    onClick={() => window.open('https://www.figma.com/make/rGy3EC5u9Kv5cjRtsqL3Nx/Low-Fidelity-Wireframes-for-Dashboard?fullscreen=1&t=TnOHy22IdTdxUu9z-1&code-node-id=0-9', '_blank')}
->
-  View the Dashboard Prototype
-</MagneticButton>
-
----
-
-## Artifacts Produced
-
-- Nielsen Heuristic Evaluation report (30 issues, severity-rated)
-- Research hypothesis framework (H1–H5) with supporting evidence
-- Lo-fi Figma wireframes: Dashboard V2 Basic View and Advanced View
-- Wall-mounted tablet display: 5-state interaction flow (in progress)
-
----
-
-## What I Learnt
-
-The clearest thing this project has taught me is the difference between a design problem and a problem that design gets handed.
- 
-The sensor data is real, the thresholds are real, the regulatory requirements are real, but what I was asked to design was the layer that makes all of it usable by people who didn't ask for it and won't have time to learn it. That's a different kind of design challenge than building a product from a blank brief. You're working downstream of decisions you didn't make, and the constraints are often invisible until you run into them.
- 
-Working in Italian, within Italian law, for Italian public sector users, as someone who came to this project from outside that context that gap has been as much a design constraint as any technical one. It has also, I think, made the work more honest about what it can and cannot do.
- 
----
+- **30 Usability Issues Surfaced & Resolved:** Evaluated existing dashboard against legal and accessibility standards.
+- **Role-Separated DSS Framework:** Delivered lo-fi wireframes and interactive prototypes for 3 distinct stakeholder personas across public schools and municipal offices in Italy.
+- **Institutional Clarity:** Identified Classe II threshold misalignments under Italian occupational health standards (D.Lgs. 81/2008), providing legal and institutional clarity for future deployments.

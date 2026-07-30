@@ -4,7 +4,6 @@ import { getProjectBySlug } from "@/lib/projects";
 import { ProjectHero } from "@/components/projects/ProjectHero";
 import { ProjectFooter } from "@/components/projects/ProjectFooter";
 import { TableOfContents } from "@/components/projects/TableOfContents";
-import { ProjectGallery } from "@/components/ProjectImage";
 import { Layout } from "@/components/Layout";
 import ReadingProgress from "@/components/ReadingProgress";
 import SEO from "@/components/SEO";
@@ -16,8 +15,9 @@ const ProjectPage: React.FC = () => {
   React.useEffect(() => {
     if (!project) return;
 
-    // Only run if native CSS scroll timelines are NOT supported and user does not prefer reduced motion
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
     if (prefersReducedMotion || CSS.supports("animation-timeline: view()")) {
       return;
     }
@@ -31,12 +31,11 @@ const ProjectPage: React.FC = () => {
         });
       },
       {
-        rootMargin: "0px 0px -10% 0px", // triggers slightly before entering full view
+        rootMargin: "0px 0px -10% 0px",
         threshold: 0.05,
       }
     );
 
-    // Select all elements to reveal on scroll
     const selectors = [
       ".project-page-snap-container article > h2",
       ".project-page-snap-container article > h3",
@@ -67,17 +66,17 @@ const ProjectPage: React.FC = () => {
   if (!project) {
     return (
       <Layout>
-        <main className="min-h-screen flex items-center justify-center px-6">
-          <div className="card-styled p-12 rounded-2xl text-center max-w-md">
-            <h1 className="typography-hero text-4xl mb-4">
+        <main className="min-h-screen flex items-center justify-center px-6 bg-paper-bg">
+          <div className="p-12 text-center max-w-md border border-paper-border rounded-xl bg-paper-card">
+            <h1 className="font-display text-3xl font-bold text-ink-primary mb-4">
               Project not found
             </h1>
-            <p className="text-muted-foreground mb-6">
+            <p className="font-body-narrative text-ink-muted mb-6">
               The project you're looking for doesn't exist or has been moved.
             </p>
             <Link
               to="/"
-              className="text-primary hover:underline font-medium inline-flex items-center gap-2"
+              className="font-mono text-xs text-ink-primary uppercase tracking-widest hover:underline"
             >
               ← Go home
             </Link>
@@ -89,11 +88,10 @@ const ProjectPage: React.FC = () => {
 
   const Component = project.Component;
 
-  // Build SEO props from frontmatter
   const seoDescription =
     project.summary ||
     project.tagline ||
-    `${project.title} a project by Sumit Knayyar`;
+    `${project.title} a project by Sumit Nayyar`;
   const seoKeywords = [
     ...(project.tech || []),
     ...(project.tags || []),
@@ -112,50 +110,37 @@ const ProjectPage: React.FC = () => {
       />
       <ReadingProgress />
       <TableOfContents />
-      <div className="scroll-blur-content min-h-screen relative project-page-snap-container bg-background">
-        {/* Hero Section */}
+      <div className="min-h-screen relative project-page-snap-container bg-paper-bg">
+        {/* Text-first Hero Section */}
         <ProjectHero project={project} />
 
-        {/* Main Content Container */}
-        <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-20 bg-background rounded-t-[2.5rem] pt-12">
-          <div className="py-4 md:py-8">
-            <article
-              className="
-                mx-auto max-w-4xl
-                prose prose-lg
-                prose-headings:font-bold prose-headings:font-display prose-headings:tracking-tighter
-                prose-h2:text-foreground
-                prose-blockquote:border-l-4 prose-blockquote:border-[hsl(var(--primary))]
-                prose-a:text-primary
-                prose-img:rounded-2xl prose-img:shadow-lg
-                dark:prose-invert
-              "
-            >
-              {Component ? (
-                <Component />
-              ) : (
-                <div>
-                  <p>{project.summary || "No content available."}</p>
-                </div>
-              )}
-            </article>
-
-            {/* Gallery Section */}
-            {project.gallery && project.gallery.length > 0 && (
-              <div className="mt-16 md:mt-24 pt-10 md:pt-16 border-t border-border/20 scroll-snap-item scroll-mt-24">
-                <h2 className="text-3xl md:text-4xl font-bold font-display tracking-tighter mb-12 text-center text-foreground">
-                  Project Gallery
-                </h2>
-                <ProjectGallery
-                  project={project.slug}
-                  images={project.gallery}
-                />
+        {/* Main Content Container sitting on Slate Paper */}
+        <div className="max-w-4xl mx-auto px-4 md:px-8 relative z-20 py-12 md:py-16">
+          <article
+            className="
+              mx-auto max-w-4xl
+              prose prose-lg
+              prose-headings:font-bold prose-headings:font-display prose-headings:tracking-tighter
+              prose-h2:text-2xl prose-h2:md:text-3xl prose-h2:text-ink-primary prose-h2:mt-12 prose-h2:mb-4 prose-h2:border-b prose-h2:border-paper-border prose-h2:pb-3
+              prose-h3:text-lg prose-h3:md:text-xl prose-h3:text-ink-primary prose-h3:mt-8 prose-h3:mb-3
+              prose-p:font-body-narrative prose-p:text-base prose-p:md:text-lg prose-p:text-ink-muted prose-p:leading-[1.8] prose-p:my-5
+              prose-blockquote:font-body-narrative prose-blockquote:text-ink-primary prose-blockquote:border-l-2 prose-blockquote:border-paper-border prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:my-8
+              prose-a:text-ink-primary prose-a:underline prose-a:decoration-paper-border hover:prose-a:decoration-ink-primary
+              prose-li:font-body-narrative prose-li:text-ink-muted prose-li:text-base prose-li:md:text-lg
+              prose-img:rounded-xl prose-img:border prose-img:border-paper-border prose-img:my-8
+            "
+          >
+            {Component ? (
+              <Component />
+            ) : (
+              <div>
+                <p>{project.summary || "No content available."}</p>
               </div>
             )}
-          </div>
+          </article>
         </div>
 
-        {/* Footer Navigation */}
+        {/* Simple Footer Navigation */}
         <ProjectFooter project={project} />
       </div>
     </Layout>

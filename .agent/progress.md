@@ -43,6 +43,24 @@ This file is updated by AI agents after each task is attempted or completed. It 
 | 2026-07-29 | `HeroParticleCanvas 3D GLTF Navigation Morphing & Silver Metal Solidification` | Converted Blender models (`webhand.blend`, `television_02_4k.blend`, `cassette_player_4k.blend`) to GLB (`pointing-hand.glb`, `tv-screen.glb`, `document.glb`), baked geometry matrices (`applyMatrix4`), synchronized Y-axis rotation, and implemented wireframe outline hover morphing + bright silver metallic model solidification on navigation completion. Build passes. | Completed |
 | 2026-07-30 | `tasks/task_033_menu_hierarchy_and_route_pages_update.md` | Updated Header menu hierarchy to 4-column structure (Sumit Nayyar, Design, Data Engineering, Writings), created DataEngineeringPage with AI & Data and Front-End Engineering sections, added /data-engineering and /design routes, and updated 3D particle intent category key. Build passes. | Completed |
 | 2026-07-30 | `tasks/task_034_groundwork_case_study_integration.md` | Created Groundwork case study MDX at `src/content/projects/groundwork/index.mdx` using production copy, EIT Jumpstarter 2nd place metric, cover image, and inline metrics/methodology visuals in a single-column wide layout. Build passes. | Completed |
+| 2026-07-30 | `tasks/task_035_v2_project_pages_visual_language_upgrade.md` | Upgraded visual language for individual project pages (Groundwork, EDIAQI, SuperEgo). Implemented text-first slate paper header with monospace metadata, scroll-revealed cover image, 4 standardized numbered sections (01 CONTEXT, 02 PROBLEM, 03 APPROACH, 04 IMPACT), quiet media framing, and simple next project footer link. Build passes cleanly. | Completed |
+
+### 2026-07-30 - `tasks/task_035_v2_project_pages_visual_language_upgrade.md`
+
+- Status: Completed
+- Summary: Upgraded visual language for individual project pages (Groundwork, EDIAQI, SuperEgo). Implemented text-first slate paper header with monospace metadata, scroll-revealed cover image, 4 standardized numbered sections (01 CONTEXT, 02 PROBLEM, 03 APPROACH, 04 IMPACT), quiet media framing, and simple next project footer link.
+- Files changed:
+  - `src/components/projects/ProjectHero.tsx`
+  - `src/components/projects/ProjectFooter.tsx`
+  - `src/pages/ProjectPage.tsx`
+  - `src/content/projects/groundwork/index.mdx`
+  - `src/content/projects/ediaqi-decision-support-system/index.mdx`
+  - `src/content/projects/super-ego-app/index.mdx`
+  - `.agent/progress.md`
+  - `.agent/learnings.md`
+- Tests run: `npm run build` (Passed cleanly in 3.76s)
+- Acceptance criteria: 100% met.
+- Follow-ups / risks: None.
 
 
 ### 2026-07-30 - `tasks/task_033_menu_hierarchy_and_route_pages_update.md`

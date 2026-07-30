@@ -19,7 +19,6 @@
 19. [ ] Task 028: V2 Redesign — Combined Academic Research Matrix & Authentic Sandbox
 20. [ ] Task 029: V2 Redesign — Living Motion Dynamics & Quality Verification
 21. [x] Task 031: Information Architecture (IA) & Navigation Restructuring
-22. [ ] Task 032: Intent-Based Header Navigation & Main Route Page Systems
+22. [x] Task 032: Intent-Based Header Navigation & Main Route Page Systems
 23. [x] Task 034: Groundwork Case Study Integration
 24. [ ] Task 035: Visual Language Upgrade for Individual Project Pages (Groundwork, EDIAQI, SuperEgo)
-

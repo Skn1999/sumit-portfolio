@@ -1,10 +1,6 @@
+import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, ExternalLink, Github } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { ProjectMeta } from "@/lib/projects";
-import { visibleProjects } from "@/lib/projects";
-import { motion } from "framer-motion";
-import MagneticButton from "../MagneticButton";
+import { ProjectMeta, visibleProjects } from "@/lib/projects";
 
 interface ProjectFooterProps {
   project: ProjectMeta;
@@ -12,133 +8,34 @@ interface ProjectFooterProps {
 
 export const ProjectFooter: React.FC<ProjectFooterProps> = ({ project }) => {
   const currentIndex = visibleProjects.findIndex(
-    (p) => p.slug === project.slug,
+    (p) => p.slug === project.slug
   );
-  const prevProject =
-    currentIndex > 0 ? visibleProjects[currentIndex - 1] : null;
+
+  // Cyclic next project selection
   const nextProject =
-    currentIndex < visibleProjects.length - 1
+    currentIndex >= 0 && currentIndex < visibleProjects.length - 1
       ? visibleProjects[currentIndex + 1]
-      : null;
+      : visibleProjects[0];
 
   return (
-    <footer className="pt-12 md:pt-24 pb-12 md:pb-16 max-w-7xl mx-auto scroll-snap-item scroll-mt-24 px-4 md:px-6">
-      {/* Links Section */}
-      {project.links && Object.keys(project.links).length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-12 md:mb-20 text-center"
+    <footer className="py-16 bg-paper-bg border-t border-paper-border">
+      <div className="max-w-4xl mx-auto px-4 md:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <Link
+          to="/"
+          className="font-mono text-xs text-ink-muted hover:text-ink-primary uppercase tracking-widest transition-colors"
         >
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-6">
-            View Live Project
-          </h3>
-          <div className="flex flex-wrap justify-center gap-4">
-            {Object.entries(project.links).map(([key, url]) => (
-              <MagneticButton
-                key={key}
-                variant={key === "github" ? "outline" : "default"}
-                size="lg"
-                asChild
-              >
-                <a href={url} target="_blank" rel="noopener noreferrer">
-                  {key === "github" ? (
-                    <Github className="w-4 h-4 mr-2" />
-                  ) : (
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                  )}
-                  {key.charAt(0).toUpperCase() + key.slice(1)}
-                </a>
-              </MagneticButton>
-            ))}
-          </div>
-        </motion.div>
-      )}
+          ← Back to Portfolio
+        </Link>
 
-      {/* Divider */}
-      <div className="border-t border-border/20 mb-10 md:mb-16" />
-
-      {/* Navigation */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.1 }}
-        className="flex justify-center"
-      >
-        {/* Previous Project */}
-        {/* <div className="order-2 md:order-1">
-          {prevProject ? (
-            <Link
-              to={`/projects/${prevProject.slug}`}
-              className="group p-6 rounded-xl block transition-all hover:scale-[1.02] bg-[hsl(var(--card))] border border-border/80 hover:border-[hsl(var(--primary))] shadow-sm"
-            >
-              <div className="flex items-start gap-4">
-                <ArrowLeft className="w-5 h-5 mt-1 text-muted-foreground group-hover:text-primary group-hover:-translate-x-1 transition-all" />
-                <div>
-                  <div className="text-xs mb-2 uppercase tracking-wider text-muted-foreground font-semibold">
-                    Previous
-                  </div>
-                  <div className="font-bold text-foreground group-hover:text-primary transition-colors">
-                    {prevProject.title}
-                  </div>
-                  {prevProject.tagline && (
-                    <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
-                      {prevProject.tagline}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </Link>
-          ) : (
-            <div />
-          )}
-        </div> */}
-
-        {/* Back to Projects */}
-        <div className="text-center order-1 md:order-2">
-          <Link to="/#projects">
-            <Button
-              variant="ghost"
-              size="lg"
-              className="text-xs font-label uppercase tracking-widest font-bold"
-            >
-              ← Back to All Projects
-            </Button>
+        {nextProject && (
+          <Link
+            to={`/projects/${nextProject.slug}`}
+            className="font-mono text-xs font-semibold text-ink-primary uppercase tracking-widest hover:text-ink-primary/70 underline decoration-paper-border hover:decoration-ink-primary transition-all"
+          >
+            NEXT PROJECT: {nextProject.title.split(":")[0].toUpperCase()} →
           </Link>
-        </div>
-
-        {/* Next Project
-        <div className="order-3">
-          {nextProject ? (
-            <Link
-              to={`/projects/${nextProject.slug}`}
-              className="group p-6 rounded-xl block transition-all hover:scale-[1.02] bg-[hsl(var(--card))] border border-border/80 hover:border-[hsl(var(--primary))] shadow-sm"
-            >
-              <div className="flex items-start gap-4 text-right">
-                <div className="flex-1">
-                  <div className="text-xs mb-2 uppercase tracking-wider text-muted-foreground font-semibold">
-                    Next
-                  </div>
-                  <div className="font-bold text-foreground group-hover:text-primary transition-colors">
-                    {nextProject.title}
-                  </div>
-                  {nextProject.tagline && (
-                    <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
-                      {nextProject.tagline}
-                    </p>
-                  )}
-                </div>
-                <ArrowRight className="w-5 h-5 mt-1 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-              </div>
-            </Link>
-          ) : (
-            <div />
-          )}
-        </div> */}
-      </motion.div>
+        )}
+      </div>
     </footer>
   );
 };

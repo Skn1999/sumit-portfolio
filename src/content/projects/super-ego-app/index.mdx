@@ -8,7 +8,6 @@ featured: true
 cover:
   filename: "cover.jpg"
   alt: "SuperEgo app mockups on mobile screens"
-gallery: []
 tech:
   - "Behavioral Design"
   - "Persona Creation"
@@ -18,217 +17,92 @@ tech:
 metric: "Defined and prototyped an operating-system-level assistant that adapts nudges to emotional awareness"
 summary: "Designed YOU, an OS-level assistant that reads preconscious patterns and emotional awareness to help people align everyday actions with long-term values."
 links:
-  case: "https://www.figma.com/deck/AqArCYTjQP7qPRJZlKJHxN/Social-interaction---Final-presentation?node-id=6-2733"
+  case: https://www.figma.com/deck/AqArCYTjQP7qPRJZlKJHxN/Social-interaction---Final-presentation?node-id=6-2733
 roles:
   - "User Research"
   - "Concept & Interaction Design"
   - "Prototyping"
-order:
+order: 2
 draft: false
 ---
 
 import { ProjectImageAsset } from "@/components/ui/project-image-asset";
 
-## Overview
+## 01 // CONTEXT
 
-Have you ever opened your phone to check the weather and, twenty minutes later, found yourself deep in Instagram with no memory of the detour? That gap between what we *intend* to do and what we *actually* do is what this project is about.
+Have you ever opened your phone to check the weather and, twenty minutes later, found yourself deep in social media with no memory of the detour? That gap between what we *intend* to do and what we *actually* do is what this project addresses.
 
-YOU (SuperEgo) is an assistant that doesn't live inside an app. It lives inside the operating system itself, watching the quiet signals we don't notice, for example how fast we switch between apps, how late we're still scrolling. It pairs those signals with a gentle understanding of how emotionally self-aware each person is, then nudges accordingly (sometimes with friction, sometimes with a reflective question that stops you mid-scroll).
-
-> _I led the research synthesis, behavioral framing, system logic, and interaction design, and built the hi-fi prototype._
+YOU (SuperEgo) is an assistant that doesn't live inside a standalone app. It operates inside the mobile operating system itself, observing passive telemetry (app switching frequency, late-night scrolling rhythms) without monitoring private content. I led the research synthesis, behavioral framing, system interaction logic, and hi-fi prototyping.
 
 ---
 
-## The question that started it all
+## 02 // PROBLEM
 
-I kept coming back to something that bothered me. Every productivity app I'd tried assumed I was a rational planner who just needed a better to-do list. But the real problem was never the list, it was the **autopilot**.
+Most productivity tools assume users are rational planners who just need a better to-do list. However, the core friction is not the list—it is the **autopilot habit loop**.
 
-When I dug into research, four patterns kept showing up:
+Key behavioral pain points identified:
+- **Invisible Drift:** Users drift off task without noticing the moment of transition.
+- **Autopilot Habits:** By the time someone realizes they are distracted, the moment has passed.
+- **Emotions Ignored:** Traditional tools ignore stress and mood states that drive habitual impulses.
+- **Intention vs. Action Gap:** A persistent disconnect exists between intentional goals and immediate physical actions.
 
-<section className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-8 not-prose">
-  <article className="bg-muted rounded-2xl p-5 border border-border/10">
-    <p className="text-2xl mb-1">🫥</p>
-    <strong className="block">Invisible drift</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">People feel disorganized, but the real issue is they don't notice when they drift off course.</p>
-  </article>
-  <article className="bg-muted rounded-2xl p-5 border border-border/10">
-    <p className="text-2xl mb-1">🔁</p>
-    <strong className="block">Autopilot habits</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Habits are rigid and run on autopilot and by the time you catch yourself, the moment has passed.</p>
-  </article>
-  <article className="bg-muted rounded-2xl p-5 border border-border/10">
-    <p className="text-2xl mb-1">😶‍🌫️</p>
-    <strong className="block">Emotions ignored</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Most tools completely ignore your emotional state, as if stress and mood don't shape every decision.</p>
-  </article>
-  <article className="bg-muted rounded-2xl p-5 border border-border/10">
-    <p className="text-2xl mb-1">✋🏽</p>
-    <strong className="block">Intention vs. Action gap</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">There's a gap between what people plan to do and what their hands actually do on the phone.</p>
-  </article>
-</section>
-
-All of this pointed to one question:
-
-> What if your phone could notice you drifting before you do and gently bring you back, without taking away your freedom to choose?
+<ProjectImageAsset src="super-ego-app/assumptions-research.jpg" alt="SuperEgo Research & Assumptions Matrix" />
+<p className="font-mono text-xs text-ink-muted uppercase tracking-wider text-center mt-2 mb-8">
+  FIG 01 // RESEARCH SYNTHESIS & BEHAVIORAL ASSUMPTIONS MATRIX
+</p>
 
 ---
 
-## How I got there
+## 03 // APPROACH
 
-### 1. Starting with what I assumed (and what the research said back)
+### 4-Step Adaptive Cycle
+Designed a continuous system loop: evaluate user state → assess emotional awareness → apply calibrated interventions → mirror back learned insights.
 
-Before sketching anything, I wrote down every assumption I was carrying. Then I went looking for evidence to prove myself wrong.
+<ProjectImageAsset src="super-ego-app/how-this-works.jpg" alt="SuperEgo 4-Step System Loop" />
+<p className="font-mono text-xs text-ink-muted uppercase tracking-wider text-center mt-2 mb-8">
+  FIG 02 // THE 4-STEP ADAPTIVE SYSTEM LOOP & TELEMETRY LOGIC
+</p>
 
-<section className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6 not-prose">
-  <article className="bg-muted rounded-xl p-5 border border-border/10">
-    <strong>🎯 Own your goals</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">People do better when they choose their direction, not when an app tells them what to fix.</p>
-  </article>
-  <article className="bg-muted rounded-xl p-5 border border-border/10">
-    <strong>🪜 Small backup actions</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">After failure, "get back on track" doesn't help. A walk instead of the gym does.</p>
-  </article>
-  <article className="bg-muted rounded-xl p-5 border border-border/10">
-    <strong>💬 Short prompts win</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Nobody journals for ten minutes. But they'll answer one specific prompt about how they feel.</p>
-  </article>
-  <article className="bg-muted rounded-xl p-5 border border-border/10">
-    <strong>👁️ Rhythms, not content</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Your phone knows your patterns. Never spy. Just notice.</p>
-  </article>
-</section>
+### Persona-Calibrated Interventions (Grace & Phil)
+Constructed two primary persona profiles to test System 1 (subtle cues) vs System 2 (reflective prompts) interventions:
 
-> Exercising in the morning doesn't mean someone is "doing well".
+<ProjectImageAsset src="super-ego-app/personas.jpg" alt="SuperEgo Persona Overviews - Grace and Phil" />
+<p className="font-mono text-xs text-ink-muted uppercase tracking-wider text-center mt-2 mb-8">
+  FIG 03 // PERSONA ARCHETYPES & EMOTIONAL PROFILES (GRACE & PHIL)
+</p>
 
-<ProjectImageAsset src="super-ego-app/assumptions-research.jpg" alt="Screenshot: Assumptions and research sources" />
+### System Integration & LEAS Emotional Calibration
+- **OS-Level Integration:** Operates in background telemetry, watching rhythms rather than private content.
+- **LEAS Framework Calibration:** Short "Help me understand you" exercises gauge emotional vocabulary, tuning nudges from simple warm prompts to nuanced reflective dialogues.
 
----
+<ProjectImageAsset src="super-ego-app/integration.jpg" alt="SuperEgo OS Integration Diagram" />
+<p className="font-mono text-xs text-ink-muted uppercase tracking-wider text-center mt-2 mb-8">
+  FIG 04 // OS-LEVEL SYSTEM ARCHITECTURE & INTERVENTION CALIBRATION
+</p>
 
-### 2. Designing the loop how YOU actually works
+<ProjectImageAsset src="super-ego-app/emotional-awareness-LEAS.jpg" alt="SuperEgo LEAS Emotional Calibration" />
+<p className="font-mono text-xs text-ink-muted uppercase tracking-wider text-center mt-2 mb-8">
+  FIG 05 // LEAS EMOTIONAL AWARENESS CALIBRATION FLOW
+</p>
 
-The core is a four-step loop -> figure out where you are, understand your emotions, set the rules for how the system speaks up, and mirror back what it learned. This keeps repeating and getting smarter each time. Each cycle tightens the fit between what you want and what you actually do.
+### Dual-Process Interventions
+- **System 1 (Subtle Nudges):** Haptic breathing pulses during stress detection; app delay timers during deep work blocks.
+- **System 2 (Reflective Moments):** Contextual prompts asking users if they wish to adjust goals or write a letter to their future self.
 
-<ProjectImageAsset src="super-ego-app/how-this-works.jpg" alt="Screenshot: Explaining the four-step loop" />
+<ProjectImageAsset src="super-ego-app/system1-grace.jpg" alt="SuperEgo System 1 Intervention - Grace" />
+<p className="font-mono text-xs text-ink-muted uppercase tracking-wider text-center mt-2 mb-8">
+  FIG 06 // SYSTEM 1 SUBTLE NUDGE INTERVENTION (APP DELAY)
+</p>
 
----
-
-### 3. Two people I designed for
-
-I stress-tested the system with two very different fictional lives:
-
-{/* <section className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6 not-prose">
-  <article className="bg-muted rounded-xl p-5 border border-border/10">
-    <p className="text-lg mb-1">👩🏻‍💻</p>
-    <strong>Grace, 30, Analyst</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Motivated by mastery. Cares about <em>too many things</em> and ends up scattered. Wants to protect deep work and family time and stop feeling guilty about what she didn't finish.</p>
-  </article>
-  <article className="bg-muted rounded-xl p-5 border border-border/10">
-    <p className="text-lg mb-1">👨🏽‍🎓</p>
-    <strong>Phil, 24, CS Student</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Driven by connection, vulnerable to comparison. Opens social media to feel connected, closes it feeling worse. Wants to understand his emotional patterns, not suppress them.</p>
-  </article>
-</section> */}
-
-<ProjectImageAsset src="super-ego-app/personas.jpg" alt="Screenshot: Persona overview - Grace and Phil" />
+<ProjectImageAsset src="super-ego-app/system2-grace.jpg" alt="SuperEgo System 2 Intervention - Grace" />
+<p className="font-mono text-xs text-ink-muted uppercase tracking-wider text-center mt-2 mb-8">
+  FIG 07 // SYSTEM 2 REFLECTIVE DIALOG INTERVENTION
+</p>
 
 ---
 
-## What I designed
+## 04 // IMPACT
 
-### The big idea: your phone's quiet conscience
-
-Think of Freud's SuperEgo concept. Not as a strict parent, but as a thoughtful inner voice that notices when you're on autopilot. That's YOU. It doesn't live in an app you have to remember to open. It lives at the OS level, present in the background, watching patterns (never content), and stepping in at the moments that matter.
-
-<ProjectImageAsset src="super-ego-app/integration.jpg" alt="Screenshot: System overview - data inputs, emotional awareness, interventions" />
-
-### Onboarding that feels like a conversation
-
-Most apps dump you into a settings screen. YOU starts with a conversation. Pick a goal, but only one. Try to pick three? YOU gently explains that focus works better than ambition. Not sure? Tap "Help me decide" and YOU observes your patterns for a week before suggesting anything.
-
-Then choose your role for the system how much do you want it to speak up? At the end, it summarizes everything: your goal, what YOU will watch for, how it'll intervene, and exactly how to change any of it.
-
-<ProjectImageAsset src="super-ego-app/onboarding.jpg" alt="Screenshot: Goal selection and 'Help me decide' flow" />
-
-### Getting to know your emotional landscape
-
-Inspired by the **LEAS framework**, I created short "Help me understand you" exercises. You read a social scenario, answer how you'd feel and how the other person might feel, then rate a few statements about how easily you process emotions.
-
-Based on responses, YOU calibrates everything. <br/> 
-**High emotional awareness → nuanced, layered prompts**. <br/>
-**Still building that vocabulary → simpler, warmer ones.**
-
-<ProjectImageAsset src="super-ego-app/emotional-awareness-LEAS.jpg" alt="Screenshot: Emotional awareness vignette - 'Help me understand you'" />
-
-### Two kinds of nudges for two kinds of minds
-
-Here's where dual-process theory comes alive. Each persona gets a subtle nudge (System 1) and a reflective moment (System 2):
-
-<aside className="bg-muted rounded-xl p-5 border border-border/10 not-prose my-6">
-  <strong>👩🏻‍💻 Grace Protecting focus</strong>
-  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
-    <div>
-      <p className="text-sm text-muted-foreground"><strong>Subtle nudge:</strong> During focus blocks, low-value apps don't disappear, they just slow down. A small delay, a gentle message: <em>"This is your high-value time."</em></p>
-    </div>
-    <div>
-      <p className="text-sm text-muted-foreground"><strong>Reflective moment:</strong> If she keeps drifting, YOU asks: <em>"Your focus blocks haven't been working. Want to adjust when they happen?"</em> Micro-changes, not lectures.</p>
-    </div>
-  </div>
-</aside>
-
-<ProjectImageAsset src="super-ego-app/system1-grace.jpg" alt="Screenshot: System 1 intervention - app delay during focus time" />
-<ProjectImageAsset src="super-ego-app/system2-grace.jpg" alt="Screenshot: System 2 intervention - reflective dialog after drift" />
-
-<aside className="bg-muted rounded-xl p-5 border border-border/10 not-prose my-6">
-  <strong>👨🏽‍🎓 Phil Understanding stress</strong>
-  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
-    <div>
-      <p className="text-sm text-muted-foreground"><strong>Subtle nudge:</strong> When stress patterns appear, such as fast typing, rapid switching, a gentle haptic pulse mimics slow breathing. No notification. Just a rhythm in your hand.</p>
-    </div>
-    <div>
-      <p className="text-sm text-muted-foreground"><strong>Reflective moment:</strong> Pick from emotion categories, tag what's contributing, write a note to "Future Phil." When the pattern recurs, YOU resurfaces it. A letter from your past self.</p>
-    </div>
-  </div>
-</aside>
-
-<ProjectImageAsset src="super-ego-app/system1-phil.jpg" alt="Screenshot: System 1 intervention - haptic cue for calm breathing" />
-<ProjectImageAsset src="super-ego-app/system2-phil.jpg" alt="Screenshot: System 2 intervention - emotional check-in and note to Future Phil" />
-
-### When the system should step back
-
-YOU isn't a therapist. If Phil's stress stays high for days, it doesn't double down it reframes: *"Maybe the goal right now isn't to lower stress. It's to understand it."*. And gently asking, *"Would it help to talk to someone who isn't an app?"*
-
-Users can always adjust their level, pause goals without losing progress, or change direction.
-
-<ProjectImageAsset src="super-ego-app/goal-adaptation.jpg" alt="Screenshot: Goal adaptation and involvement level settings" />
-
----
-
-## What it taught me
-
-This project changed how I think not just about design, but about people.
-
-<section className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6 not-prose">
-  <article className="bg-muted rounded-xl p-5 border border-border/10">
-    <p className="text-lg mb-1">📝</p>
-    <strong>Write down beliefs first</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">I listed every assumption about behavior, motivation, and data. Half were wrong. The right ones became the system's foundation.</p>
-  </article>
-  <article className="bg-muted rounded-xl p-5 border border-border/10">
-    <p className="text-lg mb-1">👻</p>
-    <strong>Invisible stuff matters most</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">A two-second delay. A vibration matching breathing. These "invisible" moments shaped behavior more than any screen I designed.</p>
-  </article>
-  <article className="bg-muted rounded-xl p-5 border border-border/10">
-    <p className="text-lg mb-1">🎭</p>
-    <strong>People feel differently literally</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">Some name twelve feelings in a moment; others genuinely experience "fine" or "not fine." Ignor this and you can really miss out on an experience that adapts to users.</p>
-  </article>
-  <article className="bg-muted rounded-xl p-5 border border-border/10">
-    <p className="text-lg mb-1">🤲</p>
-    <strong>Never take control away</strong>
-    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">From choosing your goal to choosing how loudly the system speaks autonomy wasn built-in.</p>
-  </article>
-</section>
-
-YOU is the project that made me believe technology can do more than track and remind. It can notice the preconscious, the drift and ask: *"Is this what you wanted to be doing right now?"*
+- **OS-Level Behavioral Framework:** Prototyped an operating-system-level assistant that adapts interventions based on real-time emotional self-awareness.
+- **Dual-Process Nudge System:** Successfully integrated System 1 haptic cues and System 2 reflective prompts into a cohesive mobile interaction model.
+- **Privacy-Preserving Telemetry:** Proved that meaningful behavioral nudges can be delivered through rhythm tracking without monitoring user content.
