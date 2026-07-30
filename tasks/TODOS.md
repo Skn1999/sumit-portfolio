@@ -21,4 +21,5 @@
 21. [x] Task 031: Information Architecture (IA) & Navigation Restructuring
 22. [x] Task 032: Intent-Based Header Navigation & Main Route Page Systems
 23. [x] Task 034: Groundwork Case Study Integration
-24. [ ] Task 035: Visual Language Upgrade for Individual Project Pages (Groundwork, EDIAQI, SuperEgo)
+24. [x] Task 035: Visual Language Upgrade for Individual Project Pages (Groundwork, EDIAQI, SuperEgo)
+25. [ ] Task 036: Project Categorization, Frontmatter Updates, and Navigation Route Mapping
