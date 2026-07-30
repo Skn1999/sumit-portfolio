@@ -45,6 +45,20 @@ This file is updated by AI agents after each task is attempted or completed. It 
 | 2026-07-30 | `tasks/task_034_groundwork_case_study_integration.md` | Created Groundwork case study MDX at `src/content/projects/groundwork/index.mdx` using production copy, EIT Jumpstarter 2nd place metric, cover image, and inline metrics/methodology visuals in a single-column wide layout. Build passes. | Completed |
 | 2026-07-30 | `tasks/task_035_v2_project_pages_visual_language_upgrade.md` | Upgraded visual language for individual project pages (Groundwork, EDIAQI, SuperEgo). Implemented text-first slate paper header with monospace metadata, scroll-revealed cover image, 4 standardized numbered sections (01 CONTEXT, 02 PROBLEM, 03 APPROACH, 04 IMPACT), quiet media framing, and simple next project footer link. Build passes cleanly. | Completed |
 | 2026-07-30 | `tasks/task_036_project_categorization_and_route_mapping.md` | Categorized all 8 projects across site navigation routes. Updated `src/lib/projects.ts` with `subCategory` and `externalUrl` attributes and `getProjectsBySubCategory` filter. Updated MDX frontmatters, removed fake mock items from `VisualDesignPage.tsx`, mapped Behance links for Music Store & Rewards Convertor apps, and set Spatial Design to `draft: true`. Build passes cleanly. | Completed |
+| 2026-07-30 | `tasks/task_037_gosta_labs_case_study_integration.md` | Integrated Gosta Labs case study MDX at `src/content/projects/gosta-labs/index.mdx` using production copy, `cover.svg`, 4-zone section structure (`01 CONTEXT`, `02 PROBLEM`, `03 APPROACH`, `04 IMPACT`), and an interactive action button linking to `final-presentation.pdf`. Categorized under `subCategory: "ai-data"` resolving under `/data-engineering#ai-data`. Build passes cleanly. | Completed |
+
+### 2026-07-30 - `tasks/task_037_gosta_labs_case_study_integration.md`
+
+- Status: Completed
+- Summary: Integrated Gosta Labs case study MDX at `src/content/projects/gosta-labs/index.mdx` using production copy, `cover.svg`, 4-zone section structure (`01 CONTEXT`, `02 PROBLEM`, `03 APPROACH`, `04 IMPACT`), and an interactive action button linking to `final-presentation.pdf`. Categorized under `subCategory: "ai-data"` resolving under `/data-engineering#ai-data`.
+- Files changed:
+  - `src/content/projects/gosta-labs/index.mdx`
+  - `tasks/TODOS.md`
+  - `.agent/progress.md`
+  - `.agent/learnings.md`
+- Tests run: `npm run build` (Passed cleanly in 13.02s, generated static page `dist/projects/gosta-labs/index.html`)
+- Acceptance criteria: 100% met.
+- Follow-ups / risks: None.
 
 ### 2026-07-30 - `tasks/task_036_project_categorization_and_route_mapping.md`
 
