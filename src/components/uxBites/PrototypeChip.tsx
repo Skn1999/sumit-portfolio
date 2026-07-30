@@ -47,7 +47,7 @@ export const PrototypeChip: React.FC<Props> = ({
         "bg-[hsl(var(--bite-paper-raised,var(--bite-paper))/0.85)] backdrop-blur-sm",
         "hover:bg-[hsl(var(--bite-accent))] hover:text-[hsl(var(--bite-paper))]",
         "transition-colors duration-300 shadow-sm",
-        className
+        className,
       )}
     >
       <span className="bite-dot !bg-current !opacity-90" aria-hidden />
@@ -66,7 +66,7 @@ export const PrototypeChip: React.FC<Props> = ({
           animate={{ opacity: 1, y: 0 }}
           exit={reduced ? { opacity: 0 } : { opacity: 0, y: -12 }}
           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed top-20 right-4 md:right-6 z-40"
+          className="fixed top-32 right-4 md:right-6 z-40"
         >
           {Chip}
         </motion.div>
