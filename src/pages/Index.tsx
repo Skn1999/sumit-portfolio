@@ -45,7 +45,7 @@ const IndexContent = () => {
           {/* Section 4: Contact */}
           <Contact />
 
-          <UnsaidMoments />
+          {/* <UnsaidMoments /> */}
 
           <Footer />
         </div>
