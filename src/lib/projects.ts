@@ -6,6 +6,11 @@ export interface ProjectImage {
   aspectRatio?: "wide" | "ultrawide" | "video" | "standard" | string;
 }
 
+export type ProjectSubCategory =
+  | "ux-design"
+  | "visual-design"
+  | "ai-data"
+  | "frontend-engineering";
 
 export type ProjectMeta = {
   slug: string;
@@ -13,6 +18,8 @@ export type ProjectMeta = {
   tagline?: string;
   date?: string;
   type?: "engineering" | "design";
+  subCategory?: ProjectSubCategory;
+  externalUrl?: string;
   featured?: boolean;
   cover?: ProjectImage;
   gallery?: ProjectImage[];
@@ -54,18 +61,13 @@ export const projects = Object.entries(modules).map(([path, mod]) => {
 });
 
 export const visibleProjects = projects
-  .filter((p) =>
-    ["production", "staging"].includes(import.meta.env.MODE) ? !p.draft : true
-  )
+  .filter((p) => !p.draft)
   .sort((a, b) => {
-    // featured first
     if ((b.featured ? 1 : 0) - (a.featured ? 1 : 0))
       return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
-    // then order
     const ao = a.order ?? 9999;
     const bo = b.order ?? 9999;
     if (ao !== bo) return ao - bo;
-    // then date desc
     return (
       (new Date(b.date ?? 0).getTime() || 0) -
       (new Date(a.date ?? 0).getTime() || 0)
@@ -80,10 +82,13 @@ export function getProjectsByType(type: ProjectMeta["type"]) {
   return visibleProjects.filter((p) => p.type === type);
 }
 
+export function getProjectsBySubCategory(subCategory: ProjectSubCategory) {
+  return visibleProjects.filter((p) => p.subCategory === subCategory);
+}
+
 export const engineeringProjects = getProjectsByType("engineering");
 export const designProjects = getProjectsByType("design");
 
-// Extract all unique skills from projects with counts
 export function getAllSkills(projectType?: ProjectMeta["type"]): {
   skills: string[];
   counts: Record<string, number>;
@@ -101,7 +106,6 @@ export function getAllSkills(projectType?: ProjectMeta["type"]): {
     });
   });
 
-  // Sort by count (descending), then alphabetically
   const skills = Object.keys(skillCounts).sort((a, b) => {
     const countDiff = skillCounts[b] - skillCounts[a];
     if (countDiff !== 0) return countDiff;
@@ -111,7 +115,6 @@ export function getAllSkills(projectType?: ProjectMeta["type"]): {
   return { skills, counts: skillCounts };
 }
 
-// Filter projects by selected skills
 export function filterProjectsBySkills(
   projects: (ProjectMeta & { Component: React.ComponentType })[],
   selectedSkills: string[]
@@ -120,7 +123,6 @@ export function filterProjectsBySkills(
 
   return projects.filter((project) => {
     const projectSkills = project.tech || [];
-    // Project must have ALL selected skills
     return selectedSkills.every((skill) => projectSkills.includes(skill));
   });
 }

@@ -44,6 +44,29 @@ This file is updated by AI agents after each task is attempted or completed. It 
 | 2026-07-30 | `tasks/task_033_menu_hierarchy_and_route_pages_update.md` | Updated Header menu hierarchy to 4-column structure (Sumit Nayyar, Design, Data Engineering, Writings), created DataEngineeringPage with AI & Data and Front-End Engineering sections, added /data-engineering and /design routes, and updated 3D particle intent category key. Build passes. | Completed |
 | 2026-07-30 | `tasks/task_034_groundwork_case_study_integration.md` | Created Groundwork case study MDX at `src/content/projects/groundwork/index.mdx` using production copy, EIT Jumpstarter 2nd place metric, cover image, and inline metrics/methodology visuals in a single-column wide layout. Build passes. | Completed |
 | 2026-07-30 | `tasks/task_035_v2_project_pages_visual_language_upgrade.md` | Upgraded visual language for individual project pages (Groundwork, EDIAQI, SuperEgo). Implemented text-first slate paper header with monospace metadata, scroll-revealed cover image, 4 standardized numbered sections (01 CONTEXT, 02 PROBLEM, 03 APPROACH, 04 IMPACT), quiet media framing, and simple next project footer link. Build passes cleanly. | Completed |
+| 2026-07-30 | `tasks/task_036_project_categorization_and_route_mapping.md` | Categorized all 8 projects across site navigation routes. Updated `src/lib/projects.ts` with `subCategory` and `externalUrl` attributes and `getProjectsBySubCategory` filter. Updated MDX frontmatters, removed fake mock items from `VisualDesignPage.tsx`, mapped Behance links for Music Store & Rewards Convertor apps, and set Spatial Design to `draft: true`. Build passes cleanly. | Completed |
+
+### 2026-07-30 - `tasks/task_036_project_categorization_and_route_mapping.md`
+
+- Status: Completed
+- Summary: Categorized all 8 projects across site navigation routes. Updated `src/lib/projects.ts` with `subCategory` and `externalUrl` attributes and `getProjectsBySubCategory` filter. Updated MDX frontmatters, removed fake mock items from `VisualDesignPage.tsx`, mapped Behance links for Music Store & Rewards Convertor apps, and set Spatial Design to `draft: true`.
+- Files changed:
+  - `src/lib/projects.ts`
+  - `src/components/Projects.tsx`
+  - `src/pages/VisualDesignPage.tsx`
+  - `src/pages/DataEngineeringPage.tsx`
+  - `src/content/projects/groundwork/index.mdx`
+  - `src/content/projects/ediaqi-decision-support-system/index.mdx`
+  - `src/content/projects/optmyzr-dashboard-migration/index.mdx`
+  - `src/content/projects/super-ego-app/index.mdx`
+  - `src/content/projects/social-integration-pd/index.mdx`
+  - `src/content/projects/music-store-app/index.mdx`
+  - `src/content/projects/rewards-convertor-app/index.mdx`
+  - `.agent/progress.md`
+  - `.agent/learnings.md`
+- Tests run: `npm run build` (Passed cleanly in 5.81s)
+- Acceptance criteria: 100% met.
+- Follow-ups / risks: None.
 
 ### 2026-07-30 - `tasks/task_035_v2_project_pages_visual_language_upgrade.md`
 

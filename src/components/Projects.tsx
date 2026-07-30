@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ExternalLink } from "lucide-react";
 import { ProjectImage } from "./ProjectImage";
-import { getProjectBySlug } from "@/lib/projects";
+import { getProjectsBySubCategory } from "@/lib/projects";
 
 const Projects = () => {
-  const groundworkProject = getProjectBySlug("groundwork");
-  const optmyzrProject = getProjectBySlug("optmyzr-dashboard-migration");
-  const ediaqiProject = getProjectBySlug("ediaqi-decision-support-system");
-  const superEgoProject = getProjectBySlug("super-ego-app");
+  const uxProjects = getProjectsBySubCategory("ux-design");
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -21,48 +18,9 @@ const Projects = () => {
     setMousePos({ x, y });
   };
 
-  const projectsData = [
-    {
-      index: "01",
-      label: "01 // GROUNDWORK",
-      slug: "groundwork",
-      title:
-        groundworkProject?.title ||
-        "Groundwork: Inclusive Design & Digital Accessibility Framework",
-      metricBanner:
-        "Selected from 900+ European applicants into EIT Jumpstarter 2025 Grand Final (2nd Place). Co-designed an open-source delivery framework and workshop model to embed accessibility into everyday product workflows.",
-      tags: ["Inclusive Design", "Accessibility", "WCAG / EAA", "Co-Design"],
-      cover: groundworkProject?.cover,
-    },
-    {
-      index: "02",
-      label: "02 // EDIAQI",
-      slug: "ediaqi-decision-support-system",
-      title:
-        "Making the Invisible Visible: A Decision-Support System for Environmental Data",
-      metricBanner:
-        "Designed and developed a decision-support interface that turns complex environmental data models into simple language status updates, preventing cognitive overload for non-technical occupants.",
-      tags: ["Interaction Architecture", "Data Visualization", "HCI Research"],
-      cover: ediaqiProject?.cover,
-      link: "https://fourth-yew-1cd.notion.site/EDIAQI-Designing-a-Decision-Support-System-for-Indoor-Air-Quality-39cfd7140ca780139055cfcda74c2841",
-    },
-    {
-      index: "03",
-      label: "03 // YOU (SUPEREGO)",
-      slug: "super-ego-app",
-      title:
-        "YOU (SuperEgo) — OS-Level Assistant for Preconscious Habit Alignment",
-      metricBanner:
-        "Designed a human-first behavioral nudge assistant that interprets passive telemetry into subtle, ethical interface interactions that prioritize user agency over algorithmic intrusion.",
-      tags: ["Behavioral Design", "Interaction Logic", "Social Psychology"],
-      cover: superEgoProject?.cover,
-    },
-  ];
-
-
   return (
     <section
-      id="user-experience"
+      id="ux-design"
       onMouseMove={handleMouseMove}
       className="relative pt-24 md:pt-36 bg-paper-bg border-t border-paper-border"
     >
@@ -76,16 +34,19 @@ const Projects = () => {
           className="mb-16 md:mb-20"
         >
           <span className="font-mono text-xs tracking-widest text-ink-muted uppercase block mb-2">
-            Selected Projects
+            // UX DESIGN & INTERACTION ARCHITECTURE
           </span>
           <h2 className="text-3xl md:text-5xl font-bold font-display text-ink-primary tracking-tighter">
-            Project Showcase
+            User Experience Projects
           </h2>
+          <p className="font-body-narrative text-base md:text-lg text-ink-muted mt-3 max-w-2xl">
+            Human-centered interaction frameworks, decision-support systems, accessibility standards, and participatory design research.
+          </p>
         </motion.div>
 
         {/* Floating Paper Image Preview Card on Desktop Hover */}
         <AnimatePresence>
-          {hoveredIndex !== null && projectsData[hoveredIndex]?.cover && (
+          {hoveredIndex !== null && uxProjects[hoveredIndex]?.cover && (
             <motion.div
               initial={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
               animate={{
@@ -109,8 +70,8 @@ const Projects = () => {
               }}
             >
               <ProjectImage
-                project={projectsData[hoveredIndex].slug}
-                image={projectsData[hoveredIndex].cover!}
+                project={uxProjects[hoveredIndex].slug}
+                image={uxProjects[hoveredIndex].cover!}
                 className="w-full h-full object-cover rounded-lg"
               />
             </motion.div>
@@ -119,69 +80,98 @@ const Projects = () => {
 
         {/* Minimalist Editorial Index List */}
         <div className="flex flex-col border-b border-paper-border">
-          {projectsData.map((project, index) => (
-            <motion.article
-              key={project.slug}
-              initial={{ opacity: 0, filter: "blur(6px)", y: 20 }}
-              whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{
-                duration: 0.7,
-                delay: index * 0.1,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              className="border-t border-paper-border py-8 md:py-12 group transition-colors duration-300 hover:bg-paper-card/40"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                {/* Index & Monospace Tag */}
-                <div className="lg:col-span-3 flex items-center justify-between lg:flex-col lg:items-start gap-2">
-                  <span className="font-mono text-xs font-semibold tracking-widest text-ink-muted uppercase">
-                    {project.label}
-                  </span>
-                  <div className="flex flex-wrap gap-1.5 mt-1">
-                    {project.tags.map((tag, tIdx) => (
-                      <span
-                        key={tIdx}
-                        className="px-2 py-0.5 rounded bg-paper-card text-ink-muted border border-paper-border text-[10px] font-mono tracking-wider"
+          {uxProjects.map((project, index) => {
+            const isExternal = Boolean(project.externalUrl);
+            const targetUrl = project.externalUrl || `/projects/${project.slug}`;
+
+            return (
+              <motion.article
+                key={project.slug}
+                initial={{ opacity: 0, filter: "blur(6px)", y: 20 }}
+                whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{
+                  duration: 0.7,
+                  delay: index * 0.1,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                className="border-t border-paper-border py-8 md:py-12 group transition-colors duration-300 hover:bg-paper-card/40"
+              >
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                  {/* Index & Monospace Tag */}
+                  <div className="lg:col-span-3 flex items-center justify-between lg:flex-col lg:items-start gap-2">
+                    <span className="font-mono text-xs font-semibold tracking-widest text-ink-muted uppercase">
+                      0{index + 1} // {project.slug.replace(/-/g, " ").toUpperCase()}
+                    </span>
+                    <div className="flex flex-wrap gap-1.5 mt-1">
+                      {project.tech?.map((tag, tIdx) => (
+                        <span
+                          key={tIdx}
+                          className="px-2 py-0.5 rounded bg-paper-card text-ink-muted border border-paper-border text-[10px] font-mono tracking-wider"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Title & Summary */}
+                  <div className="lg:col-span-9 flex flex-col gap-4">
+                    {isExternal ? (
+                      <a
+                        href={targetUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group/link flex items-start justify-between gap-4"
                       >
-                        {tag}
-                      </span>
-                    ))}
+                        <h3 className="text-xl md:text-3xl font-bold font-display text-ink-primary group-hover/link:text-ink-primary/70 transition-colors leading-tight">
+                          {project.title}
+                        </h3>
+                        <ExternalLink className="w-5 h-5 shrink-0 text-ink-muted group-hover/link:text-ink-primary transition-colors" />
+                      </a>
+                    ) : (
+                      <Link
+                        to={targetUrl}
+                        className="group/link flex items-start justify-between gap-4"
+                      >
+                        <h3 className="text-xl md:text-3xl font-bold font-display text-ink-primary group-hover/link:text-ink-primary/70 transition-colors leading-tight">
+                          {project.title}
+                        </h3>
+                        <ArrowUpRight className="w-5 h-5 shrink-0 text-ink-muted group-hover/link:text-ink-primary transition-colors" />
+                      </Link>
+                    )}
+
+                    {project.summary && (
+                      <p className="text-sm md:text-base font-body-narrative text-ink-muted leading-relaxed">
+                        {project.summary}
+                      </p>
+                    )}
+
+                    {project.metric && (
+                      <div className="pt-1">
+                        <span className="font-mono text-xs font-semibold text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded border border-emerald-500/20 inline-block">
+                          Impact: {project.metric}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Static Image Thumbnail on Mobile / Tablet */}
+                    {project.cover && (
+                      <div className="block lg:hidden mt-2 rounded-xl border border-paper-border bg-paper-card p-1 overflow-hidden aspect-[16/10]">
+                        <ProjectImage
+                          project={project.slug}
+                          image={project.cover}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
-
-                {/* Title & Narrative Metric Banner */}
-                <div className="lg:col-span-9 flex flex-col gap-4">
-                  <Link
-                    to={`/projects/${project.slug}`}
-                    className="group/link flex items-start justify-between gap-4"
-                  >
-                    <h3 className="text-xl md:text-3xl font-bold font-display text-ink-primary group-hover/link:text-ink-primary/70 transition-colors leading-tight">
-                      {project.title}
-                    </h3>
-                    <ArrowUpRight className="w-5 h-5 shrink-0 text-ink-muted group-hover/link:text-ink-primary transition-colors" />
-                  </Link>
-
-                  <p className="text-sm md:text-base font-body-narrative text-ink-muted leading-relaxed">
-                    {project.metricBanner}
-                  </p>
-
-                  {/* Static Image Thumbnail on Mobile / Tablet */}
-                  {project.cover && (
-                    <div className="block lg:hidden mt-2 rounded-xl border border-paper-border bg-paper-card p-1 overflow-hidden aspect-[16/10]">
-                      <ProjectImage
-                        project={project.slug}
-                        image={project.cover}
-                        className="w-full h-full object-cover rounded-lg"
-                      />
-                    </div>
-                  )}
-                </div>
-              </div>
-            </motion.article>
-          ))}
+              </motion.article>
+            );
+          })}
         </div>
       </div>
     </section>

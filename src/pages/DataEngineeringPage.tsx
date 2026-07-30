@@ -3,15 +3,17 @@ import { Layout } from "@/components/Layout";
 import HeroSection from "@/components/HeroSection";
 import SEO from "@/components/SEO";
 import { Footer } from "@/components/Contact";
-import { visibleProjects } from "@/lib/projects";
+import { getProjectsBySubCategory, visibleProjects } from "@/lib/projects";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Cpu, Layers, Terminal, Sparkles } from "lucide-react";
+import { ProjectImage } from "@/components/ProjectImage";
 
 export const AiAndDataSection: React.FC = () => {
   const aiProjects = visibleProjects.filter(
     (p) =>
-      p.type === "engineering" ||
+      p.subCategory === "ai-data" ||
+      (p.type === "engineering" && p.subCategory !== "frontend-engineering") ||
       p.tags?.some((t) =>
         ["AI", "LLM", "Data", "Python", "Machine Learning"].includes(t)
       )
@@ -170,6 +172,8 @@ export const AiAndDataSection: React.FC = () => {
 };
 
 export const FrontendEngineeringSection: React.FC = () => {
+  const feProjects = getProjectsBySubCategory("frontend-engineering");
+
   return (
     <section
       id="frontend-engineering"
@@ -193,6 +197,52 @@ export const FrontendEngineeringSection: React.FC = () => {
             Bridging complex full-stack backends with performant, responsive React/TypeScript interfaces, WebGL 3D graphics, and design token systems.
           </p>
         </motion.div>
+
+        {/* Featured Case Study: Optmyzr */}
+        {feProjects.map((project) => (
+          <motion.div
+            key={project.slug}
+            initial={{ opacity: 0, filter: "blur(6px)", y: 20 }}
+            whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="p-8 rounded-2xl bg-paper-card border border-paper-border mb-12 group hover:border-ink-primary/50 transition-colors"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              <div className="lg:col-span-7 flex flex-col gap-4">
+                <span className="font-mono text-xs font-semibold tracking-widest text-ink-muted uppercase">
+                  FEATURED FRONT-END CASE STUDY // {project.slug.replace(/-/g, " ").toUpperCase()}
+                </span>
+                <Link to={`/projects/${project.slug}`} className="group/link">
+                  <h3 className="text-2xl md:text-4xl font-bold font-display text-ink-primary group-hover/link:text-ink-primary/70 transition-colors leading-tight flex items-start justify-between gap-4">
+                    <span>{project.title}</span>
+                    <ArrowUpRight className="w-6 h-6 shrink-0 text-ink-muted group-hover/link:text-ink-primary transition-colors" />
+                  </h3>
+                </Link>
+                {project.summary && (
+                  <p className="font-body-narrative text-base text-ink-muted leading-relaxed">
+                    {project.summary}
+                  </p>
+                )}
+                {project.metric && (
+                  <span className="font-mono text-xs font-semibold text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded border border-emerald-500/20 inline-block w-fit">
+                    Impact: {project.metric}
+                  </span>
+                )}
+              </div>
+
+              {project.cover && (
+                <div className="lg:col-span-5 rounded-xl border border-paper-border bg-paper-bg p-1 overflow-hidden aspect-[16/10]">
+                  <ProjectImage
+                    project={project.slug}
+                    image={project.cover}
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                </div>
+              )}
+            </div>
+          </motion.div>
+        ))}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Component Systems */}

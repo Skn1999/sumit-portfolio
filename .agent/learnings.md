@@ -161,9 +161,9 @@ This file acts as a reference of concrete lessons, guidelines, and surprises enc
 - **Resolution:** Updated `Header.tsx`, created `DataEngineeringPage.tsx` with `#ai-data` and `#frontend-engineering` sections, registered `/data-engineering` and `/design` in `App.tsx`, added `#research` wrapper anchor in `WritingsPage.tsx`, and updated `HeroParticleCanvas.tsx`.
 - **Future instruction:** Ensure all new primary route pages include `HeroSection` as section 1 at the top of the layout tree to maintain 3D canvas navigation continuity across all routes.
 
-### 2026-07-30 - `tasks/task_035_v2_project_pages_visual_language_upgrade.md`
+### 2026-07-30 - `tasks/task_036_project_categorization_and_route_mapping.md`
 
-- **Lessons learned:** Standardizing case study layouts into 4 numbered section tags (`01 // CONTEXT`, `02 // PROBLEM`, `03 // APPROACH`, `04 // IMPACT`) combined with text-first monospace metadata headers and scroll-revealed cover images creates a highly readable, magazine-like publication flow consistent with Wabi-Sabi slate paper aesthetics.
-- **Errors or surprises:** None.
-- **Resolution:** Updated `ProjectHero.tsx`, `ProjectFooter.tsx`, `ProjectPage.tsx`, and updated MDX files for Groundwork, EDIAQI, and SuperEgo.
-- **Future instruction:** When upgrading case study pages, avoid adding soft drop shadows or white card backgrounds around text paragraphs to maintain the tactile slate paper writing surface feel.
+- **Lessons learned:** Utilizing a strongly-typed `subCategory` property (`"ux-design" | "visual-design" | "ai-data" | "frontend-engineering"`) and `externalUrl` property in project frontmatters decouples UI section rendering from static mock arrays, allowing projects to be dynamically queried per page section while supporting external showcase links (e.g. Behance) seamlessly.
+- **Errors or surprises:** Projects that redirect to external URLs (such as Behance) need an explicit `externalUrl` frontmatter key so both list components (`Projects.tsx`, `VisualDesignPage.tsx`) and static HTML generators render `<a href={externalUrl} target="_blank">` without attempting to load missing internal routes.
+- **Resolution:** Updated `src/lib/projects.ts`, `Projects.tsx`, `VisualDesignPage.tsx`, `DataEngineeringPage.tsx`, and all 8 project MDX frontmatter files.
+- **Future instruction:** Always ensure projects hosted externally on third-party platforms (e.g., Behance, Figma) include an `externalUrl` frontmatter attribute and standard `index.mdx` entry so they register in `import.meta.glob` indexing.
