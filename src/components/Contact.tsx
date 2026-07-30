@@ -38,7 +38,9 @@ const Contact = () => {
               Let's Connect &amp; Collaborate
             </h2>
             <p className="font-body-narrative text-base md:text-lg text-ink-muted leading-relaxed mb-6 max-w-lg">
-              Whether you're building next-generation products or seeking UX design &amp; engineering leadership, I'm always open to discussing new opportunities.
+              Whether you're building next-generation products or seeking UX
+              design &amp; engineering leadership, I'm always open to discussing
+              new opportunities.
             </p>
           </div>
 
@@ -109,7 +111,10 @@ const Contact = () => {
 
 export const UnsaidMoments = () => {
   return (
-    <section id="unsaid-moments" className="py-16 md:py-24 text-center bg-paper-bg border-t border-paper-border">
+    <section
+      id="unsaid-moments"
+      className="py-16 md:py-24 text-center bg-paper-bg border-t border-paper-border"
+    >
       <div className="max-w-4xl mx-auto px-4 md:px-0">
         <span className="font-mono text-xs tracking-widest text-ink-muted uppercase font-semibold block mb-3">
           // PUBLICATION
@@ -118,7 +123,8 @@ export const UnsaidMoments = () => {
           Unsaid Moments
         </h2>
         <p className="text-sm md:text-base text-ink-muted mb-8 max-w-lg mx-auto font-body-narrative leading-relaxed">
-          A publication where I explore writing about complex yet thoughtful design and human interactions.
+          A publication where I explore writing about complex yet thoughtful
+          design and human interactions.
         </p>
         <div className="mx-auto max-w-xl rounded-2xl overflow-hidden border border-paper-border shadow-sm bg-paper-card">
           <iframe
@@ -141,7 +147,7 @@ export const Footer = () => {
     <footer className="py-8 md:py-12 border-t border-paper-border bg-paper-bg text-ink-muted text-xs font-mono">
       <div className="container mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-center md:text-left tracking-wide">
-          Helsinki, FI // Concluding Master's Thesis at Aalto University. Available for team deployment.
+          Helsinki, FI // Available for new roles.
         </p>
         <div className="flex items-center gap-6">
           <a

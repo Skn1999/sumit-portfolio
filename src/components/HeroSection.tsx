@@ -63,19 +63,6 @@ const HeroSection: React.FC = () => {
           {/* Left Column: Text Content (Stays static across page transitions) */}
           <div className="lg:col-span-6 flex flex-col text-left">
             {/* Monospace tracking tag */}
-            <motion.div
-              custom={0.1}
-              {...textMotionProps}
-              variants={inkFadeVariant}
-              className="font-mono uppercase tracking-widest text-xs font-semibold text-ink-muted mb-6 flex items-center gap-2 flex-wrap"
-            >
-              <span>LOCATION: HELSINKI, FI // FOCUS:</span>
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span>HCI &amp; FRONTEND SYSTEMS</span>
-            </motion.div>
 
             {/* Primary Display Title */}
             <motion.h1
@@ -94,9 +81,8 @@ const HeroSection: React.FC = () => {
               variants={inkFadeVariant}
               className="font-body-narrative leading-[1.8] text-base md:text-lg text-ink-muted max-w-2xl"
             >
-              Hi, I'm Sumit. <br /> AI is the big boom, but costly when it
-              fails. I oversee the design and dev process so your product keeps
-              its human touch.
+              Hi, I'm Sumit. <br /> I oversee AI-assisted Design and Dev process
+              so your product keeps its human touch.
             </motion.p>
 
             {/* Action Button */}
@@ -139,7 +125,7 @@ const HeroSection: React.FC = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <span>STATUS: IMMEDIATE AVAILABILITY // OPEN FOR ROLES</span>
+            <span>Availability: Available Today // Open for Roles</span>
           </div>
         </div>
       </div>
