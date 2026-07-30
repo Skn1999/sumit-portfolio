@@ -29,12 +29,15 @@ export const UxBitesSection: React.FC = () => {
             Short UX Audits &amp; Micro-Fixes
           </h2>
           <p className="font-body-narrative text-base md:text-lg text-ink-muted mt-3 max-w-xl">
-            Bite-sized UX observations, interaction audits, and joyful redesign proposals for real-world products.
+            Bite-sized UX observations, interaction audits, and joyful redesign
+            proposals for real-world products.
           </p>
         </motion.div>
 
         {visibleBites.length === 0 ? (
-          <p className="font-mono text-sm text-ink-muted">No UX bites available yet.</p>
+          <p className="font-mono text-sm text-ink-muted">
+            No UX bites available yet.
+          </p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {visibleBites.map((bite, index) => (
@@ -63,7 +66,10 @@ export const UxBitesSection: React.FC = () => {
                     </span>
                   </div>
 
-                  <Link to={`/ux-bites/${bite.slug}`} className="block group/link">
+                  <Link
+                    to={`/ux-bites/${bite.slug}`}
+                    className="block group/link"
+                  >
                     <h3 className="text-xl md:text-2xl font-bold font-display text-ink-primary group-hover/link:text-ink-primary/70 transition-colors leading-tight mb-3 flex items-start justify-between gap-3">
                       <span>{bite.title}</span>
                       <ArrowUpRight className="w-5 h-5 shrink-0 text-ink-muted group-hover/link:text-ink-primary transition-colors" />
@@ -122,13 +128,13 @@ const WritingsPage: React.FC = () => {
           <HeroSection />
 
           {/* Section 2: Unsaid Moments Publication Newsletter */}
-          <div id="publication">
-            <UnsaidMoments />
-          </div>
 
           {/* Section 3: Research & UX Bites */}
           <div id="research">
             <UxBitesSection />
+          </div>
+          <div id="publication">
+            <UnsaidMoments />
           </div>
 
           {/* Section 4: Footer */}
