@@ -74,16 +74,8 @@ jobs:
             echo "  - .agent/learnings.md"
             echo "=========================================="
             
-            # Execute Antigravity CLI agent command
-            npx --yes @google/antigravity-cli run \
-              --agent .agent/case-study-rewriter-agent.md \
-              --task "$TASK_FILE" \
-              --context .agent/benchmark-framework.md \
-              --context .agent/ui-building-instructions.md \
-              --context .agent/architecture.md \
-              --context .agent/tech-stack.md \
-              --context .agent/progress.md \
-              --context .agent/learnings.md
+            # Execute Node Agent Script using Gemini API
+            node scripts/run-case-study-agent.js "$TASK_FILE"
           done
 
       - name: Verify Build
