@@ -50,27 +50,19 @@ ${uiInstructions}
 === SPECIFIC TASK REQUIREMENTS ===
 ${taskContent}
 
-=== REFERENCE RESTRUCTURE MATERIAL ===
+=== REFERENCE RESTRUCTURE MATERIAL (SOURCE OF TRUTH FOR TEXT) ===
 ${restructureContent}
 
 === EXISTING MDX FILE ===
 ${currentMdx}
 
 === EXECUTION INSTRUCTIONS ===
-Using all the context above, rewrite and generate the complete \`index.mdx\` file for this case study.
+Using all the context above, generate the complete \`index.mdx\` file for this case study.
 
-CRITICAL MDX SYNTAX SAFETY RULES (MUST FOLLOW TO PREVENT BUILD ERRORS):
-1. **NO UNESCAPED CURLY BRACES IN PROSE**: MDX interprets \`{\` and \`}\` as JavaScript expressions!
-   - BAD: "Study (N=200) tested {Cell A} and {Cell B}"
-   - GOOD: "Study (N=200) tested Cell A and Cell B"
-   - BAD: "{CO2 < 800 ppm}"
-   - GOOD: "(CO2 < 800 ppm)" or \`CO2 < 800 ppm\`
-2. **NO UNESCAPED ANGLE BRACKETS IN PROSE**: MDX interprets \`<word>\` as JSX tags!
-   - BAD: "<2-Touchpoint Architecture>"
-   - GOOD: "2-Touchpoint Architecture"
-3. **VALID JSX COMPONENTS ONLY**:
-   - Use \`<ProjectImageAsset src="..." alt="..." />\` for images.
-   - Do NOT use unclosed HTML tags or raw JSX expressions.
+CRITICAL FIDELITY & TYPOGRAPHY RULES:
+1. **TEXT FIDELITY**: PRESERVE the exact narrative prose, metrics, quote wording, and bullet points from \`restructure.md\` VERBATIM. Do NOT rephrase, summarize, or alter the text into generic AI copy.
+2. **CLEAN TYPOGRAPHY & SPACING**: Do NOT wrap paragraphs, key learnings, or quotes in heavy HTML \`<div>\` card containers (\`p-6 bg-paper-card grid-cols-2\`). Keep standard markdown body text flow, lists, tables, and blockquotes so typography reads naturally.
+3. **IMAGE ASSETS**: Map images to \`<ProjectImageAsset src="..." alt="..." />\` components with sentence-case captions (\`Fig 01 // ...\`).
 4. **SECTION HEADERS**: Enforce the 6 universal section headers:
    \`## 01 // THE CHALLENGE\`
    \`## 02 // MY ROLE\`
@@ -79,6 +71,10 @@ CRITICAL MDX SYNTAX SAFETY RULES (MUST FOLLOW TO PREVENT BUILD ERRORS):
    \`## 05 // KEY INSIGHTS\`
    \`## 06 // IMPACT & LESSONS\`
 5. **FRONTMATTER**: Preserve the exact YAML frontmatter at the top of the file (between \`---\` and \`---\`).
+
+CRITICAL MDX SYNTAX SAFETY RULES:
+- **NO UNESCAPED CURLY BRACES IN PROSE**: MDX interprets \`{\` and \`}\` as JavaScript expressions. Keep plain text free of \`{\` or \`}\`.
+- **NO UNESCAPED ANGLE BRACKETS IN PROSE**: Do NOT put raw text in angle brackets like \`<2-Touchpoint>\`. Use clean markdown text.
 
 Return ONLY the exact raw MDX content with frontmatter. Do not wrap the output in markdown code blocks.
 `;
@@ -91,7 +87,7 @@ Return ONLY the exact raw MDX content with frontmatter. Do not wrap the output i
     body: JSON.stringify({
       contents: [{ parts: [{ text: prompt }] }],
       generationConfig: {
-        temperature: 0.2
+        temperature: 0.1
       }
     })
   });
@@ -123,10 +119,9 @@ Return ONLY the exact raw MDX content with frontmatter. Do not wrap the output i
     if (line.trim().startsWith('import ') || line.trim().startsWith('<') || line.trim().startsWith('---')) {
       return line;
     }
-    // Replace unescaped {text} in plain prose if it's not a JSX prop
     return line.replace(/\{([^}]+)\}/g, (match, p1) => {
       if (line.includes('={"') || line.includes('={')) return match;
-      return p1; // strip the curly braces
+      return p1;
     });
   }).join('\n');
 
