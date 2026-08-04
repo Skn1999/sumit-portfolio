@@ -25,6 +25,5 @@ dist-ssr
 
 # Image optimization manifest
 .optimized-images.json
-tasks/
 research/
 tasks/TODOS.md
