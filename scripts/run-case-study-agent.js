@@ -58,16 +58,29 @@ ${currentMdx}
 
 === EXECUTION INSTRUCTIONS ===
 Using all the context above, rewrite and generate the complete \`index.mdx\` file for this case study.
-- Enforce the 6 universal section headers:
-  \`01 // THE CHALLENGE\`
-  \`02 // MY ROLE\`
-  \`03 // WHAT WORKED vs. WHAT DIDN'T\`
-  \`04 // THE SOLUTION\`
-  \`05 // KEY INSIGHTS\`
-  \`06 // IMPACT & LESSONS\`
-- Preserve all frontmatter fields at the top of the MDX file.
-- Enforce visual component rules (standout quote cards, color-coded badges, flowcharts, prototype CTAs).
-- Return ONLY the exact raw MDX content with frontmatter. Do not wrap the output in markdown code blocks.
+
+CRITICAL MDX SYNTAX SAFETY RULES (MUST FOLLOW TO PREVENT BUILD ERRORS):
+1. **NO UNESCAPED CURLY BRACES IN PROSE**: MDX interprets \`{\` and \`}\` as JavaScript expressions!
+   - BAD: "Study (N=200) tested {Cell A} and {Cell B}"
+   - GOOD: "Study (N=200) tested Cell A and Cell B"
+   - BAD: "{CO2 < 800 ppm}"
+   - GOOD: "(CO2 < 800 ppm)" or \`CO2 < 800 ppm\`
+2. **NO UNESCAPED ANGLE BRACKETS IN PROSE**: MDX interprets \`<word>\` as JSX tags!
+   - BAD: "<2-Touchpoint Architecture>"
+   - GOOD: "2-Touchpoint Architecture"
+3. **VALID JSX COMPONENTS ONLY**:
+   - Use \`<ProjectImageAsset src="..." alt="..." />\` for images.
+   - Do NOT use unclosed HTML tags or raw JSX expressions.
+4. **SECTION HEADERS**: Enforce the 6 universal section headers:
+   \`## 01 // THE CHALLENGE\`
+   \`## 02 // MY ROLE\`
+   \`## 03 // WHAT WORKED vs. WHAT DIDN'T\`
+   \`## 04 // THE SOLUTION\`
+   \`## 05 // KEY INSIGHTS\`
+   \`## 06 // IMPACT & LESSONS\`
+5. **FRONTMATTER**: Preserve the exact YAML frontmatter at the top of the file (between \`---\` and \`---\`).
+
+Return ONLY the exact raw MDX content with frontmatter. Do not wrap the output in markdown code blocks.
 `;
 
   console.log("🤖 Requesting case study generation from Gemini API...");
@@ -104,6 +117,18 @@ Using all the context above, rewrite and generate the complete \`index.mdx\` fil
   } else if (cleanedMdx.startsWith('```')) {
     cleanedMdx = cleanedMdx.replace(/^```\n/, '').replace(/\n```$/, '');
   }
+
+  // Sanitize any remaining unescaped curly braces in prose (outside frontmatter and JSX props)
+  cleanedMdx = cleanedMdx.split('\n').map(line => {
+    if (line.trim().startsWith('import ') || line.trim().startsWith('<') || line.trim().startsWith('---')) {
+      return line;
+    }
+    // Replace unescaped {text} in plain prose if it's not a JSX prop
+    return line.replace(/\{([^}]+)\}/g, (match, p1) => {
+      if (line.includes('={"') || line.includes('={')) return match;
+      return p1; // strip the curly braces
+    });
+  }).join('\n');
 
   // Write updated MDX file
   fs.writeFileSync(targetMdxPath, cleanedMdx, 'utf8');

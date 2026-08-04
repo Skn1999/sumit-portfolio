@@ -7,7 +7,7 @@
 ## Metric Hook & Project Highlights
 
 - **System Scale**: Converting telemetry from **32 IoT sensors** and **Radiello passive samplers** streaming **12+ real-time environmental parameters** (CO₂, PM2.5, PM10, TVOC, AVOC, Formaldehyde, NO₂, O₃, Temp, Humidity, Pressure) via FROST Server / OGC SensorThings API across public schools and municipal offices in **Ferrara, Italy**.
-- **Empirical Validation**: Conducted a **2x2 Mixed Factorial Study ($N=200$ participants across 6 real-world scenarios)** evaluating comprehension, actionability, and cognitive load.
+- **Empirical Validation**: Conducted a **2x2 Mixed Factorial Study (N=200 participants across 6 real-world scenarios)** evaluating comprehension, actionability, and cognitive load.
 - **Audit Impact**: Identified and resolved **30 Usability & Accessibility Issues** via a Nielsen Heuristic Evaluation of initial telemetry prototypes.
 - **Architecture Solution**: Architected a **2-Touchpoint Decision Support System (DSS)** separating ambient awareness (in-room tablet display) from technical facility management (public-good dashboard V2).
 
@@ -68,11 +68,11 @@ _Fig 02 // Nielsen heuristic evaluation (30 documented usability issues)_
 
 ## 04 // THE SOLUTION
 
-### 1. Empirical Quantitative Study ($N=200$ Participants, 6 Scenarios)
+### 1. Empirical Quantitative Study (N=200 Participants, 6 Scenarios)
 
-To validate the UX architecture of the action protocol layer, I conducted a **$2 \times 2$ Mixed Factorial Experiment** testing 6 real-world IAQ breach scenarios across 200 participants.
+To validate the UX architecture of the action protocol layer, I conducted a **2x2 Mixed Factorial Experiment** testing 6 real-world IAQ breach scenarios across 200 participants.
 
-#### $2 \times 2$ Mixed Factorial Experimental Design
+#### 2x2 Mixed Factorial Experimental Design
 
 | Independent Variables       | **Modality: Text Only**                                                            | **Modality: Text + Graphics**                                                                     |
 | :-------------------------- | :--------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------ |
@@ -88,8 +88,8 @@ The in-room tablet display operates across **5 discrete ambient states** simulat
 
 > UI Tip: Think of a flow-chart way to display these 5 states instead of just writing them in the text format. Truncate the details which are not necessary.
 
-1. **Ambient State**: Subtle background color indicating optimal air quality ($CO_2 < 800\text{ ppm}$).
-2. **Alert State**: High-visibility warning when thresholds are breached, detailing the specific hazard ($CO_2 > 1200\text{ ppm}$).
+1. **Ambient State**: Subtle background color indicating optimal air quality (CO2 < 800 ppm).
+2. **Alert State**: High-visibility warning when thresholds are breached, detailing the specific hazard (CO2 > 1200 ppm).
 3. **Action Prompt State**: Immediate, glanceable guidance (e.g., _"Open windows for cross-ventilation"_).
 4. **Reporting / Action Taken State**: One-tap confirmation logging the intervention to close the feedback loop.
 5. **Educational State**: Contextual micro-tips explaining indoor environmental health factors to occupants.
@@ -145,7 +145,7 @@ Opposite of my initial hypothesis that progressive disclosure would reduce visua
 Combining text with graphical icons significantly reduced cognitive load for non-expert users. Occupants in schools and offices operate under primary task overload, thus environmental touchpoints must prioritize glanceability over technical completeness.
 
 💡 **Key Learning 03: Raw Data Does Not Drive Behavioral Change**  
-Displaying numerical sensor readings ($\text{PM2.5}=45\,\mu\text{g/m}^3$) without context and plain-language actions fails to produce behavioral responses.
+Displaying numerical sensor readings (PM2.5 = 45 µg/m³) without context and plain-language actions fails to produce behavioral responses.
 
 💡 **Key Learning 04: Overcoming Heuristic-Based Habits**  
 Non-expert users rely heavily on heuristics ("the room feels fine to me"). Environmental DSS design must actively disrupt passive habits by using persistent visual feedback when threats accumulate.
