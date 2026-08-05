@@ -86,59 +86,69 @@ const figmaSections: SectionData[] = [
     dirTitle: "Directory: src/components/experience",
     x: 970,
     y: 40,
-    w: 960,
+    w: 1410,
     h: 760,
     frames: [
       {
-        id: "optmyzr-frame",
+        id: "groundwork-frame",
         sectionId: "experience-section",
-        title: "Frame: Optmyzr (SDE-II)",
-        fileTitle: "OptmyzrDashboard.tsx",
+        title: "Frame: Groundwork",
+        fileTitle: "GroundworkDesign.tsx",
         x: 40,
         y: 80,
-        w: 430,
+        w: 420,
         h: 620,
       },
       {
         id: "dedanext-frame",
         sectionId: "experience-section",
-        title: "Frame: Deda Next (UX)",
-        fileTitle: "EDIAQITelemetry.tsx",
-        x: 490,
+        title: "Frame: Dedanext S.p.a",
+        fileTitle: "EDIAQIPlatform.tsx",
+        x: 485,
         y: 80,
-        w: 430,
+        w: 420,
+        h: 620,
+      },
+      {
+        id: "optmyzr-frame",
+        sectionId: "experience-section",
+        title: "Frame: Optmyzr Inc.",
+        fileTitle: "CoreSystemsDesign.tsx",
+        x: 930,
+        y: 80,
+        w: 420,
         h: 620,
       },
     ],
   },
   {
     id: "academics-section",
-    title: "Section: Academics & Credentials",
+    title: "Section: Education & Projects",
     dirTitle: "Directory: src/components/academics",
-    x: 1990,
-    y: 180,
-    w: 520,
-    h: 980,
+    x: 2440,
+    y: 40,
+    w: 880,
+    h: 760,
     frames: [
       {
         id: "edu-frame",
         sectionId: "academics-section",
         title: "Frame: Higher Education",
-        fileTitle: "LatencyHCI.tsx",
+        fileTitle: "MScHCI.tsx",
         x: 40,
         y: 80,
-        w: 440,
-        h: 440,
+        w: 390,
+        h: 620,
       },
       {
-        id: "certifications-frame",
+        id: "projects-frame",
         sectionId: "academics-section",
-        title: "Frame: Certifications",
-        fileTitle: "Credentials.json",
-        x: 40,
-        y: 560,
-        w: 440,
-        h: 360,
+        title: "Frame: Key Projects",
+        fileTitle: "Prototypes.json",
+        x: 450,
+        y: 80,
+        w: 390,
+        h: 620,
       },
     ],
   },
@@ -160,7 +170,7 @@ const ResumePage: React.FC = () => {
 
   const dragStart = useRef({ x: 0, y: 0 });
   const clickStart = useRef({ x: 0, y: 0 });
-  const pdfUrl = `${import.meta.env.BASE_URL}CV_2026.pdf`;
+  const pdfUrl = `${import.meta.env.BASE_URL}Resume-Product-Designer.pdf`;
 
   // Monitor Window Size
   const [dimensions, setDimensions] = useState({
@@ -236,50 +246,144 @@ const ResumePage: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Mouse wheel Zoom helper
-  const handleWheel = (e: React.WheelEvent) => {
-    e.preventDefault();
-    const zoomFactor = 1.08;
-    const zoomCenter = {
-      x: e.clientX - pan.x,
-      y: e.clientY - pan.y,
+  // Native Wheel Event Handler: Figma-style Trackpad 2-finger Pan & Pinch-to-Zoom
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleWheelNative = (e: WheelEvent) => {
+      e.preventDefault();
+
+      const rect = container.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      if (e.ctrlKey || e.metaKey) {
+        // Pinch-to-zoom on trackpad or Ctrl/Cmd + wheel scroll
+        const zoomFactor = Math.pow(1.005, -e.deltaY);
+        setZoom((prevZoom) => {
+          const nextZoom = Math.min(3.0, Math.max(0.25, prevZoom * zoomFactor));
+          const scaleRatio = nextZoom / prevZoom;
+
+          setPan((prevPan) => ({
+            x: mouseX - (mouseX - prevPan.x) * scaleRatio,
+            y: mouseY - (mouseY - prevPan.y) * scaleRatio,
+          }));
+
+          return nextZoom;
+        });
+      } else {
+        // Figma trackpad pan (two-finger scroll or wheel scroll)
+        const deltaX = e.shiftKey ? e.deltaY : e.deltaX;
+        const deltaY = e.shiftKey ? 0 : e.deltaY;
+
+        setPan((prevPan) => ({
+          x: prevPan.x - deltaX,
+          y: prevPan.y - deltaY,
+        }));
+      }
     };
 
-    let nextZoom = zoom;
-    if (e.deltaY < 0) {
-      nextZoom = Math.min(2.0, zoom * zoomFactor);
-    } else {
-      nextZoom = Math.max(0.35, zoom / zoomFactor);
-    }
+    container.addEventListener("wheel", handleWheelNative, { passive: false });
+    return () => {
+      container.removeEventListener("wheel", handleWheelNative);
+    };
+  }, []);
 
-    const scaleRatio = nextZoom / zoom;
-    setPan({
-      x: e.clientX - zoomCenter.x * scaleRatio,
-      y: e.clientY - zoomCenter.y * scaleRatio,
-    });
-    setZoom(nextZoom);
-  };
+  // Multi-Touch & Pointer Gesture tracking (Pan & Touch Pinch-to-Zoom)
+  const activePointers = useRef<Map<number, { x: number; y: number }>>(new Map());
+  const initialPinchDist = useRef<number | null>(null);
+  const initialPinchZoom = useRef<number>(1);
+  const initialPinchPan = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const initialPinchCenter = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  // Pointer events handle both Touch & Mouse inputs out-of-the-box
   const handlePointerDown = (e: React.PointerEvent) => {
-    if (e.button !== 0 && e.pointerType === "mouse") return; // Allow left-click only for mouse
-    setIsDragging(true);
-    dragStart.current = { x: e.clientX - pan.x, y: e.clientY - pan.y };
-    clickStart.current = { x: e.clientX, y: e.clientY };
+    // Allow left-click (0) or middle-click (1) or touch/pen
+    if (e.pointerType === "mouse" && e.button !== 0 && e.button !== 1) return;
+
+    activePointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
+
+    if (activePointers.current.size === 1) {
+      setIsDragging(true);
+      dragStart.current = { x: e.clientX - pan.x, y: e.clientY - pan.y };
+      clickStart.current = { x: e.clientX, y: e.clientY };
+    } else if (activePointers.current.size === 2) {
+      // 2-finger touch gesture started
+      setIsDragging(false);
+      const points = Array.from(activePointers.current.values());
+      const dist = Math.hypot(points[0].x - points[1].x, points[0].y - points[1].y);
+      const container = containerRef.current;
+      const rect = container ? container.getBoundingClientRect() : { left: 0, top: 0 };
+      const center = {
+        x: (points[0].x + points[1].x) / 2 - rect.left,
+        y: (points[0].y + points[1].y) / 2 - rect.top,
+      };
+
+      initialPinchDist.current = dist;
+      initialPinchZoom.current = zoom;
+      initialPinchPan.current = { ...pan };
+      initialPinchCenter.current = center;
+    }
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
-    if (!isDragging) return;
-    setPan({
-      x: e.clientX - dragStart.current.x,
-      y: e.clientY - dragStart.current.y,
-    });
+    if (!activePointers.current.has(e.pointerId)) return;
+    activePointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (activePointers.current.size === 1 && isDragging) {
+      // Single pointer pan
+      setPan({
+        x: e.clientX - dragStart.current.x,
+        y: e.clientY - dragStart.current.y,
+      });
+    } else if (
+      activePointers.current.size === 2 &&
+      initialPinchDist.current !== null &&
+      initialPinchDist.current > 0
+    ) {
+      // 2-finger touch pinch-zoom & pan
+      const points = Array.from(activePointers.current.values());
+      const currentDist = Math.hypot(points[0].x - points[1].x, points[0].y - points[1].y);
+      const container = containerRef.current;
+      const rect = container ? container.getBoundingClientRect() : { left: 0, top: 0 };
+      const currentCenter = {
+        x: (points[0].x + points[1].x) / 2 - rect.left,
+        y: (points[0].y + points[1].y) / 2 - rect.top,
+      };
+
+      const scale = currentDist / initialPinchDist.current;
+      const nextZoom = Math.min(3.0, Math.max(0.25, initialPinchZoom.current * scale));
+
+      const scaleRatio = nextZoom / initialPinchZoom.current;
+
+      const center0 = initialPinchCenter.current;
+      const pan0 = initialPinchPan.current;
+
+      const nextPanX = currentCenter.x - (center0.x - pan0.x) * scaleRatio;
+      const nextPanY = currentCenter.y - (center0.y - pan0.y) * scaleRatio;
+
+      setZoom(nextZoom);
+      setPan({ x: nextPanX, y: nextPanY });
+    }
   };
 
   const handlePointerUp = (e: React.PointerEvent) => {
-    setIsDragging(false);
-    (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+    activePointers.current.delete(e.pointerId);
+    try {
+      (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+    } catch {}
+
+    if (activePointers.current.size < 2) {
+      initialPinchDist.current = null;
+    }
+    if (activePointers.current.size === 0) {
+      setIsDragging(false);
+    } else if (activePointers.current.size === 1) {
+      const remaining = Array.from(activePointers.current.values())[0];
+      setIsDragging(true);
+      dragStart.current = { x: remaining.x - pan.x, y: remaining.y - pan.y };
+    }
   };
 
   // Click handler to deselect frames if the click is directly on canvas elements
@@ -331,7 +435,7 @@ const ResumePage: React.FC = () => {
                       Sumit Nayyar
                     </h3>
                     <p className="text-xs font-semibold uppercase text-slate-400 mt-0.5">
-                      UX Designer / Frontend Engineer
+                      Product Designer
                     </p>
                   </div>
                   {/* Profile Picture Asset */}
@@ -345,19 +449,13 @@ const ResumePage: React.FC = () => {
                 </div>
 
                 <p className="text-xs text-slate-600 leading-relaxed mt-4 pt-4 border-t border-dashed border-slate-200">
-                  UX Designer and Frontend Engineer with 4+ years building
-                  user-centric SaaS products. I design in Figma and ship in
-                  React and TypeScript, closing handoff gaps and turning data
-                  dense workflows into well-crafted, accessible interfaces.
-                  Backed by an HCI Master's from Aalto University. Based in the
-                  Helsinki metropolitan area and committed to building my
-                  long-term career and home in Finland.
+                  Product Designer with experience building SaaS products across engineering and UX. After shipping production software, I pursued a double Master's in Human-Computer Interaction to build my expertise in user-centred design, research, and product thinking. I combine systems thinking, user research, and usability testing to design user-friendly products that simplify complex problems.
                 </p>
 
                 <div className="mt-5 space-y-2 text-xs text-slate-600">
                   <div className="flex items-center gap-2">
                     <MapPin className="w-3.5 h-3.5 text-primary/70" />
-                    <span>Helsinki, Finland</span>
+                    <span>Finland / Italy</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Mail className="w-3.5 h-3.5 text-primary/70" />
@@ -365,7 +463,7 @@ const ResumePage: React.FC = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <Phone className="w-3.5 h-3.5 text-primary/70" />
-                    <span>+358 41 743 4861</span>
+                    <span>+358 417434861</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Link2 className="w-3.5 h-3.5 text-primary/70" />
@@ -395,23 +493,22 @@ const ResumePage: React.FC = () => {
                   Core Stack
                 </h3>
                 <p className="text-[10px] uppercase text-slate-400">
-                  Design Systems &amp; Methods
+                  Design, Research &amp; Engineering
                 </p>
 
                 <div className="mt-4 pt-4 border-t border-dashed border-slate-200 space-y-4 overflow-y-auto max-h-[380px] pr-1">
                   <div>
                     <h4 className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider mb-2">
-                      Design &amp; Strategy
+                      Design
                     </h4>
                     <div className="flex flex-wrap gap-1.5">
                       {[
+                        "Product Design",
+                        "User Research",
+                        "Interaction Design",
                         "Information Architecture",
-                        "User Workflows",
-                        "Design Systems",
-                        "Figma",
-                        "Rapid Prototyping",
-                        "Usability Testing",
-                        "Accessibility",
+                        "Accessibility (WCAG)",
+                        "Prototyping",
                       ].map((s) => (
                         <span
                           key={s}
@@ -425,20 +522,19 @@ const ResumePage: React.FC = () => {
 
                   <div>
                     <h4 className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider mb-2">
-                      Frontend &amp; Architecture
+                      Research &amp; Strategy
                     </h4>
                     <div className="flex flex-wrap gap-1.5">
                       {[
-                        "React.js",
-                        "TypeScript",
-                        "JavaScript ES6+",
-                        "Redux Toolkit",
-                        "HTML5 / CSS3 / Sass",
-                        "REST APIs",
+                        "Usability Testing",
+                        "Facilitation",
+                        "Design Thinking",
+                        "Systems Thinking",
+                        "Participatory Design",
                       ].map((s) => (
                         <span
                           key={s}
-                          className="px-2 py-1 bg-primary/5 border border-primary/20 text-primary rounded text-[10px] font-medium"
+                          className="px-2 py-1 bg-emerald-50 border border-emerald-200/50 text-emerald-700 rounded text-[10px] font-medium"
                         >
                           {s}
                         </span>
@@ -448,19 +544,22 @@ const ResumePage: React.FC = () => {
 
                   <div>
                     <h4 className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider mb-2">
-                      Targeted Expertise
+                      Technical Stack
                     </h4>
                     <div className="flex flex-wrap gap-1.5">
                       {[
-                        "Legacy stack migrations",
-                        "UI/UX performance triage",
-                        "Config-driven dashboards",
-                        "Cognitive load optimization",
-                        "Zero-handoff system specs",
+                        "Figma",
+                        "React",
+                        "TypeScript",
+                        "Next.js",
+                        "Node.js",
+                        "Design Tokens",
+                        "Git",
+                        "AI-Augmented Workflows",
                       ].map((s) => (
                         <span
                           key={s}
-                          className="px-2 py-1 bg-emerald-50 border border-emerald-200/50 text-emerald-700 rounded text-[10px] font-medium"
+                          className="px-2 py-1 bg-primary/5 border border-primary/20 text-primary rounded text-[10px] font-medium"
                         >
                           {s}
                         </span>
@@ -476,49 +575,37 @@ const ResumePage: React.FC = () => {
             </div>
           );
 
-        case "optmyzr-frame":
+        case "groundwork-frame":
           return (
             <div className="flex flex-col justify-between h-full p-6 text-slate-800 font-body select-none">
               <div>
                 <span className="text-[10px] font-mono tracking-widest text-primary uppercase font-bold">
-                  PROFESSIONAL HIST
+                  EXPERIENCE // CURRENT
                 </span>
                 <h3 className="text-xl font-bold font-display text-slate-900 mt-1">
-                  Optmyzr
+                  Groundwork
                 </h3>
                 <p className="text-[10px] font-semibold uppercase text-slate-400">
-                  Frontend Engineer (SDE-II) // May 2020 - Jul 2024
+                  UX &amp; Accessibility Designer // June 2025 – Present (Remote)
                 </p>
 
                 <div className="mt-4 pt-4 border-t border-dashed border-slate-200 space-y-3 text-xs leading-relaxed text-slate-650">
-                  <p>
-                    Progressed from intern to SDE-II on the Core team, owning
-                    the frontend migration of the platform's two
-                    highest-traffic, data-dense analytics applications (Account
-                    Dashboard and PPC Comparison Tool).
-                  </p>
-                  <ul className="list-disc pl-4 space-y-1.5 text-[11px] text-slate-600">
+                  <ul className="list-disc pl-4 space-y-2 text-[11px] text-slate-600">
                     <li>
-                      Designed runtime, metadata-driven component configuration
-                      engine.
+                      Led end-to-end product design for an early-stage consultancy, defining service offerings, workshops, and facilitation methods for regulated digital products.
                     </li>
                     <li>
-                      Eliminated cascade rendering loops via isolated Redux
-                      slices.
+                      Defined design and facilitation exercises, co-designed workshops with disabled community, translating accessibility requirements into practical design guidelines.
                     </li>
                     <li>
-                      Built progressive viewport-driven lazy-hydration pipeline.
-                    </li>
-                    <li>
-                      <strong>Impact:</strong> Reduced dashboard load TTI from
-                      8-10s down to under 1s.
+                      Led value-proposition validation and secured 2nd place at the EIT Jumpstarter (New European Bauhaus), strengthening the venture's funding readiness.
                     </li>
                   </ul>
                 </div>
               </div>
 
               <div className="text-[9px] font-mono text-slate-400 border-t border-slate-100 pt-3">
-                PROJECT METRIC // PERFORMANCE_REDUCTION
+                RECOGNITION // EIT_JUMPSTARTER_2ND_PLACE
               </div>
             </div>
           );
@@ -528,40 +615,70 @@ const ResumePage: React.FC = () => {
             <div className="flex flex-col justify-between h-full p-6 text-slate-800 font-body select-none">
               <div>
                 <span className="text-[10px] font-mono tracking-widest text-primary uppercase font-bold">
-                  PROFESSIONAL HIST
+                  EXPERIENCE // INTERNSHIP
                 </span>
                 <h3 className="text-xl font-bold font-display text-slate-900 mt-1">
-                  Deda Next
+                  Dedanext S.p.a
                 </h3>
                 <p className="text-[10px] font-semibold uppercase text-slate-400">
-                  UX Designer &amp; Researcher // Mar 2026 - May 2026
+                  Product Design Intern // Mar 2026 – May 2026 (Trento, Italy)
+                </p>
+                <p className="text-[10px] font-mono text-primary mt-0.5">
+                  EDIAQI EU-Horizon Collaboration
                 </p>
 
                 <div className="mt-4 pt-4 border-t border-dashed border-slate-200 space-y-3 text-xs leading-relaxed text-slate-650">
-                  <p>
-                    Worked on EDIAQI, an EU Horizon Europe project, designing
-                    how indoor air quality data helps schools and public
-                    buildings make better facility decisions.
-                  </p>
-                  <ul className="list-disc pl-4 space-y-1.5 text-[11px] text-slate-600">
+                  <ul className="list-disc pl-4 space-y-2 text-[11px] text-slate-600">
                     <li>
-                      Researched user needs, mapped messy workflows, and
-                      delivered decision-support/reporting tool.
+                      Conducted qualitative research to understand user mental models, converting complex environmental data into information architectures for a multi-stakeholder platform.
                     </li>
                     <li>
-                      Translated high-volume sensor telemetry into clear,
-                      interactive visualizations.
+                      Evaluated 6 interactive display concepts across 4 data modalities with 200 participants, defining layout density guidelines that improved ambient data comprehension speed by ~30%.
                     </li>
                     <li>
-                      Focused on reducing cognitive load for non-technical
-                      facility managers.
+                      Developed a reusable design framework for ambient digital displays to build consistent and scalable interface design.
                     </li>
                   </ul>
                 </div>
               </div>
 
               <div className="text-[9px] font-mono text-slate-400 border-t border-slate-100 pt-3">
-                EU_HORIZON_2020 // SENSORS_DASHBOARD
+                EU_HORIZON_EDIAQI // AMBIENT_UI_FRAMEWORK
+              </div>
+            </div>
+          );
+
+        case "optmyzr-frame":
+          return (
+            <div className="flex flex-col justify-between h-full p-6 text-slate-800 font-body select-none">
+              <div>
+                <span className="text-[10px] font-mono tracking-widest text-primary uppercase font-bold">
+                  EXPERIENCE // FULL-TIME
+                </span>
+                <h3 className="text-xl font-bold font-display text-slate-900 mt-1">
+                  Optmyzr Inc.
+                </h3>
+                <p className="text-[10px] font-semibold uppercase text-slate-400">
+                  Design Engineer (Core Systems) // May 2020 – July 2024 (Hyderabad, India)
+                </p>
+
+                <div className="mt-4 pt-4 border-t border-dashed border-slate-200 space-y-3 text-xs leading-relaxed text-slate-650">
+                  <ul className="list-disc pl-4 space-y-2 text-[11px] text-slate-600">
+                    <li>
+                      Redesigned the onboarding experience by creating a 5-step configuration wizard, reducing onboarding drop-offs by ~25% and improving setup during periods of high backend load.
+                    </li>
+                    <li>
+                      Co-developed a design system comprising 30+ reusable React components, standardising UI patterns across multiple SaaS products and improving feature development time.
+                    </li>
+                    <li>
+                      Redesigned high-density data interfaces to improve readability and navigation, enabling users to quickly analyse dense ad metrics for multiple accounts.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="text-[9px] font-mono text-slate-400 border-t border-slate-100 pt-3">
+                CORE_SYSTEMS // REACT_DESIGN_SYSTEM
               </div>
             </div>
           );
@@ -571,111 +688,92 @@ const ResumePage: React.FC = () => {
             <div className="flex flex-col justify-between h-full p-6 text-slate-800 font-body select-none">
               <div>
                 <span className="text-[10px] font-mono tracking-widest text-primary uppercase font-bold">
-                  ACADEMIC MASTERS
+                  HIGHER EDUCATION
                 </span>
                 <h3 className="text-lg font-bold font-display text-slate-900 mt-1">
-                  Higher Education
+                  Double-degree M.Sc.
                 </h3>
-                <p className="text-[10px] uppercase text-slate-400">
-                  Dual Degree HCI &amp; Cognitive Science
+                <p className="text-[10px] uppercase text-slate-400 font-semibold">
+                  Human-Computer Interaction &amp; Design (2024–2026)
                 </p>
 
                 <div className="mt-4 pt-4 border-t border-dashed border-slate-200 space-y-4 text-xs">
                   <div>
                     <h4 className="font-bold text-slate-850">
-                      Aalto University (Espoo, Finland)
+                      Aalto University, Finland
                     </h4>
-                    <p className="text-slate-500 text-[11px] mt-0.5 leading-relaxed">
-                      M.Sc. Human-Computer Interaction &amp; Design (Expected
-                      Aug 2026)
-                      <br />
-                      <strong>Focus:</strong> Usability engineering, information
-                      architecture, interactive systems.
-                      <br />
-                      <strong>Thesis:</strong> Translating complex indoor air
-                      quality sensor data into actionable insights for
-                      non-technical users.
+                    <p className="text-slate-600 text-[11px] mt-1 leading-relaxed">
+                      <strong>Core Focus:</strong> User-Centered Design, Interface Engineering, User Interface Construction, Usability Testing.
                     </p>
                   </div>
 
                   <div>
                     <h4 className="font-bold text-slate-850">
-                      Università di Trento (Trento, Italy)
+                      University of Trento, Italy
                     </h4>
-                    <p className="text-slate-500 text-[11px] mt-0.5">
-                      M.Sc. Cognitive Science (Expected 2026)
-                      <br />
-                      <strong>Focus:</strong> Human heuristics, cognitive
-                      metrics, and mental workflows.
+                    <p className="text-slate-600 text-[11px] mt-1 leading-relaxed">
+                      <strong>Cognitive Sciences:</strong> Social Cognition, Decision-making, Digital Nudging, Participatory Design, Affective Computing.
                     </p>
                   </div>
                 </div>
               </div>
 
               <div className="text-[9px] font-mono text-slate-400 border-t border-slate-100 pt-3">
-                ACAD_CREDENTIAL // DUAL_DEGREE_FI_IT
+                ACAD_CREDENTIAL // DOUBLE_DEGREE_HCI
               </div>
             </div>
           );
 
-        case "certifications-frame":
+        case "projects-frame":
           return (
             <div className="flex flex-col justify-between h-full p-6 text-slate-800 font-body select-none">
               <div>
                 <span className="text-[10px] font-mono tracking-widest text-primary uppercase font-bold">
-                  CREDENTIALS &amp; CERTIFICATES
+                  PROTOTYPES &amp; SHIPPED
                 </span>
                 <h3 className="text-lg font-bold font-display text-slate-900 mt-1">
-                  Certifications
+                  Featured Projects
                 </h3>
                 <p className="text-[10px] uppercase text-slate-400">
-                  Industry Recognition
+                  UX &amp; Web Applications
                 </p>
 
-                <div className="mt-4 pt-4 border-t border-dashed border-slate-200 space-y-3">
-                  {[
-                    {
-                      title: "Upbeat Summer School (28DIGITAL)",
-                      issuer: "EIT Digital Summer School",
-                      date: "Sep 2025",
-                    },
-                    {
-                      title:
-                        "Design Rules: Principles + Practices for Great UI Design",
-                      issuer: "Udemy",
-                      date: "Jul 2023",
-                    },
-                    {
-                      title:
-                        "Start the UX Design Process: Empathize, Define, Ideate",
-                      issuer: "Coursera",
-                      date: "May 2021",
-                    },
-                    {
-                      title: "Foundations of User Experience (UX) Design",
-                      issuer: "Coursera",
-                      date: "Apr 2021",
-                    },
-                  ].map((cert, index) => (
-                    <div key={index} className="text-xs">
-                      <div className="flex justify-between items-start gap-2">
-                        <span className="font-bold text-slate-800 text-[11px] leading-tight">
-                          {cert.title}
-                        </span>
-                        <span className="text-[9px] font-mono text-slate-550 whitespace-nowrap">
-                          {cert.date}
-                        </span>
-                      </div>
-                      <span className="text-[10px] text-slate-500 block mt-0.5">
-                        {cert.issuer}
+                <div className="mt-4 pt-4 border-t border-dashed border-slate-200 space-y-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-slate-900 text-xs">
+                        EDIAQI – In-room Ambient Display
+                      </h4>
+                      <span className="px-1.5 py-0.5 text-[9px] font-mono bg-primary/10 text-primary rounded font-medium">
+                        Display Prototype
                       </span>
                     </div>
-                  ))}
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      Designed and developed an ambient display that converts complex indoor air quality data into actionable insights for non-expert occupants.
+                    </p>
+                  </div>
+
+                  <div className="space-y-1 pt-2 border-t border-slate-100">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-slate-900 text-xs">
+                        Renovation Insights
+                      </h4>
+                      <span className="px-1.5 py-0.5 text-[9px] font-mono bg-emerald-100 text-emerald-800 rounded font-medium">
+                        Live Prototype
+                      </span>
+                    </div>
+                    <p className="text-[10px] text-slate-500 italic">
+                      "Remonttihintojen tutkija"
+                    </p>
+                    <p className="text-[11px] text-slate-600 leading-relaxed">
+                      Designed and built a localised web application that transforms complex home renovation cost data into interactive visualisations, helping Finnish homeowners make informed financial decisions.
+                    </p>
+                  </div>
                 </div>
               </div>
 
               <div className="text-[9px] font-mono text-slate-400 border-t border-slate-100 pt-3">
-                CERTIFICATE_REGISTRY // VERIFIED_CREDENTIALS
+                PROJECT_REGISTRY // 2_VERIFIED_PROTOTYPES
               </div>
             </div>
           );
@@ -695,21 +793,20 @@ const ResumePage: React.FC = () => {
                 </span>
                 <div className="bg-slate-950 border border-emerald-900/30 rounded p-3 text-[10px] text-slate-300 leading-relaxed mt-2">
                   <pre>{`{
-  "developer": "Sumit Nayyar",
-  "role": "UX Engineer",
-  "tenure": "4+ Years SaaS Platform",
-  "workRights": "Immediate (EU)",
-  "location": "Helsinki, Finland",
+  "name": "Sumit Nayyar",
+  "title": "Product Designer",
+  "education": "Double-degree M.Sc. HCI & Design",
   "contact": {
-    "mail": "sknayyar.sk@gmail.com",
-    "tel": "+358417434861",
-    "web": "sumit-portfolio"
+    "email": "sknayyar.sk@gmail.com",
+    "phone": "+358417434861",
+    "linkedin": "linkedin.com/in/sumitnayyar-ux",
+    "portfolio": "skn1999.github.io/sumit-portfolio"
   }
 }`}</pre>
                 </div>
               </div>
               <div className="text-[9px] text-emerald-600">
-                JSON_FILE // STACK_BOOTSTRAP_OK
+                JSON_FILE // BIO_VALIDATED
               </div>
             </div>
           );
@@ -721,49 +818,40 @@ const ResumePage: React.FC = () => {
                 <span className="text-[10px] text-emerald-600">
                   // Dependency package configuration
                 </span>
-                <div className="bg-slate-950 border border-emerald-900/30 rounded p-3 text-[10.5px] text-slate-300 mt-2">
-                  <pre>{`const STACK = {
-  core: ["React", "TS", "Redux"],
-  builders: ["Git", "Webpack"],
-  designParity: ["Figma API", "WCAG", "IA"],
-  expertise: ["Perf Triage", "Cognitive Load"]
+                <div className="bg-slate-950 border border-emerald-900/30 rounded p-3 text-[10px] text-slate-300 mt-2">
+                  <pre>{`const SKILLS = {
+  design: ["Product Design", "User Research", "WCAG", "IA"],
+  strategy: ["Usability Testing", "Facilitation", "Systems Thinking"],
+  techStack: ["Figma", "React", "TypeScript", "Next.js", "AI Workflows"]
 };`}</pre>
                 </div>
               </div>
               <div className="text-[9px] text-emerald-600">
-                CONFIG_EXPORT // DEPS: 8 SECURE
+                CONFIG_EXPORT // DEPS: SECURE
               </div>
             </div>
           );
 
-        case "optmyzr-frame":
+        case "groundwork-frame":
           return (
             <div className="p-5 font-mono text-xs text-emerald-400 h-full flex flex-col justify-between">
               <div>
                 <span className="text-[10px] text-emerald-600">
-                  // lazy-hydration pipeline &amp; Redux selector optimization
+                  // UX &amp; Accessibility Design Work
                 </span>
-                <p className="text-[10px] text-slate-300 mt-1.5 leading-relaxed">
-                  <span className="text-emerald-500 font-bold">
-                    // PERF OUTCOME:
-                  </span>{" "}
-                  Compressed grid telemetry loading latency from 8s to under 1s.
-                </p>
                 <div className="bg-slate-950 border border-emerald-900/30 rounded p-3 text-[9.5px] text-slate-300 leading-normal mt-2">
-                  <pre>{`// Viewport dynamic hydrator grid wrapper
-const LazyGridLoader = ({ children }) => {
-  const [inView, ref] = useObserver({
-    rootMargin: "100px",
-    triggerOnce: true
-  });
-  return <div ref={ref}>
-    {inView ? children : <LoadingGrid />}
-  </div>;
-}`}</pre>
+                  <pre>{`// Groundwork - UX & Accessibility Designer
+const GroundworkDesign = () => (
+  <ConsultancySuite
+    accessibility="Co-designed with disabled community"
+    guidelines="WCAG AA/AAA standards"
+    award="2nd place @ EIT Jumpstarter (NEB)"
+  />
+);`}</pre>
                 </div>
               </div>
               <div className="text-[9px] text-emerald-600">
-                SRC: OptmyzrDashboard.tsx // HYDRATED: OK
+                SRC: GroundworkDesign.tsx // ACTIVE
               </div>
             </div>
           );
@@ -773,21 +861,46 @@ const LazyGridLoader = ({ children }) => {
             <div className="p-5 font-mono text-xs text-emerald-400 h-full flex flex-col justify-between">
               <div>
                 <span className="text-[10px] text-emerald-600">
-                  // telemetric telemetry stream mapping
+                  // EDIAQI EU-Horizon Collaboration
                 </span>
                 <div className="bg-slate-950 border border-emerald-900/30 rounded p-3 text-[9.5px] text-slate-300 leading-normal mt-2">
-                  <pre>{`// Translate raw AQI data stream
-const mapSensorVectors = (rawData) => {
-  return rawData.map(node => ({
-    x: scaleX(node.lat),
-    y: scaleY(node.lng),
-    aqi: Math.min(100, node.aqi)
-  }));
-};`}</pre>
+                  <pre>{`// Dedanext S.p.a - Product Design Intern
+const EDIAQIPlatform = () => (
+  <AmbientDisplayStudy
+    testedConcepts={6}
+    participants={200}
+    comprehensionSpeed="+30%"
+    designFramework="Reusable Ambient UI"
+  />
+);`}</pre>
                 </div>
               </div>
               <div className="text-[9px] text-emerald-600">
-                SRC: EDIAQITelemetry.tsx // ACTIVE_STREAM: OK
+                SRC: EDIAQIPlatform.tsx // OK
+              </div>
+            </div>
+          );
+
+        case "optmyzr-frame":
+          return (
+            <div className="p-5 font-mono text-xs text-emerald-400 h-full flex flex-col justify-between">
+              <div>
+                <span className="text-[10px] text-emerald-600">
+                  // Optmyzr Core Systems Design
+                </span>
+                <div className="bg-slate-950 border border-emerald-900/30 rounded p-3 text-[9.5px] text-slate-300 leading-normal mt-2">
+                  <pre>{`// Optmyzr Inc. - Design Engineer
+const CoreSystemsDesign = () => (
+  <DesignSystemEngine
+    wizardSteps={5} // drop-off -25%
+    components={30} // React UI library
+    dataDensity="High-Density Analytics"
+  />
+);`}</pre>
+                </div>
+              </div>
+              <div className="text-[9px] text-emerald-600">
+                SRC: CoreSystemsDesign.tsx // OK
               </div>
             </div>
           );
@@ -797,51 +910,44 @@ const mapSensorVectors = (rawData) => {
             <div className="p-5 font-mono text-xs text-emerald-400 h-full flex flex-col justify-between">
               <div>
                 <span className="text-[10px] text-emerald-600">
-                  // Target selection latency (Fitts's Law)
+                  // Dual Degree Curriculum
                 </span>
                 <div className="bg-slate-950 border border-emerald-900/30 rounded p-3 text-[9.5px] text-slate-300 leading-normal mt-2">
-                  <pre>{`// MT = a + b * log2(2D/W)
-const calculateDifficulty = (dist, w) => {
-  const ID = Math.log2((2 * dist) / w);
-  return A_CONST + B_CONST * ID;
+                  <pre>{`const DEGREE = {
+  aalto: "M.Sc. Human-Computer Interaction & Design",
+  trento: "M.Sc. Cognitive Science",
+  period: "2024 - 2026"
 };`}</pre>
                 </div>
               </div>
               <div className="text-[9px] text-emerald-600">
-                SRC: LatencyHCI.tsx // HEURISTIC_ACCURACY: 99.8%
+                SRC: MScHCI.tsx // DEGREE_VERIFIED
               </div>
             </div>
           );
 
-        case "certifications-frame":
+        case "projects-frame":
           return (
             <div className="p-5 font-mono text-xs text-emerald-400 h-full flex flex-col justify-between">
               <div>
                 <span className="text-[10px] text-emerald-600">
-                  // Professional credentials array
+                  // Prototypes Registry
                 </span>
                 <div className="bg-slate-950 border border-emerald-900/30 rounded p-3 text-[9.5px] text-slate-300 leading-normal mt-2">
-                  <pre>{`const CERTIFICATIONS = [
+                  <pre>{`[
   {
-    name: "EIT Digital Summer School",
-    cohort: "28DIGITAL",
-    date: "2025-09"
+    name: "EDIAQI Ambient Display",
+    type: "Display Prototype"
   },
   {
-    name: "Great UI Design",
-    provider: "Udemy",
-    date: "2023-07"
-  },
-  {
-    name: "UX Design Process",
-    provider: "Coursera",
-    date: "2021-05"
+    name: "Renovation Insights",
+    type: "Live Prototype"
   }
-];`}</pre>
+]`}</pre>
                 </div>
               </div>
               <div className="text-[9px] text-emerald-600">
-                EXPORT_VALS // CERTIFICATES: 4 SIGNED
+                EXPORT_VALS // PROTOTYPES: 2
               </div>
             </div>
           );
@@ -866,10 +972,10 @@ const calculateDifficulty = (dist, w) => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
-        className="h-[calc(100vh-64px)] min-h-[calc(100vh-64px)] flex flex-col bg-background text-foreground overflow-hidden select-none print:hidden relative"
+        className="mt-[64px] md:mt-[96px] h-[calc(100vh-64px)] md:h-[calc(100vh-96px)] flex flex-col bg-background text-foreground overflow-hidden select-none print:hidden relative"
       >
         {/* Top Action Header */}
-        <header className="absolute top-6 left-6 right-6 z-40 pointer-events-none flex justify-between items-center">
+        <header className="absolute top-4 left-4 right-4 z-40 pointer-events-none flex justify-between items-center">
           <div className="pointer-events-auto">
             <Button
               variant="outline"
@@ -894,7 +1000,7 @@ const calculateDifficulty = (dist, w) => {
               }`}
               asChild
             >
-              <a href={pdfUrl} download="CV_2026.pdf">
+              <a href={pdfUrl} download="Resume-Product-Designer.pdf">
                 <Download className="w-4 h-4" />
                 <span>Download Resume</span>
               </a>
@@ -904,7 +1010,7 @@ const calculateDifficulty = (dist, w) => {
 
         {/* Toggle Sidebar Button (shown if sidebar is closed) */}
         {!isSidebarOpen && (
-          <div className="absolute left-6 top-[84px] z-30 pointer-events-auto">
+          <div className="absolute left-4 top-16 z-30 pointer-events-auto">
             <Button
               variant="outline"
               size="lg"
@@ -925,7 +1031,7 @@ const calculateDifficulty = (dist, w) => {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -280, opacity: 0 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute left-6 top-[84px] bottom-6 z-30 w-64 bg-background/85 backdrop-blur-md border border-border/40 rounded-xl shadow-lg flex flex-col pointer-events-auto overflow-hidden"
+              className="absolute left-4 top-16 bottom-4 z-30 w-64 bg-background/85 backdrop-blur-md border border-border/40 rounded-xl shadow-lg flex flex-col pointer-events-auto overflow-hidden"
             >
               {/* Header */}
               <div className="px-4 py-3 border-b border-border/40 flex items-center justify-between bg-muted/30 select-none">
@@ -1024,7 +1130,6 @@ const calculateDifficulty = (dist, w) => {
         {/* Main Drag-Space Viewport */}
         <div
           ref={containerRef}
-          onWheel={handleWheel}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
@@ -1066,17 +1171,18 @@ const calculateDifficulty = (dist, w) => {
             <svg
               className="absolute inset-0 pointer-events-none"
               style={{
-                width: "2600px",
+                width: "3500px",
                 height: "980px",
                 overflow: "visible",
               }}
             >
               {[
-                { d: "M 540 470 C 552.5 470, 552.5 470, 565 470", key: "c1" },
-                { d: "M 865 470 C 937.5 470, 937.5 430, 1010 430", key: "c2" },
-                { d: "M 1440 430 C 1450 430, 1450 430, 1460 430", key: "c3" },
-                { d: "M 1890 430 C 1960 430, 1960 480, 2030 480", key: "c4" },
-                { d: "M 2250 700 C 2250 710, 2250 730, 2250 740", key: "c5" },
+                { d: "M 500 450 L 565 450", key: "c1" },
+                { d: "M 865 450 C 920 450, 950 430, 1010 430", key: "c2" },
+                { d: "M 1430 430 L 1455 430", key: "c3" },
+                { d: "M 1875 430 L 1900 430", key: "c4" },
+                { d: "M 2320 430 C 2380 430, 2410 430, 2480 430", key: "c5" },
+                { d: "M 2870 430 L 2890 430", key: "c6" },
               ].map((path) => (
                 <g key={path.key}>
                   {/* Background path line */}
@@ -1272,15 +1378,14 @@ const calculateDifficulty = (dist, w) => {
               Sumit Nayyar
             </h1>
             <p className="text-lg font-semibold text-slate-600 uppercase tracking-wider mt-1">
-              UX Designer / Frontend Engineer
+              Product Designer
             </p>
           </div>
           <div className="text-right text-xs text-slate-700 space-y-1 font-mono">
-            <div>Helsinki, Finland</div>
             <div>sknayyar.sk@gmail.com</div>
-            <div>+358 41 743 4861</div>
+            <div>+358 417434861</div>
+            <div>linkedin.com/sumitnayyar-ux</div>
             <div>skn1999.github.io/sumit-portfolio</div>
-            <div>linkedin.com/in/sumitnayyar-ux</div>
           </div>
         </div>
 
@@ -1293,50 +1398,62 @@ const calculateDifficulty = (dist, w) => {
                 Profile
               </h2>
               <p className="text-xs text-slate-700 leading-relaxed">
-                UX Designer and Frontend Engineer with 4+ years building
-                user-centric SaaS products. I design in Figma and ship in React
-                and TypeScript, closing handoff gaps and turning data dense
-                workflows into well-crafted, accessible interfaces. Backed by an
-                HCI Master's from Aalto University. Based in the Helsinki
-                metropolitan area and committed to building my long-term career
-                and home in Finland.
+                Product Designer with experience building SaaS products across engineering and UX. After shipping production software, I pursued a double Master's in Human-Computer Interaction to build my expertise in user-centred design, research, and product thinking. I combine systems thinking, user research, and usability testing to design user-friendly products that simplify complex problems.
               </p>
             </section>
 
             {/* Experience */}
             <section className="space-y-4">
               <h2 className="text-lg font-bold uppercase tracking-wider text-slate-900 border-b border-slate-300 pb-1 mb-3">
-                Professional Experience
+                Experience
               </h2>
 
-              {/* Deda Next */}
+              {/* Groundwork */}
               <div>
                 <div className="flex justify-between font-semibold text-sm">
                   <h3 className="text-slate-900 font-bold">
-                    Deda Next (Dedagroup)
+                    UX &amp; Accessibility Designer @ Groundwork
                   </h3>
                   <span className="text-xs font-mono text-slate-600">
-                    Mar 2026 - May 2026
+                    June 2025 – Present
+                  </span>
+                </div>
+                <div className="text-xs text-slate-600 italic">Remote</div>
+                <ul className="list-disc pl-4 mt-2 text-xs text-slate-700 space-y-1.5 leading-relaxed">
+                  <li>
+                    Led end-to-end product design for an early-stage consultancy, defining service offerings, workshops, and facilitation methods for regulated digital products.
+                  </li>
+                  <li>
+                    Defined design and facilitation exercises, co-designed workshops with disabled community, translating accessibility requirements into practical design guidelines.
+                  </li>
+                  <li>
+                    Led value-proposition validation and secured 2nd place at the EIT Jumpstarter (New European Bauhaus), strengthening the venture's funding readiness.
+                  </li>
+                </ul>
+              </div>
+
+              {/* Dedanext S.p.a */}
+              <div>
+                <div className="flex justify-between font-semibold text-sm">
+                  <h3 className="text-slate-900 font-bold">
+                    Product Design Intern @ Dedanext S.p.a
+                  </h3>
+                  <span className="text-xs font-mono text-slate-600">
+                    Mar 2026 – May 2026
                   </span>
                 </div>
                 <div className="text-xs text-slate-600 italic">
-                  UX Designer &amp; Researcher — Trento, Italy
+                  EDIAQI EU-Horizon Collaboration — Trento, Italy
                 </div>
                 <ul className="list-disc pl-4 mt-2 text-xs text-slate-700 space-y-1.5 leading-relaxed">
                   <li>
-                    Worked on EDIAQI, an EU Horizon Europe project, designing
-                    how indoor air quality data helps schools and public
-                    buildings make better facility decisions.
+                    Conducted qualitative research to understand user mental models, converting complex environmental data into information architectures for a multi-stakeholder platform.
                   </li>
                   <li>
-                    Researched user needs, mapped messy multi-stakeholder
-                    workflows, and delivered the first version of a
-                    decision-support and reporting experience.
+                    Evaluated 6 interactive display concepts across 4 data modalities with 200 participants, defining layout density guidelines that improved ambient data comprehension speed by ~30%.
                   </li>
                   <li>
-                    Translated high-volume sensor data into clear, interactive
-                    visualizations built to reduce cognitive load for
-                    non-technical users.
+                    Developed a reusable design framework for ambient digital displays to build consistent and scalable interface design.
                   </li>
                 </ul>
               </div>
@@ -1344,44 +1461,58 @@ const calculateDifficulty = (dist, w) => {
               {/* Optmyzr */}
               <div>
                 <div className="flex justify-between font-semibold text-sm">
-                  <h3 className="text-slate-900 font-bold">Optmyzr</h3>
+                  <h3 className="text-slate-900 font-bold">
+                    Design Engineer (Core Systems) @ Optmyzr Inc.
+                  </h3>
                   <span className="text-xs font-mono text-slate-600">
-                    May 2020 - Jul 2024
+                    May 2020 – July 2024
                   </span>
                 </div>
                 <div className="text-xs text-slate-600 italic">
-                  Frontend Engineer (SDE-II) — Remote / Hyderabad
+                  Hyderabad, India
                 </div>
                 <ul className="list-disc pl-4 mt-2 text-xs text-slate-700 space-y-1.5 leading-relaxed">
                   <li>
-                    Progressed from intern to SDE-II on the Core team, owning
-                    the frontend migration of the platform's two
-                    highest-traffic, data-dense analytics applications (Account
-                    Dashboard and PPC Comparison Tool).
+                    Redesigned the onboarding experience by creating a 5-step configuration wizard, reducing onboarding drop-offs by ~25% and improving setup during periods of high backend load.
                   </li>
                   <li>
-                    Designed a runtime, metadata-driven configuration engine
-                    that parses JSON definitions to instantiate multi-platform
-                    UI components dynamically, cutting new ad network
-                    integration from a multi-day core rewrite to a configuration
-                    checklist.
+                    Co-developed a design system comprising 30+ reusable React components, standardising UI patterns across multiple SaaS products and improving feature development time.
                   </li>
                   <li>
-                    Eliminated global cascade re-rendering loops across dense
-                    dashboard grids by isolating data domains into localized
-                    Redux slices with memoized selector filters.
-                  </li>
-                  <li>
-                    Built a progressive, viewport-driven lazy-hydration pipeline
-                    that loads heavy plots and metric lists asynchronously as
-                    their containers enter the viewport.
-                  </li>
-                  <li>
-                    <strong>Impact:</strong> Reduced core dashboard load and
-                    time-to-interactive from 8 to 10 seconds down to under 1
-                    second under enterprise production loads.
+                    Redesigned high-density data interfaces to improve readability and navigation, enabling users to quickly analyse dense ad metrics for multiple accounts.
                   </li>
                 </ul>
+              </div>
+            </section>
+
+            {/* Projects */}
+            <section className="space-y-3">
+              <h2 className="text-lg font-bold uppercase tracking-wider text-slate-900 border-b border-slate-300 pb-1 mb-3">
+                Projects
+              </h2>
+
+              <div>
+                <div className="flex justify-between font-semibold text-xs">
+                  <h3 className="font-bold text-slate-900">
+                    EDIAQI – In-room Ambient Display
+                  </h3>
+                  <span className="font-mono text-slate-600">Display Prototype</span>
+                </div>
+                <p className="text-[11px] text-slate-700 mt-1 leading-relaxed">
+                  Designed and developed an ambient display that converts complex indoor air quality data into actionable insights for non-expert occupants.
+                </p>
+              </div>
+
+              <div>
+                <div className="flex justify-between font-semibold text-xs">
+                  <h3 className="font-bold text-slate-900">
+                    Renovation Insights ("Remonttihintojen tutkija")
+                  </h3>
+                  <span className="font-mono text-slate-600">Live Prototype</span>
+                </div>
+                <p className="text-[11px] text-slate-700 mt-1 leading-relaxed">
+                  Designed and built a localised web application that transforms complex home renovation cost data into interactive visualisations, helping Finnish homeowners make informed financial decisions.
+                </p>
               </div>
             </section>
 
@@ -1392,118 +1523,60 @@ const calculateDifficulty = (dist, w) => {
               </h2>
               <div>
                 <div className="flex justify-between font-semibold text-xs">
-                  <h3 className="font-bold text-slate-900">Aalto University</h3>
-                  <span className="font-mono text-slate-600">
-                    Expected Aug 2026
-                  </span>
-                </div>
-                <div className="text-xs text-slate-600 italic">
-                  M.Sc. Human-Computer Interaction &amp; Design — Espoo, Finland
-                </div>
-                <p className="text-[11px] text-slate-700 mt-1 leading-relaxed">
-                  Focus: Usability engineering, information architecture,
-                  interactive systems.
-                  <br />
-                  Thesis: Translating complex indoor air quality sensor data
-                  into actionable insights for non-technical users.
-                </p>
-              </div>
-
-              <div>
-                <div className="flex justify-between font-semibold text-xs">
                   <h3 className="font-bold text-slate-900">
-                    Università di Trento
+                    Double-degree M.Sc. Human-Computer Interaction &amp; Design
                   </h3>
-                  <span className="font-mono text-slate-600">
-                    Expected 2026
-                  </span>
+                  <span className="font-mono text-slate-600">2024–2026</span>
                 </div>
                 <div className="text-xs text-slate-600 italic">
-                  M.Sc. Cognitive Science (dual degree) — Trento, Italy
+                  Aalto University, Finland | University of Trento, Italy
                 </div>
+                <ul className="list-disc pl-4 mt-1 text-[11px] text-slate-700 space-y-1 leading-relaxed">
+                  <li>
+                    <strong>Core Focus:</strong> User-Centered Design, Interface Engineering, User Interface Construction, Usability Testing.
+                  </li>
+                  <li>
+                    <strong>Cognitive Sciences:</strong> Social Cognition, Decision-making, Digital Nudging, Participatory Design, Affective Computing.
+                  </li>
+                </ul>
               </div>
             </section>
           </div>
 
           {/* Sidebar Column (1/3 width) */}
           <div className="space-y-6">
-            {/* Core Stack */}
+            {/* Technical Skills */}
             <section>
               <h2 className="text-lg font-bold uppercase tracking-wider text-slate-900 border-b border-slate-300 pb-1 mb-3">
-                Core Stack
+                Technical Skills
               </h2>
 
               <div className="space-y-4 text-xs">
                 <div>
                   <h3 className="font-bold text-slate-800 uppercase tracking-wide text-[10px] mb-1">
-                    Design &amp; Strategy
+                    Design
                   </h3>
                   <p className="text-slate-700 leading-relaxed">
-                    Information Architecture, User Workflows, Design Systems,
-                    Figma, Rapid Prototyping, Usability Testing, Accessibility.
+                    Product Design, User Research, Interaction Design, Information Architecture, Accessibility (WCAG), Prototyping
                   </p>
                 </div>
 
                 <div>
                   <h3 className="font-bold text-slate-800 uppercase tracking-wide text-[10px] mb-1">
-                    Frontend &amp; Architecture
+                    Research &amp; Strategy
                   </h3>
                   <p className="text-slate-700 leading-relaxed">
-                    React.js, TypeScript, JavaScript ES6+, Redux Toolkit, HTML5
-                    / CSS3 / Sass, REST APIs.
+                    Usability Testing, Facilitation, Design Thinking, Systems Thinking, Participatory Design
                   </p>
                 </div>
 
                 <div>
                   <h3 className="font-bold text-slate-800 uppercase tracking-wide text-[10px] mb-1">
-                    Systems &amp; Operations
+                    Technical Stack
                   </h3>
                   <p className="text-slate-700 leading-relaxed">
-                    Git / GitHub, Firebase, Webpack, DevTools Profiling.
+                    Figma, React, TypeScript, Next.js, Node.js, Design Tokens, Git, AI-Augmented Workflows
                   </p>
-                </div>
-              </div>
-            </section>
-
-            {/* Certifications */}
-            <section>
-              <h2 className="text-lg font-bold uppercase tracking-wider text-slate-900 border-b border-slate-300 pb-1 mb-3">
-                Certifications
-              </h2>
-              <div className="space-y-3 text-xs leading-normal">
-                <div>
-                  <div className="flex justify-between font-semibold">
-                    <span>Upbeat Summer School (28DIGITAL)</span>
-                    <span className="font-mono text-slate-600">Sep 2025</span>
-                  </div>
-                  <div className="text-slate-500 text-[11px]">
-                    EIT Digital Summer School
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between font-semibold">
-                    <span>
-                      Design Rules: Principles + Practices for Great UI Design
-                    </span>
-                    <span className="font-mono text-slate-650">Jul 2023</span>
-                  </div>
-                  <div className="text-slate-500 text-[11px]">Udemy</div>
-                </div>
-                <div>
-                  <div className="flex justify-between font-semibold">
-                    <span>
-                      Start the UX Design Process: Empathize, Define, Ideate
-                    </span>
-                    <span className="font-mono text-slate-650">May 2021</span>
-                  </div>
-                  <div className="text-slate-500 text-[11px]">Coursera</div>
-                </div>
-                <div>
-                  <div className="flex justify-between font-semibold">
-                    <span>Foundations of User Experience (UX) Design</span>
-                    <span className="font-mono text-slate-650">Apr 2021</span>
-                  </div>
-                  <div className="text-slate-500 text-[11px]">Coursera</div>
                 </div>
               </div>
             </section>
@@ -1512,9 +1585,7 @@ const calculateDifficulty = (dist, w) => {
             <div className="bg-slate-50 border border-slate-200 rounded p-4 text-[10px] text-slate-500 font-mono leading-relaxed print:hidden">
               <strong>PRINT GUIDELINE:</strong>
               <br />
-              This page automatically renders as a clean two-column letter
-              document when printed via your browser (Cmd + P) or saved as a
-              PDF.
+              This page automatically renders as a clean document when printed via your browser (Cmd + P) or saved as a PDF.
             </div>
           </div>
         </div>

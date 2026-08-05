@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Figma, User } from "lucide-react";
 
 const AchievementsSection: React.FC = () => {
   const inkFadeVariant = {
@@ -18,57 +19,55 @@ const AchievementsSection: React.FC = () => {
 
   const experiences = [
     {
-      what: "Design Engineer",
-      where: "Groundwork (Remote)",
-      when: "2025 — Present",
+      what: "UX & Accessibility Designer",
+      where: "Groundwork",
+      when: "June 2025 — Present",
     },
     {
-      what: "Service Design Intern",
+      what: "Product Design",
       where: "Dedanext S.p.a (Trento, Italy)",
-      when: "Mar 2024 — May 2024",
+      when: "Mar 2026 — May 2026",
     },
     {
-      what: "Frontend Engineer (Core Systems)",
+      what: "Design Engineer",
       where: "Optmyzr Inc. (Hyderabad, India)",
-      when: "May 2020 — July 2023",
+      when: "May 2020 — July 2024",
     },
   ];
 
   const skillGroups = [
     {
-      category: "Core Methodologies",
+      category: "Design",
       technologies: [
-        "Data Schema Design",
+        "Product Design",
+        "User Research",
+        "Interaction Design",
         "Information Architecture",
-        "React",
-        "TypeScript",
-        "Interaction Testing",
-        "Usability Evaluation",
+        "Accessibility (WCAG)",
+        "Prototyping",
       ],
     },
     {
-      category: "Design Skills",
+      category: "Research & Strategy",
       technologies: [
-        "Figma",
-        "Design Systems",
-        "Component Architecture",
-        "Prototyping",
-        "WCAG",
-        "Interaction Design",
-        "User Research",
+        "Usability Testing",
+        "Workshop Facilitation",
+        "Design Thinking",
+        "Systems Thinking",
+        "Participatory Design",
       ],
     },
     {
       category: "Technical Stack",
       technologies: [
+        "Figma",
         "React",
         "TypeScript",
+        "Next.js",
         "Node.js",
-        ".NET Framework",
-        "PHP",
-        "REST APIs",
+        "Design Tokens",
         "Git",
-        "Claude AI",
+        "AI-Augmented Workflows",
       ],
     },
   ];
@@ -79,7 +78,7 @@ const AchievementsSection: React.FC = () => {
     { name: "Finnish", level: "Basic / Learning" },
   ];
 
-  const resumePdfUrl = `${import.meta.env.BASE_URL}Resume-Design-Engineer.pdf`;
+  const resumePdfUrl = `${import.meta.env.BASE_URL}Resume-Product-Designer.pdf`;
 
   return (
     <section id="achievements" className="py-20 md:py-32 bg-paper-bg">
