@@ -42,7 +42,7 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
   return (
     <div
       className={cn(
-        "my-10 w-full max-w-full md:w-screen md:relative md:left-1/2 md:right-1/2 md:-ml-[50vw] md:-mr-[50vw] py-8 sm:py-12 px-4 sm:px-8 md:px-16 bg-paper-card/30 border-y border-paper-border not-prose backdrop-blur-xs overflow-hidden",
+        "my-10 w-full max-w-full md:w-screen md:max-w-none md:relative md:left-1/2 md:right-1/2 md:-ml-[50vw] md:-mr-[50vw] py-8 sm:py-12 px-4 sm:px-8 md:px-16 bg-paper-card/30 border-y border-paper-border not-prose backdrop-blur-xs overflow-hidden",
         className
       )}
     >
