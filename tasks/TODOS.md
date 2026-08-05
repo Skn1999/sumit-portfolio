@@ -25,4 +25,6 @@
 25. [x] Task 036: Project Categorization, Frontmatter Updates, and Navigation Route Mapping
 26. [x] Task 037: Gosta Labs Case Study Integration
 27. [x] Task 038: Optmyzr Case Study Streamlining & Legacy Layout Cleanup
+28. [x] Task 039: Optmyzr Onboarding Experience Case Study Integration
+
 
