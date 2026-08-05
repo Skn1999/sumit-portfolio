@@ -1,0 +1,105 @@
+---
+slug: "optmyzr-onboarding-experience"
+title: "Don't Make Them Wait: Fixing Onboarding Churn"
+tagline: "Replacing backend setup latency with an interactive multi-step onboarding wizard to cut drop-offs and create personalized ad optimisations."
+date: "2023-09-01"
+type: "engineering"
+subCategory: "frontend-engineering"
+featured: true
+tech:
+  - "UX Improvement"
+  - "Systems Thinking"
+  - "React"
+  - "Redux Toolkit"
+cover:
+  filename: "cover.png"
+  alt: "Image showing two users. On the left side, confused user is waiting for the backend setup to finish. On the right side, a happy user is interacting with the onboarding wizard."
+metric: "~25% drop-off reduction; significantly higher onboarding completion & enriched user personalization data"
+summary: "An onboarding optimization initiative at Optmyzr. Identified silent user drop-offs during backend account initialization using Hotjar heatmaps, and built a multi-step interactive onboarding flow to improve initial user retention and collect context for personalized optimisations and recommendations."
+roles:
+  - "Design Engineer"
+order: 1
+draft: false
+---
+
+import { StickyNotesBoard } from "@/components/ui/StickyNotesBoard";
+import { ProjectImageAsset } from "@/components/ui/project-image-asset";
+
+## 01 // CONTEXT
+
+At Optmyzr, connecting new digital marketing accounts triggers heavy backend setup processes to ingest and structure campaign data across platforms like Google Ads and Microsoft Advertising. Because this initial setup required high processing time, new users experienced a zero-engagement loading state upon sign-up.
+
+As as Design Engineer, I analyzed user behavior analytics and identified an important drop-off bottleneck during account initialization. Then, I designed and engineered an interactive, multi-step onboarding experience in React and Redux that transformed idle wait times into active user engagement.
+
+---
+
+## 02 // PROBLEM
+
+Through session recordings and heatmap analysis using *Hotjar*, we observed that a significant percentage of newly registered users abandoned their onboarding session, either closing the tab or switching away to other tasks, while waiting for backend account setup to finish.
+
+This silent churn point had two major drawbacks:
+1. **Lost Conversion:** Users dropped off before experiencing their first product win.
+2. **Missing Personalization Context:** The system lacked initial data on user preferences, team structure, and budget priorities, which felt like missed opportunities.
+
+So discovery phase research led to the following design question:
+
+> How might we engage users during the backend setup process to reduce drop-offs and capture personalization data for immediate ad recommendations?
+
+---
+
+## 03 // APPROACH
+
+<ProjectImageAsset
+  src="optmyzr-onboarding-experience/double-diamond.jpg"
+  alt="Double diamond process diagram showing the onboarding research and solution workflow"
+/>
+
+### User-Behavior Analysis
+Used Hotjar heatmaps and click-tracking analytics to pinpoint the exact step where engagement stopped. Identified that the gap between sign-up and initial dashboard load was driving the drop-off.
+
+### Market Research & Input Curation
+Conducted user research to determine what inputs mattered the most to the users. Data revealed three primary engagement drivers:
+- **Plain-Language Advertising Goals:** Replaced dense ad jargon with conversational goal choices. On the backend, these human-friendly selections were mapped to exact technical metrics (such as Target CPA, ROAS, and conversion values).
+- **Custom Budget Constraints:** Allowed users to define financial limits and allocation thresholds.
+- **Team & Collaborator Integration:** Enabled users to invite team members early in the workflow to establish shared accountability.
+
+### Multi-Step Interactive Onboarding Wizard
+Designed and built a modular multi-step onboarding flow using React and Redux based on these research pillars, actively engaging users while backend initialization ran asynchronously.
+
+### Progressive State Hydration & Profile Sync
+Implemented state management with Redux to store inputs step-by-step. As users advanced through the wizard, state payloads were progressively synced to user profiles in the database. This data directly fed Optmyzr's recommendation algorithms to generate immediate, personalized campaign optimizations upon setup completion.
+
+### How Was Success Measured?
+
+We evaluated the onboarding refactor across three core performance and user engagement metrics:
+
+<StickyNotesBoard
+  title="// SUCCESS METRICS — MEASURING IMPACT"
+  notes={[
+    {
+      title: "Drop-Off Rate Reduction",
+      description: "Measured whether account setup drop-off decreased after introducing the new wizard. ",
+      color: "sand",
+    },
+    {
+      title: "Flow Completion Rate",
+      description: "Measured how effectively users progressed through all onboarding steps.",
+      color: "clay",
+    },
+    {
+      title: "Personalization Efficiency",
+      description: "Tracked whether upfront goal and constraint capture improved the accuracy and adoption of Optmyzr's personalized ad recommendations.",
+      color: "moss",
+    },
+  ]}
+/>
+
+On receiving positive validation from the initial beta target group, the onboarding feature was rolled out to 100% of incoming users.
+
+---
+
+## 04 // IMPACT
+
+- **~25% Drop-Off Reduction:** Reduced user abandonment during initial account creation by turning waiting time into an active, value-adding experience.
+- **Higher Onboarding Completion:** Achieved significantly higher end-to-end completion rates across new users.
+- **Enriched Personalization Data:** Captured rich user intent data up-front, enabling Optmyzr's algorithm to deliver relevant ad recommendations and optimisations from day one.
