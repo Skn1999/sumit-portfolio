@@ -42,8 +42,8 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
   return (
     <div
       className={cn(
-        "my-14 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] py-12 px-4 sm:px-8 md:px-16 bg-paper-card/30 border-y border-paper-border not-prose backdrop-blur-xs overflow-hidden",
-        className,
+        "my-10 w-full max-w-full md:w-screen md:relative md:left-1/2 md:right-1/2 md:-ml-[50vw] md:-mr-[50vw] py-8 sm:py-12 px-4 sm:px-8 md:px-16 bg-paper-card/30 border-y border-paper-border not-prose backdrop-blur-xs overflow-hidden",
+        className
       )}
     >
       {/* Max-Width Inner Container */}
@@ -72,7 +72,7 @@ export const StickyNotesBoard: React.FC<StickyNotesBoardProps> = ({
                 onMouseLeave={() => setHoveredIndex(null)}
                 onClick={() => setHoveredIndex(isHovered ? null : index)}
                 className={cn(
-                  "group relative w-full sm:w-[280px] md:w-[300px] aspect-square p-6 sm:p-7 rounded-xl border shadow-sm select-none cursor-pointer overflow-hidden transition-all duration-300 ease-out flex flex-col justify-between",
+                  "group relative w-full max-w-[300px] sm:w-[280px] md:w-[300px] aspect-square p-5 sm:p-7 rounded-xl border shadow-sm select-none cursor-pointer overflow-hidden transition-all duration-300 ease-out flex flex-col justify-between",
                   colorClass,
                   rotationClass,
                   "hover:rotate-0 hover:scale-[1.04] hover:shadow-xl",

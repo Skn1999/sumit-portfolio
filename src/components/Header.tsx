@@ -37,11 +37,11 @@ const NAV_HIERARCHY: NavItem[] = [
     label: "Data Engineering",
     mainRoute: "/data-engineering",
     subItems: [
-      { to: "/data-engineering#ai-data", label: "AI and Data" },
       {
         to: "/data-engineering#frontend-engineering",
         label: "Front-end Engineering",
       },
+      { to: "/data-engineering#ai-data", label: "AI and Data" },
     ],
   },
   {

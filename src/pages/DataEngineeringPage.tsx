@@ -31,7 +31,8 @@ export const AiAndDataSection: React.FC = () => {
             AI &amp; Data Engineering
           </h2>
           <p className="font-body-narrative text-base md:text-lg text-ink-muted mt-3 max-w-2xl">
-            Human-in-the-loop AI workflows, LLM prompt engineering, autonomous agent tool integrations, and real-time data pipelines.
+            Human-in-the-loop AI workflows, LLM prompt engineering, autonomous
+            agent tool integrations, and real-time data pipelines.
           </p>
         </motion.div>
 
@@ -66,7 +67,9 @@ export const FrontendEngineeringSection: React.FC = () => {
             Front-End Engineering &amp; Systems
           </h2>
           <p className="font-body-narrative text-base md:text-lg text-ink-muted mt-3 max-w-2xl">
-            Bridging complex full-stack backends with performant, responsive React/TypeScript interfaces, WebGL 3D graphics, and design token systems.
+            Bridging complex full-stack backends with performant, responsive
+            React/TypeScript interfaces, WebGL 3D graphics, and design token
+            systems.
           </p>
         </motion.div>
 
@@ -95,11 +98,10 @@ const DataEngineeringPage: React.FC = () => {
           {/* Section 1: Hero Section */}
           <HeroSection />
 
-          {/* Section 2: AI & Data Section */}
-          <AiAndDataSection />
-
           {/* Section 3: Front-End Engineering Section */}
           <FrontendEngineeringSection />
+          {/* Section 2: AI & Data Section */}
+          <AiAndDataSection />
 
           {/* Section 4: Footer */}
           <Footer />
