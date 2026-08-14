@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "preview": "npm run build:preview && vite preview",
     "new-project": "node scripts/create-project.js",
+    "new-task": "node scripts/create-task.js",
     "optimize-images": "node scripts/optimize-images.js",
     "optimize-images:webp": "node scripts/optimize-images.js --webp",
     "optimize-images:dry": "node scripts/optimize-images.js --dry-run",
