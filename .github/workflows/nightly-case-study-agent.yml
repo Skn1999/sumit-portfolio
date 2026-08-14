@@ -41,14 +41,14 @@ jobs:
           if [ -n "${{ github.event.inputs.task_file }}" ]; then
             echo "TASKS=${{ github.event.inputs.task_file }}" >> $GITHUB_OUTPUT
             echo "FOUND=true" >> $GITHUB_OUTPUT
-          elif ls tasks/case-studies/*.md 1> /dev/null 2>&1; then
-            FILES=$(ls tasks/case-studies/*.md | tr '\n' ' ')
+          elif ls tasks/*.md 1> /dev/null 2>&1; then
+            FILES=$(ls tasks/*.md | tr '\n' ' ')
             echo "TASKS=$FILES" >> $GITHUB_OUTPUT
             echo "FOUND=true" >> $GITHUB_OUTPUT
           else
             echo "TASKS=" >> $GITHUB_OUTPUT
             echo "FOUND=false" >> $GITHUB_OUTPUT
-            echo "No pending case study tasks found in tasks/case-studies/"
+            echo "No pending case study tasks found in tasks/"
           fi
 
       - name: Execute Case Study Rewriter Agent
