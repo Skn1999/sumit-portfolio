@@ -39,9 +39,9 @@ As part of the **EU Horizon Europe EDIAQI project** (Evidence Driven Indoor Air 
 
 Having rich sensor data did not equate to safer indoor environments. The core gap lay between **data availability and human action**:
 
-1. **Unrealistic Monitoring Burden**: Non-expert occupants (classroom teachers, municipal office workers) cannot be expected to remain continuously logged into a dashboard while managing primary daily tasks.
-2. **No Actionability**: The legacy dashboard prototype provided raw parameter spikes without an action protocol layer. Alerts went completely untreated because non-expert users lacked contextual guidance (*"Open windows for how long? What action should be taken under current outdoor/indoor delta?"*).
-3. **Data Density Mismatch**: Existing dashboard interface relied on single-word vague labels in basic views or dense time-series line charts in advanced views. Both are ineffective in non-expert decision-making under task overload.
+1.  **Unrealistic Monitoring Burden**: Non-expert occupants (classroom teachers, municipal office workers) cannot be expected to remain continuously logged into a dashboard while managing primary daily tasks.
+2.  **No Actionability**: The legacy dashboard prototype provided raw parameter spikes without an action protocol layer. Alerts went completely untreated because non-expert users lacked contextual guidance (*"Open windows for how long? What action should be taken under current outdoor/indoor delta?"*).
+3.  **Data Density Mismatch**: Existing dashboard interface relied on single-word vague labels in basic views or dense time-series line charts in advanced views. Both are ineffective in non-expert decision-making under task overload.
 
 <ProjectImageAsset src="ediaqi-decision-support-system/problem-hypo.jpg" alt="Problem hypothesis & stakeholder mapping framework" width="wide" />
 <p className="font-mono text-[11px] text-ink-muted text-center mt-2.5 mb-8">
@@ -54,9 +54,9 @@ Having rich sensor data did not equate to safer indoor environments. The core ga
 
 ### Team Composition
 
-- **Horizon Europe EDIAQI Consortium**: Interdisciplinary research steering group.
-- **Deda Next Technical Team**: Sensor deployment, IoT telemetry infrastructure, and FROST server API integration.
-- **Product Designer & UX Researcher (My Role)**: Lead UX/UI architecture, heuristic evaluation, quantitative study setup, and DSS interaction design.
+-   **Horizon Europe EDIAQI Consortium**: Interdisciplinary research steering group.
+-   **Deda Next Technical Team**: Sensor deployment, IoT telemetry infrastructure, and FROST server API integration.
+-   **Product Designer & UX Researcher (My Role)**: Lead UX/UI architecture, heuristic evaluation, quantitative study setup, and DSS interaction design.
 
 ### My Bridge Positioning
 
@@ -68,11 +68,7 @@ I bridged the gap between Deda Next's **backend sensor data and non-technical hu
 
 ### Nielsen Heuristic & Accessibility Audit Breakdown
 
-An audit of Deda Next's initial dashboard prototype uncovered **30 usability and accessibility friction points**, documented in the [EDIAQI Heuristic Evaluation Matrix](file:///Users/SumitKumar/Desktop/consulting/portfolio/src/content/projects/ediaqi-decision-support-system/EDIAQI_Heuristic_Evaluation.xlsx):
-- **12 WCAG Accessibility Issues**: Color contrast failures, missing ARIA focus indicators, and non-scalable text elements.
-- **10 Visibility of System Status Issues**: Ambient status updates absent; breach alerts lacked persistence and clear recovery feedback loops.
-- **5 Match Between System & Real World Issues**: Over-reliance on technical units without plain-language translations or real-world action prompts.
-- **3 Consistency & Standards Issues**: Inconsistent threshold color codes across views.
+An audit of Deda Next's initial dashboard prototype uncovered **30 usability and accessibility friction points**, documented in the [EDIAQI Heuristic Evaluation Matrix](file:///Users/SumitKumar/Desktop/consulting/portfolio/src/content/projects/ediaqi-decision-support-system/EDIAQI_Heuristic_Evaluation.xlsx).
 
 <ProjectImageAsset src="ediaqi-decision-support-system/heuristics-evaluation.jpg" alt="Nielsen heuristic evaluation (30 documented usability issues)" />
 <p className="font-mono text-[11px] text-ink-muted text-center mt-2.5 mb-8">
@@ -81,12 +77,12 @@ An audit of Deda Next's initial dashboard prototype uncovered **30 usability and
 
 ### What Worked vs. What Didn't
 
-| Category | ❌ What Didn't Work (Legacy Prototype) | ✅ What Worked (DSS Redesign) |
-| :--- | :--- | :--- |
-| **Touchpoint Strategy** | Single central desktop dashboard requiring active login and continuous manual checks. | **2-Touchpoint Architecture**: In-room ambient tablet for glanceable occupant awareness + Web Dashboard V2 for facility management. |
-| **Information Architecture** | Progressive disclosure hiding critical action steps behind nested dropdowns/tabs. | **Upfront Information Disclosure**: Surfacing severity, cause, and concrete micro-actions directly on primary screens. |
-| **Modality & Visuals** | Dense time-series line charts and single-word vague labels ("Moderate", "High"). | **Text + Graphics Modality**: Dual-coded ambient color states paired with explicit illustrations for ultra-glanceability. |
-| **Role Alignment** | Uniform data presentation for both teachers and facility engineers. | **Role-Separated Views**: Simplified ambient action prompts for occupants vs. prioritized severity-ranked alert logs for facility staff. |
+| Category                     | ❌ What Didn't Work (Legacy Prototype)                                                | ✅ What Worked (DSS Redesign)                                                                                                            |
+| :--------------------------- | :------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| **Touchpoint Strategy**      | Single central desktop dashboard requiring active login and continuous manual checks. | **2-Touchpoint Architecture**: In-room ambient tablet for glanceable occupant awareness + Web Dashboard V2 for facility management.      |
+| **Information Architecture** | Progressive disclosure hiding critical action steps behind nested dropdowns/tabs.     | **Upfront Information Disclosure**: Surfacing severity, cause, and concrete micro-actions directly on primary screens.                   |
+| **Modality & Visuals**       | Dense time-series line charts and single-word vague labels ("Moderate", "High").      | **Text + Graphics Modality**: Dual-coded ambient color states paired with explicit illustrations for ultra-glanceability.                |
+| **Role Alignment**           | Uniform data presentation for both teachers and facility engineers.                   | **Role-Separated Views**: Simplified ambient action prompts for occupants vs. prioritized severity-ranked alert logs for facility staff. |
 
 ---
 
@@ -98,44 +94,48 @@ To validate the UX architecture of the action protocol layer, I conducted a **2x
 
 #### 2x2 Mixed Factorial Experimental Design
 
-| Independent Variables | **Modality: Text Only** | **Modality: Text + Graphics** |
-| :--- | :--- | :--- |
-| **Disclosure: Upfront** | *Cell A*: Upfront text-only prompts (High comprehension, moderate cognitive load) | *Cell B* (Optimal): Upfront text + visual graphics (Highest comprehension, lowest cognitive load) |
-| **Disclosure: Progressive** | *Cell C*: Multi-step text prompts (Lower actionability, higher cognitive friction) | *Cell D*: Multi-step graphical prompts (Moderate comprehension, delayed task execution) |
+| Independent Variables       | **Modality: Text Only**                                                            | **Modality: Text + Graphics**                                                                     |
+| :-------------------------- | :--------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------ |
+| **Disclosure: Upfront**     | *Cell A*: Upfront text-only prompts (High comprehension, moderate cognitive load)  | *Cell B* (Optimal): Upfront text + visual graphics (Highest comprehension, lowest cognitive load) |
+| **Disclosure: Progressive** | *Cell C*: Multi-step text prompts (Lower actionability, higher cognitive friction) | *Cell D*: Multi-step graphical prompts (Moderate comprehension, delayed task execution)           |
 
-- **Evaluated Metrics**: Problem Comprehension Speed, Actionability Accuracy, and Subjective Cognitive Load.
-- **Key Finding**: Upfront information disclosure combined with graphical modality significantly outperformed progressive disclosure in time-critical IAQ scenarios.
+-   **Evaluated Metrics**: Problem Comprehension Speed, Actionability Accuracy, and Subjective Cognitive Load.
+-   **Key Finding**: Upfront information disclosure combined with graphical modality significantly outperformed progressive disclosure in time-critical IAQ scenarios.
 
 ### 2. In-Room Ambient Display (5-State System Architecture)
 
 The in-room tablet display operates across **5 discrete ambient states** simulating real-time telemetry transitions:
 
-1. **Ambient State**: Subtle background color indicating optimal air quality (CO2 < 800 ppm).
-2. **Alert State**: High-visibility warning when thresholds are breached, detailing the specific hazard (CO2 > 1200 ppm).
-3. **Action Prompt State**: Immediate, glanceable guidance (e.g., *"Open windows for cross-ventilation"*).
-4. **Reporting / Action Taken State**: One-tap confirmation logging the intervention to close the feedback loop.
-5. **Educational State**: Contextual micro-tips explaining indoor environmental health factors to occupants.
-
-<ProjectImageAsset src="ediaqi-decision-support-system/scenarios.png" alt="Scenario validation flowchart for in-room tablet display states" />
-<p className="font-mono text-[11px] text-ink-muted text-center mt-2.5 mb-8">
-  Fig 03 // Scenario validation flowchart for in-room tablet display states
-</p>
+{/* UI Rule: Never present multi-state systems, sequential processes, or state transitions as plain ordered text lists.
+    For a visual flowchart, consider using a custom component or Mermaid diagram here.
+    Fig 04 below already provides a visual flowchart for scenarios.
+*/}
+1.  **Ambient State**: Subtle background color indicating optimal air quality (CO2 < 800 ppm).
+2.  **Alert State**: High-visibility warning when thresholds are breached, detailing the specific hazard (CO2 > 1200 ppm).
+3.  **Action Prompt State**: Immediate, glanceable guidance (e.g., *"Open windows for cross-ventilation"*).
+4.  **Reporting / Action Taken State**: One-tap confirmation logging the intervention to close the feedback loop.
+5.  **Educational State**: Contextual micro-tips explaining indoor environmental health factors to occupants.
 
 <ProjectImageAsset src="ediaqi-decision-support-system/mockup-with-tablet.jpg" alt="In-room ambient tablet display prototype" />
 <p className="font-mono text-[11px] text-ink-muted text-center mt-2.5 mb-8">
-  Fig 04 // In-room ambient tablet display prototype
+  Fig 03 // In-room ambient tablet display prototype
 </p>
 
-> [!IMPORTANT]
-> **Qualitative User Research Evidence**:
->
-> 💬 **On Passive Alerts vs. Direct Action Prompts**:
-> *"I don't think it's enough to have a blinking light, a red light that says there is a problem."* — Research Participant
-> *(Validates why raw alerts fail and explicit action protocols are mandatory).*
->
-> 💬 **On Action Recovery & Feedback Loops**:
-> *"I opened the window. After a while, I'm freezing. I'm not able to understand that it is cold and it's time to close... It's too late for me."* — Research Participant
-> *(Validates the need for 5-state ambient tracking that closes the feedback loop when conditions recover).*
+<ProjectImageAsset src="ediaqi-decision-support-system/scenarios.png" alt="Concept scenario validation for occupants & facility staff" />
+<p className="font-mono text-[11px] text-ink-muted text-center mt-2.5 mb-8">
+  Fig 04 // Scenario validation flowchart for in-room tablet display states
+</p>
+
+[!IMPORTANT]
+**Qualitative User Research Evidence**:
+
+💬 **On Passive Alerts vs. Direct Action Prompts**:
+*"I don't think it's enough to have a blinking light, a red light that says there is a problem."* — Research Participant
+*(Validates why raw alerts fail and explicit action protocols are mandatory).*
+
+💬 **On Action Recovery & Feedback Loops**:
+*"I opened the window. After a while, I'm freezing. I'm not able to understand that it is cold and it's time to close... It's too late for me."* — Research Participant
+*(Validates the need for 5-state ambient tracking that closes the feedback loop when conditions recover).*
 
 ---
 
@@ -180,23 +180,43 @@ Non-expert users rely heavily on heuristics ("the room feels fine to me"). Envir
 
 ### Final Project Outcomes
 
-1. **Interactive Figma Prototypes**: Delivered high-fidelity interactive prototypes for the 5-state in-room ambient tablet display and low-fidelity prototypes for Dashboard V2 using Figma.
-2. **Systematic Usability Audit**: Documented and resolved 30 usability and accessibility issues in the [EDIAQI Heuristic Evaluation Spreadsheet](file:///Users/SumitKumar/Desktop/consulting/portfolio/src/content/projects/ediaqi-decision-support-system/EDIAQI_Heuristic_Evaluation.xlsx).
+1.  **Interactive Figma Prototypes**: Delivered high-fidelity interactive prototypes for the 5-state in-room ambient tablet display and low-fidelity prototypes for Dashboard V2 using Figma.
+2.  **Systematic Usability Audit**: Documented and resolved 30 usability and accessibility issues in the [EDIAQI Heuristic Evaluation Spreadsheet](file:///Users/SumitKumar/Desktop/consulting/portfolio/src/content/projects/ediaqi-decision-support-system/EDIAQI_Heuristic_Evaluation.xlsx).
 
 ### Retrospective: Successes & Compromises
 
-| Aspect | Status & Reflection |
-| :--- | :--- |
-| **2-Touchpoint Architecture** | **Major Success**: Separating ambient occupant touchpoints from centralized administrative dashboards effectively solved the "constant monitoring" friction point. |
-| **Legal Compliance Workflow** | **Scope Compromise**: Full automated legal compliance logging under Italian occupational health standards (D.Lgs. 81/2008 / Classe II thresholds) was out of scope and required dedicated legal inputs. |
-| **Design System Handoff** | **Compromise**: Due to timeline constraints, a unified production token system was not fully established with the engineering team. |
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+  <div className="p-4 rounded-xl bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+    <span className="font-bold text-sm uppercase tracking-wider">🟩 Major Success</span>
+    <p className="mt-2 text-ink-primary">**2-Touchpoint Architecture**: Separating ambient occupant touchpoints from centralized administrative dashboards effectively solved the "constant monitoring" friction point.</p>
+  </div>
+  <div className="p-4 rounded-xl bg-amber-500/10 text-amber-600 border border-amber-500/20">
+    <span className="font-bold text-sm uppercase tracking-wider">🟨 Scope Compromise</span>
+    <p className="mt-2 text-ink-primary">**Legal Compliance Workflow**: Full automated legal compliance logging under Italian occupational health standards (D.Lgs. 81/2008 / Classe II thresholds) was out of scope and required dedicated legal inputs.</p>
+  </div>
+  <div className="p-4 rounded-xl bg-amber-500/10 text-amber-600 border border-amber-500/20">
+    <span className="font-bold text-sm uppercase tracking-wider">🟨 Compromise</span>
+    <p className="mt-2 text-ink-primary">**Design System Handoff**: Due to timeline constraints, a unified production token system was not fully established with the engineering team.</p>
+  </div>
+</div>
 
 ### Future Roadmap (+3 Months Strategy)
 
-If granted an additional 3 months on the EDIAQI project, I would focus on:
-
-1. **Linguistic & Visual Design System**: Standardizing a comprehensive design system covering both visual tokens and clear micro-copy rules to eliminate ambiguity across ambient states.
-2. **In-Situ Usability & Field Engineering Testing**: Collaborating with Deda Next engineers to deploy working tablet prototypes in Ferrara classrooms to collect live field metrics (Task Completion Rate, Action Accuracy & Time-to-Intervention, and Long-term Behavior Retention).
+<div className="flex flex-col gap-4 my-6">
+  <div className="p-4 rounded-xl bg-paper-card border border-paper-border shadow-sm">
+    <h4 className="font-bold text-lg text-ink-primary">1. Linguistic & Visual Design System</h4>
+    <p className="mt-1 text-ink-muted">Standardizing a comprehensive design system covering both visual tokens and clear micro-copy rules to eliminate ambiguity across ambient states.</p>
+  </div>
+  <div className="p-4 rounded-xl bg-paper-card border border-paper-border shadow-sm">
+    <h4 className="font-bold text-lg text-ink-primary">2. In-Situ Usability & Field Engineering Testing</h4>
+    <p className="mt-1 text-ink-muted">Collaborating with Deda Next engineers to deploy working tablet prototypes in Ferrara classrooms to collect live field metrics:</p>
+    <ul className="list-disc list-inside ml-4 mt-2 text-ink-muted">
+      <li>**Task Completion Rate** under real classroom conditions.</li>
+      <li>**Action Accuracy & Time-to-Intervention** following threshold breaches.</li>
+      <li>**Long-term Behavior Retention** over 30-day monitoring periods.</li>
+    </ul>
+  </div>
+</div>
 
 ---
 
