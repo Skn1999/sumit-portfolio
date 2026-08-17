@@ -27,6 +27,16 @@ The **Task Runner Agent** is the primary entry point for all task execution. Upo
    - **General Tasks** (Features, Refactoring, Bug Fixes, Design/UX, Content):
      - **Execute Directly**: Follow standard Task Runner workflow.
 
+2. **Execution Engine**:
+   - **Pre-Packed Context Snapshot**: Receives the initial file tree layout, primary config files (`package.json`, `index.css`, `App.tsx`), and target files pre-packed in the initial context.
+   - **ReAct Function-Calling Tools**:
+     - `write_file(filePath, content)`: Modify or create codebase files.
+     - `read_file(filePath)`: Inspect extra files on demand.
+     - `grep_search(query)`: Search codebase for symbols or tokens.
+     - `list_dir(dirPath)`: List contents of folders.
+     - `run_build_verification()`: Test build compilation via `npm run build`.
+   - **Self-Correction Protocol**: Must invoke `run_build_verification` after editing code. If compilation errors occur, inspect the error output, modify code via `write_file`, and re-run build verification until clean.
+
 ## Required Context Files
 
 Before implementing, read these files:
