@@ -14,12 +14,18 @@ If no task file is provided, ask for the specific task file path before changing
 
 ## Mission
 
-Implement exactly one task from the provided task file, verify it, then update the agent memory files:
+Implement tasks from the provided task file in `tasks/`, verify them, and update agent memory files (`.agent/progress.md` and `.agent/learnings.md`).
 
-- `.agent/progress.md`
-- `.agent/learnings.md`
+### Agent Selection & Delegation Logic
 
-The task file is the source of truth for scope, requirements, acceptance criteria, and tests.
+The **Task Runner Agent** is the primary entry point for all task execution. Upon receiving a task file:
+
+1. **Evaluate Task Type**:
+   - **Case Study Rewrite / Upgrade Tasks**: If the task involves restructuring portfolio case studies, applying the Recruiter Benchmark Framework, or resides in `tasks/case-studies/`:
+     - **Delegate / Invoke**: Internally invoke `.agent/case-study-rewriter-agent.md`.
+     - **Context Required**: Load `.agent/benchmark-framework.md` and `.agent/ui-building-instructions.md` alongside standard context.
+   - **General Tasks** (Features, Refactoring, Bug Fixes, Design/UX, Content):
+     - **Execute Directly**: Follow standard Task Runner workflow.
 
 ## Required Context Files
 
@@ -30,6 +36,7 @@ Before implementing, read these files:
 - `.agent/tech-stack.md`
 - `.agent/progress.md`
 - `.agent/learnings.md`
+- **If delegating to Case Study Rewriter**: `.agent/case-study-rewriter-agent.md`, `.agent/benchmark-framework.md`, `.agent/ui-building-instructions.md`
 
 Use `architecture.md` to understand how the app is wired, `tech-stack.md` to choose commands and packages, `progress.md` to avoid duplicating completed work, and `learnings.md` to avoid repeating prior mistakes.
 
