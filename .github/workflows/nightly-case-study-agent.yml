@@ -60,6 +60,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
           echo "Starting Task Runner Agent..."
           echo "Tasks to process: ${{ steps.locate_tasks.outputs.TASKS }}"
 
@@ -78,8 +79,27 @@ jobs:
         if: steps.locate_tasks.outputs.FOUND == 'true'
         run: npm run build
 
-      - name: Create Pull Request
+      - name: Check for file changes
+        id: changes
         if: steps.locate_tasks.outputs.FOUND == 'true'
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "HAS_CHANGES=true" >> "$GITHUB_OUTPUT"
+            echo "Detected repository changes after task execution."
+            git status --short
+          else
+            echo "HAS_CHANGES=false" >> "$GITHUB_OUTPUT"
+            echo "No repository changes detected after task execution."
+          fi
+
+      - name: No-op summary (no changes)
+        if: steps.locate_tasks.outputs.FOUND == 'true' && steps.changes.outputs.HAS_CHANGES == 'false'
+        run: |
+          echo "Tasks were processed, but no file changes were generated."
+          echo "Skipping pull request creation."
+
+      - name: Create Pull Request
+        if: steps.locate_tasks.outputs.FOUND == 'true' && steps.changes.outputs.HAS_CHANGES == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
