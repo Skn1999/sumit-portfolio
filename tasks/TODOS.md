@@ -6,7 +6,7 @@
 6. update the resume page. Take the details from the Cv and convert into the page and the download button, downloads the pdf
 7. [x] Task 016: Project Rewrite - 4-Zone Editorial Layout System
 8. [x] Task 017: Project Rewrite - Optmyzr Case Study
-9. [ ] Task 018: Project Rewrite - EDIAQI Case Study
+9. [x] Task 018: Project Rewrite - EDIAQI Case Study
 10. [ ] Task 019: Project Rewrite - SuperEgo & Mesa Te Club Case Studies
 11. [ ] Task 020: Project Rewrite - Optmyzr Narrative Alignment
 12. [ ] Task 021: Gosta Labs Case Study Integration
@@ -26,5 +26,4 @@
 26. [x] Task 037: Gosta Labs Case Study Integration
 27. [x] Task 038: Optmyzr Case Study Streamlining & Legacy Layout Cleanup
 28. [x] Task 039: Optmyzr Onboarding Experience Case Study Integration
-
 
