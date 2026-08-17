@@ -372,7 +372,9 @@ const ResumePage: React.FC = () => {
     activePointers.current.delete(e.pointerId);
     try {
       (e.target as HTMLElement).releasePointerCapture(e.pointerId);
-    } catch {}
+    } catch (error) {
+      void error;
+    }
 
     if (activePointers.current.size < 2) {
       initialPinchDist.current = null;

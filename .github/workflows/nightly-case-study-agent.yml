@@ -1,18 +1,18 @@
-name: Nightly Case Study Rewriter Agent
+name: Nightly Task Runner Agent
 
 on:
   schedule:
     # Runs every night at midnight UTC
-    - cron: '0 0 * * *'
+    - cron: "0 0 * * *"
   workflow_dispatch:
     inputs:
       task_file:
-        description: 'Specific task file path (optional, e.g. tasks/case-studies/task_ediaqi_case_study_rewrite.md)'
+        description: "Specific task file path (optional, e.g. tasks/task_add_product_hunt_badge.md)"
         required: false
-        default: ''
+        default: ""
 
 jobs:
-  rewrite-case-studies:
+  run-tasks:
     runs-on: ubuntu-latest
 
     permissions:
@@ -29,53 +29,49 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
       - name: Install Dependencies
         run: npm ci
 
-      - name: Locate Pending Case Study Tasks
+      - name: Locate Pending Tasks
         id: locate_tasks
         run: |
           if [ -n "${{ github.event.inputs.task_file }}" ]; then
             echo "TASKS=${{ github.event.inputs.task_file }}" >> $GITHUB_OUTPUT
             echo "FOUND=true" >> $GITHUB_OUTPUT
-          elif ls tasks/*.md 1> /dev/null 2>&1; then
-            FILES=$(ls tasks/*.md | tr '\n' ' ')
-            echo "TASKS=$FILES" >> $GITHUB_OUTPUT
-            echo "FOUND=true" >> $GITHUB_OUTPUT
           else
-            echo "TASKS=" >> $GITHUB_OUTPUT
-            echo "FOUND=false" >> $GITHUB_OUTPUT
-            echo "No pending case study tasks found in tasks/"
+            FILES=$(find tasks -name "*.md" ! -name "TODOS.md" 2>/dev/null | tr '\n' ' ')
+            if [ -n "$FILES" ]; then
+              echo "TASKS=$FILES" >> $GITHUB_OUTPUT
+              echo "FOUND=true" >> $GITHUB_OUTPUT
+            else
+              echo "TASKS=" >> $GITHUB_OUTPUT
+              echo "FOUND=false" >> $GITHUB_OUTPUT
+              echo "No pending tasks found in tasks/"
+            fi
           fi
 
-      - name: Execute Case Study Rewriter Agent
+      - name: Execute Task Runner Agent
         if: steps.locate_tasks.outputs.FOUND == 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "Starting Case Study Rewriter Agent..."
+          echo "Starting Task Runner Agent..."
           echo "Tasks to process: ${{ steps.locate_tasks.outputs.TASKS }}"
-          
+
           for TASK_FILE in ${{ steps.locate_tasks.outputs.TASKS }}; do
             echo "=========================================="
-            echo "Running Agent on: $TASK_FILE"
-            echo "Using instructions from: .agent/case-study-rewriter-agent.md"
-            echo "Context files:"
-            echo "  - .agent/benchmark-framework.md"
-            echo "  - .agent/ui-building-instructions.md"
-            echo "  - .agent/architecture.md"
-            echo "  - .agent/tech-stack.md"
-            echo "  - .agent/progress.md"
-            echo "  - .agent/learnings.md"
+            echo "Running Task Runner Agent on: $TASK_FILE"
+            echo "Primary spec: .agent/task-runner-agent.md"
+            echo "Task Runner Agent will evaluate if job requires invoking .agent/case-study-rewriter-agent.md"
             echo "=========================================="
             
-            # Execute Node Agent Script using Gemini API
-            node scripts/run-case-study-agent.js "$TASK_FILE"
+            # Execute Task Runner Agent Script
+            node scripts/run-task-agent.js "$TASK_FILE"
           done
 
       - name: Verify Build
@@ -87,25 +83,25 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'feat(agent): automated case study rewrite via recruiter benchmark framework'
-          title: '🤖 Agent: Nightly Case Study Rewrite & Integration'
+          commit-message: "feat(agent): automated task execution via task-runner-agent"
+          title: "🤖 Agent: Task Runner Execution & Integration"
           body: |
-            ## Nightly Case Study Rewriter Agent Execution
-            
-            Automated case study rewrite processed by `.agent/case-study-rewriter-agent.md`.
-            
-            ### Context Files Applied:
-            - 📖 **Storytelling Framework**: `.agent/benchmark-framework.md`
-            - 🎨 **Portfolio UI Rules**: `.agent/ui-building-instructions.md`
-            
+            ## Nightly Task Runner Agent Execution
+
+            Automated task execution processed by `.agent/task-runner-agent.md`.
+
+            ### Task Execution Summary:
+            - **Primary Agent**: `.agent/task-runner-agent.md`
+            - **Delegated Agents (if applicable)**: `.agent/case-study-rewriter-agent.md`
+
             ### Tasks Processed:
             `${{ steps.locate_tasks.outputs.TASKS }}`
-            
+
             ---
-            *Automated by GitHub Actions & Antigravity Agent Workflow.*
+            *Automated by GitHub Actions & Antigravity Task Runner Workflow.*
           base: staging
-          branch: agent/case-study-rewrite
+          branch: agent/task-execution
           delete-branch: true
           labels: |
             agent-generated
-            case-study
+            task-runner

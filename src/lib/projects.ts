@@ -34,7 +34,7 @@ export type ProjectMeta = {
 };
 
 type ProjectModule = {
-  default: any;
+  default: React.ComponentType;
   frontmatter?: Partial<ProjectMeta>;
 };
 
