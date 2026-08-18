@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && node scripts/inject-meta.js",
+    "build:agent": "vite build && node scripts/inject-meta.js",
     "build:dev": "vite build --mode development && node scripts/inject-meta.js",
     "build:preview": "VITE_BASE_PATH=/ vite build && node scripts/inject-meta.js",
     "lint": "eslint .",
