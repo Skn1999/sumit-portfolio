@@ -54,27 +54,30 @@ Use `architecture.md` to understand how the app is wired, `tech-stack.md` to cho
 
 1. Read the task file completely.
 2. Read the required context files.
-3. Before modifying any files, check the current git status.
-4. If the working tree is not clean, ask the user what to do before you proceed with the task and wait for the prompt from user.
-5. If working tree is clean, ALWAYS switch to the `staging` branch first (`git checkout staging && git pull origin staging`). NEVER create feature branches directly from `main` or make changes on `main`. Then create a new task branch off `staging` with name convention as `<impr/feature/bug-fix>-<current-task-name>`.
+3. Check the current git status (`git status`).
+4. If the working tree is not clean, ask the user what to do before proceeding and wait for prompt.
+5. **MANDATORY BRANCH CREATION**: If working tree is clean, ALWAYS switch to the `staging` branch first (`git checkout staging && git pull origin staging`). NEVER make edits directly on `main` or `staging`. Create a new task branch off `staging` using the naming convention `<impr/feature/bug-fix>-<current-task-name>` (e.g. `feat/add-product-hunt-badge`).
 6. Inspect the relevant source files mentioned or implied by the task.
 7. Restate the implementation target internally as:
    - what behavior/UI/content must change
    - what files are likely involved
    - what is explicitly out of scope
 8. Implement the task with small, focused edits.
-9. Run the tests listed in the task file whenever feasible. For small fixes, skip running the tests in local environment to save tokens.
+9. **FAST BUILD VERIFICATION**: Use `npm run build:agent` (or `run_build_verification` tool) to verify TypeScript and MDX build health. This skips lengthy image optimization routines during local/agent testing.
 10. If a listed test cannot be run, record why in the final response and in `.agent/progress.md`.
 11. Manually inspect or reason through each acceptance criterion.
 12. Update `.agent/progress.md`.
 13. Update `.agent/learnings.md`.
-14. Do a sensible git commit of all the files changed in this specific task and adding a brief commit message about what changes were about and which files were changed.
+14. **EXCLUDE IMAGE DIFFS FROM COMMITS**: Do a clean git commit of the source files changed for this task. Exclude any binary image changes produced by `optimize-images.js` (e.g. in `public/images/` or project asset directories), as images are automatically optimized in deployment pipelines when changes go live.
 15. Reply with a concise completion summary, changed files, tests run, and any remaining risk.
 
 ## Implementation Rules
 
-- Do not implement work from other task files unless it is required to complete the current task.
-- Do not skip reading `.agent/learnings.md`, even if it is short.
+- **ALWAYS create a new branch off `staging`** before making code modifications (`git checkout staging && git pull origin staging && git checkout -b <type>/<task-slug>`).
+- **DO NOT commit image optimization diffs**: Keep git commits clean by staging source code files (`src/`, `tasks/`, `.agent/`) and excluding binary image modifications.
+- **Use `npm run build:agent` for build checks**: Skip image optimization during build verification turns.
+- Do not implement work from other task files unless required to complete the current task.
+- Do not skip reading `.agent/learnings.md`, even if short.
 - Do not overwrite unrelated user edits.
 - Do not use destructive git commands.
 - Use `rg` for searching.

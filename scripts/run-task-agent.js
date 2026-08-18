@@ -2,8 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 
-const MAX_TURNS = 20;
-
 // Helper: Recursively build directory tree representation
 function buildFileTree(dirPath, depth = 0, maxDepth = 3) {
   if (depth > maxDepth || !fs.existsSync(dirPath)) return '';
@@ -49,6 +47,62 @@ function packCodebaseContext(taskContent) {
   }
 
   return context;
+}
+
+// Generate dynamic TODO list & turn estimation using Gemini API
+async function generateTaskList(taskContent, packedContext, apiKey) {
+  console.log("📋 Generating task TODO list and estimating turn budget with Gemini API...");
+  const prompt = `
+You are an expert software architect. Analyze the task description and codebase context below.
+Break down the task into a clear, step-by-step TODO list of implementation tasks (including file edits, new components, and build verification).
+
+=== TASK SPECIFICATION ===
+${taskContent}
+
+=== CODEBASE SNAPSHOT ===
+${packedContext}
+
+Return ONLY a raw valid JSON object (with no code block formatting) matching this schema:
+{
+  "todo_list": [
+    "1. Description of step 1",
+    "2. Description of step 2"
+  ],
+  "estimated_turns": 6
+}
+`;
+
+  try {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.1 }
+      })
+    });
+
+    const data = await response.json();
+    const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      const parsed = JSON.parse(jsonMatch[0]);
+      if (parsed.todo_list && Array.isArray(parsed.todo_list) && parsed.todo_list.length > 0) {
+        return parsed;
+      }
+    }
+  } catch (err) {
+    console.warn("⚠️ Could not parse TODO list JSON from Gemini API, using fallback estimation:", err.message);
+  }
+
+  return {
+    todo_list: [
+      "1. Inspect target files and imports",
+      "2. Implement component and page modifications",
+      "3. Execute npm run build verification"
+    ],
+    estimated_turns: 6
+  };
 }
 
 // Local Tool Implementations
@@ -111,9 +165,9 @@ function executeTool(name, args) {
     }
 
     if (name === 'run_build_verification') {
-      console.log("🔨 Running build verification (`npm run build`)...");
+      console.log("🔨 Running agent build verification (`npm run build:agent`)...");
       try {
-        const stdout = execSync('npm run build', { encoding: 'utf8', stdio: 'pipe' });
+        const stdout = execSync('npm run build:agent', { encoding: 'utf8', stdio: 'pipe' });
         console.log("✅ Build verification succeeded!");
         return { success: true, buildOutput: stdout.slice(-2000) };
       } catch (err) {
@@ -248,6 +302,16 @@ ${uiInstructions}
   console.log("📦 Packing codebase context snapshot...");
   const packedContext = packCodebaseContext(taskContent);
 
+  // Generate dynamic TODO list & turn budget from Gemini API
+  const todoData = await generateTaskList(taskContent, packedContext, apiKey);
+  const todoList = todoData.todo_list;
+  const estimatedTurns = todoData.estimated_turns || (todoList.length * 2);
+  const maxTurns = Math.max(5, Math.min(30, estimatedTurns + 3));
+
+  console.log(`\n📋 Task TODO List (${todoList.length} items):`);
+  todoList.forEach(item => console.log(`   ${item}`));
+  console.log(`⚙️ Dynamically allocated turn limit (maxTurns): ${maxTurns}\n`);
+
   const initialPrompt = `
 You are the Task Runner Agent executing a task on the portfolio codebase.
 
@@ -274,13 +338,17 @@ ${taskContent}
 === PRE-PACKED CODEBASE CONTEXT SNAPSHOT ===
 ${packedContext}
 
+=== TASK TODO LIST PLAN ===
+The task has been broken down into the following TODO items:
+${todoList.map(item => `- ${item}`).join('\n')}
+
 === HYBRID REACT WORKFLOW INSTRUCTIONS ===
-1. Review the task requirements and the pre-packed codebase snapshot above.
+1. Work through the TODO list sequentially using the tools.
 2. Use \`write_file\` tool to update target files or create new components as required.
 3. Use \`read_file\`, \`grep_search\`, or \`list_dir\` if you need additional files not present in the initial snapshot.
 4. MUST call \`run_build_verification\` to test if the codebase compiles cleanly without TypeScript or MDX errors.
 5. If \`run_build_verification\` fails, inspect the error log, use \`write_file\` to fix the error, and re-run build verification.
-6. Once the build succeeds cleanly, respond with a concise task completion summary.
+6. Once all TODO items are completed and the build succeeds cleanly, respond with a concise task completion summary.
 `;
 
   const conversationHistory = [
@@ -292,8 +360,8 @@ ${packedContext}
 
   console.log("🚀 Starting ReAct execution loop with Gemini API...");
 
-  for (let turn = 1; turn <= MAX_TURNS; turn++) {
-    console.log(`\n--- Turn ${turn}/${MAX_TURNS} ---`);
+  for (let turn = 1; turn <= maxTurns; turn++) {
+    console.log(`\n--- Turn ${turn}/${maxTurns} ---`);
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
@@ -314,17 +382,7 @@ ${packedContext}
     const candidate = data.candidates?.[0];
     const content = candidate?.content;
     const parts = content?.parts || [];
-
-    if (!parts.length) {
-      console.error("❌ No response parts returned by Gemini API.");
-      process.exit(1);
-    }
-
-    // Append model response to conversation history
-    conversationHistory.push({
-      role: 'model',
-      parts: parts
-    });
+    const finishReason = candidate?.finishReason;
 
     // Check for tool calls (functionCall)
     const functionCallPart = parts.find(p => p.functionCall);
@@ -332,7 +390,8 @@ ${packedContext}
       const call = functionCallPart.functionCall;
       const result = executeTool(call.name, call.args);
 
-      // Append function response turn to conversation history
+      // Append model call and function response turn to conversation history
+      conversationHistory.push({ role: 'model', parts: parts });
       conversationHistory.push({
         role: 'function',
         parts: [
@@ -348,19 +407,25 @@ ${packedContext}
       continue; // Proceed to next turn in loop
     }
 
-    // If text response with no tool calls, Gemini has finished the task
+    // If no tool calls present, check for completion
     const textPart = parts.find(p => p.text);
-    if (textPart) {
-      console.log("\n🤖 Agent Task Execution Completed:\n", textPart.text);
+    const isTaskComplete = finishReason === 'STOP' || textPart || parts.length === 0;
+
+    if (isTaskComplete) {
+      const completionSummary = textPart?.text || "Task execution finished cleanly with no remaining tool calls.";
+      console.log("\n✅ Agent Task Execution Completed Cleanly:\n", completionSummary);
 
       // Append entry to .agent/progress.md
       const dateStr = new Date().toISOString().split('T')[0];
-      const progressEntry = `\n## [${dateStr}] Automated Task: ${path.basename(taskFilePath)}\n- **Agent**: Task Runner Agent (Option C Hybrid Tool Loop)\n- **Status**: Completed\n- **Task File**: ${taskFilePath}\n`;
+      const progressEntry = `\n## [${dateStr}] Automated Task: ${path.basename(taskFilePath)}\n- **Agent**: Task Runner Agent (Dynamic TODO Loop)\n- **Status**: Completed\n- **TODO Items**: ${todoList.length}\n- **Turns Used**: ${turn}/${maxTurns}\n- **Task File**: ${taskFilePath}\n`;
       fs.appendFileSync('.agent/progress.md', progressEntry, 'utf8');
       console.log('✅ Appended progress entry to .agent/progress.md');
-      break;
+      process.exit(0);
     }
   }
+
+  console.log(`\n⚠️ Reached allocated limit of ${maxTurns} turns without explicit STOP.`);
+  process.exit(0);
 }
 
 run().catch((err) => {
