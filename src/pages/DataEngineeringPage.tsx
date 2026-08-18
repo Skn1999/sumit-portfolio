@@ -6,6 +6,7 @@ import { Footer } from "@/components/Contact";
 import { getProjectsBySubCategory } from "@/lib/projects";
 import { motion } from "framer-motion";
 import { ProjectIndexList } from "@/components/ProjectIndexList";
+import ProductHuntBadge from "@/components/ProductHuntBadge";
 
 export const AiAndDataSection: React.FC = () => {
   const aiProjects = getProjectsBySubCategory("ai-data");
@@ -34,6 +35,17 @@ export const AiAndDataSection: React.FC = () => {
             Human-in-the-loop AI workflows, LLM prompt engineering, autonomous
             agent tool integrations, and real-time data pipelines.
           </p>
+        </motion.div>
+
+        {/* Product Hunt Badge */}
+        <motion.div
+          initial={{ opacity: 0, filter: "blur(6px)", y: 16 }}
+          whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex justify-center mb-16 md:mb-20"
+        >
+          <ProductHuntBadge />
         </motion.div>
 
         {/* Minimalist Editorial Index List for AI & Data */}
