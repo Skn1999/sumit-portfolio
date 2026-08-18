@@ -98,13 +98,28 @@ jobs:
           echo "Tasks were processed, but no file changes were generated."
           echo "Skipping pull request creation."
 
+      - name: Detect Task Branch
+        id: detect_branch
+        if: steps.locate_tasks.outputs.FOUND == 'true' && steps.changes.outputs.HAS_CHANGES == 'true'
+        run: |
+          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          if [ "$CURRENT_BRANCH" != "staging" ] && [ "$CURRENT_BRANCH" != "HEAD" ]; then
+            echo "BRANCH_NAME=$CURRENT_BRANCH" >> "$GITHUB_OUTPUT"
+            echo "Detected task branch created by agent: $CURRENT_BRANCH"
+          else
+            TASK_NAME=$(basename "${{ steps.locate_tasks.outputs.TASKS }}" .md)
+            BRANCH_NAME="feat/$TASK_NAME"
+            echo "BRANCH_NAME=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
+            echo "Generated task branch name from file: $BRANCH_NAME"
+          fi
+
       - name: Create Pull Request
         if: steps.locate_tasks.outputs.FOUND == 'true' && steps.changes.outputs.HAS_CHANGES == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "feat(agent): automated task execution via task-runner-agent"
-          title: "🤖 Agent: Task Runner Execution & Integration"
+          title: "🤖 Agent: Task Runner Execution (${{ steps.detect_branch.outputs.BRANCH_NAME }})"
           body: |
             ## Nightly Task Runner Agent Execution
 
@@ -113,6 +128,7 @@ jobs:
             ### Task Execution Summary:
             - **Primary Agent**: `.agent/task-runner-agent.md`
             - **Delegated Agents (if applicable)**: `.agent/case-study-rewriter-agent.md`
+            - **Target Branch**: `${{ steps.detect_branch.outputs.BRANCH_NAME }}`
 
             ### Tasks Processed:
             `${{ steps.locate_tasks.outputs.TASKS }}`
@@ -120,7 +136,7 @@ jobs:
             ---
             *Automated by GitHub Actions & Antigravity Task Runner Workflow.*
           base: staging
-          branch: agent/task-execution
+          branch: ${{ steps.detect_branch.outputs.BRANCH_NAME }}
           delete-branch: true
           labels: |
             agent-generated
