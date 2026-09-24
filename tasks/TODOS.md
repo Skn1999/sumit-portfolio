@@ -26,4 +26,4 @@
 26. [x] Task 037: Gosta Labs Case Study Integration
 27. [x] Task 038: Optmyzr Case Study Streamlining & Legacy Layout Cleanup
 28. [x] Task 039: Optmyzr Onboarding Experience Case Study Integration
-
+29. [ ] Task 040: Design Engineering Showcase & ActAI Case Study Integration
