@@ -49,6 +49,118 @@ function packCodebaseContext(taskContent) {
   return context;
 }
 
+const PRIMARY_MODEL = 'gemini-2.5-flash';
+const FALLBACK_MODEL = 'gemini-2.0-flash';
+
+// Helper: Sleep utility
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Helper: Classify transient/retryable errors (high demand, rate limits, 5xx gateway errors)
+function isTransientError(status, errorObj, rawText = '') {
+  if (status === 429 || status === 503 || status === 500 || status === 502 || status === 504) {
+    return true;
+  }
+  if (errorObj) {
+    const code = Number(errorObj.code);
+    const errStatus = String(errorObj.status || '').toUpperCase();
+    const msg = String(errorObj.message || '').toLowerCase();
+
+    if (code === 429 || code === 503 || code === 500 || code === 502 || code === 504) return true;
+    if (errStatus === 'UNAVAILABLE' || errStatus === 'RESOURCE_EXHAUSTED' || errStatus === 'INTERNAL') return true;
+    if (
+      msg.includes('high demand') ||
+      msg.includes('temporar') ||
+      msg.includes('rate limit') ||
+      msg.includes('quota') ||
+      msg.includes('overloaded')
+    ) {
+      return true;
+    }
+  }
+  const textLower = rawText.toLowerCase();
+  if (
+    textLower.includes('high demand') ||
+    textLower.includes('service unavailable') ||
+    textLower.includes('too many requests')
+  ) {
+    return true;
+  }
+  return false;
+}
+
+// Robust Gemini API caller with progressive exponential backoff, jitter, and fallback model switching
+async function callGeminiWithRetry(apiKey, requestBody, { maxRetries = 5, initialDelayMs = 3000, label = 'Request' } = {}) {
+  let currentModel = PRIMARY_MODEL;
+
+  for (let attempt = 1; attempt <= maxRetries + 1; attempt++) {
+    // If high demand / 503 persists after 2 retries on the primary model, switch to fallback model
+    if (attempt >= 3 && currentModel === PRIMARY_MODEL) {
+      console.warn(`🔄 [${label}] Model ${PRIMARY_MODEL} repeatedly unavailable. Switching to fallback model: ${FALLBACK_MODEL}`);
+      currentModel = FALLBACK_MODEL;
+    }
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${apiKey}`;
+
+    let response;
+    let rawText = '';
+    let data = null;
+
+    try {
+      response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
+      });
+
+      rawText = await response.text();
+      try {
+        data = JSON.parse(rawText);
+      } catch {
+        // Non-JSON response (e.g. gateway HTML error page)
+        data = null;
+      }
+    } catch (networkErr) {
+      if (attempt <= maxRetries) {
+        const delay = Math.min(60000, initialDelayMs * Math.pow(2, attempt - 1) + Math.floor(Math.random() * 2000));
+        console.warn(`⚠️ [${label}] Network/fetch error on attempt ${attempt}/${maxRetries} (${currentModel}): ${networkErr.message}. Retrying in ${(delay / 1000).toFixed(1)}s...`);
+        await sleep(delay);
+        continue;
+      }
+      return { data: null, error: { message: `Network error after ${maxRetries} retries: ${networkErr.message}` } };
+    }
+
+    const statusCode = response ? response.status : 0;
+    const apiError = data?.error;
+
+    if (!response.ok || apiError || !data) {
+      const isTransient = isTransientError(statusCode, apiError, rawText);
+      const errorMsg = apiError?.message || (rawText.length < 200 && rawText ? rawText : `HTTP ${statusCode}`);
+      const errCode = apiError?.code || statusCode;
+      const errStatus = apiError?.status || '';
+
+      if (isTransient && attempt <= maxRetries) {
+        const delay = Math.min(60000, initialDelayMs * Math.pow(2, attempt - 1) + Math.floor(Math.random() * 2000));
+        console.warn(`⏳ [${label}] Gemini API transient error on attempt ${attempt}/${maxRetries} (${currentModel} - ${errCode} ${errStatus}: ${errorMsg.trim()}). Retrying in ${(delay / 1000).toFixed(1)}s...`);
+        await sleep(delay);
+        continue;
+      }
+
+      return {
+        data,
+        error: apiError || { code: statusCode, status: errStatus, message: errorMsg }
+      };
+    }
+
+    if (attempt > 1) {
+      console.log(`✅ [${label}] Gemini API request succeeded with ${currentModel} on attempt ${attempt}!`);
+    }
+
+    return { data, error: null };
+  }
+}
+
 // Generate dynamic TODO list & turn estimation using Gemini API
 async function generateTaskList(taskContent, packedContext, apiKey) {
   console.log("📋 Generating task TODO list and estimating turn budget with Gemini API...");
@@ -73,22 +185,25 @@ Return ONLY a raw valid JSON object (with no code block formatting) matching thi
 `;
 
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    const { data, error } = await callGeminiWithRetry(
+      apiKey,
+      {
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: { temperature: 0.1 }
-      })
-    });
+      },
+      { maxRetries: 3, label: "TODO-Generation" }
+    );
 
-    const data = await response.json();
-    const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      const parsed = JSON.parse(jsonMatch[0]);
-      if (parsed.todo_list && Array.isArray(parsed.todo_list) && parsed.todo_list.length > 0) {
-        return parsed;
+    if (error) {
+      console.warn("⚠️ Could not generate TODO list via Gemini API (retries exhausted):", error.message);
+    } else {
+      const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        if (parsed.todo_list && Array.isArray(parsed.todo_list) && parsed.todo_list.length > 0) {
+          return parsed;
+        }
       }
     }
   } catch (err) {
@@ -363,19 +478,18 @@ ${todoList.map(item => `- ${item}`).join('\n')}
   for (let turn = 1; turn <= maxTurns; turn++) {
     console.log(`\n--- Turn ${turn}/${maxTurns} ---`);
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    const { data, error } = await callGeminiWithRetry(
+      apiKey,
+      {
         contents: conversationHistory,
         tools: toolsDeclaration,
         generationConfig: { temperature: 0.1 }
-      })
-    });
+      },
+      { maxRetries: 5, initialDelayMs: 3000, label: `Turn ${turn}` }
+    );
 
-    const data = await response.json();
-    if (data.error) {
-      console.error("❌ Gemini API Error:", data.error);
+    if (error) {
+      console.error(`❌ Gemini API Fatal Error on Turn ${turn}/${maxTurns} (retries exhausted):`, error);
       process.exit(1);
     }
 
