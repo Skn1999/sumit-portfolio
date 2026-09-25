@@ -49,8 +49,12 @@ function packCodebaseContext(taskContent) {
   return context;
 }
 
-const PRIMARY_MODEL = 'gemini-2.5-flash';
-const FALLBACK_MODEL = 'gemini-2.0-flash';
+const MODEL_CANDIDATES = [
+  'gemini-3.8-flash',
+  'models/gemini-3.8-flash',
+  'gemini-3.7-flash',
+  'gemini-2.0-flash'
+];
 
 // Helper: Sleep utility
 function sleep(ms) {
@@ -90,18 +94,16 @@ function isTransientError(status, errorObj, rawText = '') {
   return false;
 }
 
-// Robust Gemini API caller with progressive exponential backoff, jitter, and fallback model switching
+// Robust Gemini API caller with progressive exponential backoff, jitter, and multi-model fallback rotation
 async function callGeminiWithRetry(apiKey, requestBody, { maxRetries = 5, initialDelayMs = 3000, label = 'Request' } = {}) {
-  let currentModel = PRIMARY_MODEL;
+  let modelIndex = 0;
 
   for (let attempt = 1; attempt <= maxRetries + 1; attempt++) {
-    // If high demand / 503 persists after 2 retries on the primary model, switch to fallback model
-    if (attempt >= 3 && currentModel === PRIMARY_MODEL) {
-      console.warn(`🔄 [${label}] Model ${PRIMARY_MODEL} repeatedly unavailable. Switching to fallback model: ${FALLBACK_MODEL}`);
-      currentModel = FALLBACK_MODEL;
-    }
+    const currentModel = MODEL_CANDIDATES[modelIndex] || MODEL_CANDIDATES[MODEL_CANDIDATES.length - 1];
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${apiKey}`;
+    // Normalize endpoint path to properly resolve whether model has 'models/' prefix or not
+    const modelPath = currentModel.startsWith('models/') ? currentModel : `models/${currentModel}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/${modelPath}:generateContent?key=${apiKey}`;
 
     let response;
     let rawText = '';
@@ -136,11 +138,25 @@ async function callGeminiWithRetry(apiKey, requestBody, { maxRetries = 5, initia
 
     if (!response.ok || apiError || !data) {
       const isTransient = isTransientError(statusCode, apiError, rawText);
+      const isNotFound = statusCode === 404 || apiError?.status === 'NOT_FOUND' || (apiError?.message && apiError.message.includes('not found'));
       const errorMsg = apiError?.message || (rawText.length < 200 && rawText ? rawText : `HTTP ${statusCode}`);
       const errCode = apiError?.code || statusCode;
       const errStatus = apiError?.status || '';
 
+      // If model not found or unsupported on current API key, immediately fall back to next model candidate
+      if (isNotFound && modelIndex < MODEL_CANDIDATES.length - 1) {
+        modelIndex++;
+        console.warn(`⚠️ [${label}] Model ${currentModel} returned 404 NOT_FOUND. Immediately switching to fallback candidate: ${MODEL_CANDIDATES[modelIndex]}`);
+        continue;
+      }
+
+      // If transient (503 high demand, 429 rate limit, 5xx), retry with progressive backoff and advance candidate model if persists
       if (isTransient && attempt <= maxRetries) {
+        if (attempt >= 2 && modelIndex < MODEL_CANDIDATES.length - 1) {
+          modelIndex++;
+          console.warn(`🔄 [${label}] High demand on ${currentModel}. Rotating to fallback candidate: ${MODEL_CANDIDATES[modelIndex]}`);
+        }
+
         const delay = Math.min(60000, initialDelayMs * Math.pow(2, attempt - 1) + Math.floor(Math.random() * 2000));
         console.warn(`⏳ [${label}] Gemini API transient error on attempt ${attempt}/${maxRetries} (${currentModel} - ${errCode} ${errStatus}: ${errorMsg.trim()}). Retrying in ${(delay / 1000).toFixed(1)}s...`);
         await sleep(delay);
@@ -153,7 +169,7 @@ async function callGeminiWithRetry(apiKey, requestBody, { maxRetries = 5, initia
       };
     }
 
-    if (attempt > 1) {
+    if (attempt > 1 || modelIndex > 0) {
       console.log(`✅ [${label}] Gemini API request succeeded with ${currentModel} on attempt ${attempt}!`);
     }
 
