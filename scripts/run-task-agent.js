@@ -515,23 +515,25 @@ ${todoList.map(item => `- ${item}`).join('\n')}
     const finishReason = candidate?.finishReason;
 
     // Check for tool calls (functionCall)
-    const functionCallPart = parts.find(p => p.functionCall);
-    if (functionCallPart) {
-      const call = functionCallPart.functionCall;
-      const result = executeTool(call.name, call.args);
+    const functionCallParts = parts.filter((p) => p.functionCall);
+    if (functionCallParts.length > 0) {
+      const responseParts = [];
+      for (const fcp of functionCallParts) {
+        const call = fcp.functionCall;
+        const result = executeTool(call.name, call.args);
+        responseParts.push({
+          functionResponse: {
+            name: call.name,
+            response: result,
+          },
+        });
+      }
 
-      // Append model call and function response turn to conversation history
+      // In Gemini API, function responses must be sent with role: 'user'
       conversationHistory.push({ role: 'model', parts: parts });
       conversationHistory.push({
-        role: 'function',
-        parts: [
-          {
-            functionResponse: {
-              name: call.name,
-              response: result
-            }
-          }
-        ]
+        role: 'user',
+        parts: responseParts,
       });
 
       continue; // Proceed to next turn in loop
