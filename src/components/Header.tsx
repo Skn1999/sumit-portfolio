@@ -32,16 +32,18 @@ const NAV_HIERARCHY: NavItem[] = [
       { to: "/ux-design#visual-design", label: "Visual Design" },
     ],
   },
-
   {
-    label: "Data Engineering",
-    mainRoute: "/data-engineering",
+    label: "Design Engineering",
+    mainRoute: "/design-engineering",
     subItems: [
       {
-        to: "/data-engineering#frontend-engineering",
-        label: "Front-end Engineering",
+        to: "/design-engineering#ai-side-projects",
+        label: "AI & Side Projects",
       },
-      { to: "/data-engineering#ai-data", label: "AI and Data" },
+      {
+        to: "/design-engineering#frontend-engineering",
+        label: "Front-end Systems",
+      },
     ],
   },
   {

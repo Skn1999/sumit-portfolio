@@ -1,0 +1,110 @@
+---
+slug: "actai"
+title: "ActAI: Intelligent Email Delegation & Oversight Review"
+tagline: "Bridging autonomous email agents with human-in-the-loop oversight through progressive disclosure and source-grounded evidence."
+date: "2026-09-24"
+type: "engineering"
+subCategory: "ai-side-projects"
+featured: true
+tech:
+  - "React 18"
+  - "TypeScript"
+  - "Design Engineering"
+  - "Autonomous Agents"
+  - "HCI / Human Oversight"
+  - "State Machines"
+metric: "Full end-to-end delegation review cycle completed in < 30 seconds with 100% source-grounded verifiability"
+links:
+  live: "https://temporary-brisk-agate-zgvse9l.vercel.app/"
+  github: "https://github.com/Skn1999/ACTAI-SMART-EMAIL"
+summary: "An autonomous email delegation and oversight prototype built to solve the AI trust gap. Combines a 3-screen progressive disclosure model, an instant source-grounded evidence inspector, and bounded decision choices so users can safely delegate complex email triage without losing agency."
+roles:
+  - "Design Engineer"
+  - "Full-Stack Prototyping"
+  - "Interaction Architecture"
+order: 1
+draft: false
+---
+
+import { ExternalLink, Github, CheckCircle2, ShieldAlert, Cpu, Eye } from "lucide-react";
+
+## 01 // WHY (The Core Belief)
+
+### The Automation Trust Paradox
+Autonomous AI email agents promise massive productivity gains, but in practice, executives and knowledge workers refuse to let autonomous bots send unreviewed correspondence. The friction is not technological capability—it is **trust**.
+
+When an agent acts as a black box:
+- Users worry about hallucinated details and awkward tone.
+- Users cannot verify what source material the agent based its decisions on.
+- The cognitive burden shifts from writing emails to anxiously second-guessing automated actions.
+
+> **The Guiding Belief:** True agency does not come from black-box automation. It comes from **bounded delegation with human oversight**—empowering users to offload tedious triage while giving them 1-click evidence verification and decisive veto power before a message leaves their outbox.
+
+---
+
+## 02 // HOW (Design Engineering Principles)
+
+To build trust between the human delegator and the autonomous agent, ActAI implements four core HCI and design engineering mechanisms:
+
+### 1. Progressive Disclosure (3-Tier Mental Model)
+Instead of confronting users with a dense, confusing timeline upfront, ActAI structures oversight into three intentional levels of detail:
+1. **Screen A ("Today" Overview):** Instant situational awareness. Identifies tasks in under 5 seconds, separating items needing immediate decisions from quiet background monitoring.
+2. **Screen B (Delegation Review & Timeline):** A 3-column workspace detailing the goal, active constraints, chronological agent actions, and exception alerts.
+3. **Screen C (Decision Sheet):** A focused modal displaying explicit options, downstream consequence modeling, and an editable draft.
+
+### 2. Source-Grounded Evidence Inspector
+AI inferences must never be opaque. Whenever ActAI highlights an anomaly (such as a vendor changing a delivery date), users can click **"View source"** to open a side drawer showing:
+- The exact customer or vendor email text.
+- Internal Project Atlas constraints.
+- Direct highlighting of quotes used to derive the suggested reply.
+
+### 3. Bounded Decision Architecture
+Open-ended text prompts increase user fatigue. ActAI translates complex situational choices into **3 bounded options** (e.g. *Keep 15 Oct delivery*, *Accept vendor date*, *Request callback*), each paired with an explicit consequence explanation before simulated sending.
+
+### 4. Deterministic State Machine & Ambient Indicators
+The entire workflow is driven by a strict finite-state machine (`IN_PROGRESS` → `AWAITING_DECISION` → `DRAFT_READY` → `SENT` / `MONITORING`), accompanied by `BotAvatar` agent identity states and animated `ThinkingOrb` feedback.
+
+---
+
+## 03 // WHAT (System Execution & Artifacts)
+
+ActAI was engineered as a production-grade, highly responsive web application built with modern front-end standards:
+
+- **Component Stack:** React 18, TypeScript, Vite, Tailwind CSS, Lucide icons, and custom CSS design tokens.
+- **Typography & Accessibility:** Built using the Archivo geometric grotesque font family, full WCAG AA color contrast, and keyboard navigation (`Escape` drawers, focus trapping).
+- **Light & Dark Theme Engine:** Zero-FOUC theme initialization script with persistent local storage.
+- **Evaluator Controls:** An interactive toolbar allowing evaluators to reset state, simulate network latency, trigger edge cases, and inspect the state machine in real time.
+
+<div className="my-10 p-6 md:p-8 rounded-2xl bg-paper-card border border-paper-border flex flex-col md:flex-row items-center justify-between gap-6">
+  <div>
+    <h3 className="text-xl font-bold font-display text-ink-primary mb-2">Explore the ActAI Live Experience</h3>
+    <p className="font-body-narrative text-sm text-ink-muted max-w-xl">
+      Test the live prototype directly on Vercel or review the open-source repository on GitHub.
+    </p>
+  </div>
+  <div className="flex flex-wrap items-center gap-3">
+    <a
+      href="https://temporary-brisk-agate-zgvse9l.vercel.app/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-ink-primary text-paper-bg font-mono text-xs uppercase tracking-wider font-semibold hover:opacity-90 transition-opacity"
+    >
+      <ExternalLink className="w-4 h-4" /> Live Prototype
+    </a>
+    <a
+      href="https://github.com/Skn1999/ACTAI-SMART-EMAIL"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-paper-border bg-paper-bg text-ink-primary font-mono text-xs uppercase tracking-wider font-semibold hover:border-ink-primary transition-colors"
+    >
+      <Github className="w-4 h-4" /> View GitHub
+    </a>
+  </div>
+</div>
+
+---
+
+## 04 // IMPACT & OUTCOME
+
+- **Sub-30-Second Triage:** Evaluators are able to open the task, inspect the vendor contradiction, verify source evidence, and approve a revised dispatch in under 30 seconds.
+- **Explainability Over Automation:** Proves that users are eager to delegate high-stakes communication when they feel in command of the final dispatch.

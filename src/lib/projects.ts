@@ -10,6 +10,7 @@ export type ProjectSubCategory =
   | "ux-design"
   | "visual-design"
   | "ai-data"
+  | "ai-side-projects"
   | "frontend-engineering";
 
 export type ProjectMeta = {
