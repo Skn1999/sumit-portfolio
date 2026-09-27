@@ -51,9 +51,7 @@ function packCodebaseContext(taskContent) {
 
 const MODEL_CANDIDATES = [
   'gemini-3.8-flash',
-  'models/gemini-3.8-flash',
-  'gemini-3.7-flash',
-  'gemini-2.0-flash'
+  'gemini-3.7-flash'
 ];
 
 // Helper: Sleep utility
@@ -144,17 +142,21 @@ async function callGeminiWithRetry(apiKey, requestBody, { maxRetries = 5, initia
       const errStatus = apiError?.status || '';
 
       // If model not found or unsupported on current API key, immediately fall back to next model candidate
-      if (isNotFound && modelIndex < MODEL_CANDIDATES.length - 1) {
-        modelIndex++;
-        console.warn(`⚠️ [${label}] Model ${currentModel} returned 404 NOT_FOUND. Immediately switching to fallback candidate: ${MODEL_CANDIDATES[modelIndex]}`);
-        continue;
+      if (isNotFound) {
+        if (modelIndex < MODEL_CANDIDATES.length - 1) {
+          modelIndex++;
+          console.warn(`⚠️ [${label}] Model ${currentModel} returned 404 NOT_FOUND. Immediately switching to fallback candidate: ${MODEL_CANDIDATES[modelIndex]}`);
+          continue;
+        } else {
+          console.error(`❌ [${label}] Model candidate ${currentModel} returned 404 NOT_FOUND and no further fallback models exist.`);
+        }
       }
 
       // If transient (503 high demand, 429 rate limit, 5xx), retry with progressive backoff and advance candidate model if persists
       if (isTransient && attempt <= maxRetries) {
-        if (attempt >= 2 && modelIndex < MODEL_CANDIDATES.length - 1) {
+        if (attempt >= 3 && modelIndex < MODEL_CANDIDATES.length - 1) {
           modelIndex++;
-          console.warn(`🔄 [${label}] High demand on ${currentModel}. Rotating to fallback candidate: ${MODEL_CANDIDATES[modelIndex]}`);
+          console.warn(`🔄 [${label}] High demand persisting on ${currentModel}. Rotating to fallback candidate: ${MODEL_CANDIDATES[modelIndex]}`);
         }
 
         const delay = Math.min(60000, initialDelayMs * Math.pow(2, attempt - 1) + Math.floor(Math.random() * 2000));
