@@ -5,10 +5,10 @@ import typography from "@tailwindcss/typography";
 export default {
   darkMode: ["class"],
   content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
+    "./pages/**/*.{ts,tsx,md,mdx}",
+    "./components/**/*.{ts,tsx,md,mdx}",
+    "./app/**/*.{ts,tsx,md,mdx}",
+    "./src/**/*.{ts,tsx,md,mdx}",
   ],
   prefix: "",
   theme: {
@@ -23,8 +23,8 @@ export default {
       fontFamily: {
         body: ["Inter", "sans-serif"],
         engineer: ["Space Mono", "monospace"],
-        designer: ["Space Grotesk", "sans-serif"],
-        display: ["Space Grotesk", "sans-serif"],
+        designer: ["Plus Jakarta Sans", "sans-serif"],
+        display: ["Plus Jakarta Sans", "sans-serif"],
         label: ["Space Mono", "monospace"],
         "body-narrative": ["Inter", "sans-serif"],
         "bite-display": ["JetBrains Mono", "ui-monospace", "monospace"],

@@ -30,7 +30,11 @@ order: 1
 draft: false
 ---
 
-import { ProjectImageAsset } from "@/components/ui/project-image-asset";
+import {
+  EditorialSideBySide,
+  EditorialGrid2Up,
+  EditorialCard,
+} from "@/components/editorial/EditorialLayout";
 
 ## 01 // WHY (The Core Belief)
 
@@ -44,50 +48,84 @@ When an agent acts as a black box:
 
 > **The Guiding Belief:** True agency does not come from black-box automation. It comes from **bounded delegation with human oversight**—empowering users to offload tedious triage while giving them 1-click evidence verification and decisive veto power before a message leaves their outbox.
 
-<ProjectImageAsset
-  src="actai/actai-steward-cover-animated.gif"
-  fallbackSrc="actai/actai-steward-cover-static.png"
-  alt="ActAI Intelligent Email Delegation and Oversight Interface"
-  className="w-full rounded-xl border border-paper-border shadow-md my-8"
-/>
-<p className="font-mono text-[11px] text-ink-muted tracking-wide text-center mt-2.5 mb-8">
-  Fig 01 // ActAI bounded email delegation and progressive oversight interface
-</p>
-
 ---
 
 ## 02 // HOW (Design Engineering Principles)
 
-To build trust between the human delegator and the autonomous agent, ActAI implements four core HCI and design engineering mechanisms:
+To build trust between the human delegator and the autonomous agent, ActAI implements four deterministic mechanisms:
 
-### 1. Progressive Disclosure (3-Tier Mental Model)
-Instead of confronting users with a dense, confusing timeline upfront, ActAI structures oversight into three intentional levels of detail:
-1. **Screen A ("Today" Overview):** Instant situational awareness. Identifies tasks in under 5 seconds, separating items needing immediate decisions from quiet background monitoring.
-2. **Screen B (Delegation Review & Timeline):** A 3-column workspace detailing the goal, active constraints, chronological agent actions, and exception alerts.
-3. **Screen C (Decision Sheet):** A focused modal displaying explicit options, downstream consequence modeling, and an editable draft.
+### Core Oversight Flows
 
-### 2. Source-Grounded Evidence Inspector
-AI inferences must never be opaque. Whenever ActAI highlights an anomaly (such as a vendor changing a delivery date), users can click **"View source"** to open a side drawer showing:
-- The exact customer or vendor email text.
-- Internal Project Atlas constraints.
-- Direct highlighting of quotes used to derive the suggested reply.
+<EditorialSideBySide
+  mediaSrc="actai/how-screen-a-today-light.png"
+  mediaAlt="Screen A: 1.0 Today Overview"
+  title="Screen A: Sub-5-second situational awareness"
+  description="Identifies tasks in under 5 seconds, separating actionable items needing immediate human decisions from quiet background monitoring."
+/>
 
-### 3. Bounded Decision Architecture
-Open-ended text prompts increase user fatigue. ActAI translates complex situational choices into **3 bounded options** (e.g. *Keep 15 Oct delivery*, *Accept vendor date*, *Request callback*), each paired with an explicit consequence explanation before simulated sending.
+<EditorialSideBySide
+  mediaSrc="actai/how-screen-b-delegation-light.png"
+  mediaAlt="Screen B: 3-Column Delegation Workspace"
+  title="Screen B: 3-column oversight workspace"
+  description="Juxtaposes active brief constraints and chronological agent execution steps against the flagged vendor contradiction."
+/>
 
-### 4. Deterministic State Machine & Ambient Indicators
-The entire workflow is driven by a strict finite-state machine (`IN_PROGRESS` → `AWAITING_DECISION` → `DRAFT_READY` → `SENT` / `MONITORING`), accompanied by deterministic agent identity states and animated feedback.
+<EditorialSideBySide
+  mediaSrc="actai/how-screen-c-decision-sheet-light.png"
+  mediaAlt="Screen C: Focused Decision Sheet Modal"
+  title="Screen C: Bounded choices with consequence modeling"
+  description="Translates ambiguous choices into 3 bounded options, modeling downstream impact alongside an editable draft reply."
+/>
+
+<EditorialGrid2Up>
+  <EditorialCard
+    mediaSrc="actai/how-source-inspector-light.png"
+    mediaAlt="Source-Grounded Evidence Inspector Drawer"
+    title="Source-grounded evidence inspector"
+    description="Users click 'View source' to open a side drawer showing exact customer quotes and internal brief constraints."
+  />
+  <EditorialCard
+    mediaSrc="actai/how-state-monitoring-light.png"
+    mediaAlt="Deterministic State Transition"
+    title="Deterministic state transition & feedback"
+    description="Approving a reply transitions task state to MONITORING, logging audit step 05 and updating ambient status in real time."
+  />
+</EditorialGrid2Up>
+
+<EditorialSideBySide
+  mediaSrc="actai/how-activity-audit-light.png"
+  mediaAlt="Multi-Agent Audit Trail"
+  title="Multi-agent audit trail with BotAvatars"
+  description="Cross-thread activity log with deterministic agent identities and timestamped actions to ensure total human accountability."
+/>
 
 ---
 
 ## 03 // WHAT (System Execution & Artifacts)
 
-ActAI was engineered as a production-grade, highly responsive web application built with modern front-end standards:
+ActAI was engineered as a production-grade web application built upon systematic design tokens, Swiss typographic hierarchy, and modular component primitives:
 
-- **Component Stack:** React 18, TypeScript, Vite, Tailwind CSS, Lucide icons, and custom CSS design tokens.
-- **Typography & Accessibility:** Built using the Archivo geometric grotesque font family, full WCAG AA color contrast, and keyboard navigation (`Escape` drawers, focus trapping).
-- **Light & Dark Theme Engine:** Zero-FOUC theme initialization script with persistent local storage.
-- **Evaluator Controls:** An interactive toolbar allowing evaluators to reset state, simulate network latency, trigger edge cases, and inspect the state machine in real time.
+<EditorialGrid2Up>
+  <EditorialCard
+    mediaSrc="actai/what-design-tokens-and-surfaces.png"
+    mediaAlt="ActAI Design System Plate 01: Warm Neutrality and Functional Color Discipline"
+    title="Warm neutrality & color discipline"
+    description="Functional 4-level surface hierarchy paired with semantic tokens for alerts, execution, and confirmation."
+  />
+  <EditorialCard
+    mediaSrc="actai/what-typography-and-layout-grid.png"
+    mediaAlt="ActAI Design System Plate 02: Swiss Grotesque Hierarchy and Three-Column Oversight Grid"
+    title="Swiss grotesque hierarchy & 3-column grid"
+    description="Strict proportional typography scale paired with a deterministic oversight grid."
+  />
+</EditorialGrid2Up>
+
+<EditorialSideBySide
+  mediaSrc="actai/what-primitives-and-state-engine.png"
+  mediaAlt="ActAI Design System Plate 03: Bounded Oversight Primitives, Living Agent Avatars, and Deterministic State Engine"
+  title="Living avatars & deterministic state engine"
+  description="BotAvatar identities, animated ThinkingOrb ambient states, and bounded oversight primitives engineered in React 18, TypeScript, and Tailwind CSS."
+/>
 
 ---
 
