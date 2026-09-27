@@ -28,6 +28,10 @@ draft: false
 ---
 
 import { ProjectImageAsset } from "@/components/ui/project-image-asset";
+import {
+  EditorialGrid2Up,
+  EditorialCard,
+} from "@/components/editorial/EditorialLayout";
 
 ## 01 // THE CHALLENGE
 
@@ -143,20 +147,20 @@ The in-room tablet display operates across **5 discrete ambient states** simulat
 
 For municipal facility managers monitoring dozens of public buildings simultaneously:
 
-<div className="flex flex-col md:flex-row md:items-start md:gap-6 my-6">
-  <div className="flex-1">
-    <ProjectImageAsset src="ediaqi-decision-support-system/DashboardV2-Homepage.jpg" alt="EDIAQI Public-good dashboard homepage" />
-    <p className="font-mono text-[10px] text-ink-muted text-center mt-2 mb-6">
-      Fig 05 // Dashboard V2 Homepage — Public Good & High-level Building Status
-    </p>
-  </div>
-  <div className="flex-1">
-    <ProjectImageAsset src="ediaqi-decision-support-system/DashboardV2-LocationPage.jpg" alt="EDIAQI Public-good dashboard location page" />
-    <p className="font-mono text-[10px] text-ink-muted text-center mt-2 mb-6">
-      Fig 06 // Dashboard V2 Location Page — Location-specific Telemetry & Facility Logs
-    </p>
-  </div>
-</div>
+<EditorialGrid2Up>
+  <EditorialCard
+    mediaSrc="ediaqi-decision-support-system/DashboardV2-Homepage.jpg"
+    mediaAlt="EDIAQI Public-good dashboard homepage"
+    title="Fig 05 // Dashboard V2 Homepage"
+    description="High-level building status and ambient air quality index for municipal stakeholders and school occupants."
+  />
+  <EditorialCard
+    mediaSrc="ediaqi-decision-support-system/DashboardV2-LocationPage.jpg"
+    mediaAlt="EDIAQI Public-good dashboard location page"
+    title="Fig 06 // Dashboard V2 Location Page"
+    description="Location-specific telemetry, 12+ parameter breakdowns, and actionable facility log protocols."
+  />
+</EditorialGrid2Up>
 
 ---
 

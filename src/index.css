@@ -416,6 +416,169 @@ All colors MUST be HSL.
   }
 }
 
+/* Editorial breakout container for case studies: expands wider than parent prose without transforms */
+.breakout-editorial {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .breakout-editorial {
+    width: min(92vw, 1380px) !important;
+    max-width: min(92vw, 1380px) !important;
+    margin-left: calc(50% - min(46vw, 690px)) !important;
+    margin-right: calc(50% - min(46vw, 690px)) !important;
+  }
+}
+
+/* ============================================================
+   EDITORIAL SIDE-BY-SIDE LAYOUT TOKENS & UTILITIES
+   Focused purely on spacing, margins, paddings, and side-by-side layout
+   (Non-alternating: Media Left, Narrative Right — Rachel Chen pattern)
+   ============================================================ */
+:root {
+  /* Layout Dimensions */
+  --editorial-canvas-max: 1200px;
+  --editorial-prose-max: 680px;
+
+  /* Spacing Scale (Margins & Paddings) */
+  --editorial-space-section: clamp(3.5rem, 6vw, 5rem);
+  --editorial-space-row: clamp(2rem, 4vw, 3rem);
+  --editorial-space-gap: clamp(1.5rem, 3vw, 2.5rem);
+
+  /* Media Bounds (Human-scale, not viewport-dwarfing) */
+  --editorial-media-max-h: 420px;
+  --editorial-media-radius: 12px;
+}
+
+/* Editorial Breakout: comfortable width for side-by-side without horizontal scrolling */
+.editorial-breakout {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .editorial-breakout {
+    width: min(92vw, var(--editorial-canvas-max)) !important;
+    max-width: min(92vw, var(--editorial-canvas-max)) !important;
+    margin-left: calc(50% - min(46vw, 600px)) !important;
+    margin-right: calc(50% - min(46vw, 600px)) !important;
+  }
+}
+
+/* Non-alternating Side-by-Side Row: Media Left (~60%), Text Right (~40%) */
+.editorial-side-by-side {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--editorial-space-gap);
+  margin-top: var(--editorial-space-row);
+  margin-bottom: var(--editorial-space-row);
+  align-items: end;
+}
+
+@media (min-width: 768px) {
+  .editorial-side-by-side {
+    grid-template-columns: 60% auto;
+    align-items: end;
+  }
+}
+
+/* Media Frame: bounded height, clean border, rounded corners */
+.editorial-media-frame,
+.editorial-media-container {
+  position: relative;
+  width: 100%;
+  max-height: var(--editorial-media-max-h);
+  border: 1px solid hsl(var(--paper-border));
+  border-radius: var(--editorial-media-radius);
+  overflow: hidden;
+  background-color: hsl(var(--paper-card));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editorial-media-frame img,
+.editorial-media-container img {
+  width: 100%;
+  height: auto;
+  max-height: var(--editorial-media-max-h);
+  object-fit: contain;
+  display: block;
+}
+
+/* Text Column: naturally aligned with the bottom of the media */
+.editorial-text-col,
+.editorial-text-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 0.25rem;
+}
+
+/* 2-Up Comparison Grid for paired states */
+.editorial-grid-2up {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--editorial-space-gap);
+  margin-top: var(--editorial-space-row);
+  margin-bottom: var(--editorial-space-row);
+}
+
+@media (min-width: 768px) {
+  .editorial-grid-2up {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Editorial Tables inside MDX case studies */
+.prose table {
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  border: 1px solid hsl(var(--paper-border));
+  background-color: hsl(var(--paper-card));
+  overflow: hidden;
+  font-size: 0.875rem;
+}
+
+.prose thead {
+  background-color: hsl(var(--paper-bg));
+}
+
+.prose th {
+  color: hsl(var(--ink-primary));
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid hsl(var(--paper-border));
+  text-align: left;
+}
+
+.prose td {
+  padding: 0.85rem 1rem;
+  color: hsl(var(--ink-muted));
+  border-bottom: 1px solid hsl(var(--paper-border) / 0.5);
+  line-height: 1.6;
+  vertical-align: top;
+}
+
+.prose tr:last-child td {
+  border-bottom: none;
+}
+
+.prose td strong {
+  color: hsl(var(--ink-primary));
+}
+
 /* ============================================================
    UX BITES SKIN — scoped Japanese-zine identity
    Applied only when an ancestor has .ux-bites-skin

@@ -43,8 +43,13 @@ const IndexContent = () => {
           {/* Section 3: Achievements */}
           <AchievementsSection />
 
-          {/* Section 4: Product Hunt Launch */}
-          <section id="product-hunt-launch" className="py-20 md:py-32 bg-paper-bg border-t border-paper-border">
+          {/* Section 4: Launches */}
+          <section
+            id="product-hunt-launch"
+            className="py-20 md:py-32 bg-paper-bg border-t border-paper-border"
+          >
+            {/* Anchor alias for design engineering lab */}
+            <span id="design-engineering-lab" className="sr-only" aria-hidden="true" />
             <div className="max-w-6xl mx-auto px-4 md:px-8">
               <motion.div
                 initial={{ opacity: 0, filter: "blur(6px)", y: 16 }}
@@ -63,6 +68,8 @@ const IndexContent = () => {
                   Showcasing recent product launches and achievements.
                 </p>
               </motion.div>
+
+              {/* Product Decision Tool Launch Badge */}
               <ProductHuntBadge />
             </div>
           </section>
