@@ -490,6 +490,7 @@ ${todoList.map(item => `- ${item}`).join('\n')}
   ];
 
   console.log("🚀 Starting ReAct execution loop with Gemini API...");
+  let hasBuildSucceeded = false;
 
   for (let turn = 1; turn <= maxTurns; turn++) {
     console.log(`\n--- Turn ${turn}/${maxTurns} ---`);
@@ -521,6 +522,9 @@ ${todoList.map(item => `- ${item}`).join('\n')}
       for (const fcp of functionCallParts) {
         const call = fcp.functionCall;
         const result = executeTool(call.name, call.args);
+        if (call.name === 'run_build_verification' && result?.success) {
+          hasBuildSucceeded = true;
+        }
         responseParts.push({
           functionResponse: {
             name: call.name,
@@ -541,10 +545,11 @@ ${todoList.map(item => `- ${item}`).join('\n')}
 
     // If no tool calls present, check for completion
     const textPart = parts.find(p => p.text);
-    const isTaskComplete = finishReason === 'STOP' || textPart || parts.length === 0;
+    const textContent = textPart?.text || '';
 
-    if (isTaskComplete) {
-      const completionSummary = textPart?.text || "Task execution finished cleanly with no remaining tool calls.";
+    // If build has succeeded and no more tool calls needed, task is complete
+    if (hasBuildSucceeded) {
+      const completionSummary = textContent || "Task execution finished cleanly with build verification passed.";
       console.log("\n✅ Agent Task Execution Completed Cleanly:\n", completionSummary);
 
       // Append entry to .agent/progress.md
@@ -554,6 +559,19 @@ ${todoList.map(item => `- ${item}`).join('\n')}
       console.log('✅ Appended progress entry to .agent/progress.md');
       process.exit(0);
     }
+
+    // If build has NOT yet succeeded, model gave an interim conversational message without calling tools.
+    // Nudge the model to proceed with tool calls and mandatory build verification.
+    console.log(`💬 Model responded with text without tool calls before build verification: "${textContent.slice(0, 150)}..."`);
+    conversationHistory.push({ role: 'model', parts: parts });
+    conversationHistory.push({
+      role: 'user',
+      parts: [
+        {
+          text: "You have not yet completed all steps and verified the build. Please continue implementing the remaining requirements using `write_file` and then execute `run_build_verification` to confirm the codebase compiles cleanly."
+        }
+      ]
+    });
   }
 
   console.log(`\n⚠️ Reached allocated limit of ${maxTurns} turns without explicit STOP.`);

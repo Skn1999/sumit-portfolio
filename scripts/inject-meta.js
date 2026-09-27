@@ -284,6 +284,22 @@ function getStaticRoutes() {
         url: `${SITE_URL}/projects`,
       },
     },
+    {
+      route: "/design-engineering",
+      meta: {
+        title: `Design Engineering & Systems | ${SITE_NAME}`,
+        description: `AI LLM workflows, autonomous agent oversight, ActAI email delegation, and front-end React systems by ${SITE_NAME}.`,
+        url: `${SITE_URL}/design-engineering`,
+      },
+    },
+    {
+      route: "/data-engineering",
+      meta: {
+        title: `Design Engineering & Systems | ${SITE_NAME}`,
+        description: `AI LLM workflows, autonomous agent oversight, ActAI email delegation, and front-end React systems by ${SITE_NAME}.`,
+        url: `${SITE_URL}/data-engineering`,
+      },
+    },
   ];
 }
 
