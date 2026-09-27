@@ -49,6 +49,136 @@ function packCodebaseContext(taskContent) {
   return context;
 }
 
+const MODEL_CANDIDATES = [
+  'gemini-3.8-flash',
+  'gemini-3.7-flash'
+];
+
+// Helper: Sleep utility
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Helper: Classify transient/retryable errors (high demand, rate limits, 5xx gateway errors)
+function isTransientError(status, errorObj, rawText = '') {
+  if (status === 429 || status === 503 || status === 500 || status === 502 || status === 504) {
+    return true;
+  }
+  if (errorObj) {
+    const code = Number(errorObj.code);
+    const errStatus = String(errorObj.status || '').toUpperCase();
+    const msg = String(errorObj.message || '').toLowerCase();
+
+    if (code === 429 || code === 503 || code === 500 || code === 502 || code === 504) return true;
+    if (errStatus === 'UNAVAILABLE' || errStatus === 'RESOURCE_EXHAUSTED' || errStatus === 'INTERNAL') return true;
+    if (
+      msg.includes('high demand') ||
+      msg.includes('temporar') ||
+      msg.includes('rate limit') ||
+      msg.includes('quota') ||
+      msg.includes('overloaded')
+    ) {
+      return true;
+    }
+  }
+  const textLower = rawText.toLowerCase();
+  if (
+    textLower.includes('high demand') ||
+    textLower.includes('service unavailable') ||
+    textLower.includes('too many requests')
+  ) {
+    return true;
+  }
+  return false;
+}
+
+// Robust Gemini API caller with progressive exponential backoff, jitter, and multi-model fallback rotation
+async function callGeminiWithRetry(apiKey, requestBody, { maxRetries = 5, initialDelayMs = 3000, label = 'Request' } = {}) {
+  let modelIndex = 0;
+
+  for (let attempt = 1; attempt <= maxRetries + 1; attempt++) {
+    const currentModel = MODEL_CANDIDATES[modelIndex] || MODEL_CANDIDATES[MODEL_CANDIDATES.length - 1];
+
+    // Normalize endpoint path to properly resolve whether model has 'models/' prefix or not
+    const modelPath = currentModel.startsWith('models/') ? currentModel : `models/${currentModel}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/${modelPath}:generateContent?key=${apiKey}`;
+
+    let response;
+    let rawText = '';
+    let data = null;
+
+    try {
+      response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
+      });
+
+      rawText = await response.text();
+      try {
+        data = JSON.parse(rawText);
+      } catch {
+        // Non-JSON response (e.g. gateway HTML error page)
+        data = null;
+      }
+    } catch (networkErr) {
+      if (attempt <= maxRetries) {
+        const delay = Math.min(60000, initialDelayMs * Math.pow(2, attempt - 1) + Math.floor(Math.random() * 2000));
+        console.warn(`⚠️ [${label}] Network/fetch error on attempt ${attempt}/${maxRetries} (${currentModel}): ${networkErr.message}. Retrying in ${(delay / 1000).toFixed(1)}s...`);
+        await sleep(delay);
+        continue;
+      }
+      return { data: null, error: { message: `Network error after ${maxRetries} retries: ${networkErr.message}` } };
+    }
+
+    const statusCode = response ? response.status : 0;
+    const apiError = data?.error;
+
+    if (!response.ok || apiError || !data) {
+      const isTransient = isTransientError(statusCode, apiError, rawText);
+      const isNotFound = statusCode === 404 || apiError?.status === 'NOT_FOUND' || (apiError?.message && apiError.message.includes('not found'));
+      const errorMsg = apiError?.message || (rawText.length < 200 && rawText ? rawText : `HTTP ${statusCode}`);
+      const errCode = apiError?.code || statusCode;
+      const errStatus = apiError?.status || '';
+
+      // If model not found or unsupported on current API key, immediately fall back to next model candidate
+      if (isNotFound) {
+        if (modelIndex < MODEL_CANDIDATES.length - 1) {
+          modelIndex++;
+          console.warn(`⚠️ [${label}] Model ${currentModel} returned 404 NOT_FOUND. Immediately switching to fallback candidate: ${MODEL_CANDIDATES[modelIndex]}`);
+          continue;
+        } else {
+          console.error(`❌ [${label}] Model candidate ${currentModel} returned 404 NOT_FOUND and no further fallback models exist.`);
+        }
+      }
+
+      // If transient (503 high demand, 429 rate limit, 5xx), retry with progressive backoff and advance candidate model if persists
+      if (isTransient && attempt <= maxRetries) {
+        if (attempt >= 3 && modelIndex < MODEL_CANDIDATES.length - 1) {
+          modelIndex++;
+          console.warn(`🔄 [${label}] High demand persisting on ${currentModel}. Rotating to fallback candidate: ${MODEL_CANDIDATES[modelIndex]}`);
+        }
+
+        const delay = Math.min(60000, initialDelayMs * Math.pow(2, attempt - 1) + Math.floor(Math.random() * 2000));
+        console.warn(`⏳ [${label}] Gemini API transient error on attempt ${attempt}/${maxRetries} (${currentModel} - ${errCode} ${errStatus}: ${errorMsg.trim()}). Retrying in ${(delay / 1000).toFixed(1)}s...`);
+        await sleep(delay);
+        continue;
+      }
+
+      return {
+        data,
+        error: apiError || { code: statusCode, status: errStatus, message: errorMsg }
+      };
+    }
+
+    if (attempt > 1 || modelIndex > 0) {
+      console.log(`✅ [${label}] Gemini API request succeeded with ${currentModel} on attempt ${attempt}!`);
+    }
+
+    return { data, error: null };
+  }
+}
+
 // Generate dynamic TODO list & turn estimation using Gemini API
 async function generateTaskList(taskContent, packedContext, apiKey) {
   console.log("📋 Generating task TODO list and estimating turn budget with Gemini API...");
@@ -73,22 +203,25 @@ Return ONLY a raw valid JSON object (with no code block formatting) matching thi
 `;
 
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    const { data, error } = await callGeminiWithRetry(
+      apiKey,
+      {
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: { temperature: 0.1 }
-      })
-    });
+      },
+      { maxRetries: 3, label: "TODO-Generation" }
+    );
 
-    const data = await response.json();
-    const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      const parsed = JSON.parse(jsonMatch[0]);
-      if (parsed.todo_list && Array.isArray(parsed.todo_list) && parsed.todo_list.length > 0) {
-        return parsed;
+    if (error) {
+      console.warn("⚠️ Could not generate TODO list via Gemini API (retries exhausted):", error.message);
+    } else {
+      const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        if (parsed.todo_list && Array.isArray(parsed.todo_list) && parsed.todo_list.length > 0) {
+          return parsed;
+        }
       }
     }
   } catch (err) {
@@ -359,23 +492,23 @@ ${todoList.map(item => `- ${item}`).join('\n')}
   ];
 
   console.log("🚀 Starting ReAct execution loop with Gemini API...");
+  let hasBuildSucceeded = false;
 
   for (let turn = 1; turn <= maxTurns; turn++) {
     console.log(`\n--- Turn ${turn}/${maxTurns} ---`);
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    const { data, error } = await callGeminiWithRetry(
+      apiKey,
+      {
         contents: conversationHistory,
         tools: toolsDeclaration,
         generationConfig: { temperature: 0.1 }
-      })
-    });
+      },
+      { maxRetries: 5, initialDelayMs: 3000, label: `Turn ${turn}` }
+    );
 
-    const data = await response.json();
-    if (data.error) {
-      console.error("❌ Gemini API Error:", data.error);
+    if (error) {
+      console.error(`❌ Gemini API Fatal Error on Turn ${turn}/${maxTurns} (retries exhausted):`, error);
       process.exit(1);
     }
 
@@ -385,23 +518,28 @@ ${todoList.map(item => `- ${item}`).join('\n')}
     const finishReason = candidate?.finishReason;
 
     // Check for tool calls (functionCall)
-    const functionCallPart = parts.find(p => p.functionCall);
-    if (functionCallPart) {
-      const call = functionCallPart.functionCall;
-      const result = executeTool(call.name, call.args);
+    const functionCallParts = parts.filter((p) => p.functionCall);
+    if (functionCallParts.length > 0) {
+      const responseParts = [];
+      for (const fcp of functionCallParts) {
+        const call = fcp.functionCall;
+        const result = executeTool(call.name, call.args);
+        if (call.name === 'run_build_verification' && result?.success) {
+          hasBuildSucceeded = true;
+        }
+        responseParts.push({
+          functionResponse: {
+            name: call.name,
+            response: result,
+          },
+        });
+      }
 
-      // Append model call and function response turn to conversation history
+      // In Gemini API, function responses must be sent with role: 'user'
       conversationHistory.push({ role: 'model', parts: parts });
       conversationHistory.push({
-        role: 'function',
-        parts: [
-          {
-            functionResponse: {
-              name: call.name,
-              response: result
-            }
-          }
-        ]
+        role: 'user',
+        parts: responseParts,
       });
 
       continue; // Proceed to next turn in loop
@@ -409,10 +547,11 @@ ${todoList.map(item => `- ${item}`).join('\n')}
 
     // If no tool calls present, check for completion
     const textPart = parts.find(p => p.text);
-    const isTaskComplete = finishReason === 'STOP' || textPart || parts.length === 0;
+    const textContent = textPart?.text || '';
 
-    if (isTaskComplete) {
-      const completionSummary = textPart?.text || "Task execution finished cleanly with no remaining tool calls.";
+    // If build has succeeded and no more tool calls needed, task is complete
+    if (hasBuildSucceeded) {
+      const completionSummary = textContent || "Task execution finished cleanly with build verification passed.";
       console.log("\n✅ Agent Task Execution Completed Cleanly:\n", completionSummary);
 
       // Append entry to .agent/progress.md
@@ -422,6 +561,19 @@ ${todoList.map(item => `- ${item}`).join('\n')}
       console.log('✅ Appended progress entry to .agent/progress.md');
       process.exit(0);
     }
+
+    // If build has NOT yet succeeded, model gave an interim conversational message without calling tools.
+    // Nudge the model to proceed with tool calls and mandatory build verification.
+    console.log(`💬 Model responded with text without tool calls before build verification: "${textContent.slice(0, 150)}..."`);
+    conversationHistory.push({ role: 'model', parts: parts });
+    conversationHistory.push({
+      role: 'user',
+      parts: [
+        {
+          text: "You have not yet completed all steps and verified the build. Please continue implementing the remaining requirements using `write_file` and then execute `run_build_verification` to confirm the codebase compiles cleanly."
+        }
+      ]
+    });
   }
 
   console.log(`\n⚠️ Reached allocated limit of ${maxTurns} turns without explicit STOP.`);

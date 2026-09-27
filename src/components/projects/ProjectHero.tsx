@@ -146,6 +146,11 @@ export const ProjectHero: React.FC<ProjectHeroProps> = ({ project }) => {
           >
             <ProjectImageAsset
               src={`${project.slug}/${project.cover.filename}`}
+              fallbackSrc={
+                project.cover.fallbackFilename
+                  ? `${project.slug}/${project.cover.fallbackFilename}`
+                  : undefined
+              }
               alt={project.cover.alt || project.title}
               className="w-full h-full object-cover"
               priority

@@ -14,7 +14,11 @@ type CategoryKey = "hero" | "ux-design" | "data-engineering" | "writings";
 
 function getCategoryKey(path: string | null): CategoryKey {
   if (!path) return "hero";
-  if (path.startsWith("/data-engineering")) return "data-engineering";
+  if (
+    path.startsWith("/design-engineering") ||
+    path.startsWith("/data-engineering")
+  )
+    return "data-engineering";
   if (
     path.startsWith("/ux-design") ||
     path.startsWith("/projects") ||
