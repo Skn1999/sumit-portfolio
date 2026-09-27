@@ -18,11 +18,15 @@ export function ProjectImage({
   ...props
 }: ProjectImageProps) {
   const imagePath = `${project}/${image.filename}`;
+  const fallbackPath = image.fallbackFilename
+    ? `${project}/${image.fallbackFilename}`
+    : undefined;
 
   return (
     <figure className={cn("relative", className)}>
       <ProjectImageAsset
         src={imagePath}
+        fallbackSrc={fallbackPath}
         alt={image.alt}
         className={cn("object-cover w-full h-full rounded-lg")}
         {...props}

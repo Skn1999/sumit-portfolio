@@ -8,8 +8,6 @@ import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
 import ProductHuntBadge from "@/components/ProductHuntBadge";
 
-import ActAiShowcase from "@/components/ActAiShowcase";
-
 const IndexContent = () => {
   return (
     <Layout>
@@ -45,38 +43,30 @@ const IndexContent = () => {
           {/* Section 3: Achievements */}
           <AchievementsSection />
 
-          {/* Section 4: Design Engineering & AI Side Projects */}
-          <section id="design-engineering-lab" className="py-20 md:py-32 bg-paper-bg border-t border-paper-border">
-            {/* Alias for legacy #product-hunt-launch anchor */}
-            <span id="product-hunt-launch" className="sr-only" aria-hidden="true" />
+          {/* Section 4: Launches */}
+          <section
+            id="product-hunt-launch"
+            className="py-20 md:py-32 bg-paper-bg border-t border-paper-border"
+          >
+            {/* Anchor alias for design engineering lab */}
+            <span id="design-engineering-lab" className="sr-only" aria-hidden="true" />
             <div className="max-w-6xl mx-auto px-4 md:px-8">
               <motion.div
                 initial={{ opacity: 0, filter: "blur(6px)", y: 16 }}
                 whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="mb-12 md:mb-16 text-center"
+                className="mb-16 md:mb-20 text-center"
               >
                 <span className="font-mono text-xs tracking-widest text-ink-muted uppercase block mb-2">
-                  // 04 DESIGN ENGINEERING &amp; AI SIDE PROJECTS
+                  // LAUNCHES
                 </span>
                 <h2 className="text-3xl md:text-5xl font-bold font-display text-ink-primary tracking-tighter">
-                  Design Engineering Lab
+                  Recent Launches
                 </h2>
                 <p className="font-body-narrative text-base md:text-lg text-ink-muted mt-3 max-w-2xl mx-auto">
-                  Side projects exploring the intersection of autonomous AI agents, human-in-the-loop oversight, and crisp interaction design.
+                  Showcasing recent product launches and achievements.
                 </p>
-              </motion.div>
-
-              {/* ActAI Flagship Showcase */}
-              <motion.div
-                initial={{ opacity: 0, filter: "blur(6px)", y: 16 }}
-                whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="mb-16"
-              >
-                <ActAiShowcase />
               </motion.div>
 
               {/* Product Decision Tool Launch Badge */}

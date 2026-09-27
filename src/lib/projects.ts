@@ -1,5 +1,6 @@
 export interface ProjectImage {
   filename: string;
+  fallbackFilename?: string;
   alt: string;
   caption?: string;
   fit?: "cover" | "contain" | "scale-down";
@@ -52,8 +53,10 @@ const modules = import.meta.glob("../content/projects/*/index.mdx", {
 
 export const projects = Object.entries(modules).map(([path, mod]) => {
   const fm = mod.frontmatter;
-  const filename = path.split("/").pop() || "";
-  const slug = fm?.slug ?? filename.replace(/\.(mdx|md)$/, "");
+  const pathParts = path.split("/");
+  const dirName = pathParts[pathParts.length - 2] || "";
+  const filename = pathParts[pathParts.length - 1] || "";
+  const slug = fm?.slug || dirName || filename.replace(/\.(mdx|md)$/, "");
   return {
     ...(fm ?? {}),
     slug,
@@ -76,7 +79,22 @@ export const visibleProjects = projects
   });
 
 export function getProjectBySlug(slug: string) {
-  return projects.find((p) => p.slug === slug);
+  if (!slug) return undefined;
+  const clean = slug.toLowerCase().trim();
+  // 1. Direct match
+  const direct = projects.find((p) => p.slug.toLowerCase() === clean);
+  if (direct) return direct;
+
+  // 2. ActAI aliases ('ai', 'act-ai', 'act_ai', 'actai-smart-email')
+  if (["ai", "act-ai", "act_ai", "actai-smart-email", "actai"].includes(clean)) {
+    return projects.find((p) => p.slug === "actai");
+  }
+
+  // 3. Normalized alphanumeric match
+  const normalized = clean.replace(/[^a-z0-9]/g, "");
+  return projects.find(
+    (p) => p.slug.toLowerCase().replace(/[^a-z0-9]/g, "") === normalized
+  );
 }
 
 export function getProjectsByType(type: ProjectMeta["type"]) {

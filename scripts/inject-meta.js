@@ -227,7 +227,8 @@ function getProjectRoutes() {
       ];
 
       // Resolve cover image from Vite manifest
-      const coverFilename = fm.cover?.filename;
+      // Resolve cover image from Vite manifest (prefer static fallback PNG for social crawlers)
+      const coverFilename = fm.cover?.fallbackFilename || fm.cover?.filename;
       const coverSrcPath = coverFilename
         ? `src/content/projects/${projectDir}/${coverFilename}`
         : null;
@@ -298,6 +299,22 @@ function getStaticRoutes() {
         title: `Design Engineering & Systems | ${SITE_NAME}`,
         description: `AI LLM workflows, autonomous agent oversight, ActAI email delegation, and front-end React systems by ${SITE_NAME}.`,
         url: `${SITE_URL}/data-engineering`,
+      },
+    },
+    {
+      route: "/projects/ai",
+      meta: {
+        title: `ActAI: Intelligent Email Delegation & Oversight Review | ${SITE_NAME}`,
+        description: `An autonomous email delegation and oversight prototype built to solve the AI trust gap. Combines a 3-screen progressive disclosure model, an instant source-grounded evidence inspector, and bounded decision choices.`,
+        url: `${SITE_URL}/projects/actai`,
+      },
+    },
+    {
+      route: "/projects/act-ai",
+      meta: {
+        title: `ActAI: Intelligent Email Delegation & Oversight Review | ${SITE_NAME}`,
+        description: `An autonomous email delegation and oversight prototype built to solve the AI trust gap. Combines a 3-screen progressive disclosure model, an instant source-grounded evidence inspector, and bounded decision choices.`,
+        url: `${SITE_URL}/projects/actai`,
       },
     },
   ];

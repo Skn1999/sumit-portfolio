@@ -1,7 +1,7 @@
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
@@ -52,6 +52,8 @@ const AnimatedRoutes = () => {
         <Route path="/design-engineering" element={<DesignEngineeringPage />} />
         <Route path="/data-engineering" element={<DesignEngineeringPage />} />
         <Route path="/projects" element={<UxDesignPage />} />
+        <Route path="/projects/ai" element={<Navigate to="/projects/actai" replace />} />
+        <Route path="/projects/act-ai" element={<Navigate to="/projects/actai" replace />} />
         <Route path="/projects/:slug" element={<ProjectPage />} />
         <Route path="/visual-design" element={<UxDesignPage />} />
         <Route path="/writings/publication" element={<WritingsPage />} />

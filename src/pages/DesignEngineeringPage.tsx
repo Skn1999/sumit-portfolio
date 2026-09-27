@@ -7,7 +7,6 @@ import { getProjectsBySubCategory } from "@/lib/projects";
 import { motion } from "framer-motion";
 import { ProjectIndexList } from "@/components/ProjectIndexList";
 import ProductHuntBadge from "@/components/ProductHuntBadge";
-import ActAiShowcase from "@/components/ActAiShowcase";
 
 export const AiSideProjectsSection: React.FC = () => {
   // Query both ai-side-projects and ai-data for index listing
@@ -43,16 +42,10 @@ export const AiSideProjectsSection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Flagship ActAI Feature Spotlight */}
-        <motion.div
-          initial={{ opacity: 0, filter: "blur(6px)", y: 16 }}
-          whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16 md:mb-20"
-        >
-          <ActAiShowcase />
-        </motion.div>
+        {/* Minimalist Editorial Index List */}
+        {combinedProjects.length > 0 && (
+          <ProjectIndexList projects={combinedProjects} categoryTag="AI &amp; DATA" />
+        )}
 
         {/* Product Decision Tool Launch Badge */}
         <motion.div
@@ -60,20 +53,10 @@ export const AiSideProjectsSection: React.FC = () => {
           whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex justify-center mb-16 md:mb-20"
+          className="flex justify-center mt-16 md:mt-20"
         >
           <ProductHuntBadge />
         </motion.div>
-
-        {/* Minimalist Editorial Index List */}
-        {combinedProjects.length > 0 && (
-          <div>
-            <h3 className="font-mono text-xs tracking-widest text-ink-muted uppercase mb-6">
-              // ALL AI &amp; SYSTEM PROJECTS
-            </h3>
-            <ProjectIndexList projects={combinedProjects} categoryTag="AI &amp; DATA" />
-          </div>
-        )}
       </div>
     </section>
   );
