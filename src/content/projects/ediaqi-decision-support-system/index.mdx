@@ -58,7 +58,7 @@ Instead of forcing occupants to log into an administrative dashboard, the core i
       />
     </div>
     <figcaption className="font-mono text-[11px] text-ink-muted text-center mt-3">
-      Fig 01 // In-room ambient tablet prototype: translating sensor thresholds into immediate physical actions
+      In-room ambient tablet prototype: translating sensor thresholds into immediate physical actions
     </figcaption>
   </div>
 </figure>
@@ -72,7 +72,7 @@ A heuristic evaluation of Deda Next's initial dashboard identified **30 usabilit
 <div className="not-prose my-8 md:my-12 divide-y divide-paper-border/60 border-y border-paper-border/60">
   <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
     <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-      01 // Touchpoint
+      Touchpoint
     </div>
     <div className="md:col-span-9 space-y-1.5">
       <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
@@ -88,7 +88,7 @@ A heuristic evaluation of Deda Next's initial dashboard identified **30 usabilit
 
   <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
     <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-      02 // Disclosure
+      Disclosure
     </div>
     <div className="md:col-span-9 space-y-1.5">
       <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
@@ -104,7 +104,7 @@ A heuristic evaluation of Deda Next's initial dashboard identified **30 usabilit
 
   <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
     <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-      03 // Modality
+      Modality
     </div>
     <div className="md:col-span-9 space-y-1.5">
       <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
@@ -120,7 +120,7 @@ A heuristic evaluation of Deda Next's initial dashboard identified **30 usabilit
 
   <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
     <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-      04 // Roles
+      Roles
     </div>
     <div className="md:col-span-9 space-y-1.5">
       <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
@@ -144,7 +144,7 @@ A heuristic evaluation of Deda Next's initial dashboard identified **30 usabilit
     />
   </div>
   <figcaption className="font-mono text-[11px] text-ink-muted text-center mt-3">
-    Fig 02 // Heuristic audit identifying 30 usability and accessibility issues in the legacy telemetry UI
+    Heuristic audit identifying 30 usability and accessibility issues in the legacy telemetry UI
   </figcaption>
 </figure>
 
@@ -194,27 +194,29 @@ Raw alerts fail because they don't close the loop. If an occupant opens a window
     />
   </div>
   <figcaption className="font-mono text-[11px] text-ink-muted text-center mt-3">
-    Fig 03 // State machine logic: from ambient monitoring to thermal comfort recovery
+    State machine logic: from ambient monitoring to thermal comfort recovery
   </figcaption>
 </figure>
 
 > *"I opened the window. After a while, I'm freezing. I'm not able to understand that it is cold and it's time to close... It's too late for me."*  
 > — Research Participant
 
-<div className="not-prose my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+<div className="not-prose my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
   <div className="flex flex-col gap-2.5">
     <div className="editorial-media-container rounded-xl overflow-hidden border border-paper-border bg-paper-card">
       <ProjectImageAsset
-        src="ediaqi-decision-support-system/display-ambient-good.jpg"
-        alt="Optimal ambient air quality screen"
+        src="ediaqi-decision-support-system/Tablet_interface_on_hardware_device_20260928231627_3.jpg"
+        alt="Optimal baseline tablet display mockup"
         className="w-full h-auto object-contain"
+        width={1024}
+        height={1024}
       />
     </div>
     <div>
       <div className="font-mono text-[11px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-semibold mb-1">
-        01 // Optimal Baseline
+        Optimal Baseline
       </div>
-      <p className="text-xs text-ink-muted leading-relaxed">
+      <p className="text-[11px] md:text-xs text-ink-muted leading-relaxed">
         Subtle green interface confirming air is healthy (CO₂ &lt; 800 ppm) without demanding conscious attention.
       </p>
     </div>
@@ -223,16 +225,18 @@ Raw alerts fail because they don't close the loop. If an occupant opens a window
   <div className="flex flex-col gap-2.5">
     <div className="editorial-media-container rounded-xl overflow-hidden border border-paper-border bg-paper-card">
       <ProjectImageAsset
-        src="ediaqi-decision-support-system/display-alert-poor.jpg"
-        alt="Warning alert screen"
+        src="ediaqi-decision-support-system/Tablet_display_on_wall_20260928231627.jpg"
+        alt="Warning alert tablet display mockup"
         className="w-full h-auto object-contain"
+        width={1024}
+        height={1024}
       />
     </div>
     <div>
       <div className="font-mono text-[11px] uppercase tracking-wider text-amber-500 font-semibold mb-1">
-        02 // Warning Alert
+        Warning Alert
       </div>
-      <p className="text-xs text-ink-muted leading-relaxed">
+      <p className="text-[11px] md:text-xs text-ink-muted leading-relaxed">
         Amber threshold notice (CO₂ &gt; 1200 ppm) warning occupants that ventilation is degrading.
       </p>
     </div>
@@ -241,36 +245,40 @@ Raw alerts fail because they don't close the loop. If an occupant opens a window
   <div className="flex flex-col gap-2.5">
     <div className="editorial-media-container rounded-xl overflow-hidden border border-paper-border bg-paper-card">
       <ProjectImageAsset
-        src="ediaqi-decision-support-system/display-action-protocol.jpg"
-        alt="Action protocol screen"
+        src="ediaqi-decision-support-system/Tablet_interface_on_hardware_device_20260928231627_2.jpg"
+        alt="Action directive tablet display mockup"
         className="w-full h-auto object-contain"
+        width={1024}
+        height={1024}
       />
     </div>
     <div>
       <div className="font-mono text-[11px] uppercase tracking-wider text-ink-primary font-semibold mb-1">
-        03 // Action Directive
+        Action Directive
       </div>
-      <p className="text-xs text-ink-muted leading-relaxed">
+      <p className="text-[11px] md:text-xs text-ink-muted leading-relaxed">
         Translates numbers into explicit physical directives with a 1-tap confirmation button (*"Ho aperto le finestre"*).
       </p>
     </div>
   </div>
 </div>
 
-<div className="not-prose my-6 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 max-w-2xl mx-auto">
+<div className="not-prose my-6 grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6 max-w-2xl mx-auto">
   <div className="flex flex-col gap-2.5">
     <div className="editorial-media-container rounded-xl overflow-hidden border border-paper-border bg-paper-card">
       <ProjectImageAsset
-        src="ediaqi-decision-support-system/display-recovery.jpg"
-        alt="Recovery monitoring screen"
+        src="ediaqi-decision-support-system/Tablet_interface_on_hardware_device_20260928231627.jpg"
+        alt="Closed-loop recovery monitoring tablet display mockup"
         className="w-full h-auto object-contain"
+        width={1024}
+        height={1024}
       />
     </div>
     <div>
       <div className="font-mono text-[11px] uppercase tracking-wider text-sky-500 font-semibold mb-1">
-        04 // Closed-Loop Recovery
+        Closed-Loop Recovery
       </div>
-      <p className="text-xs text-ink-muted leading-relaxed">
+      <p className="text-[11px] md:text-xs text-ink-muted leading-relaxed">
         Actively tracks air recovery and promises a timed reminder to close windows before the room freezes.
       </p>
     </div>
@@ -279,16 +287,18 @@ Raw alerts fail because they don't close the loop. If an occupant opens a window
   <div className="flex flex-col gap-2.5">
     <div className="editorial-media-container rounded-xl overflow-hidden border border-paper-border bg-paper-card">
       <ProjectImageAsset
-        src="ediaqi-decision-support-system/display-critical.jpg"
-        alt="Critical hazard evacuation screen"
+        src="ediaqi-decision-support-system/Tablet_interface_displayed_on_de…_20260928231627.jpg"
+        alt="Critical hazard emergency tablet display mockup"
         className="w-full h-auto object-contain"
+        width={1024}
+        height={1024}
       />
     </div>
     <div>
       <div className="font-mono text-[11px] uppercase tracking-wider text-rose-500 font-semibold mb-1">
-        05 // Critical Hazard
+        Critical Hazard
       </div>
-      <p className="text-xs text-ink-muted leading-relaxed">
+      <p className="text-[11px] md:text-xs text-ink-muted leading-relaxed">
         High-visibility emergency alert (CO₂ &gt; 2200 ppm) directing immediate room evacuation.
       </p>
     </div>

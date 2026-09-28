@@ -1,5 +1,12 @@
-import { memo, useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import { cn } from "@/lib/utils";
+import imageDimensions from "@/lib/image-dimensions.json";
+
+interface ImageDimension {
+  width: number;
+  height: number;
+  aspectRatio?: string;
+}
 
 interface ProjectImageAssetProps {
   src: string;
@@ -7,10 +14,14 @@ interface ProjectImageAssetProps {
   alt: string;
   className?: string;
   priority?: boolean;
+  width?: number;
+  height?: number;
+  style?: React.CSSProperties;
 }
 
 /**
  * This component handles dynamic image imports in Vite
+ * and sets intrinsic width/height + aspect ratio to prevent CLS.
  */
 export const ProjectImageAsset = memo(function ProjectImageAsset({
   src,
@@ -18,6 +29,9 @@ export const ProjectImageAsset = memo(function ProjectImageAsset({
   alt,
   className,
   priority = false,
+  width,
+  height,
+  style,
 }: ProjectImageAssetProps) {
   const imageUrl = useMemo(() => {
     try {
@@ -40,9 +54,32 @@ export const ProjectImageAsset = memo(function ProjectImageAsset({
     }
   }, [fallbackSrc]);
 
+  const dims = useMemo(() => {
+    const table = imageDimensions as Record<string, ImageDimension | undefined>;
+    const exact = table[src];
+    if (exact) return exact;
+    const basename = src.split("/").pop() || "";
+    return table[basename];
+  }, [src]);
+
+  const resolvedWidth = width ?? dims?.width;
+  const resolvedHeight = height ?? dims?.height;
+
   if (!imageUrl && !fallbackUrl) {
     // Return empty div with same dimensions to prevent layout shift
-    return <div className={cn("bg-muted", className)} aria-hidden="true" />;
+    return (
+      <div
+        className={cn("bg-muted w-full h-auto", className)}
+        style={{
+          aspectRatio:
+            resolvedWidth && resolvedHeight
+              ? `${resolvedWidth} / ${resolvedHeight}`
+              : undefined,
+          ...style,
+        }}
+        aria-hidden="true"
+      />
+    );
   }
 
   // If a GIF is provided with a PNG fallback, use <picture> with <source type="image/gif">
@@ -53,8 +90,18 @@ export const ProjectImageAsset = memo(function ProjectImageAsset({
         <img
           src={fallbackUrl}
           alt={alt}
-          className={cn("max-w-full h-auto", className)}
+          width={resolvedWidth}
+          height={resolvedHeight}
+          className={cn("w-full h-auto", className)}
+          style={{
+            aspectRatio:
+              resolvedWidth && resolvedHeight
+                ? `${resolvedWidth} / ${resolvedHeight}`
+                : undefined,
+            ...style,
+          }}
           loading={priority ? "eager" : "lazy"}
+          decoding="async"
           onError={(e) => {
             if (e.currentTarget.src !== fallbackUrl) {
               e.currentTarget.src = fallbackUrl;
@@ -69,8 +116,18 @@ export const ProjectImageAsset = memo(function ProjectImageAsset({
     <img
       src={imageUrl || fallbackUrl}
       alt={alt}
-      className={cn("max-w-full h-auto", className)}
+      width={resolvedWidth}
+      height={resolvedHeight}
+      className={cn("w-full h-auto", className)}
+      style={{
+        aspectRatio:
+          resolvedWidth && resolvedHeight
+            ? `${resolvedWidth} / ${resolvedHeight}`
+            : undefined,
+        ...style,
+      }}
       loading={priority ? "eager" : "lazy"}
+      decoding="async"
       onError={(e) => {
         if (fallbackUrl && e.currentTarget.src !== fallbackUrl) {
           e.currentTarget.src = fallbackUrl;
