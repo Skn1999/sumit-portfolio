@@ -127,10 +127,13 @@ Using the template in [case-study-template.mdx](file:///.agent/skills/portfolio-
 #### Strict Anti-Slop Enforcement
 Before finalizing, audit against [anti-slop-checklist.md](file:///.agent/skills/portfolio-storyteller/references/anti-slop-checklist.md):
 - [ ] **NO BANNED WORDS**: Verify zero instances of *seamlessly, delve, testament, crucial role, revolutionize, holistic, foster, meticulously, robust, intuitive*.
+- [ ] **NATURAL CRAFT HEADINGS (NO META-LABELS)**: Zero framework meta-labels as headings (no `## 01 // THE PARADOX`, `## 02 // PROTOTYPE REVEAL`, `## 03 // WHAT WORKED vs. WHAT DIDN'T`, `## 05 // KEY INSIGHTS`). Headings must name the actual product mechanics and human frictions.
+- [ ] **NO EMOJI BULLET HEADERS**: No `💡 **Key Learning 01:**` or rocket emojis in takeaways.
 - [ ] **CONSTRAINT FIRST**: Every feature starts with the friction or user bottleneck.
 - [ ] **GOOGLE XYZ**: Accomplishments follow *"Accomplished X, measured by Y, by doing Z"*.
 - [ ] **DECISIVE FIRST PERSON**: Active practitioner voice (*"I prioritized upfront disclosure because..."*).
-- [ ] **REAL COMPROMISE**: At least one genuine compromise documented in the retrospective table.
+- [ ] **REAL COMPROMISE**: At least one genuine compromise documented using `<StatusCard>`.
+- [ ] **MOBILE-FIRST SCANNING**: Use Swiss From ➔ To lists instead of heavy 3-column markdown tables.
 
 ---
 

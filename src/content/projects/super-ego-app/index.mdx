@@ -33,12 +33,13 @@ import {
   EditorialGrid2Up,
   EditorialCard,
 } from "@/components/editorial/EditorialLayout";
+import { StatusCard } from "@/components/ui/status-card";
 
-## 01 // THE PARADOX: THE INTENTION-ACTION GAP
+## The Intention-Action Gap
 
 Most people unlock their phone intending to check a calendar invite, only to lose 25 minutes to algorithmic doomscrolling with zero memory of the detour. 
 
-### Why Standalone Habit Apps Fail
+### The friction trap of standalone habit apps
 Standard habit trackers treat humans as rational planners who just need another reminder. In reality:
 * **The App Fatigue Trap**: Users delete or silence habit apps the moment guilt or friction sets in.
 * **Streak Shaming**: Broken streaks trigger abandonment rather than recovery.
@@ -48,7 +49,7 @@ Standard habit trackers treat humans as rational planners who just need another 
 
 ---
 
-## 02 // THE PROTOTYPE REVEAL: ADAPTIVE ONBOARDING
+## Setting Boundaries Before Telemetry Begins
 
 To bypass the "just another habit app" reaction, YOU integrates directly into device setup, allowing users to define agency boundaries before telemetry begins:
 
@@ -69,20 +70,77 @@ To bypass the "just another habit app" reaction, YOU integrates directly into de
 
 ---
 
-## 03 // WHAT WORKED vs. WHAT DIDN'T
+## Rethinking the Tracker Model
 
-### Comparative Audit: Legacy Trackers vs. YOU OS Assistant
+<div className="not-prose my-8 md:my-12 divide-y divide-paper-border/60 border-y border-paper-border/60">
+  <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
+    <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      01 // Placement
+    </div>
+    <div className="md:col-span-9 space-y-1.5">
+      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+        <span>Standalone habit apps requiring active manual check-ins and open tabs.</span>
+      </div>
+      <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span>Native OS-level integration monitoring passive system rhythms without reading message content.</span>
+      </div>
+    </div>
+  </div>
 
-| Dimension | ❌ What Didn't Work (Legacy Habit Apps) | ✅ What Worked (YOU OS Assistant) |
-| :--- | :--- | :--- |
-| **System Placement** | Standalone app requiring active manual check-ins and open tabs. | **OS-Level Native Integration**: Monitors passive system rhythms without inspecting message content. |
-| **Intervention Model** | Hard pop-up lockouts and punitive countdown blockers. | **Dual-Process Nudges**: Subtle System 1 sensory cues escalate to reflective System 2 dialogues only when needed. |
-| **Emotional Context** | Treats every distraction equally regardless of user state. | **LEAS Calibration**: Adapts prompt vocabulary to the user’s Levels of Emotional Awareness score. |
-| **Setback Recovery** | Broken streak counters that induce shame and uninstalls. | **Dynamic Goal Adaptation**: Automatically scales difficulty down on high-stress days to protect momentum. |
+  <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
+    <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      02 // Intervention
+    </div>
+    <div className="md:col-span-9 space-y-1.5">
+      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+        <span>Hard pop-up lockouts and punitive countdown blockers that trigger resentment.</span>
+      </div>
+      <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span>Dual-process cues: subtle sensory friction escalating to reflective dialogue only when needed.</span>
+      </div>
+    </div>
+  </div>
+
+  <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
+    <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      03 // Emotion
+    </div>
+    <div className="md:col-span-9 space-y-1.5">
+      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+        <span>Static, repetitive notifications blind to whether the user is stressed, tired, or focused.</span>
+      </div>
+      <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span>LEAS calibration that tunes prompt vocabulary directly to emotional awareness levels.</span>
+      </div>
+    </div>
+  </div>
+
+  <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
+    <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      04 // Recovery
+    </div>
+    <div className="md:col-span-9 space-y-1.5">
+      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+        <span>Rigid streak counters that induce shame and abandonment after a single missed day.</span>
+      </div>
+      <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span>Dynamic goal adaptation that automatically scales difficulty down during high-stress periods.</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 ---
 
-## 04 // HOW: THE BEHAVIORAL ARCHITECTURE
+## The Telemetry & Intervention Engine
 
 The system runs on a 4-step continuous telemetry cycle: **Evaluate State → Calibrate Awareness → Intervene → Adapt Goals**.
 
@@ -99,7 +157,7 @@ The system runs on a 4-step continuous telemetry cycle: **Evaluate State → Cal
   </figcaption>
 </figure>
 
-### 1. Emotional Vocabulary Calibration (LEAS)
+### Baseline Emotional Awareness (LEAS)
 Distraction is rarely about discipline; it is an emotional regulation failure. Using the **Levels of Emotional Awareness Scale (LEAS)**, YOU evaluates whether a user responds best to sensory redirection or cognitive reframing:
 
 <figure className="not-prose my-8 md:my-10">
@@ -115,9 +173,9 @@ Distraction is rarely about discipline; it is an emotional regulation failure. U
   </figcaption>
 </figure>
 
-### 2. Dual-Process Interventions: System 1 vs. System 2
+### Dual-Process Interventions
 
-Interventions are calibrated to user behavioral profiles:
+Interventions adapt according to user behavioral profiles:
 
 <figure className="not-prose my-8 md:my-10">
   <div className="editorial-media-container">
@@ -132,7 +190,7 @@ Interventions are calibrated to user behavioral profiles:
   </figcaption>
 </figure>
 
-#### Archetype A: Grace (Mastery & Focus-Driven)
+#### Deep focus & sensory friction: Grace
 
 <EditorialGrid2Up>
   <EditorialCard
@@ -149,7 +207,7 @@ Interventions are calibrated to user behavioral profiles:
   />
 </EditorialGrid2Up>
 
-#### Archetype B: Phil (Stress-Reactive & Impulse-Driven)
+#### Stress reactivity & haptic redirection: Phil
 
 <EditorialGrid2Up>
   <EditorialCard
@@ -166,7 +224,7 @@ Interventions are calibrated to user behavioral profiles:
   />
 </EditorialGrid2Up>
 
-### 3. Setback Recovery Over Streak Shame
+### Dynamic Recovery Over Broken Streaks
 When telemetry detects sustained goal drift, YOU avoids punitive alerts and initiates **Goal Adaptation**—reducing check-in frequency and suggesting support options:
 
 <figure className="not-prose my-8 md:my-10">
@@ -186,36 +244,44 @@ When telemetry detects sustained goal drift, YOU avoids punitive alerts and init
 
 ---
 
-## 05 // KEY INSIGHTS
+## Core Takeaways
 
-💡 **Key Learning 01: Autopilot Defeats Rational Lists**  
-Habit loops execute before conscious intent kicks in. Interventions must introduce micro-friction at the sensory level (System 1) before expecting reflective cognitive choices (System 2).
-
-💡 **Key Learning 02: Pacing Over Punishment**  
-Punitive app blockers cause user resentment. Framing intervention as a supportive pact ("Gentle Helper") and lowering goal difficulty during distress preserved engagement.
-
-💡 **Key Learning 03: Telemetry Over Surveillance**  
-Meaningful behavioral state detection is achievable via rhythm metadata (app switching rate, unlock frequency, late-night scroll velocity) without reading private message text.
+* **Autopilot defeats rational lists**: Habit loops execute before conscious intent kicks in. Interventions must introduce micro-friction at the sensory level (System 1) before expecting reflective cognitive choices (System 2).
+* **Pacing over punishment**: Punitive app blockers cause user resentment. Framing intervention as a supportive pact ("Gentle Helper") and lowering goal difficulty during distress preserved engagement.
+* **Telemetry over surveillance**: Meaningful behavioral state detection is achievable via rhythm metadata (app switching rate, unlock frequency, late-night scroll velocity) without reading private message text.
 
 ---
 
-## 06 // IMPACT & RETROSPECTIVE
+## Retrospective & Trade-offs
 
-### Academic Jury Outcomes
+### Academic Jury Review
 1. **Academic Clearance**: Successfully defended before a university design jury as a viable OS-level behavioral model.
 2. **Behavioral System Architecture**: Mapped end-to-end telemetry states across dual-process intervention tiers for both cognitive and emotional archetypes.
 
-### Retrospective: Successes & Compromises
+### Successes & Technical Trade-offs
 
-| Aspect | Status & Reflection |
-| :--- | :--- |
-| **OS-Level Framing** | **Major Success**: Positioning YOU as an on-device enhancement rather than a standalone app solved the fundamental uninstall/avoidance paradox. |
-| **Field Validation** | **Scope Compromise**: Evaluated primarily through academic literature review and desk research; lacked long-term in-situ deployment with active users. |
-| **OS Sandbox Feasibility** | **Technical Trade-off**: Direct interception of third-party apps requires Apple SensorKit permissions or enterprise MDM configurations, limiting standard App Store distribution. |
+<div className="not-prose my-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+  <StatusCard
+    variant="success"
+    badge="Major Success"
+    title="OS-Level Framing"
+    description="Positioning YOU as an on-device system enhancement rather than a third-party app solved the fundamental uninstall and avoidance paradox."
+  />
+  <StatusCard
+    variant="compromise"
+    badge="Scope Compromise"
+    title="Field Validation"
+    description="Evaluated primarily through academic literature and jury defense; lacked 30-day longitudinal in-situ deployment with active user cohorts."
+  />
+  <StatusCard
+    variant="compromise"
+    badge="Technical Trade-off"
+    title="OS Sandbox Feasibility"
+    description="Direct interception of third-party apps requires Apple SensorKit or MDM configurations, limiting standard consumer App Store distribution."
+  />
+</div>
 
-### Future Roadmap (+3 Months Strategy)
-
-If granted an additional 3 months on this project, I would focus on:
+### What I'd Explore with +3 Months
 
 1. **In-Situ Longitudinal Field Study**: Deploy a working prototype to a 20-person cohort over 30 days to measure habit relapse curves and notification fatigue in daily routines.
 2. **On-Device SensorKit Telemetry Prototype**: Implement real-time rhythm classification using Apple's SensorKit and CoreML to validate zero-latency offline inference without battery compromise.

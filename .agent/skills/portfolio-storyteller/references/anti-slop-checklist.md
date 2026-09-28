@@ -36,7 +36,48 @@ Never use the following generic AI superlatives, empty transitional fluff, or co
 
 ---
 
-## 3. The 4 Senior Craft Mandates
+## 3. Banned AI Heading Patterns & Senior Heading Principles
+
+Case study headings are the most prominent giveaway of low-grade AI generation. Strictly enforce these rules:
+
+### A. Never Use Framework Meta-Labels as Headings
+The storytelling framework stages (*Why, Paradox, Prototype Reveal, What Worked vs. What Didn't, How / System Architecture, Key Insights, Impact & Retrospective*) are **internal structural blueprints for the writer**, NOT literal headings in the MDX file.
+
+- ❌ **Banned**: `## 01 // THE PARADOX: THE INTENTION-ACTION GAP`
+- ✅ **Senior**: `## The Intention-Action Gap`
+
+- ❌ **Banned**: `## 02 // THE PROTOTYPE REVEAL: ADAPTIVE ONBOARDING`
+- ✅ **Senior**: `## Setting Boundaries Before Telemetry Begins`
+
+- ❌ **Banned**: `## 03 // WHAT WORKED vs. WHAT DIDN'T` / `### Comparative Audit: Legacy Trackers vs. YOU`
+- ✅ **Senior**: `## Rethinking the Tracker Model`
+
+- ❌ **Banned**: `## 04 // HOW: THE BEHAVIORAL ARCHITECTURE`
+- ✅ **Senior**: `## The Telemetry & Intervention Engine`
+
+- ❌ **Banned**: `## 05 // KEY INSIGHTS`
+- ✅ **Senior**: `## Core Takeaways`
+
+- ❌ **Banned**: `## 06 // IMPACT & RETROSPECTIVE`
+- ✅ **Senior**: `## Retrospective & Trade-offs`
+
+### B. Never Use Repetitive All-Caps Monospaced Prefixes Across Every H2
+Avoid mechanical numbering schemas like `## 01 // ALL-CAPS: SUBTITLE` repeated on every single H2. Use natural, human title casing or sentence casing that describes the craft.
+
+### C. Ban AI Listicle & Consultant Clichés
+- ❌ **Banned**: `### Why [Subject] Fails` ➔ ✅ `### The friction trap of standalone habit apps`
+- ❌ **Banned**: `### 1. Feature Name (ACRONYM)` ➔ ✅ `### Baseline emotional awareness (LEAS)`
+- ❌ **Banned**: `#### Archetype A: [Name] (Adjective & Adjective)` ➔ ✅ `#### Deep focus & sensory friction: Grace`
+- ❌ **Banned**: `### Future Roadmap (+3 Months Strategy)` ➔ ✅ `### What I'd explore with +3 months`
+
+### D. Never Use Emojis in Headings or Key Takeaways
+- ❌ **Banned**: `💡 **Key Learning 01: Autopilot Defeats Rational Lists**`
+- ❌ **Banned**: `🚀 **Impact 01: Academic Clearance**`
+- ✅ **Senior**: Plain bold principles: `* **Autopilot defeats rational lists**: Habit loops trigger before conscious intent...`
+
+---
+
+## 4. The 4 Senior Craft Mandates
 
 Every section written must adhere to these four tenets:
 
@@ -57,13 +98,16 @@ Real senior work is defined by trade-offs. Every case study MUST explicitly deta
 
 ---
 
-## 4. Pre-Publish Verification Audit
+## 5. Pre-Publish Verification Audit
 
 Before presenting the draft to the user, run this verification:
 
-- [ ] Zero occurrences of banned words (*seamlessly, delve, testament, holistic, foster, robust, intuitive*).
-- [ ] No generic textbook process narration without project-specific tension.
-- [ ] At least one disconfirmed hypothesis or unexpected research finding included.
-- [ ] At least one concrete technical/scope compromise clearly documented.
-- [ ] All metrics are grounded in actual numbers or validated qualitative feedback quotes.
-- [ ] Tone is calm, direct, and human-scale (Linear/Vercel/Rachel Chen aesthetic).
+- [ ] **Zero occurrences of banned words** (*seamlessly, delve, testament, holistic, foster, robust, intuitive*).
+- [ ] **Zero framework meta-label headings** (*THE PARADOX, THE PROTOTYPE REVEAL, WHAT WORKED vs. WHAT DIDN'T, HOW, KEY INSIGHTS, IMPACT & RETROSPECTIVE*).
+- [ ] **No emoji bullet headers** (No `💡 **Key Learning 01:**` or rocket emojis).
+- [ ] **Headings name the actual craft** (Specific system mechanisms, user frictions, and design decisions).
+- [ ] **No generic textbook process narration** without project-specific tension.
+- [ ] **At least one disconfirmed hypothesis** or unexpected research finding included.
+- [ ] **At least one concrete technical/scope compromise** clearly documented.
+- [ ] **All metrics are grounded** in actual numbers or validated qualitative feedback quotes.
+- [ ] **Tone is calm, direct, and human-scale** (Linear/Vercel/Rachel Chen aesthetic).

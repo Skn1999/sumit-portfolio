@@ -32,121 +32,157 @@ import {
   EditorialGrid2Up,
   EditorialCard,
 } from "@/components/editorial/EditorialLayout";
+import { StatusCard } from "@/components/ui/status-card";
 
-## 01 // WHY (The Guiding Belief)
+## {{HumanProblemOrTensionHeading}}
 
-### The {{ParadoxName}} Paradox
-{{paradoxNarrative}}
+{{problemNarrativeIntro}}
 
-- **Friction 1**: {{friction1}}
-- **Friction 2**: {{friction2}}
-- **Friction 3**: {{friction3}}
+### {{SpecificFrictionSubheading}}
+{{frictionContext}}
+* **{{friction1Title}}**: {{friction1Body}}
+* **{{friction2Title}}**: {{friction2Body}}
+* **{{friction3Title}}**: {{friction3Body}}
 
 > **The Guiding Belief:** {{guidingBeliefSentence}}
 
 ---
 
-## 02 // WHAT WORKED vs. WHAT DIDN'T
+## {{UpfrontSetupOrArtifactHeading}}
 
-### Heuristic & Architectural Audit Breakdown
-{{auditNarrative}}
+{{setupOrHeroContext}}
 
-| Category | ❌ What Didn't Work (Legacy Prototype) | ✅ What Worked (Redesign) |
-| :--- | :--- | :--- |
-| **{{category1}}** | {{legacy1}} | **{{redesignTitle1}}**: {{redesign1}} |
-| **{{category2}}** | {{legacy2}} | **{{redesignTitle2}}**: {{redesign2}} |
-| **{{category3}}** | {{legacy3}} | **{{redesignTitle3}}**: {{redesign3}} |
-| **{{category4}}** | {{legacy4}} | **{{redesignTitle4}}**: {{redesign4}} |
-
----
-
-## 03 // HOW (Key Interaction Moments)
-
-To resolve the core tension, the system executes through {{count}} deterministic interaction patterns:
-
-### Core Flows
-
-<EditorialSideBySide
-  mediaSrc="{{slug}}/{{moment1Media}}"
-  mediaAlt="{{moment1Alt}}"
-  title="{{moment1Title}}"
-  description="{{moment1Description}}"
-/>
-
-<EditorialSideBySide
-  mediaSrc="{{slug}}/{{moment2Media}}"
-  mediaAlt="{{moment2Alt}}"
-  title="{{moment2Title}}"
-  description="{{moment2Description}}"
-/>
-
-<EditorialSideBySide
-  mediaSrc="{{slug}}/{{moment3Media}}"
-  mediaAlt="{{moment3Alt}}"
-  title="{{moment3Title}}"
-  description="{{moment3Description}}"
-/>
+<figure className="not-prose my-8 md:my-12">
+  <div className="editorial-breakout">
+    <div className="editorial-media-container">
+      <ProjectImageAsset
+        src="{{slug}}/{{heroMediaFilename}}"
+        alt="{{heroMediaAlt}}"
+        className="w-full h-auto object-contain"
+      />
+    </div>
+    <figcaption className="font-mono text-[11px] text-ink-muted text-center mt-3">
+      Fig 01 // {{heroCaption}}
+    </figcaption>
+  </div>
+</figure>
 
 ---
 
-## 04 // WHAT (The Design System Under the Hood)
+## {{TheParadigmShiftHeading}}
 
-Behind the interaction flows is an uncompromising design engineering architecture built with tokenized surfaces and state machines:
+<!-- NOTE: Use Swiss From ➔ To list for mobile elegance; avoid heavy multi-column markdown tables -->
+<div className="not-prose my-8 md:my-12 divide-y divide-paper-border/60 border-y border-paper-border/60">
+  <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
+    <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      01 // {{dimension1}}
+    </div>
+    <div className="md:col-span-9 space-y-1.5">
+      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+        <span>{{legacyApproach1}}</span>
+      </div>
+      <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span>{{redesignApproach1}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
+    <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      02 // {{dimension2}}
+    </div>
+    <div className="md:col-span-9 space-y-1.5">
+      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+        <span>{{legacyApproach2}}</span>
+      </div>
+      <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span>{{redesignApproach2}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+## {{TheInteractionOrTelemetryEngineHeading}}
+
+{{engineNarrativeIntro}}
+
+<figure className="not-prose my-8 md:my-10">
+  <div className="editorial-media-container">
+    <ProjectImageAsset
+      src="{{slug}}/{{engineFlowMedia}}"
+      alt="{{engineFlowAlt}}"
+      className="w-full h-auto object-contain"
+    />
+  </div>
+  <figcaption className="font-mono text-[11px] text-ink-muted text-center mt-3">
+    Fig 02 // {{engineFlowCaption}}
+  </figcaption>
+</figure>
+
+### {{InteractionSubsystemHeading1}}
+{{subsystem1Context}}
 
 <EditorialGrid2Up>
   <EditorialCard
-    mediaSrc="{{slug}}/{{plate1Media}}"
-    mediaAlt="{{plate1Alt}}"
-    title="Plate 01 // Design Tokens & Surfaces"
-    description="{{plate1Description}}"
+    mediaSrc="{{slug}}/{{flowCard1Media}}"
+    mediaAlt="{{flowCard1Alt}}"
+    title="{{flowCard1Title}}"
+    description="{{flowCard1Description}}"
   />
   <EditorialCard
-    mediaSrc="{{slug}}/{{plate2Media}}"
-    mediaAlt="{{plate2Alt}}"
-    title="Plate 02 // Typography & Layout Scale"
-    description="{{plate2Description}}"
+    mediaSrc="{{slug}}/{{flowCard2Media}}"
+    mediaAlt="{{flowCard2Alt}}"
+    title="{{flowCard2Title}}"
+    description="{{flowCard2Description}}"
   />
 </EditorialGrid2Up>
 
-<EditorialSideBySide
-  mediaSrc="{{slug}}/{{plate3Media}}"
-  mediaAlt="{{plate3Alt}}"
-  title="Plate 03 // Primitives & State Engine"
-  description="{{plate3Description}}"
-/>
+---
+
+## Core Takeaways
+
+* **{{takeaway1Title}}**: {{takeaway1Body}}
+* **{{takeaway2Title}}**: {{takeaway2Body}}
+* **{{takeaway3Title}}**: {{takeaway3Body}}
 
 ---
 
-## 05 // KEY INSIGHTS
+## Retrospective & Trade-offs
 
-💡 **Key Learning 01: {{insight1Title}}**  
-{{insight1Body}}
-
-💡 **Key Learning 02: {{insight2Title}}**  
-{{insight2Body}}
-
-💡 **Key Learning 03: {{insight3Title}}**  
-{{insight3Body}}
-
----
-
-## 06 // IMPACT & LESSONS
-
-### Measurable Outcomes
+### {{OutcomesOrReviewHeading}}
 1. **{{outcome1Title}}**: {{outcome1Body}}
 2. **{{outcome2Title}}**: {{outcome2Body}}
 
-### Retrospective: Successes & Compromises
+### Successes & Technical Trade-offs
 
-| Aspect | Status & Reflection |
-| :--- | :--- |
-| **{{aspect1}}** | **Major Success**: {{success1}} |
-| **{{aspect2}}** | **Scope Compromise**: {{compromise1}} |
-| **{{aspect3}}** | **Technical Trade-off**: {{compromise2}} |
+<div className="not-prose my-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+  <StatusCard
+    variant="success"
+    badge="Major Success"
+    title="{{successTitle}}"
+    description="{{successDescription}}"
+  />
+  <StatusCard
+    variant="compromise"
+    badge="Scope Compromise"
+    title="{{compromiseTitle}}"
+    description="{{compromiseDescription}}"
+  />
+  <StatusCard
+    variant="compromise"
+    badge="Technical Trade-off"
+    title="{{tradeoffTitle}}"
+    description="{{tradeoffDescription}}"
+  />
+</div>
 
-### Future Roadmap (+3 Months Strategy)
-
-If granted an additional 3 months on this project, I would focus on:
+### What I'd Explore with +3 Months
 
 1. **{{roadmap1Title}}**: {{roadmap1Body}}
 2. **{{roadmap2Title}}**: {{roadmap2Body}}

@@ -32,6 +32,10 @@ A high-signal storytelling framework designed specifically for Senior Product De
 └─────────────────────────────────────────────────────────────┘
 ```
 
+> [!CAUTION]
+> **Framework Titles are NOT Literal Headings**:
+> The 7 points below (*The Prototype Reveal, The Why, The Audit, The How, Impact & Candid Reflections*) are **structural thinking milestones for the designer/writer**, NEVER literal H2 or H3 headings in the published MDX. Headings must always be specific, natural, and descriptive of the actual product problem or engineering system (e.g. `## Setting Boundaries Before Telemetry Begins`, `## Rethinking the Tracker Model`, `## The Telemetry & Intervention Engine`).
+
 ---
 
 ## Section-by-Section Anatomy
@@ -43,23 +47,23 @@ A high-signal storytelling framework designed specifically for Senior Product De
 ### 2. The Prototype Reveal (Show Artifacts Early!)
 * In the first 1–2 scrolls, place the interactive live URL, Figma prototype button, or animated preview.
 * Recruiters and hiring managers spend 30–45 seconds scanning. Showing the finished product upfront contextualizes every design decision that follows.
+* **Heading**: Name the upfront moment directly (e.g. `## Setting Boundaries Before Telemetry Begins` or `## Upfront Situational Awareness`). Do NOT use `## The Prototype Reveal`.
 
 ### 3. The "Why": Philosophy & The Paradox
 * Never start with a generic problem statement (*"E-commerce users want easy checkout"*).
 * State the **Paradox or Guiding Belief**:
   * *ActAI*: The Automation Trust Paradox (Users want productivity, but refuse unreviewed bot emails because they fear black-box hallucination).
   * *EDIAQI*: Passive Telemetry vs. Active Human Action (Rich sensor data does not equal healthy indoor environments without a glanceable action protocol).
+  * *YOU*: The Intention-Action Gap (Impulsive device checks versus conscious focus).
 
 ### 4. The Audit: What Worked vs. What Didn't
-* Use a high-density comparative table:
-  * Column 1: Category (Touchpoint, IA, Modality, Role Alignment)
-  * Column 2: ❌ What Didn't Work (Legacy / Initial State)
-  * Column 3: ✅ What Worked (Redesign / Modern System)
+* Prefer a **Swiss From ➔ To list** (with subtle red `From` and green `To` badges) over heavy 3-column markdown tables, especially for mobile-first scanning.
+* Contrast the legacy friction with the systemic redesign across 3–4 key dimensions.
 * Immediately demonstrates heuristic evaluation, accessibility auditing, and systematic critical thinking.
 
 ### 5. The "How": 3 to 4 Key Interaction Moments
 * Select only **3 or 4 high-leverage moments**. Avoid narrating every sub-screen.
-* Layout: Non-alternating side-by-side (`Media Left 60%`, `Narrative Right ~40%`, aligned to bottom).
+* Layout: Non-alternating side-by-side (`Media Left 60%`, `Narrative Right ~40%`, aligned to bottom) or `<EditorialGrid2Up>`.
 * Each card includes:
   * Title: Specific screen name and core user unlock.
   * Description: 2 sentences explaining the constraint, cognitive load reduction, and micro-copy rationale.
@@ -73,5 +77,6 @@ A high-signal storytelling framework designed specifically for Senior Product De
 
 ### 7. Impact, Real Compromises & The "+3 Months" Strategy
 * **Impact**: Quantified metrics, qualitative quotes with participant attribution, or engineering efficiency unlocked.
-* **Candid Compromises**: Two-column table of *Aspect* vs. *Status & Reflection*, acknowledging scope trade-offs and tech debt.
+* **Candid Compromises**: Use `<StatusCard>` components (`variant="success"`, `variant="compromise"`) to display successes, scope compromises, and technical trade-offs cleanly on mobile.
 * **Future Roadmap**: 2 numbered points outlining exactly what you would tackle if granted 3 additional months on the project (shows executive roadmap prioritization).
+* **Heading**: Use human phrases like `## Retrospective & Trade-offs` and `### What I'd Explore with +3 Months`. Never use `## 06 // IMPACT & RETROSPECTIVE`.
