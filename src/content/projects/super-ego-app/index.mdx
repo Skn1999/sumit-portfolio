@@ -1,109 +1,300 @@
 ---
 slug: "super-ego-app"
-title: "You: \"Not Your Usual Habit Alignment App\""
-tagline: "Act upon the preconscious habits that silently misalign your life"
+title: "YOU: Bridging the Intention-Action Gap as an OS-Level Assistant"
+tagline: "Overcoming habit autopilot through on-device telemetry and dual-process behavioral interventions."
 date: "2026-01-05"
 type: "design"
 subCategory: "visual-design"
 featured: true
 cover:
   filename: "cover.jpg"
-  alt: "SuperEgo app mockups on mobile screens"
+  alt: "YOU SuperEgo app behavioral concept and mobile mockups"
 tech:
   - "Behavioral Design"
-  - "Persona Creation"
-  - "Habit Formation"
+  - "Dual-Process Theory"
+  - "LEAS Calibration"
+  - "Mobile System Architecture"
   - "Prototyping"
-  - "Social Psychology"
-metric: "Defined and prototyped an operating-system-level assistant that adapts nudges to emotional awareness"
-summary: "Designed YOU, an OS-level assistant that reads preconscious patterns and emotional awareness to help people align everyday actions with long-term values."
+metric: "Academic jury cleared; OS-level dual-process behavioral model for 2 user archetypes tested across 4 adaptive intervention loops"
 links:
   case: https://www.figma.com/deck/AqArCYTjQP7qPRJZlKJHxN/Social-interaction---Final-presentation?node-id=6-2733
+summary: "An OS-level behavioral assistant designed to bridge the gap between conscious goals and preconscious mobile habits. Instead of punitive app limits, YOU tracks background rhythms and calibrates dual-process (System 1 & 2) interventions to user emotional awareness."
 roles:
-  - "User Research"
-  - "Concept & Interaction Design"
-  - "Prototyping"
+  - "Concept Lead"
+  - "Behavioral Systems Design"
+  - "Mobile Interaction Design"
 order: 2
 draft: false
 ---
 
 import { ProjectImageAsset } from "@/components/ui/project-image-asset";
+import {
+  EditorialSideBySide,
+  EditorialGrid2Up,
+  EditorialCard,
+} from "@/components/editorial/EditorialLayout";
+import { StatusCard } from "@/components/ui/status-card";
 
-## 01 // CONTEXT
+## The Intention-Action Gap
 
-Have you ever opened your phone to check the weather and, twenty minutes later, found yourself deep in social media with no memory of the detour? That gap between what we *intend* to do and what we *actually* do is what this project addresses.
+Most people unlock their phone intending to check a calendar invite, only to lose 25 minutes to algorithmic doomscrolling with zero memory of the detour. 
 
-YOU (SuperEgo) is an assistant that doesn't live inside a standalone app. It operates inside the mobile operating system itself, observing passive telemetry (app switching frequency, late-night scrolling rhythms) without monitoring private content. I led the research synthesis, behavioral framing, system interaction logic, and hi-fi prototyping.
+### The friction trap of standalone habit apps
+Standard habit trackers treat humans as rational planners who just need another reminder. In reality:
+* **The App Fatigue Trap**: Users delete or silence habit apps the moment guilt or friction sets in.
+* **Streak Shaming**: Broken streaks trigger abandonment rather than recovery.
+* **Blind to Emotion**: Task lists ignore the stress and fatigue that trigger impulsive device checks.
 
----
-
-## 02 // PROBLEM
-
-Most productivity tools assume users are rational planners who just need a better to-do list. However, the core friction is not the list—it is the **autopilot habit loop**.
-
-Key behavioral pain points identified:
-- **Invisible Drift:** Users drift off task without noticing the moment of transition.
-- **Autopilot Habits:** By the time someone realizes they are distracted, the moment has passed.
-- **Emotions Ignored:** Traditional tools ignore stress and mood states that drive habitual impulses.
-- **Intention vs. Action Gap:** A persistent disconnect exists between intentional goals and immediate physical actions.
-
-<ProjectImageAsset src="super-ego-app/assumptions-research.jpg" alt="SuperEgo Research & Assumptions Matrix" />
-<p className="font-mono text-[11px] text-ink-muted tracking-wide text-center mt-2.5 mb-8">
-  Fig 01 // Research synthesis & behavioral assumptions matrix
-</p>
+> **The Guiding Belief:** True behavioral alignment cannot live inside a third-party app. It must operate as an **on-device OS-level enhancement**—watching ambient usage rhythms rather than private content, and meeting users at the physiological point of habit execution.
 
 ---
 
-## 03 // APPROACH
+## Setting Boundaries Before Telemetry Begins
 
-### 4-Step Adaptive Cycle
-Designed a continuous system loop: evaluate user state → assess emotional awareness → apply calibrated interventions → mirror back learned insights.
+To bypass the "just another habit app" reaction, YOU integrates directly into device setup, allowing users to define agency boundaries before telemetry begins:
 
-<ProjectImageAsset src="super-ego-app/how-this-works.jpg" alt="SuperEgo 4-Step System Loop" />
-<p className="font-mono text-[11px] text-ink-muted tracking-wide text-center mt-2.5 mb-8">
-  Fig 02 // The 4-step adaptive system loop & telemetry logic
-</p>
+<figure className="not-prose my-8 md:my-12">
+  <div className="editorial-breakout">
+    <div className="editorial-media-container">
+      <ProjectImageAsset
+        src="super-ego-app/onboarding.jpg"
+        alt="YOU OS-level setup flow showing role selection (Observer, Gentle Helper, Active Coach)"
+        className="w-full h-auto object-contain"
+      />
+    </div>
+    <figcaption className="font-mono text-[11px] text-ink-muted text-center mt-3">
+      Fig 01 // OS-level setup flow: telemetry baseline, role selection (Observer / Gentle Helper / Active Coach), and goal contract
+    </figcaption>
+  </div>
+</figure>
 
-### Persona-Calibrated Interventions (Grace & Phil)
-Constructed two primary persona profiles to test System 1 (subtle cues) vs System 2 (reflective prompts) interventions:
+---
 
-<ProjectImageAsset src="super-ego-app/personas.jpg" alt="SuperEgo Persona Overviews - Grace and Phil" />
-<p className="font-mono text-[11px] text-ink-muted tracking-wide text-center mt-2.5 mb-8">
-  Fig 03 // Persona archetypes & emotional profiles (Grace & Phil)
-</p>
+## Rethinking the Tracker Model
 
-### System Integration & LEAS Emotional Calibration
-- **OS-Level Integration:** Operates in background telemetry, watching rhythms rather than private content.
-- **LEAS Framework Calibration:** Short "Help me understand you" exercises gauge emotional vocabulary, tuning nudges from simple warm prompts to nuanced reflective dialogues.
+<div className="not-prose my-8 md:my-12 divide-y divide-paper-border/60 border-y border-paper-border/60">
+  <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
+    <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      01 // Placement
+    </div>
+    <div className="md:col-span-9 space-y-1.5">
+      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+        <span>Standalone habit apps requiring active manual check-ins and open tabs.</span>
+      </div>
+      <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span>Native OS-level integration monitoring passive system rhythms without reading message content.</span>
+      </div>
+    </div>
+  </div>
 
-<ProjectImageAsset src="super-ego-app/integration.jpg" alt="SuperEgo OS Integration Diagram" />
-<p className="font-mono text-[11px] text-ink-muted tracking-wide text-center mt-2.5 mb-8">
-  Fig 04 // OS-level system architecture & intervention calibration
-</p>
+  <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
+    <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      02 // Intervention
+    </div>
+    <div className="md:col-span-9 space-y-1.5">
+      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+        <span>Hard pop-up lockouts and punitive countdown blockers that trigger resentment.</span>
+      </div>
+      <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span>Dual-process cues: subtle sensory friction escalating to reflective dialogue only when needed.</span>
+      </div>
+    </div>
+  </div>
 
-<ProjectImageAsset src="super-ego-app/emotional-awareness-LEAS.jpg" alt="SuperEgo LEAS Emotional Calibration" />
-<p className="font-mono text-[11px] text-ink-muted tracking-wide text-center mt-2.5 mb-8">
-  Fig 05 // LEAS emotional awareness calibration flow
-</p>
+  <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
+    <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      03 // Emotion
+    </div>
+    <div className="md:col-span-9 space-y-1.5">
+      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+        <span>Static, repetitive notifications blind to whether the user is stressed, tired, or focused.</span>
+      </div>
+      <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span>LEAS calibration that tunes prompt vocabulary directly to emotional awareness levels.</span>
+      </div>
+    </div>
+  </div>
+
+  <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
+    <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      04 // Recovery
+    </div>
+    <div className="md:col-span-9 space-y-1.5">
+      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+        <span>Rigid streak counters that induce shame and abandonment after a single missed day.</span>
+      </div>
+      <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span>Dynamic goal adaptation that automatically scales difficulty down during high-stress periods.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+## The Telemetry & Intervention Engine
+
+The system runs on a 4-step continuous telemetry cycle: **Evaluate State → Calibrate Awareness → Intervene → Adapt Goals**.
+
+<figure className="not-prose my-8 md:my-10">
+  <div className="editorial-media-container">
+    <ProjectImageAsset
+      src="super-ego-app/how-this-works.jpg"
+      alt="4-step adaptive loop: Goal selection, commitment, pattern learning, and intervention"
+      className="w-full h-auto object-contain"
+    />
+  </div>
+  <figcaption className="font-mono text-[11px] text-ink-muted text-center mt-3">
+    Fig 02 // The 4-step adaptive telemetry and intervention loop
+  </figcaption>
+</figure>
+
+### Baseline Emotional Awareness (LEAS)
+Distraction is rarely about discipline; it is an emotional regulation failure. Using the **Levels of Emotional Awareness Scale (LEAS)**, YOU evaluates whether a user responds best to sensory redirection or cognitive reframing:
+
+<figure className="not-prose my-8 md:my-10">
+  <div className="editorial-media-container">
+    <ProjectImageAsset
+      src="super-ego-app/emotional-awareness-LEAS.jpg"
+      alt="LEAS emotional awareness calibration flow"
+      className="w-full h-auto object-contain"
+    />
+  </div>
+  <figcaption className="font-mono text-[11px] text-ink-muted text-center mt-3">
+    Fig 03 // Contextual LEAS micro-exercises establishing the user's emotional baseline
+  </figcaption>
+</figure>
 
 ### Dual-Process Interventions
-- **System 1 (Subtle Nudges):** Haptic breathing pulses during stress detection; app delay timers during deep work blocks.
-- **System 2 (Reflective Moments):** Contextual prompts asking users if they wish to adjust goals or write a letter to their future self.
 
-<ProjectImageAsset src="super-ego-app/system1-grace.jpg" alt="SuperEgo System 1 Intervention - Grace" />
-<p className="font-mono text-[11px] text-ink-muted tracking-wide text-center mt-2.5 mb-8">
-  Fig 06 // System 1 subtle nudge intervention (app delay)
-</p>
+Interventions adapt according to user behavioral profiles:
 
-<ProjectImageAsset src="super-ego-app/system2-grace.jpg" alt="SuperEgo System 2 Intervention - Grace" />
-<p className="font-mono text-[11px] text-ink-muted tracking-wide text-center mt-2.5 mb-8">
-  Fig 07 // System 2 reflective dialog intervention
-</p>
+<figure className="not-prose my-8 md:my-10">
+  <div className="editorial-media-container">
+    <ProjectImageAsset
+      src="super-ego-app/personas.jpg"
+      alt="User Archetypes: Grace (Mastery and progress) vs. Philip (Relationships and external rewards)"
+      className="w-full h-auto object-contain"
+    />
+  </div>
+  <figcaption className="font-mono text-[11px] text-ink-muted text-center mt-3">
+    Fig 04 // Behavioral archetypes: Grace (mastery & focus) vs. Philip (stress & social reward)
+  </figcaption>
+</figure>
+
+#### Deep focus & sensory friction: Grace
+
+<EditorialGrid2Up>
+  <EditorialCard
+    mediaSrc="super-ego-app/system1-grace.jpg"
+    mediaAlt="System 1 subtle interventions for Grace"
+    title="System 1 // Sensory Friction"
+    description="Greyscale UI desaturation and Spotlight hiding of non-essential apps to dampen dopamine feedback loops during focus blocks."
+  />
+  <EditorialCard
+    mediaSrc="super-ego-app/system2-grace.jpg"
+    mediaAlt="System 2 reflective interventions for Grace"
+    title="System 2 // Intentional Delay Gate"
+    description="30-second intention delay screen on app launch, nudging reflective decision-making between 'Go Back To Focus' and conscious unlock."
+  />
+</EditorialGrid2Up>
+
+#### Stress reactivity & haptic redirection: Phil
+
+<EditorialGrid2Up>
+  <EditorialCard
+    mediaSrc="super-ego-app/system1-phil.jpg"
+    mediaAlt="System 1 subtle interventions for Phil"
+    title="System 1 // Preconscious Nudges"
+    description="Subtle haptic breathing cadence and slow pulsing icons that introduce physical friction at the moment of habitual impulse."
+  />
+  <EditorialCard
+    mediaSrc="super-ego-app/system2-phil.jpg"
+    mediaAlt="System 2 reflective interventions for Phil"
+    title="System 2 // Reflective Dialogues"
+    description="Surfaces time-delayed 'Notes from Past Self' and interactive voice-orb breathing breaks when sustained drift patterns are detected."
+  />
+</EditorialGrid2Up>
+
+### Dynamic Recovery Over Broken Streaks
+When telemetry detects sustained goal drift, YOU avoids punitive alerts and initiates **Goal Adaptation**—reducing check-in frequency and suggesting support options:
+
+<figure className="not-prose my-8 md:my-10">
+  <div className="editorial-breakout">
+    <div className="editorial-media-container">
+      <ProjectImageAsset
+        src="super-ego-app/goal-adaptation.jpg"
+        alt="Adaptive setback recovery and difficulty reduction screens"
+        className="w-full h-auto object-contain"
+      />
+    </div>
+    <figcaption className="font-mono text-[11px] text-ink-muted text-center mt-3">
+      Fig 05 // Dynamic goal adjustment: shifting from 'Reduce Stress Levels' to 'Understand My Stress' during rough weeks
+    </figcaption>
+  </div>
+</figure>
 
 ---
 
-## 04 // IMPACT
+## Core Takeaways
 
-- **OS-Level Behavioral Framework:** Prototyped an operating-system-level assistant that adapts interventions based on real-time emotional self-awareness.
-- **Dual-Process Nudge System:** Successfully integrated System 1 haptic cues and System 2 reflective prompts into a cohesive mobile interaction model.
-- **Privacy-Preserving Telemetry:** Proved that meaningful behavioral nudges can be delivered through rhythm tracking without monitoring user content.
+* **Autopilot defeats rational lists**: Habit loops execute before conscious intent kicks in. Interventions must introduce micro-friction at the sensory level (System 1) before expecting reflective cognitive choices (System 2).
+* **Pacing over punishment**: Punitive app blockers cause user resentment. Framing intervention as a supportive pact ("Gentle Helper") and lowering goal difficulty during distress preserved engagement.
+* **Telemetry over surveillance**: Meaningful behavioral state detection is achievable via rhythm metadata (app switching rate, unlock frequency, late-night scroll velocity) without reading private message text.
+
+---
+
+## Retrospective & Trade-offs
+
+### Academic Jury Review
+1. **Academic Clearance**: Successfully defended before a university design jury as a viable OS-level behavioral model.
+2. **Behavioral System Architecture**: Mapped end-to-end telemetry states across dual-process intervention tiers for both cognitive and emotional archetypes.
+
+### Successes & Technical Trade-offs
+
+<div className="not-prose my-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+  <StatusCard
+    variant="success"
+    badge="Major Success"
+    title="OS-Level Framing"
+    description="Positioning YOU as an on-device system enhancement rather than a third-party app solved the fundamental uninstall and avoidance paradox."
+  />
+  <StatusCard
+    variant="compromise"
+    badge="Scope Compromise"
+    title="Field Validation"
+    description="Evaluated primarily through academic literature and jury defense; lacked 30-day longitudinal in-situ deployment with active user cohorts."
+  />
+  <StatusCard
+    variant="compromise"
+    badge="Technical Trade-off"
+    title="OS Sandbox Feasibility"
+    description="Direct interception of third-party apps requires Apple SensorKit or MDM configurations, limiting standard consumer App Store distribution."
+  />
+</div>
+
+### What I'd Explore with +3 Months
+
+1. **In-Situ Longitudinal Field Study**: Deploy a working prototype to a 20-person cohort over 30 days to measure habit relapse curves and notification fatigue in daily routines.
+2. **On-Device SensorKit Telemetry Prototype**: Implement real-time rhythm classification using Apple's SensorKit and CoreML to validate zero-latency offline inference without battery compromise.
+
+---
+
+<div className="my-8 flex flex-wrap justify-center gap-4">
+  <a
+    href="https://www.figma.com/deck/AqArCYTjQP7qPRJZlKJHxN/Social-interaction---Final-presentation?node-id=6-2733"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center gap-2 font-mono text-xs text-ink-primary hover:text-ink-primary/70 uppercase tracking-widest font-semibold px-5 py-3 rounded-xl border border-paper-border bg-paper-card shadow-sm hover:border-ink-primary/40 transition-all"
+  >
+    🔗 View Figma Presentation Deck →
+  </a>
+</div>
