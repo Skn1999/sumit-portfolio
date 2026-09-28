@@ -1,0 +1,201 @@
+---
+slug: "{{slug}}"
+title: "{{title}}"
+tagline: "{{tagline}}"
+date: "{{date}}"
+type: "{{type}}" # "design" | "engineering"
+subCategory: "{{subCategory}}" # "ai-side-projects" | "ux-design" | "visual-design" | "frontend-engineering"
+featured: {{featured}}
+cover:
+  filename: "{{coverFilename}}"
+  alt: "{{coverAlt}}"
+tech:
+  - "{{tech1}}"
+  - "{{tech2}}"
+  - "{{tech3}}"
+metric: "{{metricHook}}"
+links:
+  live: "{{liveUrl}}"
+  prototype: "{{prototypeUrl}}"
+  github: "{{githubUrl}}"
+summary: "{{summary}}"
+roles:
+  - "{{role1}}"
+  - "{{role2}}"
+order: 1
+draft: false
+---
+
+import { ProjectImageAsset } from "@/components/ui/project-image-asset";
+import {
+  EditorialSideBySide,
+  EditorialGrid2Up,
+  EditorialCard,
+} from "@/components/editorial/EditorialLayout";
+import { StatusCard } from "@/components/ui/status-card";
+
+## {{HumanProblemOrTensionHeading}}
+
+{{problemNarrativeIntro}}
+
+### {{SpecificFrictionSubheading}}
+{{frictionContext}}
+* **{{friction1Title}}**: {{friction1Body}}
+* **{{friction2Title}}**: {{friction2Body}}
+* **{{friction3Title}}**: {{friction3Body}}
+
+> **The Guiding Belief:** {{guidingBeliefSentence}}
+
+---
+
+## {{UpfrontSetupOrArtifactHeading}}
+
+{{setupOrHeroContext}}
+
+<figure className="not-prose my-8 md:my-12">
+  <div className="editorial-breakout">
+    <div className="editorial-media-container">
+      <ProjectImageAsset
+        src="{{slug}}/{{heroMediaFilename}}"
+        alt="{{heroMediaAlt}}"
+        className="w-full h-auto object-contain"
+      />
+    </div>
+    <figcaption className="font-mono text-[11px] text-ink-muted text-center mt-3">
+      Fig 01 // {{heroCaption}}
+    </figcaption>
+  </div>
+</figure>
+
+---
+
+## {{TheParadigmShiftHeading}}
+
+<!-- NOTE: Use Swiss From ➔ To list for mobile elegance; avoid heavy multi-column markdown tables -->
+<div className="not-prose my-8 md:my-12 divide-y divide-paper-border/60 border-y border-paper-border/60">
+  <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
+    <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      01 // {{dimension1}}
+    </div>
+    <div className="md:col-span-9 space-y-1.5">
+      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+        <span>{{legacyApproach1}}</span>
+      </div>
+      <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span>{{redesignApproach1}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
+    <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      02 // {{dimension2}}
+    </div>
+    <div className="md:col-span-9 space-y-1.5">
+      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+        <span>{{legacyApproach2}}</span>
+      </div>
+      <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span>{{redesignApproach2}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+## {{TheInteractionOrTelemetryEngineHeading}}
+
+{{engineNarrativeIntro}}
+
+<figure className="not-prose my-8 md:my-10">
+  <div className="editorial-media-container">
+    <ProjectImageAsset
+      src="{{slug}}/{{engineFlowMedia}}"
+      alt="{{engineFlowAlt}}"
+      className="w-full h-auto object-contain"
+    />
+  </div>
+  <figcaption className="font-mono text-[11px] text-ink-muted text-center mt-3">
+    Fig 02 // {{engineFlowCaption}}
+  </figcaption>
+</figure>
+
+### {{InteractionSubsystemHeading1}}
+{{subsystem1Context}}
+
+<EditorialGrid2Up>
+  <EditorialCard
+    mediaSrc="{{slug}}/{{flowCard1Media}}"
+    mediaAlt="{{flowCard1Alt}}"
+    title="{{flowCard1Title}}"
+    description="{{flowCard1Description}}"
+  />
+  <EditorialCard
+    mediaSrc="{{slug}}/{{flowCard2Media}}"
+    mediaAlt="{{flowCard2Alt}}"
+    title="{{flowCard2Title}}"
+    description="{{flowCard2Description}}"
+  />
+</EditorialGrid2Up>
+
+---
+
+## Core Takeaways
+
+* **{{takeaway1Title}}**: {{takeaway1Body}}
+* **{{takeaway2Title}}**: {{takeaway2Body}}
+* **{{takeaway3Title}}**: {{takeaway3Body}}
+
+---
+
+## Retrospective & Trade-offs
+
+### {{OutcomesOrReviewHeading}}
+1. **{{outcome1Title}}**: {{outcome1Body}}
+2. **{{outcome2Title}}**: {{outcome2Body}}
+
+### Successes & Technical Trade-offs
+
+<div className="not-prose my-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+  <StatusCard
+    variant="success"
+    badge="Major Success"
+    title="{{successTitle}}"
+    description="{{successDescription}}"
+  />
+  <StatusCard
+    variant="compromise"
+    badge="Scope Compromise"
+    title="{{compromiseTitle}}"
+    description="{{compromiseDescription}}"
+  />
+  <StatusCard
+    variant="compromise"
+    badge="Technical Trade-off"
+    title="{{tradeoffTitle}}"
+    description="{{tradeoffDescription}}"
+  />
+</div>
+
+### What I'd Explore with +3 Months
+
+1. **{{roadmap1Title}}**: {{roadmap1Body}}
+2. **{{roadmap2Title}}**: {{roadmap2Body}}
+
+---
+
+<div className="my-8 flex flex-wrap justify-center gap-4">
+  <a
+    href="{{primaryLinkUrl}}"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center gap-2 font-mono text-xs text-ink-primary hover:text-ink-primary/70 uppercase tracking-widest font-semibold px-5 py-3 rounded-xl border border-paper-border bg-paper-card shadow-sm hover:border-ink-primary/40 transition-all"
+  >
+    🔗 {{primaryLinkLabel}} →
+  </a>
+</div>
