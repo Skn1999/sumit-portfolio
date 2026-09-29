@@ -1,24 +1,24 @@
 ---
 slug: "ediaqi-decision-support-system"
 title: "Promoting Behaviour Change for Healthier Environments from Sensor Data"
-tagline: "Designing for actionable guidance for non-technical users in public schools and municipal buildings."
+tagline: "Designing actionable guidance for non-technical users in public schools and municipal buildings."
 date: "2026-03-01"
 type: "design"
 subCategory: "ux-design"
 featured: true
 cover:
   filename: "cover.png"
-  alt: "EDIAQI Dashboard V2 wireframe showing IAQ monitoring interface"
+  alt: "EDIAQI in-room ambient display interface"
 tech:
   - "Figma"
   - "UX Research"
   - "Information Architecture"
   - "Heuristic Evaluation"
-metric: "30 usability issues identified; role-separated DSS prototype in progress for 3 stakeholder groups across public schools and municipal offices"
+metric: "30 usability issues resolved; in-room ambient display validated across 200 participants"
 links:
   prototype: https://www.figma.com/make/NMaJtePg9r2moSJt4pxSZr/Indoor-Air-Quality-Display?fullscreen=1&t=8ZFJ14PVlixDqryN-1&code-node-id=0-9
-  dashboard_prototype: https://www.figma.com/make/rGy3EC5u9Kv5cjRtsqL3Nx/Low-Fidelity-Wireframes-for-Dashboard?fullscreen=1&t=TnOHy22IdTdxUu9z-1&code-node-id=0-9
-summary: "A master's internship project designing a Decision Support System (DSS) on top of an IoT sensor dashboard for the EU Horizon Europe EDIAQI project. The system translates 12+ air quality parameters into prioritized, role-appropriate guidance for facility staff, teachers, and civil workers."
+  notion: https://fourth-yew-1cd.notion.site/EDIAQI-Designing-a-Decision-Support-System-for-Indoor-Air-Quality-39cfd7140ca780139055cfcda74c2841?source=copy_link
+summary: "A master's internship project designing a Decision Support System (DSS) on top of an IoT sensor dashboard for the EU Horizon Europe EDIAQI project. The system translates 12+ air quality parameters into glanceable, in-room guidance for teachers and municipal occupants."
 roles:
   - "UX Design"
   - "UX Research"
@@ -28,185 +28,321 @@ draft: false
 ---
 
 import { ProjectImageAsset } from "@/components/ui/project-image-asset";
-import {
-  EditorialGrid2Up,
-  EditorialCard,
-} from "@/components/editorial/EditorialLayout";
+import { StatusCard } from "@/components/ui/status-card";
 
-## 01 // THE CHALLENGE
+## Why Sensor Data Wasn't Enough
 
-### The Metric Hook
+As part of the **EU Horizon Europe EDIAQI project** in Ferrara, Italy, technical teams deployed 32 IoT sensors streaming 12+ real-time environmental parameters (CO₂, PM2.5, VOCs, temperature, humidity) to a central server.
 
-As part of the **EU Horizon Europe EDIAQI project** (Evidence Driven Indoor Air Quality Improvement), the Deda Next technical team deployed an extensive IoT infrastructure across public schools and municipal offices in Ferrara, Italy. The system continuously streams 12+ environmental health parameters (CO₂, PM2.5, PM10, TVOC, AVOC, Formaldehyde, NO₂, O₃, Temp, Humidity, Pressure) from 32 IoT sensors and Radiello passive samplers to a central FROST server via the OGC SensorThings API.
+Yet rich sensor data did not equate to healthier air. Non-expert occupants (teachers, municipal office workers) were expected to monitor complex telemetry while doing their daily work:
 
-### The Structural Bottleneck: Passive Telemetry vs. Active Human Behavior
+* **The Monitoring Burden**: Teachers cannot keep an admin dashboard open while managing a classroom of 25 students.
+* **Alerts Without Actions**: Raw numbers (e.g. *PM2.5 = 45 µg/m³*) fail to answer basic questions: *Open which window, and for how long?*
+* **Alert Fatigue**: Complex time-series graphs caused users to simply ignore alerts altogether.
 
-Having rich sensor data did not equate to safer indoor environments. The core gap lay between **data availability and human action**:
-
-1. **Unrealistic Monitoring Burden**: Non-expert occupants (classroom teachers, municipal office workers) cannot be expected to remain continuously logged into a dashboard while managing primary daily tasks.
-2. **No Actionability**: The legacy dashboard prototype provided raw parameter spikes without an action protocol layer. Alerts went completely untreated because non-expert users lacked contextual guidance (*"Open windows for how long? What action should be taken under current outdoor/indoor delta?"*).
-3. **Data Density Mismatch**: Existing dashboard interface relied on single-word vague labels in basic views or dense time-series line charts in advanced views. Both are ineffective in non-expert decision-making under task overload.
-
-<ProjectImageAsset src="ediaqi-decision-support-system/problem-hypo.jpg" alt="Problem hypothesis & stakeholder mapping framework" width="wide" />
-<p className="font-mono text-[11px] text-ink-muted text-center mt-2.5 mb-8">
-  Fig 01 // Problem hypothesis & stakeholder mapping framework
-</p>
+> **The Guiding Belief:** Sensors detect environmental threats, but only occupants can resolve them. Decision support must live in the room where actions happen—translating raw telemetry into immediate, glanceable physical directives.
 
 ---
 
-## 02 // MY ROLE
+## The In-Room Display
 
-### Team Composition
+Instead of forcing occupants to log into an administrative dashboard, the core interface was moved directly into the room on a dedicated ambient tablet display:
 
-- **Horizon Europe EDIAQI Consortium**: Interdisciplinary research steering group.
-- **Deda Next Technical Team**: Sensor deployment, IoT telemetry infrastructure, and FROST server API integration.
-- **Product Designer & UX Researcher (My Role)**: Lead UX/UI architecture, heuristic evaluation, quantitative study setup, and DSS interaction design.
-
-### My Bridge Positioning
-
-I bridged the gap between Deda Next's **backend sensor data and non-technical human decision-making**. My responsibility was creating an actionable Decision Support System (DSS) layer that transformed raw readings into clear, role-appropriate interventions.
-
----
-
-## 03 // WHAT WORKED vs. WHAT DIDN'T
-
-### Nielsen Heuristic & Accessibility Audit Breakdown
-
-An audit of Deda Next's initial dashboard prototype uncovered **30 usability and accessibility friction points**, documented in the [EDIAQI Heuristic Evaluation Matrix](file:///Users/SumitKumar/Desktop/consulting/portfolio/src/content/projects/ediaqi-decision-support-system/EDIAQI_Heuristic_Evaluation.xlsx):
-- **12 WCAG Accessibility Issues**: Color contrast failures, missing ARIA focus indicators, and non-scalable text elements.
-- **10 Visibility of System Status Issues**: Ambient status updates absent; breach alerts lacked persistence and clear recovery feedback loops.
-- **5 Match Between System & Real World Issues**: Over-reliance on technical units without plain-language translations or real-world action prompts.
-- **3 Consistency & Standards Issues**: Inconsistent threshold color codes across views.
-
-<ProjectImageAsset src="ediaqi-decision-support-system/heuristics-evaluation.jpg" alt="Nielsen heuristic evaluation (30 documented usability issues)" />
-<p className="font-mono text-[11px] text-ink-muted text-center mt-2.5 mb-8">
-  Fig 02 // Nielsen heuristic evaluation (30 documented usability issues)
-</p>
-
-### What Worked vs. What Didn't
-
-| Category | ❌ What Didn't Work (Legacy Prototype) | ✅ What Worked (DSS Redesign) |
-| :--- | :--- | :--- |
-| **Touchpoint Strategy** | Single central desktop dashboard requiring active login and continuous manual checks. | **2-Touchpoint Architecture**: In-room ambient tablet for glanceable occupant awareness + Web Dashboard V2 for facility management. |
-| **Information Architecture** | Progressive disclosure hiding critical action steps behind nested dropdowns/tabs. | **Upfront Information Disclosure**: Surfacing severity, cause, and concrete micro-actions directly on primary screens. |
-| **Modality & Visuals** | Dense time-series line charts and single-word vague labels ("Moderate", "High"). | **Text + Graphics Modality**: Dual-coded ambient color states paired with explicit illustrations for ultra-glanceability. |
-| **Role Alignment** | Uniform data presentation for both teachers and facility engineers. | **Role-Separated Views**: Simplified ambient action prompts for occupants vs. prioritized severity-ranked alert logs for facility staff. |
+<figure className="not-prose my-8 md:my-12">
+  <div className="editorial-breakout">
+    <div className="editorial-media-container">
+      <ProjectImageAsset
+        src="ediaqi-decision-support-system/mockup-with-tablet.jpg"
+        alt="In-room ambient tablet display prototype"
+        className="w-full h-auto object-contain"
+      />
+    </div>
+    <figcaption className="font-mono text-[11px] text-ink-muted text-center mt-3">
+      In-room ambient tablet prototype: translating sensor thresholds into immediate physical actions
+    </figcaption>
+  </div>
+</figure>
 
 ---
 
-## 04 // THE SOLUTION
+## What Changed
 
-### 1. Empirical Quantitative Study (N=200 Participants, 6 Scenarios)
+A heuristic evaluation of Deda Next's initial dashboard identified **30 usability and accessibility friction points** (documented in the [evaluation matrix](file:///Users/SumitKumar/Desktop/consulting/portfolio/src/content/projects/ediaqi-decision-support-system/EDIAQI_Heuristic_Evaluation.xlsx)). This prompted four foundational shifts:
 
-To validate the UX architecture of the action protocol layer, I conducted a **2x2 Mixed Factorial Experiment** testing 6 real-world IAQ breach scenarios across 200 participants.
+<div className="not-prose my-8 md:my-12 divide-y divide-paper-border/60 border-y border-paper-border/60">
+  <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
+    <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      Touchpoint
+    </div>
+    <div className="md:col-span-9 space-y-1.5">
+      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+        <span>Single central desktop dashboard requiring active login and continuous manual checks.</span>
+      </div>
+      <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span>Dedicated in-room ambient display for glanceable awareness at the point of physical action.</span>
+      </div>
+    </div>
+  </div>
 
-#### 2x2 Mixed Factorial Experimental Design
+  <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
+    <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      Disclosure
+    </div>
+    <div className="md:col-span-9 space-y-1.5">
+      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+        <span>Progressive disclosure hiding critical guidance behind nested dropdowns and tabs.</span>
+      </div>
+      <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span>Upfront disclosure surfacing hazard type, cause, and concrete micro-actions immediately.</span>
+      </div>
+    </div>
+  </div>
 
-| Independent Variables | **Modality: Text Only** | **Modality: Text + Graphics** |
-| :--- | :--- | :--- |
-| **Disclosure: Upfront** | *Cell A*: Upfront text-only prompts (High comprehension, moderate cognitive load) | *Cell B* (Optimal): Upfront text + visual graphics (Highest comprehension, lowest cognitive load) |
-| **Disclosure: Progressive** | *Cell C*: Multi-step text prompts (Lower actionability, higher cognitive friction) | *Cell D*: Multi-step graphical prompts (Moderate comprehension, delayed task execution) |
+  <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
+    <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      Modality
+    </div>
+    <div className="md:col-span-9 space-y-1.5">
+      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+        <span>Dense time-series line charts and single-word vague labels like "Moderate".</span>
+      </div>
+      <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span>Dual-coded ambient color states paired with explicit illustrations for instant glanceability.</span>
+      </div>
+    </div>
+  </div>
 
-- **Evaluated Metrics**: Problem Comprehension Speed, Actionability Accuracy, and Subjective Cognitive Load.
-- **Key Finding**: Upfront information disclosure combined with graphical modality significantly outperformed progressive disclosure in time-critical IAQ scenarios.
+  <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
+    <div className="md:col-span-3 font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+      Roles
+    </div>
+    <div className="md:col-span-9 space-y-1.5">
+      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+        <span>Uniform data presentation for both classroom teachers and facility engineers.</span>
+      </div>
+      <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span>Role-separated guidance: ambient action prompts for occupants vs. administrative logs for facility staff.</span>
+      </div>
+    </div>
+  </div>
+</div>
 
-### 2. In-Room Ambient Display (5-State System Architecture)
-
-The in-room tablet display operates across **5 discrete ambient states** simulating real-time telemetry transitions:
-
-1. **Ambient State**: Subtle background color indicating optimal air quality (CO2 < 800 ppm).
-2. **Alert State**: High-visibility warning when thresholds are breached, detailing the specific hazard (CO2 > 1200 ppm).
-3. **Action Prompt State**: Immediate, glanceable guidance (e.g., *"Open windows for cross-ventilation"*).
-4. **Reporting / Action Taken State**: One-tap confirmation logging the intervention to close the feedback loop.
-5. **Educational State**: Contextual micro-tips explaining indoor environmental health factors to occupants.
-
-<ProjectImageAsset src="ediaqi-decision-support-system/scenarios.png" alt="Scenario validation flowchart for in-room tablet display states" />
-<p className="font-mono text-[11px] text-ink-muted text-center mt-2.5 mb-8">
-  Fig 03 // Scenario validation flowchart for in-room tablet display states
-</p>
-
-<ProjectImageAsset src="ediaqi-decision-support-system/mockup-with-tablet.jpg" alt="In-room ambient tablet display prototype" />
-<p className="font-mono text-[11px] text-ink-muted text-center mt-2.5 mb-8">
-  Fig 04 // In-room ambient tablet display prototype
-</p>
-
-> [!IMPORTANT]
-> **Qualitative User Research Evidence**:
->
-> 💬 **On Passive Alerts vs. Direct Action Prompts**:
-> *"I don't think it's enough to have a blinking light, a red light that says there is a problem."* — Research Participant
-> *(Validates why raw alerts fail and explicit action protocols are mandatory).*
->
-> 💬 **On Action Recovery & Feedback Loops**:
-> *"I opened the window. After a while, I'm freezing. I'm not able to understand that it is cold and it's time to close... It's too late for me."* — Research Participant
-> *(Validates the need for 5-state ambient tracking that closes the feedback loop when conditions recover).*
+<figure className="not-prose my-8 md:my-10">
+  <div className="editorial-media-container">
+    <ProjectImageAsset
+      src="ediaqi-decision-support-system/heuristics-evaluation.jpg"
+      alt="Nielsen heuristic evaluation identifying 30 usability issues"
+      className="w-full h-auto object-contain"
+    />
+  </div>
+  <figcaption className="font-mono text-[11px] text-ink-muted text-center mt-3">
+    Heuristic audit identifying 30 usability and accessibility issues in the legacy telemetry UI
+  </figcaption>
+</figure>
 
 ---
 
-### 3. Dashboard V2: Public Good & Advanced Facility Views
+## Testing with 200 Participants
 
-For municipal facility managers monitoring dozens of public buildings simultaneously:
+I initially hypothesized that progressive disclosure (revealing details only on demand) would prevent visual clutter. To validate this, I ran a **2x2 Mixed Factorial Experiment** testing 6 emergency breach scenarios across 200 participants.
 
-<EditorialGrid2Up>
-  <EditorialCard
-    mediaSrc="ediaqi-decision-support-system/DashboardV2-Homepage.jpg"
-    mediaAlt="EDIAQI Public-good dashboard homepage"
-    title="Fig 05 // Dashboard V2 Homepage"
-    description="High-level building status and ambient air quality index for municipal stakeholders and school occupants."
+<div className="not-prose my-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div className="p-5 rounded-2xl border border-paper-border bg-paper-card">
+    <div className="text-[11px] font-mono uppercase tracking-wider text-ink-muted mb-2">
+      Initial Hypothesis (Disconfirmed)
+    </div>
+    <div className="text-sm font-semibold text-ink-primary mb-1">
+      Progressive Disclosure
+    </div>
+    <p className="text-xs text-ink-muted leading-relaxed">
+      Assumed step-by-step disclosure would reduce overwhelm. In practice, hiding action steps increased cognitive friction and delayed intervention during critical CO₂ spikes.
+    </p>
+  </div>
+  <div className="p-5 rounded-2xl border border-paper-border bg-paper-card border-emerald-500/30">
+    <div className="text-[11px] font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-2">
+      Validated Direction (Optimal)
+    </div>
+    <div className="text-sm font-semibold text-ink-primary mb-1">
+      Upfront Text + Graphics
+    </div>
+    <p className="text-xs text-ink-muted leading-relaxed">
+      Coupling clear action text with graphical cues produced the highest comprehension speed and lowest cognitive load under stress.
+    </p>
+  </div>
+</div>
+
+---
+
+## The 5 Ambient States
+
+Raw alerts fail because they don't close the loop. If an occupant opens a window in winter, they eventually freeze without an alert reminding them when it is safe to close it. The tablet cycles through 5 discrete states to support the full behavioral loop:
+
+<figure className="not-prose my-8 md:my-10">
+  <div className="editorial-media-container">
+    <ProjectImageAsset
+      src="ediaqi-decision-support-system/scenarios.png"
+      alt="5-state ambient feedback loop flowchart"
+      className="w-full h-auto object-contain"
+    />
+  </div>
+  <figcaption className="font-mono text-[11px] text-ink-muted text-center mt-3">
+    State machine logic: from ambient monitoring to thermal comfort recovery
+  </figcaption>
+</figure>
+
+> *"I opened the window. After a while, I'm freezing. I'm not able to understand that it is cold and it's time to close... It's too late for me."*  
+> — Research Participant
+
+<div className="not-prose my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+  <div className="flex flex-col gap-2.5">
+    <div className="editorial-media-container rounded-xl overflow-hidden border border-paper-border bg-paper-card">
+      <ProjectImageAsset
+        src="ediaqi-decision-support-system/Tablet_interface_on_hardware_device_20260928231627_3.jpg"
+        alt="Optimal baseline tablet display mockup"
+        className="w-full h-auto object-contain"
+        width={1024}
+        height={1024}
+      />
+    </div>
+    <div>
+      <div className="font-mono text-[11px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-semibold mb-1">
+        Optimal Baseline
+      </div>
+      <p className="text-[11px] md:text-xs text-ink-muted leading-relaxed">
+        Subtle green interface confirming air is healthy (CO₂ &lt; 800 ppm) without demanding conscious attention.
+      </p>
+    </div>
+  </div>
+
+  <div className="flex flex-col gap-2.5">
+    <div className="editorial-media-container rounded-xl overflow-hidden border border-paper-border bg-paper-card">
+      <ProjectImageAsset
+        src="ediaqi-decision-support-system/Tablet_display_on_wall_20260928231627.jpg"
+        alt="Warning alert tablet display mockup"
+        className="w-full h-auto object-contain"
+        width={1024}
+        height={1024}
+      />
+    </div>
+    <div>
+      <div className="font-mono text-[11px] uppercase tracking-wider text-amber-500 font-semibold mb-1">
+        Warning Alert
+      </div>
+      <p className="text-[11px] md:text-xs text-ink-muted leading-relaxed">
+        Amber threshold notice (CO₂ &gt; 1200 ppm) warning occupants that ventilation is degrading.
+      </p>
+    </div>
+  </div>
+
+  <div className="flex flex-col gap-2.5">
+    <div className="editorial-media-container rounded-xl overflow-hidden border border-paper-border bg-paper-card">
+      <ProjectImageAsset
+        src="ediaqi-decision-support-system/Tablet_interface_on_hardware_device_20260928231627_2.jpg"
+        alt="Action directive tablet display mockup"
+        className="w-full h-auto object-contain"
+        width={1024}
+        height={1024}
+      />
+    </div>
+    <div>
+      <div className="font-mono text-[11px] uppercase tracking-wider text-ink-primary font-semibold mb-1">
+        Action Directive
+      </div>
+      <p className="text-[11px] md:text-xs text-ink-muted leading-relaxed">
+        Translates numbers into explicit physical directives with a 1-tap confirmation button (*"Ho aperto le finestre"*).
+      </p>
+    </div>
+  </div>
+</div>
+
+<div className="not-prose my-6 grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6 max-w-2xl mx-auto">
+  <div className="flex flex-col gap-2.5">
+    <div className="editorial-media-container rounded-xl overflow-hidden border border-paper-border bg-paper-card">
+      <ProjectImageAsset
+        src="ediaqi-decision-support-system/Tablet_interface_on_hardware_device_20260928231627.jpg"
+        alt="Closed-loop recovery monitoring tablet display mockup"
+        className="w-full h-auto object-contain"
+        width={1024}
+        height={1024}
+      />
+    </div>
+    <div>
+      <div className="font-mono text-[11px] uppercase tracking-wider text-sky-500 font-semibold mb-1">
+        Closed-Loop Recovery
+      </div>
+      <p className="text-[11px] md:text-xs text-ink-muted leading-relaxed">
+        Actively tracks air recovery and promises a timed reminder to close windows before the room freezes.
+      </p>
+    </div>
+  </div>
+
+  <div className="flex flex-col gap-2.5">
+    <div className="editorial-media-container rounded-xl overflow-hidden border border-paper-border bg-paper-card">
+      <ProjectImageAsset
+        src="ediaqi-decision-support-system/Tablet_interface_displayed_on_de…_20260928231627.jpg"
+        alt="Critical hazard emergency tablet display mockup"
+        className="w-full h-auto object-contain"
+        width={1024}
+        height={1024}
+      />
+    </div>
+    <div>
+      <div className="font-mono text-[11px] uppercase tracking-wider text-rose-500 font-semibold mb-1">
+        Critical Hazard
+      </div>
+      <p className="text-[11px] md:text-xs text-ink-muted leading-relaxed">
+        High-visibility emergency alert (CO₂ &gt; 2200 ppm) directing immediate room evacuation.
+      </p>
+    </div>
+  </div>
+</div>
+
+---
+
+## Takeaways
+
+* **Upfront beats progressive disclosure**: In time-critical situations, hiding guidance behind taps causes hesitation. Immediate answers work best.
+* **Glanceability over technical precision**: Non-expert occupants need plain verbs and visual state changes, not decimal points and parts-per-million units.
+* **Guidance must close the loop**: Prompting an action without signaling when to stop (e.g. closing windows after airing out a room) breaks trust and thermal comfort.
+
+---
+
+## Trade-offs & Compromises
+
+<div className="not-prose my-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+  <StatusCard
+    variant="success"
+    badge="Major Success"
+    title="2-Touchpoint Model"
+    description="Separating ambient classroom displays from centralized administrative dashboards eliminated the continuous monitoring burden for teachers."
   />
-  <EditorialCard
-    mediaSrc="ediaqi-decision-support-system/DashboardV2-LocationPage.jpg"
-    mediaAlt="EDIAQI Public-good dashboard location page"
-    title="Fig 06 // Dashboard V2 Location Page"
-    description="Location-specific telemetry, 12+ parameter breakdowns, and actionable facility log protocols."
+  <StatusCard
+    variant="compromise"
+    badge="Scope Compromise"
+    title="Italian Health Regulations"
+    description="Automated compliance logging under Italian workplace safety law (D.Lgs. 81/2008) required dedicated legal workflows and was de-scoped."
   />
-</EditorialGrid2Up>
-
----
-
-## 05 // KEY INSIGHTS
-
-💡 **Key Learning 01: Hypothesis Disconfirmed (Upfront > Progressive Disclosure)**  
-Opposite of my initial hypothesis that progressive disclosure would reduce visual clutter, empirical data from the 200-participant study showed that users prefer **upfront information**. Upfront disclosure directly correlated with higher problem comprehension during environmental threshold breaches.
-
-💡 **Key Learning 02: Glanceability Reduces Cognitive Burden**  
-Combining text with graphical icons significantly reduced cognitive load for non-expert users. Occupants in schools and offices operate under primary task overload, thus environmental touchpoints must prioritize glanceability over technical completeness.
-
-💡 **Key Learning 03: Raw Data Does Not Drive Behavioral Change**  
-Displaying numerical sensor readings (PM2.5 = 45 µg/m³) without context and plain-language actions fails to produce behavioral responses.
-
-💡 **Key Learning 04: Overcoming Heuristic-Based Habits**  
-Non-expert users rely heavily on heuristics ("the room feels fine to me"). Environmental DSS design must actively disrupt passive habits by using persistent visual feedback when threats accumulate.
-
----
-
-## 06 // IMPACT & LESSONS
-
-### Final Project Outcomes
-
-1. **Interactive Figma Prototypes**: Delivered high-fidelity interactive prototypes for the 5-state in-room ambient tablet display and low-fidelity prototypes for Dashboard V2 using Figma.
-2. **Systematic Usability Audit**: Documented and resolved 30 usability and accessibility issues in the [EDIAQI Heuristic Evaluation Spreadsheet](file:///Users/SumitKumar/Desktop/consulting/portfolio/src/content/projects/ediaqi-decision-support-system/EDIAQI_Heuristic_Evaluation.xlsx).
-
-### Retrospective: Successes & Compromises
-
-| Aspect | Status & Reflection |
-| :--- | :--- |
-| **2-Touchpoint Architecture** | **Major Success**: Separating ambient occupant touchpoints from centralized administrative dashboards effectively solved the "constant monitoring" friction point. |
-| **Legal Compliance Workflow** | **Scope Compromise**: Full automated legal compliance logging under Italian occupational health standards (D.Lgs. 81/2008 / Classe II thresholds) was out of scope and required dedicated legal inputs. |
-| **Design System Handoff** | **Compromise**: Due to timeline constraints, a unified production token system was not fully established with the engineering team. |
-
-### Future Roadmap (+3 Months Strategy)
-
-If granted an additional 3 months on the EDIAQI project, I would focus on:
-
-1. **Linguistic & Visual Design System**: Standardizing a comprehensive design system covering both visual tokens and clear micro-copy rules to eliminate ambiguity across ambient states.
-2. **In-Situ Usability & Field Engineering Testing**: Collaborating with Deda Next engineers to deploy working tablet prototypes in Ferrara classrooms to collect live field metrics (Task Completion Rate, Action Accuracy & Time-to-Intervention, and Long-term Behavior Retention).
+  <StatusCard
+    variant="compromise"
+    badge="Technical Compromise"
+    title="Design Token Handoff"
+    description="Due to project timelines, a unified production token system was not fully formalized with the engineering team before prototype delivery."
+  />
+</div>
 
 ---
 
 <div className="my-8 flex flex-wrap justify-center gap-4">
   <a
-    href={"https://www.figma.com/make/NMaJtePg9r2moSJt4pxSZr/Indoor-Air-Quality-Display?fullscreen=1&t=8ZFJ14PVlixDqryN-1&code-node-id=0-9"}
+    href="https://www.figma.com/make/NMaJtePg9r2moSJt4pxSZr/Indoor-Air-Quality-Display?fullscreen=1&t=8ZFJ14PVlixDqryN-1&code-node-id=0-9"
     target="_blank"
     rel="noopener noreferrer"
     className="inline-flex items-center gap-2 font-mono text-xs text-ink-primary hover:text-ink-primary/70 uppercase tracking-widest font-semibold px-5 py-3 rounded-xl border border-paper-border bg-paper-card shadow-sm hover:border-ink-primary/40 transition-all"
@@ -214,19 +350,11 @@ If granted an additional 3 months on the EDIAQI project, I would focus on:
     🔗 View Tablet Prototype →
   </a>
   <a
-    href={"https://www.figma.com/make/rGy3EC5u9Kv5cjRtsqL3Nx/Low-Fidelity-Wireframes-for-Dashboard?fullscreen=1&t=TnOHy22IdTdxUu9z-1&code-node-id=0-9"}
+    href="https://fourth-yew-1cd.notion.site/EDIAQI-Designing-a-Decision-Support-System-for-Indoor-Air-Quality-39cfd7140ca780139055cfcda74c2841?source=copy_link"
     target="_blank"
     rel="noopener noreferrer"
     className="inline-flex items-center gap-2 font-mono text-xs text-ink-primary hover:text-ink-primary/70 uppercase tracking-widest font-semibold px-5 py-3 rounded-xl border border-paper-border bg-paper-card shadow-sm hover:border-ink-primary/40 transition-all"
   >
-    🔗 View Dashboard V2 Prototype →
-  </a>
-  <a
-    href={"https://fourth-yew-1cd.notion.site/EDIAQI-Designing-a-Decision-Support-System-for-Indoor-Air-Quality-39cfd7140ca780139055cfcda74c2841?source=copy_link"}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex items-center gap-2 font-mono text-xs text-ink-primary hover:text-ink-primary/70 uppercase tracking-widest font-semibold px-5 py-3 rounded-xl border border-paper-border bg-paper-card shadow-sm hover:border-ink-primary/40 transition-all"
-  >
-    📄 Read the Full Study →
+    📄 Read Full Study on Notion →
   </a>
 </div>

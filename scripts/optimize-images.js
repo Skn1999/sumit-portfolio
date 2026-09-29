@@ -21,6 +21,7 @@ import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 import { glob } from "glob";
+import { generateImageDimensions } from "./generate-image-dimensions.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -259,6 +260,11 @@ async function main() {
   // Save manifest
   if (!dryRun) {
     await saveManifest(newManifest);
+    try {
+      await generateImageDimensions();
+    } catch (e) {
+      console.warn("⚠️  Could not update image dimensions:", e.message);
+    }
   }
 
   // Summary
@@ -284,3 +290,4 @@ main().catch((err) => {
   console.error("Fatal error:", err);
   process.exit(1);
 });
+

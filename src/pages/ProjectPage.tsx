@@ -127,7 +127,7 @@ const ProjectPage: React.FC = () => {
               prose-blockquote:font-body-narrative prose-blockquote:text-ink-primary prose-blockquote:border-l-2 prose-blockquote:border-paper-border prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:my-8
               prose-a:text-ink-primary prose-a:underline prose-a:decoration-paper-border hover:prose-a:decoration-ink-primary
               prose-li:font-body-narrative prose-li:text-ink-muted prose-li:text-base prose-li:md:text-lg
-              prose-img:rounded-xl prose-img:border prose-img:border-paper-border prose-img:my-8
+              prose-img:w-full prose-img:h-auto prose-img:rounded-xl prose-img:border prose-img:border-paper-border prose-img:my-8
               prose-figcaption:font-mono prose-figcaption:text-[11px] prose-figcaption:text-ink-muted prose-figcaption:text-center prose-figcaption:mt-2.5 prose-figcaption:mb-8
             "
           >

@@ -1,0 +1,712 @@
+{
+  "images/about/20260111_123944.jpg": {
+    "width": 1920,
+    "height": 1440,
+    "aspectRatio": "1920/1440"
+  },
+  "20260111_123944.jpg": {
+    "width": 1920,
+    "height": 1440,
+    "aspectRatio": "1920/1440"
+  },
+  "images/about/hero.jpg": {
+    "width": 1008,
+    "height": 1244,
+    "aspectRatio": "1008/1244"
+  },
+  "hero.jpg": {
+    "width": 1008,
+    "height": 1244,
+    "aspectRatio": "1008/1244"
+  },
+  "images/about/hiking.jpg": {
+    "width": 1920,
+    "height": 1440,
+    "aspectRatio": "1920/1440"
+  },
+  "hiking.jpg": {
+    "width": 1920,
+    "height": 1440,
+    "aspectRatio": "1920/1440"
+  },
+  "images/about/running.jpg": {
+    "width": 1080,
+    "height": 1440,
+    "aspectRatio": "1080/1440"
+  },
+  "running.jpg": {
+    "width": 1080,
+    "height": 1440,
+    "aspectRatio": "1080/1440"
+  },
+  "images/about/side-profile.jpg": {
+    "width": 1920,
+    "height": 1920,
+    "aspectRatio": "1920/1920"
+  },
+  "side-profile.jpg": {
+    "width": 1920,
+    "height": 1920,
+    "aspectRatio": "1920/1920"
+  },
+  "images/about/sketching.jpg": {
+    "width": 1920,
+    "height": 1920,
+    "aspectRatio": "1920/1920"
+  },
+  "sketching.jpg": {
+    "width": 1920,
+    "height": 1920,
+    "aspectRatio": "1920/1920"
+  },
+  "images/about/unsaid-moments-banner.png": {
+    "width": 1344,
+    "height": 256,
+    "aspectRatio": "1344/256"
+  },
+  "unsaid-moments-banner.png": {
+    "width": 1344,
+    "height": 256,
+    "aspectRatio": "1344/256"
+  },
+  "images/certificates/foundations-ux.jpg": {
+    "width": 1650,
+    "height": 1275,
+    "aspectRatio": "1650/1275"
+  },
+  "foundations-ux.jpg": {
+    "width": 1650,
+    "height": 1275,
+    "aspectRatio": "1650/1275"
+  },
+  "images/certificates/intro-github.jpg": {
+    "width": 1650,
+    "height": 1275,
+    "aspectRatio": "1650/1275"
+  },
+  "intro-github.jpg": {
+    "width": 1650,
+    "height": 1275,
+    "aspectRatio": "1650/1275"
+  },
+  "images/certificates/start-ux.jpg": {
+    "width": 1650,
+    "height": 1275,
+    "aspectRatio": "1650/1275"
+  },
+  "start-ux.jpg": {
+    "width": 1650,
+    "height": 1275,
+    "aspectRatio": "1650/1275"
+  },
+  "images/certificates/udemy.jpg": {
+    "width": 1600,
+    "height": 1190,
+    "aspectRatio": "1600/1190"
+  },
+  "udemy.jpg": {
+    "width": 1600,
+    "height": 1190,
+    "aspectRatio": "1600/1190"
+  },
+  "images/certificates/visual-elements-ui-design.jpeg": {
+    "width": 1772,
+    "height": 928,
+    "aspectRatio": "1772/928"
+  },
+  "visual-elements-ui-design.jpeg": {
+    "width": 1772,
+    "height": 928,
+    "aspectRatio": "1772/928"
+  },
+  "images/logo.png": {
+    "width": 1920,
+    "height": 1920,
+    "aspectRatio": "1920/1920"
+  },
+  "logo.png": {
+    "width": 1920,
+    "height": 1920,
+    "aspectRatio": "1920/1920"
+  },
+  "actai/actai-steward-cover-animated.gif": {
+    "width": 800,
+    "height": 600,
+    "aspectRatio": "800/600"
+  },
+  "actai-steward-cover-animated.gif": {
+    "width": 800,
+    "height": 600,
+    "aspectRatio": "800/600"
+  },
+  "actai/actai-steward-cover-static.png": {
+    "width": 1920,
+    "height": 1440,
+    "aspectRatio": "1920/1440"
+  },
+  "actai-steward-cover-static.png": {
+    "width": 1920,
+    "height": 1440,
+    "aspectRatio": "1920/1440"
+  },
+  "actai/how-activity-audit-light.png": {
+    "width": 1920,
+    "height": 1227,
+    "aspectRatio": "1920/1227"
+  },
+  "how-activity-audit-light.png": {
+    "width": 1920,
+    "height": 1227,
+    "aspectRatio": "1920/1227"
+  },
+  "actai/how-bounded-decision-edit-light.png": {
+    "width": 1920,
+    "height": 1227,
+    "aspectRatio": "1920/1227"
+  },
+  "how-bounded-decision-edit-light.png": {
+    "width": 1920,
+    "height": 1227,
+    "aspectRatio": "1920/1227"
+  },
+  "actai/how-screen-a-today-light.png": {
+    "width": 1920,
+    "height": 1227,
+    "aspectRatio": "1920/1227"
+  },
+  "how-screen-a-today-light.png": {
+    "width": 1920,
+    "height": 1227,
+    "aspectRatio": "1920/1227"
+  },
+  "actai/how-screen-b-delegation-light.png": {
+    "width": 1920,
+    "height": 1227,
+    "aspectRatio": "1920/1227"
+  },
+  "how-screen-b-delegation-light.png": {
+    "width": 1920,
+    "height": 1227,
+    "aspectRatio": "1920/1227"
+  },
+  "actai/how-screen-c-decision-sheet-light.png": {
+    "width": 1920,
+    "height": 1227,
+    "aspectRatio": "1920/1227"
+  },
+  "how-screen-c-decision-sheet-light.png": {
+    "width": 1920,
+    "height": 1227,
+    "aspectRatio": "1920/1227"
+  },
+  "actai/how-source-inspector-light.png": {
+    "width": 1920,
+    "height": 1227,
+    "aspectRatio": "1920/1227"
+  },
+  "how-source-inspector-light.png": {
+    "width": 1920,
+    "height": 1227,
+    "aspectRatio": "1920/1227"
+  },
+  "actai/how-state-monitoring-light.png": {
+    "width": 1920,
+    "height": 1227,
+    "aspectRatio": "1920/1227"
+  },
+  "how-state-monitoring-light.png": {
+    "width": 1920,
+    "height": 1227,
+    "aspectRatio": "1920/1227"
+  },
+  "actai/what-design-tokens-and-surfaces.png": {
+    "width": 1920,
+    "height": 1248,
+    "aspectRatio": "1920/1248"
+  },
+  "what-design-tokens-and-surfaces.png": {
+    "width": 1920,
+    "height": 1248,
+    "aspectRatio": "1920/1248"
+  },
+  "actai/what-primitives-and-state-engine.png": {
+    "width": 1920,
+    "height": 1248,
+    "aspectRatio": "1920/1248"
+  },
+  "what-primitives-and-state-engine.png": {
+    "width": 1920,
+    "height": 1248,
+    "aspectRatio": "1920/1248"
+  },
+  "actai/what-typography-and-layout-grid.png": {
+    "width": 1920,
+    "height": 1248,
+    "aspectRatio": "1920/1248"
+  },
+  "what-typography-and-layout-grid.png": {
+    "width": 1920,
+    "height": 1248,
+    "aspectRatio": "1920/1248"
+  },
+  "ediaqi-decision-support-system/DashboardV2-Homepage.jpg": {
+    "width": 1500,
+    "height": 1125,
+    "aspectRatio": "1500/1125"
+  },
+  "DashboardV2-Homepage.jpg": {
+    "width": 1500,
+    "height": 1125,
+    "aspectRatio": "1500/1125"
+  },
+  "ediaqi-decision-support-system/DashboardV2-LocationPage.jpg": {
+    "width": 1500,
+    "height": 1125,
+    "aspectRatio": "1500/1125"
+  },
+  "DashboardV2-LocationPage.jpg": {
+    "width": 1500,
+    "height": 1125,
+    "aspectRatio": "1500/1125"
+  },
+  "ediaqi-decision-support-system/Tablet_display_on_wall_20260928231627.jpg": {
+    "width": 1024,
+    "height": 1024,
+    "aspectRatio": "1024/1024"
+  },
+  "Tablet_display_on_wall_20260928231627.jpg": {
+    "width": 1024,
+    "height": 1024,
+    "aspectRatio": "1024/1024"
+  },
+  "ediaqi-decision-support-system/Tablet_interface_displayed_on_de…_20260928231627.jpg": {
+    "width": 1024,
+    "height": 1024,
+    "aspectRatio": "1024/1024"
+  },
+  "Tablet_interface_displayed_on_de…_20260928231627.jpg": {
+    "width": 1024,
+    "height": 1024,
+    "aspectRatio": "1024/1024"
+  },
+  "ediaqi-decision-support-system/Tablet_interface_on_hardware_device_20260928231627.jpg": {
+    "width": 1024,
+    "height": 1024,
+    "aspectRatio": "1024/1024"
+  },
+  "Tablet_interface_on_hardware_device_20260928231627.jpg": {
+    "width": 1024,
+    "height": 1024,
+    "aspectRatio": "1024/1024"
+  },
+  "ediaqi-decision-support-system/Tablet_interface_on_hardware_device_20260928231627_2.jpg": {
+    "width": 1024,
+    "height": 1024,
+    "aspectRatio": "1024/1024"
+  },
+  "Tablet_interface_on_hardware_device_20260928231627_2.jpg": {
+    "width": 1024,
+    "height": 1024,
+    "aspectRatio": "1024/1024"
+  },
+  "ediaqi-decision-support-system/Tablet_interface_on_hardware_device_20260928231627_3.jpg": {
+    "width": 1024,
+    "height": 1024,
+    "aspectRatio": "1024/1024"
+  },
+  "Tablet_interface_on_hardware_device_20260928231627_3.jpg": {
+    "width": 1024,
+    "height": 1024,
+    "aspectRatio": "1024/1024"
+  },
+  "ediaqi-decision-support-system/cover.png": {
+    "width": 1376,
+    "height": 768,
+    "aspectRatio": "1376/768"
+  },
+  "cover.png": {
+    "width": 1376,
+    "height": 768,
+    "aspectRatio": "1376/768"
+  },
+  "ediaqi-decision-support-system/display-action-protocol.jpg": {
+    "width": 1311,
+    "height": 1170,
+    "aspectRatio": "1311/1170"
+  },
+  "display-action-protocol.jpg": {
+    "width": 1311,
+    "height": 1170,
+    "aspectRatio": "1311/1170"
+  },
+  "ediaqi-decision-support-system/display-alert-poor.jpg": {
+    "width": 1311,
+    "height": 1374,
+    "aspectRatio": "1311/1374"
+  },
+  "display-alert-poor.jpg": {
+    "width": 1311,
+    "height": 1374,
+    "aspectRatio": "1311/1374"
+  },
+  "ediaqi-decision-support-system/display-ambient-good.jpg": {
+    "width": 1311,
+    "height": 1374,
+    "aspectRatio": "1311/1374"
+  },
+  "display-ambient-good.jpg": {
+    "width": 1311,
+    "height": 1374,
+    "aspectRatio": "1311/1374"
+  },
+  "ediaqi-decision-support-system/display-critical.jpg": {
+    "width": 1311,
+    "height": 1374,
+    "aspectRatio": "1311/1374"
+  },
+  "display-critical.jpg": {
+    "width": 1311,
+    "height": 1374,
+    "aspectRatio": "1311/1374"
+  },
+  "ediaqi-decision-support-system/display-recovery.jpg": {
+    "width": 1311,
+    "height": 1170,
+    "aspectRatio": "1311/1170"
+  },
+  "display-recovery.jpg": {
+    "width": 1311,
+    "height": 1170,
+    "aspectRatio": "1311/1170"
+  },
+  "ediaqi-decision-support-system/heuristics-evaluation.jpg": {
+    "width": 1920,
+    "height": 556,
+    "aspectRatio": "1920/556"
+  },
+  "heuristics-evaluation.jpg": {
+    "width": 1920,
+    "height": 556,
+    "aspectRatio": "1920/556"
+  },
+  "ediaqi-decision-support-system/mockup-with-tablet.jpg": {
+    "width": 1920,
+    "height": 940,
+    "aspectRatio": "1920/940"
+  },
+  "mockup-with-tablet.jpg": {
+    "width": 1920,
+    "height": 940,
+    "aspectRatio": "1920/940"
+  },
+  "ediaqi-decision-support-system/problem-hypo.jpg": {
+    "width": 1920,
+    "height": 506,
+    "aspectRatio": "1920/506"
+  },
+  "problem-hypo.jpg": {
+    "width": 1920,
+    "height": 506,
+    "aspectRatio": "1920/506"
+  },
+  "ediaqi-decision-support-system/scenarios.png": {
+    "width": 1920,
+    "height": 2615,
+    "aspectRatio": "1920/2615"
+  },
+  "scenarios.png": {
+    "width": 1920,
+    "height": 2615,
+    "aspectRatio": "1920/2615"
+  },
+  "groundwork/methodology.avif": {
+    "width": 1900,
+    "height": 636,
+    "aspectRatio": "1900/636"
+  },
+  "methodology.avif": {
+    "width": 1900,
+    "height": 636,
+    "aspectRatio": "1900/636"
+  },
+  "groundwork/metrics.avif": {
+    "width": 1900,
+    "height": 636,
+    "aspectRatio": "1900/636"
+  },
+  "metrics.avif": {
+    "width": 1900,
+    "height": 636,
+    "aspectRatio": "1900/636"
+  },
+  "music-store-app/55e07a115493957.604fb6eb3a9c8.jpg": {
+    "width": 1920,
+    "height": 13622,
+    "aspectRatio": "1920/13622"
+  },
+  "55e07a115493957.604fb6eb3a9c8.jpg": {
+    "width": 1920,
+    "height": 13622,
+    "aspectRatio": "1920/13622"
+  },
+  "optmyzr-dashboard-migration/cascade.png": {
+    "width": 1920,
+    "height": 1047,
+    "aspectRatio": "1920/1047"
+  },
+  "cascade.png": {
+    "width": 1920,
+    "height": 1047,
+    "aspectRatio": "1920/1047"
+  },
+  "optmyzr-dashboard-migration/cover.png": {
+    "width": 1920,
+    "height": 1072,
+    "aspectRatio": "1920/1072"
+  },
+  "optmyzr-dashboard-migration/dynamic-widget-hydration.png": {
+    "width": 1920,
+    "height": 1047,
+    "aspectRatio": "1920/1047"
+  },
+  "dynamic-widget-hydration.png": {
+    "width": 1920,
+    "height": 1047,
+    "aspectRatio": "1920/1047"
+  },
+  "optmyzr-dashboard-migration/migrated-dashboard.jpg": {
+    "width": 1024,
+    "height": 626,
+    "aspectRatio": "1024/626"
+  },
+  "migrated-dashboard.jpg": {
+    "width": 1024,
+    "height": 626,
+    "aspectRatio": "1024/626"
+  },
+  "optmyzr-onboarding-experience/cover.png": {
+    "width": 1536,
+    "height": 1024,
+    "aspectRatio": "1536/1024"
+  },
+  "optmyzr-onboarding-experience/double-diamond.jpg": {
+    "width": 1920,
+    "height": 950,
+    "aspectRatio": "1920/950"
+  },
+  "double-diamond.jpg": {
+    "width": 1920,
+    "height": 950,
+    "aspectRatio": "1920/950"
+  },
+  "rewards-convertor-app/488902115970421.6058e9720f12e.jpg": {
+    "width": 1920,
+    "height": 12226,
+    "aspectRatio": "1920/12226"
+  },
+  "488902115970421.6058e9720f12e.jpg": {
+    "width": 1920,
+    "height": 12226,
+    "aspectRatio": "1920/12226"
+  },
+  "social-integration-pd/co-design-activities-overview.png": {
+    "width": 1920,
+    "height": 1022,
+    "aspectRatio": "1920/1022"
+  },
+  "co-design-activities-overview.png": {
+    "width": 1920,
+    "height": 1022,
+    "aspectRatio": "1920/1022"
+  },
+  "social-integration-pd/common-area-canvas.png": {
+    "width": 1920,
+    "height": 1027,
+    "aspectRatio": "1920/1027"
+  },
+  "common-area-canvas.png": {
+    "width": 1920,
+    "height": 1027,
+    "aspectRatio": "1920/1027"
+  },
+  "social-integration-pd/cover.jpg": {
+    "width": 1562,
+    "height": 872,
+    "aspectRatio": "1562/872"
+  },
+  "cover.jpg": {
+    "width": 1562,
+    "height": 872,
+    "aspectRatio": "1562/872"
+  },
+  "social-integration-pd/design-reveal.png": {
+    "width": 1920,
+    "height": 1105,
+    "aspectRatio": "1920/1105"
+  },
+  "design-reveal.png": {
+    "width": 1920,
+    "height": 1105,
+    "aspectRatio": "1920/1105"
+  },
+  "social-integration-pd/how-it-fits-together.png": {
+    "width": 1920,
+    "height": 1137,
+    "aspectRatio": "1920/1137"
+  },
+  "how-it-fits-together.png": {
+    "width": 1920,
+    "height": 1137,
+    "aspectRatio": "1920/1137"
+  },
+  "social-integration-pd/never-have-i-ever.png": {
+    "width": 1920,
+    "height": 1032,
+    "aspectRatio": "1920/1032"
+  },
+  "never-have-i-ever.png": {
+    "width": 1920,
+    "height": 1032,
+    "aspectRatio": "1920/1032"
+  },
+  "social-integration-pd/playing-sims.png": {
+    "width": 1920,
+    "height": 1097,
+    "aspectRatio": "1920/1097"
+  },
+  "playing-sims.png": {
+    "width": 1920,
+    "height": 1097,
+    "aspectRatio": "1920/1097"
+  },
+  "social-integration-pd/stakeholder-ecosystem.png": {
+    "width": 1920,
+    "height": 1024,
+    "aspectRatio": "1920/1024"
+  },
+  "stakeholder-ecosystem.png": {
+    "width": 1920,
+    "height": 1024,
+    "aspectRatio": "1920/1024"
+  },
+  "spatial-design-restaurant/cover.jpg": {
+    "width": 1920,
+    "height": 1280,
+    "aspectRatio": "1920/1280"
+  },
+  "super-ego-app/assumptions-research.jpg": {
+    "width": 1920,
+    "height": 1136,
+    "aspectRatio": "1920/1136"
+  },
+  "assumptions-research.jpg": {
+    "width": 1920,
+    "height": 1136,
+    "aspectRatio": "1920/1136"
+  },
+  "super-ego-app/cover.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "super-ego-app/emotional-awareness-LEAS.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "emotional-awareness-LEAS.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "super-ego-app/goal-adaptation.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "goal-adaptation.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "super-ego-app/how-this-works.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "how-this-works.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "super-ego-app/integration.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "integration.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "super-ego-app/onboarding.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "onboarding.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "super-ego-app/personas.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "personas.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "super-ego-app/system1-grace.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "system1-grace.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "super-ego-app/system1-phil.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "system1-phil.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "super-ego-app/system2-grace.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "system2-grace.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "super-ego-app/system2-phil.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  },
+  "system2-phil.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "1920/1080"
+  }
+}
