@@ -5,9 +5,9 @@ import { cn } from "@/lib/utils";
 type StatusCardVariant = "success" | "compromise" | "failure";
 
 const variantClasses: Record<StatusCardVariant, string> = {
-  success: "bg-emerald-500/10 text-emerald-600",
-  compromise: "bg-amber-500/10 text-amber-600",
-  failure: "bg-rose-500/10 text-rose-600",
+  success: "bg-ink-primary text-paper-card border border-ink-primary",
+  compromise: "bg-paper-bg text-ink-primary border border-paper-border",
+  failure: "bg-destructive/10 text-destructive border border-destructive/30",
 };
 
 const variantLabelPattern: Array<[RegExp, StatusCardVariant]> = [
@@ -53,19 +53,29 @@ export function StatusCard({
   const badgeLabel = badge ?? status;
 
   return (
-    <div className={cn("rounded-xl border border-paper-border bg-paper-card p-4", className)} {...props}>
+    <div
+      className={cn(
+        "rounded-xl border border-paper-border bg-paper-card p-5 flex flex-col items-start",
+        className,
+      )}
+      {...props}
+    >
       {badgeLabel ? (
         <span
           className={cn(
-            "mb-3 inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide",
+            "mb-3 inline-flex rounded-md px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-widest",
             variantClasses[resolvedVariant],
           )}
         >
           {badgeLabel}
         </span>
       ) : null}
-      <h3 className="text-sm font-semibold text-foreground">{title}</h3>
-      {description ? <p className="mt-2 text-sm text-muted-foreground">{description}</p> : null}
+      <h3 className="font-display text-base font-bold text-ink-primary tracking-tight leading-[28px]">{title}</h3>
+      {description ? (
+        <p className="mt-2 font-body-narrative text-sm text-ink-muted leading-relaxed">
+          {description}
+        </p>
+      ) : null}
       {children}
     </div>
   );

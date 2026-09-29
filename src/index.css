@@ -447,8 +447,8 @@ All colors MUST be HSL.
   --editorial-space-row: clamp(2rem, 4vw, 3rem);
   --editorial-space-gap: clamp(1.5rem, 3vw, 2.5rem);
 
-  /* Media Bounds (Human-scale, not viewport-dwarfing) */
-  --editorial-media-max-h: 420px;
+  /* Media Bounds (Human-scale, edge-to-edge inside column) */
+  --editorial-media-max-h: none;
   --editorial-media-radius: 12px;
 }
 
@@ -485,12 +485,11 @@ All colors MUST be HSL.
   }
 }
 
-/* Media Frame: bounded height, clean border, rounded corners */
+/* Media Frame: clean border, rounded corners, edge-to-edge fit */
 .editorial-media-frame,
 .editorial-media-container {
   position: relative;
   width: 100%;
-  max-height: var(--editorial-media-max-h);
   border: 1px solid hsl(var(--paper-border));
   border-radius: var(--editorial-media-radius);
   overflow: hidden;
@@ -504,9 +503,35 @@ All colors MUST be HSL.
 .editorial-media-container img {
   width: 100%;
   height: auto;
-  max-height: var(--editorial-media-max-h);
+  display: block;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+}
+
+.editorial-diagram-container {
+  position: relative;
+  width: 100%;
+  border: 1px solid hsl(var(--paper-border));
+  border-radius: var(--editorial-media-radius);
+  overflow: hidden;
+  background-color: hsl(var(--paper-card));
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editorial-diagram-container img {
+  width: 100%;
+  height: auto;
+  max-height: none !important;
   object-fit: contain;
   display: block;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0.5rem !important;
+  margin: 0 !important;
 }
 
 /* Text Column: naturally aligned with the bottom of the media */
@@ -846,6 +871,7 @@ html:has(.project-page-snap-container) {
 
 .prose h3 {
   font-size: 1.5rem !important; /* text-2xl */
+  line-height: 28px !important;
   font-weight: 700 !important;
   margin-top: 3.5rem !important;
   margin-bottom: 1.5rem !important;
@@ -854,6 +880,7 @@ html:has(.project-page-snap-container) {
 @media (min-width: 1024px) {
   .prose h3 {
     font-size: 2rem !important; /* text-3xl */
+    line-height: 28px !important;
     margin-top: 5rem !important;
     margin-bottom: 2rem !important;
   }
@@ -891,35 +918,35 @@ html:has(.project-page-snap-container) {
 }
 
 /* Clean editorial blockquotes */
-.prose blockquote {
-  border-left: none !important;
-  padding: 2.25rem 2.5rem !important;
-  border-radius: 1.25rem !important;
-  margin-bottom: 2.5rem !important;
-  margin-top: 2rem !important;
-  font-style: italic;
-  font-weight: 500;
-  border: 1px solid hsl(var(--border) / 0.4) !important;
-  background-color: hsl(var(--muted) / 0.15) !important;
-  box-shadow: none !important;
-}
-
+.prose blockquote,
 .dark .prose blockquote {
-  background-color: hsl(var(--card) / 0.15) !important;
-  border: 1px solid hsl(var(--border) / 0.25) !important;
+  border: 1px solid hsl(var(--paper-border)) !important;
+  border-left: 3px solid hsl(var(--ink-primary)) !important;
+  background-color: hsl(var(--paper-card)) !important;
+  color: hsl(var(--ink-primary)) !important;
+  padding: 1.5rem 2rem !important;
+  border-radius: 0.75rem !important;
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
+  font-style: italic;
+  font-weight: 400;
   box-shadow: none !important;
 }
 
 .prose blockquote p {
-  font-size: 1.25rem !important;
-  line-height: 1.7 !important;
+  font-size: 1.0625rem !important;
+  line-height: 1.75 !important;
+  color: hsl(var(--ink-primary)) !important;
   margin-bottom: 0 !important;
 }
 
-@media (min-width: 1024px) {
-  .prose blockquote p {
-    font-size: 1.375rem !important;
-  }
+.project-page-snap-container .prose strong,
+.project-page-snap-container .prose b,
+.project-page-snap-container .prose h1,
+.project-page-snap-container .prose h2,
+.project-page-snap-container .prose h3,
+.project-page-snap-container .prose h4 {
+  color: hsl(var(--ink-primary));
 }
 
 /* Inline code and code blocks overrides */
@@ -972,6 +999,18 @@ pre {
 .dark .prose img {
   box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4) !important;
   border: 1px solid hsl(var(--border) / 0.2);
+}
+
+.prose .editorial-media-frame img,
+.prose .editorial-media-container img,
+.dark .prose .editorial-media-frame img,
+.dark .prose .editorial-media-container img,
+.prose .editorial-diagram-container img,
+.dark .prose .editorial-diagram-container img {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  margin: 0 !important;
 }
 
 /* Scroll-driven reveal viewport animations */
