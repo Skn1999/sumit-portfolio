@@ -40,7 +40,7 @@ export function EditorialSideBySide({
         />
       </div>
       <div className="editorial-text-side">
-        <h3 className="font-display font-bold text-base md:text-lg text-ink-primary tracking-tight leading-snug mb-1.5">
+        <h3 className="font-display font-bold text-base md:text-lg text-ink-primary tracking-tight leading-[28px] mb-1.5">
           {title}
         </h3>
         <div className="text-xs md:text-sm text-ink-muted leading-relaxed max-w-sm">

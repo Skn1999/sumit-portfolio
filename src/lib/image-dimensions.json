@@ -269,65 +269,15 @@
     "height": 1125,
     "aspectRatio": "1500/1125"
   },
-  "ediaqi-decision-support-system/Tablet_display_on_wall_20260928231627.jpg": {
-    "width": 1024,
-    "height": 1024,
-    "aspectRatio": "1024/1024"
-  },
-  "Tablet_display_on_wall_20260928231627.jpg": {
-    "width": 1024,
-    "height": 1024,
-    "aspectRatio": "1024/1024"
-  },
-  "ediaqi-decision-support-system/Tablet_interface_displayed_on_de…_20260928231627.jpg": {
-    "width": 1024,
-    "height": 1024,
-    "aspectRatio": "1024/1024"
-  },
-  "Tablet_interface_displayed_on_de…_20260928231627.jpg": {
-    "width": 1024,
-    "height": 1024,
-    "aspectRatio": "1024/1024"
-  },
-  "ediaqi-decision-support-system/Tablet_interface_on_hardware_device_20260928231627.jpg": {
-    "width": 1024,
-    "height": 1024,
-    "aspectRatio": "1024/1024"
-  },
-  "Tablet_interface_on_hardware_device_20260928231627.jpg": {
-    "width": 1024,
-    "height": 1024,
-    "aspectRatio": "1024/1024"
-  },
-  "ediaqi-decision-support-system/Tablet_interface_on_hardware_device_20260928231627_2.jpg": {
-    "width": 1024,
-    "height": 1024,
-    "aspectRatio": "1024/1024"
-  },
-  "Tablet_interface_on_hardware_device_20260928231627_2.jpg": {
-    "width": 1024,
-    "height": 1024,
-    "aspectRatio": "1024/1024"
-  },
-  "ediaqi-decision-support-system/Tablet_interface_on_hardware_device_20260928231627_3.jpg": {
-    "width": 1024,
-    "height": 1024,
-    "aspectRatio": "1024/1024"
-  },
-  "Tablet_interface_on_hardware_device_20260928231627_3.jpg": {
-    "width": 1024,
-    "height": 1024,
-    "aspectRatio": "1024/1024"
-  },
   "ediaqi-decision-support-system/cover.png": {
-    "width": 1376,
-    "height": 768,
-    "aspectRatio": "1376/768"
+    "width": 1600,
+    "height": 900,
+    "aspectRatio": "1600/900"
   },
   "cover.png": {
-    "width": 1376,
-    "height": 768,
-    "aspectRatio": "1376/768"
+    "width": 1600,
+    "height": 900,
+    "aspectRatio": "1600/900"
   },
   "ediaqi-decision-support-system/display-action-protocol.jpg": {
     "width": 1311,
@@ -380,44 +330,94 @@
     "aspectRatio": "1311/1170"
   },
   "ediaqi-decision-support-system/heuristics-evaluation.jpg": {
-    "width": 1920,
-    "height": 556,
-    "aspectRatio": "1920/556"
+    "width": 1600,
+    "height": 680,
+    "aspectRatio": "1600/680"
   },
   "heuristics-evaluation.jpg": {
-    "width": 1920,
-    "height": 556,
-    "aspectRatio": "1920/556"
+    "width": 1600,
+    "height": 680,
+    "aspectRatio": "1600/680"
+  },
+  "ediaqi-decision-support-system/mockup-state-1-good.jpg": {
+    "width": 1400,
+    "height": 1120,
+    "aspectRatio": "1400/1120"
+  },
+  "mockup-state-1-good.jpg": {
+    "width": 1400,
+    "height": 1120,
+    "aspectRatio": "1400/1120"
+  },
+  "ediaqi-decision-support-system/mockup-state-2-poor.jpg": {
+    "width": 1400,
+    "height": 1120,
+    "aspectRatio": "1400/1120"
+  },
+  "mockup-state-2-poor.jpg": {
+    "width": 1400,
+    "height": 1120,
+    "aspectRatio": "1400/1120"
+  },
+  "ediaqi-decision-support-system/mockup-state-3-action.jpg": {
+    "width": 1400,
+    "height": 1120,
+    "aspectRatio": "1400/1120"
+  },
+  "mockup-state-3-action.jpg": {
+    "width": 1400,
+    "height": 1120,
+    "aspectRatio": "1400/1120"
+  },
+  "ediaqi-decision-support-system/mockup-state-4-recovery.jpg": {
+    "width": 1400,
+    "height": 1120,
+    "aspectRatio": "1400/1120"
+  },
+  "mockup-state-4-recovery.jpg": {
+    "width": 1400,
+    "height": 1120,
+    "aspectRatio": "1400/1120"
+  },
+  "ediaqi-decision-support-system/mockup-state-5-critical.jpg": {
+    "width": 1400,
+    "height": 1120,
+    "aspectRatio": "1400/1120"
+  },
+  "mockup-state-5-critical.jpg": {
+    "width": 1400,
+    "height": 1120,
+    "aspectRatio": "1400/1120"
   },
   "ediaqi-decision-support-system/mockup-with-tablet.jpg": {
-    "width": 1920,
-    "height": 940,
-    "aspectRatio": "1920/940"
+    "width": 1600,
+    "height": 960,
+    "aspectRatio": "1600/960"
   },
   "mockup-with-tablet.jpg": {
-    "width": 1920,
-    "height": 940,
-    "aspectRatio": "1920/940"
+    "width": 1600,
+    "height": 960,
+    "aspectRatio": "1600/960"
   },
   "ediaqi-decision-support-system/problem-hypo.jpg": {
     "width": 1920,
-    "height": 506,
-    "aspectRatio": "1920/506"
+    "height": 490,
+    "aspectRatio": "1920/490"
   },
   "problem-hypo.jpg": {
     "width": 1920,
-    "height": 506,
-    "aspectRatio": "1920/506"
+    "height": 490,
+    "aspectRatio": "1920/490"
   },
   "ediaqi-decision-support-system/scenarios.png": {
     "width": 1920,
-    "height": 2615,
-    "aspectRatio": "1920/2615"
+    "height": 2587,
+    "aspectRatio": "1920/2587"
   },
   "scenarios.png": {
     "width": 1920,
-    "height": 2615,
-    "aspectRatio": "1920/2615"
+    "height": 2587,
+    "aspectRatio": "1920/2587"
   },
   "groundwork/methodology.avif": {
     "width": 1900,
