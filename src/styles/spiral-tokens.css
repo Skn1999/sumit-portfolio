@@ -1,0 +1,55 @@
+/* The Spiral Design Tokens strictly matching research/silo.md Section 4 & User Layout Split */
+:root {
+  --bg: #1c1f22;            /* sampled from hero-line.jpg edge */
+  --bg-a: #1c1f22;          /* Mode A: schematic slate charcoal */
+  --bg-l1: #0d1315;         /* Level 01: cool architectural teal-slate */
+  --bg-l48: #141614;        /* Level 48: industrial graphite */
+  --bg-l96: #111b1d;        /* Level 96: alpine spruce basalt */
+  --bg-l144: #1c1713;       /* Level 144: subterranean amber charcoal */
+  --ink: #E9E4D8;           /* warm off-white text */
+  --ink-muted: #A8A397;     /* secondary text, min 7:1 on --bg */
+  --hairline: rgba(233, 228, 216, 0.18);
+  --amber: #E8A64A;         /* only accent: active level, focus, hover lines */
+  --cold: #9CC7D6;          /* cold light tint at the top of the shaft */
+  /* Emil Kowalski Signature Motion Tokens (AUDIT.md & STANDARDS.md) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);        /* strong ease-out for responsive UI */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);    /* strong ease-in-out for morphing & camera transitions */
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);     /* iOS-like floating panel settle */
+  --left-col-w: clamp(440px, 35vw, 540px);
+  --stage-w: 100vw;
+}
+
+.spiral-root {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body, "Inter", -apple-system, sans-serif);
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+  position: relative;
+  selection-background-color: var(--amber);
+  selection-color: var(--bg);
+  transition: background-color 360ms var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spiral-root {
+    transition: none !important;
+  }
+}
+
+/* Tabular numerals for level numbers */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hairline border utilities */
+.border-hairline {
+  border-color: var(--hairline);
+}
+
+/* Hide scrollbars during locked Mode A */
+.scroll-locked {
+  overflow: hidden !important;
+  height: 100vh !important;
+}

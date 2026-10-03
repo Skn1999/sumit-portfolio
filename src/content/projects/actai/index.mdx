@@ -1,15 +1,15 @@
 ---
 slug: "actai"
-title: "ActAI: Intelligent Email Delegation & Oversight Review"
-tagline: "Bridging autonomous email agents with human-in-the-loop oversight through progressive disclosure and source-grounded evidence."
+title: "ActAI: Autonomous Email Delegation Client"
+tagline: "An interface for reviewing autonomous email triage in under 30 seconds with 1-click source verification."
 date: "2026-09-24"
 type: "engineering"
 subCategory: "ai-side-projects"
 featured: true
 cover:
-  filename: "actai-steward-cover-animated.gif"
+  filename: "actai-steward-cover-static.png"
   fallbackFilename: "actai-steward-cover-static.png"
-  alt: "ActAI Intelligent Email Delegation and Oversight Interface"
+  alt: "ActAI Autonomous Email Delegation and Oversight Interface"
 tech:
   - "React 18"
   - "TypeScript"
@@ -36,9 +36,9 @@ import {
   EditorialCard,
 } from "@/components/editorial/EditorialLayout";
 
-## 01 // WHY (The Core Belief)
+## The Delegation Trust Bottleneck
 
-### The Automation Trust Paradox
+### The Friction of Black-Box Automation
 Autonomous AI email agents promise massive productivity gains, but in practice, executives and knowledge workers refuse to let autonomous bots send unreviewed correspondence. The friction is not technological capability—it is **trust**.
 
 When an agent acts as a black box:
@@ -46,11 +46,11 @@ When an agent acts as a black box:
 - Users cannot verify what source material the agent based its decisions on.
 - The cognitive burden shifts from writing emails to anxiously second-guessing automated actions.
 
-> **The Guiding Belief:** True agency does not come from black-box automation. It comes from **bounded delegation with human oversight**—empowering users to offload tedious triage while giving them 1-click evidence verification and decisive veto power before a message leaves their outbox.
+> **The Structural Constraint:** True user agency does not come from black-box automation. It requires **bounded delegation with human oversight**—allowing users to offload repetitive triage while providing 1-click evidence verification and explicit approval before any message leaves their outbox.
 
 ---
 
-## 02 // HOW (Design Engineering Principles)
+## Progressive Disclosure: Triage, Context, and Bounded Action
 
 To build trust between the human delegator and the autonomous agent, ActAI implements four deterministic mechanisms:
 
@@ -59,8 +59,8 @@ To build trust between the human delegator and the autonomous agent, ActAI imple
 <EditorialSideBySide
   mediaSrc="actai/how-screen-a-today-light.png"
   mediaAlt="Screen A: 1.0 Today Overview"
-  title="Screen A: Sub-5-second situational awareness"
-  description="Identifies tasks in under 5 seconds, separating actionable items needing immediate human decisions from quiet background monitoring."
+  title="Screen A: Sub-5-second situational scan"
+  description="Identifies incoming tasks in under 5 seconds, separating actionable items needing immediate human decisions from quiet background monitoring."
 />
 
 <EditorialSideBySide
@@ -101,7 +101,7 @@ To build trust between the human delegator and the autonomous agent, ActAI imple
 
 ---
 
-## 03 // WHAT (System Execution & Artifacts)
+## Interface Architecture & Design Tokens
 
 ActAI was engineered as a production-grade web application built upon systematic design tokens, Swiss typographic hierarchy, and modular component primitives:
 
@@ -129,14 +129,14 @@ ActAI was engineered as a production-grade web application built upon systematic
 
 ---
 
-## 04 // ARTIFACTS & LINKS
+## Prototype & Codebase
 
 - [**Live Interactive Prototype (Vercel)**](https://temporary-brisk-agate-zgvse9l.vercel.app/) — Test the 3-screen progressive disclosure model and live state machine.
 - [**Open Source Repository (GitHub)**](https://github.com/Skn1999/ACTAI-SMART-EMAIL) — Production-grade React 18, TypeScript, and state machine architecture.
 
 ---
 
-## 05 // IMPACT & OUTCOME
+## Evaluated Outcomes & Retrospective
 
 - **Sub-30-Second Triage:** Evaluators are able to open the task, inspect the vendor contradiction, verify source evidence, and approve a revised dispatch in under 30 seconds.
 - **Explainability Over Automation:** Proves that users are eager to delegate high-stakes communication when they feel in command of the final dispatch.

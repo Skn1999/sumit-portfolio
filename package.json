@@ -17,9 +17,12 @@
     "optimize-images:webp": "node scripts/optimize-images.js --webp",
     "optimize-images:dry": "node scripts/optimize-images.js --dry-run",
     "generate-dimensions": "node scripts/generate-image-dimensions.js",
+    "assets": "node scripts/optimize-assets.mjs",
     "prebuild": "node scripts/optimize-images.js && node scripts/generate-image-dimensions.js"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -57,8 +60,10 @@
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.23.24",
+    "gsap": "^3.15.0",
     "input-otp": "^1.4.2",
     "lenis": "^1.3.24",
+    "lil-gui": "^0.21.0",
     "lucide-react": "^0.462.0",
     "next-themes": "^0.3.0",
     "opentype.js": "^2.0.0",
@@ -76,7 +81,8 @@
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.160.1",
     "vaul": "^0.9.9",
-    "zod": "^3.25.76"
+    "zod": "^3.25.76",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
@@ -106,6 +112,7 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
     "vite": "^5.4.19",
-    "vite-plugin-static-copy": "^3.2.0"
+    "vite-plugin-static-copy": "^3.2.0",
+    "vitest": "^3.2.7"
   }
 }
