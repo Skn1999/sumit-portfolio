@@ -5,6 +5,7 @@ import * as THREE from "three";
 import { MeshSurfaceSampler } from "three/examples/jsm/math/MeshSurfaceSampler.js";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import cursiveFontData from "@/assets/fonts/cursive.json";
 import { useLocation } from "react-router-dom";
 import { useNavIntent } from "@/contexts/NavIntentContext";
@@ -44,24 +45,28 @@ function categoryToIndex(cat: CategoryKey): number {
   }
 }
 
-// 1. Create 3D Cursive Text Mesh for "me" using Dancing Script typeface
+// 1. Create Smooth 3D Cursive Text Mesh for "me" using Dancing Script typeface with merged normals
 function create3DTextMesh(text = "me", targetSize = 0.85) {
   const fontLoader = new FontLoader();
   const font = fontLoader.parse(
     cursiveFontData as unknown as Parameters<FontLoader["parse"]>[0],
   );
 
-  const textGeometry = new TextGeometry(text, {
+  let textGeometry = new TextGeometry(text, {
     font: font,
     size: 0.7,
-    height: 0.25,
-    curveSegments: 16,
+    height: 0.12,
+    curveSegments: 48,
     bevelEnabled: true,
-    bevelThickness: 0.04,
-    bevelSize: 0.03,
+    bevelThickness: 0.02,
+    bevelSize: 0.012,
     bevelOffset: 0,
-    bevelSegments: 5,
+    bevelSegments: 8,
   });
+
+  // Merge duplicate edge vertices to enable smooth Phong/PBR normal shading across curved facets
+  textGeometry = mergeVertices(textGeometry, 1e-4);
+  textGeometry.computeVertexNormals();
 
   textGeometry.center();
   textGeometry.computeBoundingBox();
@@ -73,7 +78,6 @@ function create3DTextMesh(text = "me", targetSize = 0.85) {
   const maxDim = Math.max(size.x, size.y, size.z) || 1.0;
   const scale = targetSize / maxDim;
   textGeometry.scale(scale, scale, scale);
-  textGeometry.computeVertexNormals();
 
   const solidMesh = new THREE.Mesh(
     textGeometry,
