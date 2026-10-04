@@ -12,7 +12,7 @@ if (!fs.existsSync(PDFS_DIR)) fs.mkdirSync(PDFS_DIR, { recursive: true });
 const CHROME_PATH = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 
 const plates = [
-  { name: '01_hero_cover', height: 1180 },
+  { name: '01_hero_cover', height: 1280 },
   { name: '02_the_tension', height: 1040 },
   { name: '03_mental_model', height: 980 },
   { name: '04_progressive_disclosure', height: 1260 },

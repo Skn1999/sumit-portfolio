@@ -11,15 +11,23 @@
 
 import sharp from "sharp";
 import fs from "fs/promises";
+import fsSync from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { glob } from "glob";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
-const OUTPUT_FILE = path.join(ROOT, "src", "lib", "image-dimensions.json");
+const OUTPUT_FILE = fsSync.existsSync(path.join(ROOT, "apps", "portfolio"))
+  ? path.join(ROOT, "apps", "portfolio", "src", "lib", "image-dimensions.json")
+  : path.join(ROOT, "src", "lib", "image-dimensions.json");
 
-const SEARCH_DIRS = ["src/content/projects", "public/images"];
+const SEARCH_DIRS = [
+  "apps/portfolio/src/content/projects",
+  "apps/portfolio/public/images",
+  "src/content/projects",
+  "public/images",
+];
 const IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "gif", "webp", "avif"];
 
 export async function generateImageDimensions() {
@@ -48,16 +56,26 @@ export async function generateImageDimensions() {
         aspectRatio: `${metadata.width}/${metadata.height}`,
       };
 
-      // 1. Path relative to src/content/projects (e.g. "ediaqi-decision-support-system/mockup.jpg")
-      const projectsRel = path.relative(path.join(ROOT, "src", "content", "projects"), filePath);
-      if (!projectsRel.startsWith("..")) {
-        manifest[projectsRel] = dim;
+      // 1. Path relative to projects (e.g. "ediaqi-decision-support-system/mockup.jpg")
+      const projBase1 = path.join(ROOT, "apps", "portfolio", "src", "content", "projects");
+      const projBase2 = path.join(ROOT, "src", "content", "projects");
+      const projectsRel1 = path.relative(projBase1, filePath);
+      const projectsRel2 = path.relative(projBase2, filePath);
+      if (!projectsRel1.startsWith("..")) {
+        manifest[projectsRel1] = dim;
+      } else if (!projectsRel2.startsWith("..")) {
+        manifest[projectsRel2] = dim;
       }
 
       // 2. Path relative to public (e.g. "images/cover.jpg")
-      const publicRel = path.relative(path.join(ROOT, "public"), filePath);
-      if (!publicRel.startsWith("..")) {
-        manifest[publicRel] = dim;
+      const pubBase1 = path.join(ROOT, "apps", "portfolio", "public");
+      const pubBase2 = path.join(ROOT, "public");
+      const publicRel1 = path.relative(pubBase1, filePath);
+      const publicRel2 = path.relative(pubBase2, filePath);
+      if (!publicRel1.startsWith("..")) {
+        manifest[publicRel1] = dim;
+      } else if (!publicRel2.startsWith("..")) {
+        manifest[publicRel2] = dim;
       }
 
       // 3. Basename as fallback (e.g. "mockup.jpg")

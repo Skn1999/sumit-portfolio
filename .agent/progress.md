@@ -91,8 +91,22 @@ The following modifications are fully implemented and functional in the local wo
 - **Turns Used**: 7/9
 - **Task File**: tasks/task_add_product_hunt_badge.md
 
-## [2026-08-17] Automated Task: task_add_product_hunt_badge.md
+## [2026-10-04] Monorepo Architecture Conversion (Portfolio & Labs)
 
-- **Agent**: Task Runner Agent
 - **Status**: Completed
-- **Task File**: tasks/task_add_product_hunt_badge.md
+- **Summary**: Converted the repository into an npm + Turborepo monorepo to isolate creative coding labs (`apps/labs/*`), host the main portfolio (`apps/portfolio`), share UI primitives (`@portfolio/ui`), share Tailwind design tokens (`@portfolio/tailwind-config`), and share TypeScript configurations (`@portfolio/tsconfig`). Extracted the Apple TV+ Silo interactive scroll experience into `@labs/silo` while preserving full portfolio route integration and 100% git history. Added automated lab scaffolding generator (`scripts/create-lab.js`) and `.agent/lab-guidelines.md`.
+- **Workspaces Created**:
+  - `apps/portfolio`: Main portfolio web application (`@portfolio/web`).
+  - `apps/labs/silo`: Isolated Silo interactive experience (`@labs/silo`).
+  - `packages/ui`: Shared Radix/shadcn UI library (`@portfolio/ui`).
+  - `packages/tailwind-config`: Shared Tailwind preset and tokens (`@portfolio/tailwind-config`).
+  - `packages/tsconfig`: Shared TypeScript presets (`@portfolio/tsconfig`).
+- **Tooling & Guidelines Added**:
+  - Root `package.json` with npm workspaces and Turborepo task pipelines.
+  - `turbo.json`: Task dependency graph and build caching.
+  - `scripts/create-lab.js`: CLI generator (`npm run new-lab <slug>`).
+  - `.agent/lab-guidelines.md` & `.agent/skills/lab-scaffolder/SKILL.md`.
+- **Tests & Verification**:
+  - Vitest test suite (`npm run test`): 39 passed (Silo timeline math).
+  - Production build (`npm run build`): All workspaces compiled cleanly; 18 static pages generated in `./dist` with meta injection.
+

@@ -146,12 +146,12 @@ const plates = [
   // PLATE 01: Hero Cover & Premise
   {
     name: '01_hero_cover',
-    height: 1180,
+    height: 1280,
     render: () => {
       const coverImg = getBase64Image('actai-steward-cover-static.png');
       return `
-        <div class="plate" style="height: 1180px; justify-content: space-between;">
-          <div>
+        <div class="plate" style="height: 1280px; justify-content: flex-start; padding-bottom: 80px;">
+          <div style="margin-bottom: 40px;">
             <span class="tagline-pill">ACTAI LABS // 2026 CASE STUDY</span>
             <h1 class="display-title">ActAI: Delegation with Agency</h1>
             <p class="display-sub">Autonomous email triage with source-grounded human oversight.</p>
@@ -159,8 +159,8 @@ const plates = [
               "Users don't fear autonomous agents. They fear losing veto power over their own outbox."
             </div>
           </div>
-          <div class="image-frame" style="width: 1640px; height: 580px; margin-top: 50px;">
-            <img src="${coverImg}" alt="ActAI Hero Interface" style="object-position: top center;" />
+          <div class="image-frame" style="width: 1640px; height: 740px; background: #0c0d10;">
+            <img src="${coverImg}" alt="ActAI Hero Interface" style="object-fit: contain; width: 100%; height: 100%;" />
           </div>
         </div>
       `;
