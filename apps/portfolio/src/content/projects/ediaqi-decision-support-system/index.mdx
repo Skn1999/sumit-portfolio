@@ -29,6 +29,7 @@ draft: false
 
 import { ProjectImageAsset } from "@/components/ui/project-image-asset";
 import { StatusCard } from "@/components/ui/status-card";
+import { EditorialSideBySide } from "@/components/editorial/EditorialLayout";
 
 ## Why Sensor Data Wasn't Enough
 
@@ -67,7 +68,7 @@ Instead of forcing occupants to log into an administrative dashboard, the core i
 
 ## What Changed
 
-A heuristic evaluation of Deda Next's initial dashboard identified **30 usability and accessibility friction points** (documented in the [evaluation matrix](file:///Users/SumitKumar/Desktop/consulting/portfolio/src/content/projects/ediaqi-decision-support-system/EDIAQI_Heuristic_Evaluation.xlsx)). This prompted four foundational shifts:
+A heuristic evaluation of Deda Next's initial dashboard identified **30 usability and accessibility friction points**. This prompted four foundational shifts:
 
 <div className="not-prose my-8 md:my-12 divide-y divide-paper-border/60 border-y border-paper-border/60">
   <div className="py-5 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 items-baseline">
@@ -75,12 +76,12 @@ A heuristic evaluation of Deda Next's initial dashboard identified **30 usabilit
       Touchpoint
     </div>
     <div className="md:col-span-9 space-y-1.5">
-      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
-        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+      <div className="text-xs md:text-sm text-ink-muted flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-600 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
         <span>Single central desktop dashboard requiring active login and continuous manual checks.</span>
       </div>
       <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
-        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span className="font-mono text-[10px] uppercase text-emerald-700 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
         <span>Dedicated in-room ambient display for glanceable awareness at the point of physical action.</span>
       </div>
     </div>
@@ -91,12 +92,12 @@ A heuristic evaluation of Deda Next's initial dashboard identified **30 usabilit
       Disclosure
     </div>
     <div className="md:col-span-9 space-y-1.5">
-      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
-        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+      <div className="text-xs md:text-sm text-ink-muted flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-600 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
         <span>Progressive disclosure hiding critical guidance behind nested dropdowns and tabs.</span>
       </div>
       <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
-        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span className="font-mono text-[10px] uppercase text-emerald-700 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
         <span>Upfront disclosure surfacing hazard type, cause, and concrete micro-actions immediately.</span>
       </div>
     </div>
@@ -107,12 +108,12 @@ A heuristic evaluation of Deda Next's initial dashboard identified **30 usabilit
       Modality
     </div>
     <div className="md:col-span-9 space-y-1.5">
-      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
-        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+      <div className="text-xs md:text-sm text-ink-muted flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-600 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
         <span>Dense time-series line charts and single-word vague labels like "Moderate".</span>
       </div>
       <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
-        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span className="font-mono text-[10px] uppercase text-emerald-700 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
         <span>Dual-coded ambient color states paired with explicit illustrations for instant glanceability.</span>
       </div>
     </div>
@@ -123,12 +124,12 @@ A heuristic evaluation of Deda Next's initial dashboard identified **30 usabilit
       Roles
     </div>
     <div className="md:col-span-9 space-y-1.5">
-      <div className="text-xs md:text-sm text-ink-muted/80 flex items-start gap-2">
-        <span className="font-mono text-[10px] uppercase text-rose-500 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
+      <div className="text-xs md:text-sm text-ink-muted flex items-start gap-2">
+        <span className="font-mono text-[10px] uppercase text-rose-600 font-semibold px-1.5 py-0.5 rounded bg-rose-500/10 shrink-0">From</span>
         <span>Uniform data presentation for both classroom teachers and facility engineers.</span>
       </div>
       <div className="text-xs md:text-sm text-ink-primary font-medium flex items-start gap-2">
-        <span className="font-mono text-[10px] uppercase text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
+        <span className="font-mono text-[10px] uppercase text-emerald-700 font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 shrink-0">To</span>
         <span>Role-separated guidance: ambient action prompts for occupants vs. administrative logs for facility staff.</span>
       </div>
     </div>
@@ -166,8 +167,8 @@ I initially hypothesized that progressive disclosure (revealing details only on 
       Assumed step-by-step disclosure would reduce overwhelm. In practice, hiding action steps increased cognitive friction and delayed intervention during critical CO₂ spikes.
     </p>
   </div>
-  <div className="p-5 rounded-2xl border border-paper-border bg-paper-card border-emerald-500/30">
-    <div className="text-[11px] font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-2">
+  <div className="p-5 rounded-2xl border border-paper-border bg-paper-card">
+    <div className="text-[11px] font-mono uppercase tracking-wider text-emerald-700 mb-2">
       Validated Direction (Optimal)
     </div>
     <div className="text-sm font-semibold text-ink-primary mb-1">
@@ -201,109 +202,40 @@ Raw alerts fail because they don't close the loop. If an occupant opens a window
 > *"I opened the window. After a while, I'm freezing. I'm not able to understand that it is cold and it's time to close... It's too late for me."*  
 > — Research Participant
 
-<div className="not-prose my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-  <div className="flex flex-col gap-2.5">
-    <div className="editorial-media-container rounded-xl overflow-hidden border border-paper-border bg-paper-card">
-      <ProjectImageAsset
-        src="ediaqi-decision-support-system/Tablet_interface_on_hardware_device_20260928231627_3.jpg"
-        alt="Optimal baseline tablet display mockup"
-        className="w-full h-auto object-contain"
-        width={1024}
-        height={1024}
-      />
-    </div>
-    <div>
-      <div className="font-mono text-[11px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-semibold mb-1">
-        Optimal Baseline
-      </div>
-      <p className="text-[11px] md:text-xs text-ink-muted leading-relaxed">
-        Subtle green interface confirming air is healthy (CO₂ &lt; 800 ppm) without demanding conscious attention.
-      </p>
-    </div>
-  </div>
+<EditorialSideBySide
+  mediaSrc="ediaqi-decision-support-system/mockup-state-1-good.jpg"
+  mediaAlt="Optimal baseline classroom display mounted in a Ferrara classroom"
+  title="Optimal baseline"
+  description="Calm peripheral confirmation ('Aria buona', CO₂ < 800 ppm) that stays out of the teacher's way during lessons while surfacing a 6-tier air quality legend."
+/>
 
-  <div className="flex flex-col gap-2.5">
-    <div className="editorial-media-container rounded-xl overflow-hidden border border-paper-border bg-paper-card">
-      <ProjectImageAsset
-        src="ediaqi-decision-support-system/Tablet_display_on_wall_20260928231627.jpg"
-        alt="Warning alert tablet display mockup"
-        className="w-full h-auto object-contain"
-        width={1024}
-        height={1024}
-      />
-    </div>
-    <div>
-      <div className="font-mono text-[11px] uppercase tracking-wider text-amber-500 font-semibold mb-1">
-        Warning Alert
-      </div>
-      <p className="text-[11px] md:text-xs text-ink-muted leading-relaxed">
-        Amber threshold notice (CO₂ &gt; 1200 ppm) warning occupants that ventilation is degrading.
-      </p>
-    </div>
-  </div>
+<EditorialSideBySide
+  mediaSrc="ediaqi-decision-support-system/mockup-state-2-poor.jpg"
+  mediaAlt="Threshold warning classroom display mounted in a Ferrara classroom"
+  title="Threshold warning"
+  description="Shifts ambient state when CO₂ crosses 1,200 ppm ('Aria scadente'), alerting room occupants that ventilation is degrading before cognitive fatigue sets in."
+/>
 
-  <div className="flex flex-col gap-2.5">
-    <div className="editorial-media-container rounded-xl overflow-hidden border border-paper-border bg-paper-card">
-      <ProjectImageAsset
-        src="ediaqi-decision-support-system/Tablet_interface_on_hardware_device_20260928231627_2.jpg"
-        alt="Action directive tablet display mockup"
-        className="w-full h-auto object-contain"
-        width={1024}
-        height={1024}
-      />
-    </div>
-    <div>
-      <div className="font-mono text-[11px] uppercase tracking-wider text-ink-primary font-semibold mb-1">
-        Action Directive
-      </div>
-      <p className="text-[11px] md:text-xs text-ink-muted leading-relaxed">
-        Translates numbers into explicit physical directives with a 1-tap confirmation button (*"Ho aperto le finestre"*).
-      </p>
-    </div>
-  </div>
-</div>
+<EditorialSideBySide
+  mediaSrc="ediaqi-decision-support-system/mockup-state-3-action.jpg"
+  mediaAlt="Action protocol classroom display showing upfront window ventilation instructions"
+  title="Upfront action protocol"
+  description="Translates raw sensor readings into explicit physical instructions ('Apri le finestre per alcuni minuti') paired with a 1-tap confirmation button ('Ho aperto le finestre')."
+/>
 
-<div className="not-prose my-6 grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6 max-w-2xl mx-auto">
-  <div className="flex flex-col gap-2.5">
-    <div className="editorial-media-container rounded-xl overflow-hidden border border-paper-border bg-paper-card">
-      <ProjectImageAsset
-        src="ediaqi-decision-support-system/Tablet_interface_on_hardware_device_20260928231627.jpg"
-        alt="Closed-loop recovery monitoring tablet display mockup"
-        className="w-full h-auto object-contain"
-        width={1024}
-        height={1024}
-      />
-    </div>
-    <div>
-      <div className="font-mono text-[11px] uppercase tracking-wider text-sky-500 font-semibold mb-1">
-        Closed-Loop Recovery
-      </div>
-      <p className="text-[11px] md:text-xs text-ink-muted leading-relaxed">
-        Actively tracks air recovery and promises a timed reminder to close windows before the room freezes.
-      </p>
-    </div>
-  </div>
+<EditorialSideBySide
+  mediaSrc="ediaqi-decision-support-system/mockup-state-4-recovery.jpg"
+  mediaAlt="Closed-loop recovery classroom display tracking declining CO2 levels"
+  title="Closed-loop thermal recovery"
+  description="Tracks declining CO₂ after windows are opened and schedules a 10-minute reminder to close them before the classroom loses winter thermal comfort."
+/>
 
-  <div className="flex flex-col gap-2.5">
-    <div className="editorial-media-container rounded-xl overflow-hidden border border-paper-border bg-paper-card">
-      <ProjectImageAsset
-        src="ediaqi-decision-support-system/Tablet_interface_displayed_on_de…_20260928231627.jpg"
-        alt="Critical hazard emergency tablet display mockup"
-        className="w-full h-auto object-contain"
-        width={1024}
-        height={1024}
-      />
-    </div>
-    <div>
-      <div className="font-mono text-[11px] uppercase tracking-wider text-rose-500 font-semibold mb-1">
-        Critical Hazard
-      </div>
-      <p className="text-[11px] md:text-xs text-ink-muted leading-relaxed">
-        High-visibility emergency alert (CO₂ &gt; 2200 ppm) directing immediate room evacuation.
-      </p>
-    </div>
-  </div>
-</div>
+<EditorialSideBySide
+  mediaSrc="ediaqi-decision-support-system/mockup-state-5-critical.jpg"
+  mediaAlt="Critical evacuation override classroom display"
+  title="Critical evacuation override"
+  description="Unambiguous full-screen emergency override (CO₂ > 2,200 ppm or acute CO detection) directing immediate room evacuation and automatic facility escalation."
+/>
 
 ---
 
