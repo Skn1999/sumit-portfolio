@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { FileText } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import HeroParticleCanvas from "./HeroParticleCanvas";
+import { AnimatedIdentityHeadline } from "./AnimatedIdentityHeadline";
 
 // Module-level flag to ensure hero text only animates on initial site load
 let heroTextHasAnimated = false;
@@ -60,19 +61,10 @@ const HeroSection: React.FC = () => {
     >
       <div className="max-w-6xl mx-auto px-4 md:px-8 w-full relative z-10 my-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Left Column: Text Content (Stays static across page transitions) */}
+          {/* Left Column: Text Content */}
           <div className="lg:col-span-6 flex flex-col text-left">
-            {/* Monospace tracking tag */}
-
-            {/* Primary Display Title */}
-            <motion.h1
-              custom={0.25}
-              {...textMotionProps}
-              variants={inkFadeVariant}
-              className="font-display tracking-tighter font-bold text-4xl md:text-6xl text-ink-primary leading-[1.1] mb-8"
-            >
-              AI builds fast. <br /> I make sure it builds right.
-            </motion.h1>
+            {/* Kinetic Identity Headline */}
+            <AnimatedIdentityHeadline />
 
             {/* Primary Description Narrative */}
             <motion.p
@@ -81,8 +73,8 @@ const HeroSection: React.FC = () => {
               variants={inkFadeVariant}
               className="font-body-narrative leading-[1.8] text-base md:text-lg text-ink-muted max-w-2xl"
             >
-              Hi, I'm Sumit. <br /> I oversee AI-assisted Design and Dev process
-              so your product keeps its human touch.
+              I oversee AI-assisted Design and Dev process so your product keeps
+              its human touch.
             </motion.p>
 
             {/* Action Button */}
