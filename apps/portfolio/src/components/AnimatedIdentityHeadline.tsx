@@ -114,28 +114,37 @@ export const AnimatedIdentityHeadline: React.FC<
           <AnimatePresence initial={false}>
             {isEngineerStage && (
               <motion.span
-                key="letter-n"
-                initial={{ opacity: 0, y: -10, filter: "blur(6px)", width: 0 }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  filter: "blur(0px)",
-                  width: "auto",
-                }}
+                key="letter-n-wrapper"
+                initial={{ width: 0 }}
+                animate={{ width: "auto" }}
                 exit={{
-                  opacity: 0,
-                  y: 8,
-                  filter: "blur(6px)",
                   width: 0,
-                  transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+                  transition: { delay: 0.12, duration: 0.3, ease: [0.16, 1, 0.3, 1] },
                 }}
-                transition={{
-                  duration: 0.45,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                className="inline-block overflow-hidden origin-bottom"
+                className="inline-flex overflow-visible items-baseline"
               >
-                n
+                <motion.span
+                  key="letter-n-inner"
+                  initial={{ opacity: 0, y: -10, filter: "blur(6px)" }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    filter: "blur(0px)",
+                  }}
+                  exit={{
+                    opacity: 0,
+                    y: 10,
+                    filter: "blur(8px)",
+                    transition: { duration: 0.38, ease: [0.16, 1, 0.3, 1] },
+                  }}
+                  transition={{
+                    duration: 0.45,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className="inline-block"
+                >
+                  n
+                </motion.span>
               </motion.span>
             )}
           </AnimatePresence>
