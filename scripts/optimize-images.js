@@ -34,8 +34,12 @@ const PNG_QUALITY = 80; // PNG quality for palette-based compression
 const WEBP_QUALITY = 80; // WebP quality (1-100)
 const MANIFEST_FILE = path.join(ROOT, ".optimized-images.json");
 
-// Directories containing images to optimize
-const IMAGE_DIRS = ["src/content/projects", "public/images"];
+const IMAGE_DIRS = [
+  "apps/portfolio/src/content/projects",
+  "apps/portfolio/public/images",
+  "src/content/projects",
+  "public/images",
+];
 
 const IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "gif", "webp"];
 

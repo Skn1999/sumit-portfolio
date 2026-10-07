@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sumit Nayyar — Product Designer for complex SaaS products</title>
+    <meta
+      name="description"
+      content="I help teams make confident product decisions by combining user research, systems thinking and AI-augmented workflows before a single line of code is written."
+    />
+    <meta name="author" content="Sumit Nayyar" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Space+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="/assets/hero-line-1536.avif"
+      type="image/avif"
+      imagesrcset="/assets/hero-line-1080.avif 1080w, /assets/hero-line-1536.avif 1536w"
+      imagesizes="(max-width: 1080px) 1080px, 1536px"
+    />
+
+    <!-- Open Graph (defaults — react-helmet-async overrides per page) -->
+    <meta property="og:title" content="Sumit Nayyar — Product & UX Designer" />
+    <meta
+      property="og:description"
+      content="I help teams make confident product decisions by combining user research, systems thinking and AI-augmented workflows before a single line of code is written."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og-default.png" />
+    <meta property="og:site_name" content="Sumit Knayyar" />
+
+    <!-- Twitter Card (defaults) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sumit Nayyar — Product & UX Designer" />
+    <meta
+      name="twitter:description"
+      content="I help teams make confident product decisions by combining user research, systems thinking and AI-augmented workflows before a single line of code is written."
+    />
+    <meta name="twitter:image" content="/og-default.png" />
+    <script>
+      // Umami Analytics — Real-Traffic Safeguard
+      // Blocks tracking in local dev, preview ports, non-production hosts,
+      // automated browsers (Playwright/Puppeteer/WebDriver), and AI agents (Antigravity).
+      (function () {
+        var PROD_HOSTS = /^(skn1999\.github\.io|(www\.)?sumitknayyar\.com)$/i;
+        var LOCAL_HOST =
+          /^(localhost|127\.\d+\.\d+\.\d+|0\.0\.0\.0|\[?::1\]?|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+)$/i;
+        var LOCAL_SUFFIX =
+          /\.(local|localhost|test|internal|lan|ngrok(-free)?\.app|ngrok\.io|loca\.lt|trycloudflare\.com)$/i;
+        var BOT_OR_AGENT_UA =
+          /HeadlessChrome|Playwright|Puppeteer|PhantomJS|SlimerJS|Selenium|WebDriver|Cypress|Electron|Antigravity|ClaudeBot|GPTBot|ChatGPT|OAI-SearchBot|PerplexityBot|Google-InspectionTool|Lighthouse|PageSpeed|GTmetrix|Pingdom|UptimeRobot|bot|crawler|spider|crawling/i;
+
+        function isAutomatedOrAgent() {
+          var ua = (navigator && navigator.userAgent) || "";
+          if (navigator.webdriver) return true;
+          if (BOT_OR_AGENT_UA.test(ua)) return true;
+          if (
+            "__PLAYWRIGHT__" in window ||
+            "__pwInitScripts" in window ||
+            "__PUPPETEER__" in window ||
+            "_phantom" in window ||
+            "callPhantom" in window ||
+            "__nightmare" in window ||
+            "Cypress" in window ||
+            "domAutomation" in window ||
+            "domAutomationController" in window ||
+            "__ANTIGRAVITY__" in window
+          ) {
+            return true;
+          }
+          if (!navigator.languages || navigator.languages.length === 0) {
+            return true;
+          }
+          if (window.outerWidth === 0 && window.outerHeight === 0) {
+            return true;
+          }
+          return false;
+        }
+
+        function isRealProductionTraffic() {
+          try {
+            var loc = window.location;
+            var host = (loc.hostname || "").toLowerCase();
+            var params = new URLSearchParams(loc.search || "");
+
+            // Allow explicit opt-out via URL query (?umami=false, ?notrack, ?agent)
+            if (
+              params.get("umami") === "false" ||
+              params.get("umami") === "0" ||
+              params.has("notrack") ||
+              params.has("disable_analytics") ||
+              params.has("agent")
+            ) {
+              localStorage.setItem("umami.disabled", "1");
+              return false;
+            }
+
+            // Respect existing Umami opt-out flag
+            if (
+              localStorage.getItem("umami.disabled") === "1" ||
+              sessionStorage.getItem("umami.disabled") === "1"
+            ) {
+              return false;
+            }
+
+            // Block non-HTTPS, explicit dev/preview ports, local IPs, or non-production hosts
+            if (loc.protocol !== "https:") return false;
+            if (loc.port && loc.port !== "443") return false;
+            if (!host || LOCAL_HOST.test(host) || LOCAL_SUFFIX.test(host)) {
+              return false;
+            }
+            if (!PROD_HOSTS.test(host)) return false;
+
+            // Block AI agents, headless browsers, and automation tools
+            if (isAutomatedOrAgent()) return false;
+
+            return true;
+          } catch (e) {
+            return false;
+          }
+        }
+
+        if (!isRealProductionTraffic()) {
+          try {
+            // Set Umami's native kill-switch in local/agent sessions
+            if (
+              window.location.hostname === "localhost" ||
+              window.location.hostname === "127.0.0.1" ||
+              isAutomatedOrAgent()
+            ) {
+              localStorage.setItem("umami.disabled", "1");
+            }
+            sessionStorage.setItem("umami.disabled", "1");
+          } catch (e) {}
+          return;
+        }
+
+        // Secondary pre-send guard for Umami's data-before-send hook
+        window.__umamiBeforeSend = function (type, payload) {
+          if (!isRealProductionTraffic()) return false;
+          return payload;
+        };
+
+        var s = document.createElement("script");
+        s.defer = true;
+        s.src = "https://cloud.umami.is/script.js";
+        s.setAttribute(
+          "data-website-id",
+          "12002011-80b2-40dd-a19d-f506fbf38688",
+        );
+        s.setAttribute("data-domains", "skn1999.github.io,sumitknayyar.com,www.sumitknayyar.com");
+        s.setAttribute("data-before-send", "__umamiBeforeSend");
+        document.head.appendChild(s);
+      })();
+    </script>
+    <meta name="google-site-verification" content="zV8kphWTZJzoEMBlHnmwkjijQRBNBUk-8ju9nGOMUhE" />
+  </head>
+
+  <body>
+    <script>
+      // Pre-hydration theme to prevent flash
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          var systemDark = window.matchMedia(
+            "(prefers-color-scheme: dark)",
+          ).matches;
+          var resolved =
+            stored === "dark" || (stored !== "light" && systemDark)
+              ? "dark"
+              : "light";
+          if (resolved === "dark")
+            document.documentElement.classList.add("dark");
+          document.documentElement.style.colorScheme = resolved;
+        } catch (e) {}
+      })();
+    </script>
+    <div id="root"></div>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script
+      src="https://mcp.figma.com/mcp/html-to-design/capture.js"
+      async
+    ></script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

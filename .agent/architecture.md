@@ -1,13 +1,23 @@
 # Architecture
 
-This is a Vite + React portfolio app built around two content systems: long-form project case studies and shorter UX Bites. Most pages are ordinary React routes, while portfolio content is authored as MDX with frontmatter and loaded eagerly at build time.
+This repository is structured as an **npm + Turborepo monorepo** containing the main portfolio application (`apps/portfolio`), isolated lab experiments (`apps/labs/*`), and shared packages (`packages/*`).
+
+## Monorepo Layout
+
+- `apps/portfolio`: Main Vite + React portfolio SPA (`@portfolio/web`).
+- `apps/labs/silo`: Apple TV+ Silo interactive 144-level experience (`@labs/silo`).
+- `packages/ui`: Shared Radix and shadcn UI primitives, hooks, and helpers (`@portfolio/ui`).
+- `packages/tailwind-config`: Shared Tailwind preset and design tokens (`@portfolio/tailwind-config`).
+- `packages/tsconfig`: Shared TypeScript compiler configurations (`@portfolio/tsconfig`).
+- `scripts/`: Scaffolding, image optimization, and meta-injection tooling.
+- `.agent/`: Central AI agent brain, skills, and architectural guidelines.
 
 ## Application Shell
 
-- Entry point: `src/main.tsx`
-- App root: `src/App.tsx`
-- Global CSS: `src/index.css`
-- Shared page shell: `src/components/Layout.tsx`
+- Entry point: `apps/portfolio/src/main.tsx`
+- App root: `apps/portfolio/src/App.tsx`
+- Global CSS: `apps/portfolio/src/index.css`
+- Shared page shell: `apps/portfolio/src/components/Layout.tsx`
 
 `App.tsx` composes the app providers in this order:
 
@@ -23,15 +33,16 @@ Routes are animated with Framer Motion via `AnimatePresence` and `PageTransition
 
 ## Routing
 
-Primary routes live in `src/App.tsx`:
+Primary routes live in `apps/portfolio/src/App.tsx`:
 
-- `/` -> `src/pages/Index.tsx`
-- `/resume` -> `src/pages/ResumePage.tsx`
-- `/projects` -> `src/components/ProjectList.tsx`
-- `/projects/:slug` -> `src/pages/ProjectPage.tsx`
-- `/ux-bites` -> `src/pages/UxBitesList.tsx`
-- `/ux-bites/:slug` -> `src/pages/UxBitePage.tsx`
-- `*` -> `src/pages/NotFound.tsx`
+- `/` -> `Index.tsx`
+- `/resume` -> `ResumePage.tsx`
+- `/projects` -> `UxDesignPage.tsx`
+- `/projects/:slug` -> `ProjectPage.tsx`
+- `/labs/silo` -> `SiloPage.tsx` (renders `<SiloExperience />` from `@labs/silo`)
+- `/ux-bites` -> `WritingsPage.tsx`
+- `/ux-bites/:slug` -> `UxBitePage.tsx`
+- `*` -> `NotFound.tsx`
 
 The router basename comes from `import.meta.env.BASE_URL`, which is affected by `base` in `vite.config.ts`.
 
@@ -40,7 +51,7 @@ The router basename comes from `import.meta.env.BASE_URL`, which is affected by 
 Project case studies are stored as:
 
 ```text
-src/content/projects/<project-slug>/index.mdx
+apps/portfolio/src/content/projects/<project-slug>/index.mdx
 ```
 
 Each MDX file exports frontmatter and a default React component. `src/lib/projects.ts` uses:

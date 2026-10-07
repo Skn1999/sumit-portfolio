@@ -1,0 +1,13 @@
+{
+  "world": {
+    "width": 1536,
+    "height": 2752,
+    "aspect": 0.5581395349
+  },
+  "levels": [
+    { "id": "L1", "n": 1, "label": "The Up Top", "cx": 0.5, "cy": 0.17, "zoom": 2.8 },
+    { "id": "L48", "n": 48, "label": "IT & Judicial", "cx": 0.5, "cy": 0.39, "zoom": 2.8 },
+    { "id": "L96", "n": 96, "label": "Hydroponics & Farms", "cx": 0.5, "cy": 0.62, "zoom": 2.8 },
+    { "id": "L144", "n": 144, "label": "The Down Deep", "cx": 0.5, "cy": 0.81, "zoom": 2.8 }
+  ]
+}

@@ -1,0 +1,142 @@
+---
+slug: "actai"
+title: "ActAI: Autonomous Email Delegation Client"
+tagline: "An interface for reviewing autonomous email triage in under 30 seconds with 1-click source verification."
+date: "2026-09-24"
+type: "engineering"
+subCategory: "ai-side-projects"
+featured: true
+cover:
+  filename: "actai-steward-cover-static.png"
+  fallbackFilename: "actai-steward-cover-static.png"
+  alt: "ActAI Autonomous Email Delegation and Oversight Interface"
+tech:
+  - "React 18"
+  - "TypeScript"
+  - "Design Engineering"
+  - "Autonomous Agents"
+  - "HCI / Human Oversight"
+  - "State Machines"
+metric: "Full end-to-end delegation review cycle completed in < 30 seconds with 100% source-grounded verifiability"
+links:
+  live: "https://temporary-brisk-agate-zgvse9l.vercel.app/"
+  github: "https://github.com/Skn1999/ACTAI-SMART-EMAIL"
+summary: "An autonomous email delegation and oversight prototype built to solve the AI trust gap. Combines a 3-screen progressive disclosure model, an instant source-grounded evidence inspector, and bounded decision choices so users can safely delegate complex email triage without losing agency."
+roles:
+  - "Design Engineer"
+  - "Full-Stack Prototyping"
+  - "Interaction Architecture"
+order: 1
+draft: false
+---
+
+import {
+  EditorialSideBySide,
+  EditorialGrid2Up,
+  EditorialCard,
+} from "@/components/editorial/EditorialLayout";
+
+## The Delegation Trust Bottleneck
+
+### The Friction of Black-Box Automation
+Autonomous AI email agents promise massive productivity gains, but in practice, executives and knowledge workers refuse to let autonomous bots send unreviewed correspondence. The friction is not technological capability—it is **trust**.
+
+When an agent acts as a black box:
+- Users worry about hallucinated details and awkward tone.
+- Users cannot verify what source material the agent based its decisions on.
+- The cognitive burden shifts from writing emails to anxiously second-guessing automated actions.
+
+> **The Structural Constraint:** True user agency does not come from black-box automation. It requires **bounded delegation with human oversight**—allowing users to offload repetitive triage while providing 1-click evidence verification and explicit approval before any message leaves their outbox.
+
+---
+
+## Progressive Disclosure: Triage, Context, and Bounded Action
+
+To build trust between the human delegator and the autonomous agent, ActAI implements four deterministic mechanisms:
+
+### Core Oversight Flows
+
+<EditorialSideBySide
+  mediaSrc="actai/how-screen-a-today-light.png"
+  mediaAlt="Screen A: 1.0 Today Overview"
+  title="Screen A: Sub-5-second situational scan"
+  description="Identifies incoming tasks in under 5 seconds, separating actionable items needing immediate human decisions from quiet background monitoring."
+/>
+
+<EditorialSideBySide
+  mediaSrc="actai/how-screen-b-delegation-light.png"
+  mediaAlt="Screen B: 3-Column Delegation Workspace"
+  title="Screen B: 3-column oversight workspace"
+  description="Juxtaposes active brief constraints and chronological agent execution steps against the flagged vendor contradiction."
+/>
+
+<EditorialSideBySide
+  mediaSrc="actai/how-screen-c-decision-sheet-light.png"
+  mediaAlt="Screen C: Focused Decision Sheet Modal"
+  title="Screen C: Bounded choices with consequence modeling"
+  description="Translates ambiguous choices into 3 bounded options, modeling downstream impact alongside an editable draft reply."
+/>
+
+<EditorialGrid2Up>
+  <EditorialCard
+    mediaSrc="actai/how-source-inspector-light.png"
+    mediaAlt="Source-Grounded Evidence Inspector Drawer"
+    title="Source-grounded evidence inspector"
+    description="Users click 'View source' to open a side drawer showing exact customer quotes and internal brief constraints."
+  />
+  <EditorialCard
+    mediaSrc="actai/how-state-monitoring-light.png"
+    mediaAlt="Deterministic State Transition"
+    title="Deterministic state transition & feedback"
+    description="Approving a reply transitions task state to MONITORING, logging audit step 05 and updating ambient status in real time."
+  />
+</EditorialGrid2Up>
+
+<EditorialSideBySide
+  mediaSrc="actai/how-activity-audit-light.png"
+  mediaAlt="Multi-Agent Audit Trail"
+  title="Multi-agent audit trail with BotAvatars"
+  description="Cross-thread activity log with deterministic agent identities and timestamped actions to ensure total human accountability."
+/>
+
+---
+
+## Interface Architecture & Design Tokens
+
+ActAI was engineered as a production-grade web application built upon systematic design tokens, Swiss typographic hierarchy, and modular component primitives:
+
+<EditorialGrid2Up>
+  <EditorialCard
+    mediaSrc="actai/what-design-tokens-and-surfaces.png"
+    mediaAlt="ActAI Design System Plate 01: Warm Neutrality and Functional Color Discipline"
+    title="Warm neutrality & color discipline"
+    description="Functional 4-level surface hierarchy paired with semantic tokens for alerts, execution, and confirmation."
+  />
+  <EditorialCard
+    mediaSrc="actai/what-typography-and-layout-grid.png"
+    mediaAlt="ActAI Design System Plate 02: Swiss Grotesque Hierarchy and Three-Column Oversight Grid"
+    title="Swiss grotesque hierarchy & 3-column grid"
+    description="Strict proportional typography scale paired with a deterministic oversight grid."
+  />
+</EditorialGrid2Up>
+
+<EditorialSideBySide
+  mediaSrc="actai/what-primitives-and-state-engine.png"
+  mediaAlt="ActAI Design System Plate 03: Bounded Oversight Primitives, Living Agent Avatars, and Deterministic State Engine"
+  title="Living avatars & deterministic state engine"
+  description="BotAvatar identities, animated ThinkingOrb ambient states, and bounded oversight primitives engineered in React 18, TypeScript, and Tailwind CSS."
+/>
+
+---
+
+## Prototype & Codebase
+
+- [**Live Interactive Prototype (Vercel)**](https://temporary-brisk-agate-zgvse9l.vercel.app/) — Test the 3-screen progressive disclosure model and live state machine.
+- [**Open Source Repository (GitHub)**](https://github.com/Skn1999/ACTAI-SMART-EMAIL) — Production-grade React 18, TypeScript, and state machine architecture.
+
+---
+
+## Evaluated Outcomes & Retrospective
+
+- **Sub-30-Second Triage:** Evaluators are able to open the task, inspect the vendor contradiction, verify source evidence, and approve a revised dispatch in under 30 seconds.
+- **Explainability Over Automation:** Proves that users are eager to delegate high-stakes communication when they feel in command of the final dispatch.

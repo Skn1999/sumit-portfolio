@@ -1,0 +1,86 @@
+---
+slug: "silo"
+title: "Silo: The Subterranean Spiral"
+tagline: "An interactive architectural cross-section of the 144-level subterranean silo from the Apple TV+ series."
+date: "2026-10-03"
+type: "engineering"
+subCategory: "labs"
+featured: true
+cover:
+  filename: "/assets/plate-01-1536.jpg"
+  fallbackFilename: "/assets/plate-01-1536.jpg"
+  alt: "Silo Architectural Cross-Section and Subterranean Levels"
+tech:
+  - "React 18"
+  - "TypeScript"
+  - "VisionOS Frosted Glass"
+  - "Canvas 2D Particles"
+  - "Framer Motion"
+  - "Zustand"
+metric: "60fps continuous scroll-driven camera choreography spanning 144 levels with zero 3D GPU overhead"
+links:
+  live: "/labs/silo"
+  appleTv: "https://tv.apple.com/us/show/silo/umc.cmc.3yksgc857px0k0rqe5zd4jice"
+summary: "An interactive promotional microsite built for Apple TV+'s Silo. Combines double-buffer line-to-photo crossfades, a 70vw VisionOS frosted glass HUD, dynamic temperature color grading, and continuous camera choreography across 144 subterranean levels."
+roles:
+  - "Design Engineer"
+  - "Creative Direction"
+  - "Motion Architecture"
+order: 1
+draft: false
+---
+
+import {
+  EditorialSideBySide,
+  EditorialGrid2Up,
+  EditorialCard,
+} from "@/components/editorial/EditorialLayout";
+
+## The Vertical Scale Challenge
+
+### Claustrophobic Depth Without Pagination
+In the Apple TV series *Silo*, ten thousand people inhabit a 144-story subterranean bunker where elevators are forbidden, forcing residents to traverse massive spiral stairs. Traditional promotional web experiences break scale by splitting narrative across pagination or carousels.
+
+To convey this claustrophobic scale on the web:
+- The entire 144-floor structure needed to exist as a single, uninterrupted vertical ribbon.
+- Scrubbing the scroll wheel had to feel like descending physically down the central shaft.
+- Every major level (Level 01 Work, Level 48 Process, Level 96 Mechanical & Farm, Level 144 The Depths) needed immediate inspection without interrupting momentum.
+
+> **The Structural Constraint:** Delivering a continuous 144-floor descent without stalling mobile devices required avoiding heavy 3D mesh geometry in favor of hardware-accelerated 2D canvas particles and synchronized CSS matrix transforms.
+
+---
+
+## Dual-Layer Camera Choreography
+
+The visual engine synchronizes two parallel representations of the silo: an architectural technical line drawing and localized high-resolution photographic plates.
+
+### Technical Mechanics
+
+1. **Continuous Vertical Ribbon (`trackYAt`)**: As scroll progress advances from 0 to 1, the world coordinate system smoothly pans vertically from the upper surface rim to the submerged flooded foundations.
+2. **Dynamic Zoom Dip**: During travel segments between floors, the virtual camera dips slightly outward before zooming tightly in on arrival, mimicking an intentional physical camera move.
+3. **Double-Buffer Crossfades**: At each level dwell, the technical drawing smoothly crossfades into the photographic plate, revealing the gritty reality of life on that floor.
+
+---
+
+## Spatial Intelligence: 70vw VisionOS Glass HUD
+
+At each level dwell, the interface materializes a centered glass panel inspired by Apple VisionOS spatial design guidelines:
+
+- **70% Viewport Width**: Expands across the stage to provide comfortable reading room for 3-column sector data, cast roles, and narrative context.
+- **Multilayer Backdrop Blur**: Employs frosted glass blur (`backdrop-filter: blur(28px)`) with subtle hairline specular borders to separate typography from the textured background.
+- **Direct Mode Toggling**: Visitors can toggle into "Inspect Silo" ghost mode, fading the UI panel to 8% opacity to examine the underlying architectural details.
+
+---
+
+## Canvas Particles & Dynamic Atmosphere
+
+To make the subterranean environment feel physical and living:
+- **Upward Dust Motes**: A 2D canvas streams 60 particles drifting gently upward, with velocity responsive to scroll acceleration.
+- **Atmospheric Color Grading**: CSS overlay mixes dynamic gradient washes, transitioning from cold clinical steel at Level 01 down to deep mechanical amber at Level 144.
+
+---
+
+## Experience & Links
+
+- [**Launch Interactive Silo Experience**](/labs/silo) — Full-screen interactive 144-level scroll experience.
+- [**Watch Silo on Apple TV+**](https://tv.apple.com/us/show/silo/umc.cmc.3yksgc857px0k0rqe5zd4jice) — Official series page on Apple TV+.
