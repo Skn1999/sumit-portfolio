@@ -99,9 +99,8 @@ export const AnimatedIdentityHeadline: React.FC<
 
   const pencilEraserDown = `${import.meta.env.BASE_URL}images/pencil-eraser-down.png`;
 
-  // Determine prefix for current step ("I'm an" for engineer, "I'm a" for others)
+  // Determine whether current step is the engineer stage
   const isEngineerStage = step === "engineer" || step === "erasing2";
-  const prefixText = isEngineerStage ? "I'm an" : "I'm a";
 
   return (
     <div className="relative flex flex-col items-start select-none w-full text-left">
@@ -109,9 +108,37 @@ export const AnimatedIdentityHeadline: React.FC<
         {/* Line 1: Main Greeting */}
         <span className="block mb-1 sm:mb-1.5">Hi, I'm Sumit.</span>
 
-        {/* Line 2: Prefix sentence intro (Always on its own separate line) */}
-        <span className="block text-ink-primary mb-1 sm:mb-1.5">
-          {prefixText}
+        {/* Line 2: Prefix sentence intro with counter-sliding 'n' */}
+        <span className="flex items-baseline text-ink-primary mb-1 sm:mb-1.5">
+          <span>I'm a</span>
+          <AnimatePresence initial={false}>
+            {isEngineerStage && (
+              <motion.span
+                key="letter-n"
+                initial={{ opacity: 0, y: -10, filter: "blur(6px)", width: 0 }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  filter: "blur(0px)",
+                  width: "auto",
+                }}
+                exit={{
+                  opacity: 0,
+                  y: 8,
+                  filter: "blur(6px)",
+                  width: 0,
+                  transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+                }}
+                transition={{
+                  duration: 0.45,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className="inline-block overflow-hidden origin-bottom"
+              >
+                n
+              </motion.span>
+            )}
+          </AnimatePresence>
         </span>
 
         {/* Line 3: Dedicated title line on its own full line */}
