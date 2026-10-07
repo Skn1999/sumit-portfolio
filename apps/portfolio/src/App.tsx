@@ -15,6 +15,7 @@ import WritingsPage from "./pages/WritingsPage";
 import DataEngineeringPage from "./pages/DataEngineeringPage";
 import DesignEngineeringPage from "./pages/DesignEngineeringPage";
 import SiloPage from "./pages/labs/SiloPage";
+import FlowPage from "./pages/labs/FlowPage";
 import { NavIntentProvider } from "./contexts/NavIntentContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { TransitionProvider } from "./contexts/TransitionContext";
@@ -53,6 +54,8 @@ const AnimatedRoutes = () => {
         <Route path="/design-engineering" element={<DesignEngineeringPage />} />
         <Route path="/data-engineering" element={<DesignEngineeringPage />} />
         <Route path="/labs/silo" element={<SiloPage />} />
+        <Route path="/labs/flow" element={<Navigate to="/labs/tack" replace />} />
+        <Route path="/labs/tack" element={<FlowPage />} />
         <Route path="/projects" element={<UxDesignPage />} />
         <Route path="/projects/ai" element={<Navigate to="/projects/actai" replace />} />
         <Route path="/projects/act-ai" element={<Navigate to="/projects/actai" replace />} />

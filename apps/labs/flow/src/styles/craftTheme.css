@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Patrick+Hand&display=swap');
+
+/* Craft Docs Tactile Scrapbook Design Tokens */
+:root {
+  --color-canvas: #fff3e7;
+  --color-ink: #030302;
+  --color-white: #ffffff;
+  --color-linen: #f7f7f7;
+  --color-cloud: #efefef;
+  --color-ash: #e1e1e1;
+  --color-stone: #bebbba;
+  --color-graphite: #41413f;
+  --color-mint: #9bd8a9;
+  --color-marigold: #fde99b;
+  --color-periwinkle: #b8caf5;
+  --color-sky: #9ed4ef;
+  --color-papaya: #ff4500;
+  --color-azure: #0087ff;
+
+  --shadow-floating-card: rgba(0, 0, 0, 0.01) 0px 50px 40px 0px,
+                          rgba(0, 0, 0, 0.02) 0px 50px 40px 0px,
+                          rgba(0, 0, 0, 0.05) 0px 20px 40px 0px,
+                          rgba(0, 0, 0, 0.08) 0px 3px 10px 0px;
+
+  --shadow-hover-button: rgba(0, 0, 0, 0.1) 0px 12px 12px 2px,
+                         rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+
+  --shadow-subtle-border: rgba(0, 0, 0, 0.06) 0px 1px 3px 0px,
+                          rgba(0, 0, 0, 0.04) 0px 1px 2px -1px;
+}
+
+.font-editorial {
+  font-family: 'UntitledSerifFont', Lora, Merriweather, Georgia, Cambria, serif;
+}
+
+.font-ui {
+  font-family: 'UntitledSansFont', Inter, Figtree, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.font-handwriting {
+  font-family: 'Caveat', 'Patrick Hand', cursive;
+}
+
+.shadow-craft {
+  box-shadow: var(--shadow-floating-card);
+}
+
+.shadow-craft-hover:hover {
+  box-shadow: var(--shadow-hover-button);
+}
+
+.shadow-craft-subtle {
+  box-shadow: var(--shadow-subtle-border);
+}

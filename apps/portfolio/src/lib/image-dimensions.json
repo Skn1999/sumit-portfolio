@@ -129,6 +129,36 @@
     "height": 1920,
     "aspectRatio": "1920/1920"
   },
+  "images/pencil-eraser-down.png": {
+    "width": 30,
+    "height": 300,
+    "aspectRatio": "30/300"
+  },
+  "pencil-eraser-down.png": {
+    "width": 30,
+    "height": 300,
+    "aspectRatio": "30/300"
+  },
+  "images/pencil-eraser.png": {
+    "width": 397,
+    "height": 400,
+    "aspectRatio": "397/400"
+  },
+  "pencil-eraser.png": {
+    "width": 397,
+    "height": 400,
+    "aspectRatio": "397/400"
+  },
+  "images/pencil-tip-down.png": {
+    "width": 30,
+    "height": 300,
+    "aspectRatio": "30/300"
+  },
+  "pencil-tip-down.png": {
+    "width": 30,
+    "height": 300,
+    "aspectRatio": "30/300"
+  },
   "actai/actai-steward-cover-animated.gif": {
     "width": 800,
     "height": 600,
