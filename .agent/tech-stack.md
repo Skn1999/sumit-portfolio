@@ -1,60 +1,74 @@
 # Tech Stack
 
-This repo is a Vite + React + TypeScript portfolio site with MDX-authored content, Tailwind CSS styling, shadcn/Radix UI primitives, and Framer Motion animation.
+This repo is an **npm + Turborepo monorepo** consisting of a Vite + React + TypeScript portfolio site (`apps/portfolio`), isolated creative coding labs (`apps/labs/*`), and shared UI/token packages (`packages/*`).
 
 ## Core Stack
 
+- Monorepo Engine: **npm workspaces** + **Turborepo**
 - React `18.3.1`
 - TypeScript `5.8.3`
 - Vite `5.4.19`
 - React Router DOM `6.30.1`
-- Tailwind CSS `3.4.17`
+- Tailwind CSS `3.4.17` via `@portfolio/tailwind-config`
 - Tailwind Typography `@tailwindcss/typography`
 - MDX via `@mdx-js/rollup` and `@mdx-js/react`
 - Framer Motion `12.23.24`
 - React Helmet Async for SEO
 - TanStack React Query for async/server state infrastructure
-- Radix UI + shadcn-style components for accessible UI primitives
+- Radix UI + shadcn components via `@portfolio/ui`
 
 ## Commands
 
-Use these npm scripts:
+Use these npm scripts from repository root:
 
 ```bash
 npm run dev
 ```
 
-Starts the Vite dev server. `vite.config.ts` sets host to `::` and port to `8080`.
+Starts the main portfolio Vite dev server on port `8080`.
 
 ```bash
-npm run lint
+npm run dev:silo
+npm run dev:lab silo
 ```
 
-Runs ESLint across the repo.
+Starts an isolated development server for a lab project (e.g. Silo on port `8081`).
+
+```bash
+npm run dev:all
+```
+
+Runs all applications in parallel using Turborepo.
+
+```bash
+npm run new-lab <slug> -- --title="Lab Title"
+```
+
+Scaffolds a new lab experiment in `apps/labs/<slug>` with pre-wired UI primitives, Tailwind preset, standalone harness, and portfolio integration.
 
 ```bash
 npm run build
 ```
 
-Runs the production build and then `scripts/inject-meta.js`. This also triggers `prebuild`, which runs image optimization first.
+Runs Turborepo build pipeline across all packages/apps, outputs production build to `./dist`, and triggers `scripts/inject-meta.js`.
 
 ```bash
-npm run build:dev
+npm run test
 ```
 
-Builds in development mode and injects metadata.
+Runs Vitest test suite across all workspaces.
 
 ```bash
-npm run build:preview
+npm run lint
 ```
 
-Builds with `VITE_BASE_PATH=/`, useful for previewing from root.
+Runs ESLint across all workspaces.
 
 ```bash
 npm run preview
 ```
 
-Runs `build:preview` and then `vite preview`.
+Runs `build:preview` and then `vite preview` from root `./dist`.
 
 ```bash
 npm run new-project

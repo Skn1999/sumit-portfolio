@@ -5,8 +5,12 @@ import { fileURLToPath } from "url";
 import prompts from "prompts";
 import chalk from "chalk";
 
+import fsSync from "fs";
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const PROJECTS_DIR = path.join(__dirname, "..", "src", "content", "projects");
+const PROJECTS_DIR = fsSync.existsSync(path.join(__dirname, "..", "apps", "portfolio", "src", "content", "projects"))
+  ? path.join(__dirname, "..", "apps", "portfolio", "src", "content", "projects")
+  : path.join(__dirname, "..", "src", "content", "projects");
 
 async function createProjectStructure() {
   const response = await prompts([

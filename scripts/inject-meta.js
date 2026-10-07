@@ -204,7 +204,10 @@ function writePage(routePath, html) {
 // ── Collect routes ─────────────────────────────────────────────────────
 
 function getProjectRoutes() {
-  const mdxPattern = path.join(ROOT, "src/content/projects/*/index.mdx");
+  const projectsBase = fs.existsSync(path.join(ROOT, "apps/portfolio/src/content/projects"))
+    ? path.join(ROOT, "apps/portfolio/src/content/projects")
+    : path.join(ROOT, "src/content/projects");
+  const mdxPattern = path.join(projectsBase, "*/index.mdx");
   const files = globSync(mdxPattern);
 
   return files
