@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bot, AlertCircle, CheckCircle2, RefreshCw, X, Paperclip } from 'lucide-react';
 import { AgentNotification } from '../types';
+import { BotAvatar } from 'bot-avatars';
 
 interface NotificationToastProps {
   notifications: AgentNotification[];
@@ -60,7 +61,7 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
                 }`}
               >
                 {isPickup ? (
-                  <Bot className="w-4 h-4 animate-pulse" />
+                  <BotAvatar type="clover" state="working" size={16} />
                 ) : isApproval ? (
                   <AlertCircle className="w-4 h-4 text-[#ff4500]" />
                 ) : notif.type === 'sync' ? (

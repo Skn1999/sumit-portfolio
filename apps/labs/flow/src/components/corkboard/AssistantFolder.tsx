@@ -115,23 +115,18 @@ export const AssistantFolder: React.FC<AssistantFolderProps> = ({
 
         {/* Middle Folder Stamp / Description */}
         <div className="my-auto text-left space-y-1.5 pt-2">
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-[#dfbe82] text-[#4a3b1a] font-bold tracking-wider">
-              Autonomous Desk
-            </span>
-            {isWorking && (
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-[#b8caf5]/70 text-[#1b2b5a] font-medium flex items-center gap-1 animate-pulse">
-                <Clock className="w-2.5 h-2.5" />
-                Working...
-              </span>
-            )}
-          </div>
+          {isWorking && (
+            <div className="flex items-center gap-1.5 text-[11px] font-mono text-[#1b2b5a]">
+              <span className="w-2 h-2 rounded-full bg-[#0087ff] animate-pulse" />
+              <span>Researching...</span>
+            </div>
+          )}
 
           <h3 className="font-editorial text-2xl font-medium text-[#2d220f] leading-tight">
             Secretary's Briefcase
           </h3>
           <p className="text-xs text-[#5c4722] leading-relaxed">
-            Hands-off delegation. Researches topics on the web, prepares drafts, and organizes action steps.
+            Drop notes here to delegate research and synthesis.
           </p>
         </div>
 

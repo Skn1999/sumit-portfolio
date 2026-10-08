@@ -19,6 +19,7 @@ import { ArcBadge } from './arc/ArcBadge';
 import { ArcConfirmMorph } from './arc/ArcConfirmMorph';
 import { BotAvatar } from 'bot-avatars';
 import { getAgentAvatarForTask } from '../lib/avatarService';
+import { renderDossierContent } from '../lib/dossierRenderer';
 
 interface AgentDrawerProps {
   isOpen: boolean;
@@ -30,106 +31,6 @@ interface AgentDrawerProps {
   onOpenInspector?: (taskId: string) => void;
   onPinDossierAsNote?: (todo: TodoItem) => void;
 }
-
-const parseFormattedText = (text: string): React.ReactNode => {
-  const regex = /(\[.*?\]\(.*?\)|\*\*.*?\*\*|`.*?`)/g;
-  const parts = text.split(regex);
-
-  return parts.map((part, i) => {
-    if (!part) return null;
-    if (part.startsWith('[') && part.includes('](') && part.endsWith(')')) {
-      const match = part.match(/^\[(.*?)\]\((.*?)\)$/);
-      if (match) {
-        return (
-          <a
-            key={i}
-            href={match[2]}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#0066cc] underline hover:text-[#004499] inline-flex items-center gap-0.5 font-medium cursor-pointer"
-          >
-            {match[1]}
-            <ExternalLink className="w-2.5 h-2.5 inline" />
-          </a>
-        );
-      }
-    }
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return (
-        <strong key={i} className="font-semibold text-[#1a140b]">
-          {part.slice(2, -2)}
-        </strong>
-      );
-    }
-    if (part.startsWith('`') && part.endsWith('`')) {
-      return (
-        <code key={i} className="px-1.5 py-0.5 rounded bg-black/5 font-mono text-[11px] text-[#4a3b1a] border border-[#ebd8ba]">
-          {part.slice(1, -1)}
-        </code>
-      );
-    }
-    return part;
-  });
-};
-
-const renderDossierContent = (content: string) => {
-  const lines = content.split('\n');
-  return (
-    <div className="space-y-2.5 font-sans text-xs text-[#2d220f] leading-relaxed">
-      {lines.map((line, idx) => {
-        const trimmed = line.trim();
-        if (!trimmed) return <div key={idx} className="h-0.5" />;
-
-        if (trimmed.startsWith('# ')) {
-          return (
-            <h3 key={idx} className="font-editorial text-lg font-bold text-[#1a140b] border-b border-[#e8d7b8] pb-1.5 pt-1">
-              {trimmed.slice(2)}
-            </h3>
-          );
-        }
-        if (trimmed.startsWith('## ')) {
-          return (
-            <h4 key={idx} className="font-editorial text-sm font-bold text-[#3d2c14] pt-2 pb-0.5 flex items-center gap-1.5">
-              {trimmed.slice(3)}
-            </h4>
-          );
-        }
-        if (trimmed === '---') {
-          return <hr key={idx} className="border-t border-[#ebd8ba] my-2" />;
-        }
-        if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
-          const itemText = trimmed.slice(2);
-          return (
-            <div key={idx} className="flex items-start gap-2 pl-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#c4a56a] mt-1.5 flex-shrink-0" />
-              <div className="flex-1 leading-relaxed">
-                {parseFormattedText(itemText)}
-              </div>
-            </div>
-          );
-        }
-        const numMatch = trimmed.match(/^(\d+)\.\s+(.*)$/);
-        if (numMatch) {
-          return (
-            <div key={idx} className="flex items-start gap-2 pl-1.5">
-              <span className="font-mono text-[10px] font-bold text-[#c4a56a] mt-0.5 flex-shrink-0 w-3.5">
-                {numMatch[1]}.
-              </span>
-              <div className="flex-1 leading-relaxed">
-                {parseFormattedText(numMatch[2])}
-              </div>
-            </div>
-          );
-        }
-        return (
-          <p key={idx} className="leading-relaxed">
-            {parseFormattedText(trimmed)}
-          </p>
-        );
-      })}
-    </div>
-  );
-};
 
 export const AgentDrawer: React.FC<AgentDrawerProps> = ({
   isOpen,
@@ -274,12 +175,12 @@ export const AgentDrawer: React.FC<AgentDrawerProps> = ({
                         key={todo.id}
                         className="p-5 rounded-2xl bg-[#ffffff] border border-[#d3b57a]/70 shadow-craft space-y-3.5 text-left"
                       >
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-1.5 bg-[#9bd8a9]/30 text-[#164e2e] border border-[#9bd8a9] px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold">
-                            <Paperclip className="w-3 h-3 text-[#164e2e]" />
-                            <span>Executive Research Dossier</span>
-                          </div>
-                          <span className="text-[10px] font-mono text-[#bebbba]">
+                        <div className="flex items-center justify-between gap-2 text-xs font-mono text-[#8a7f75]">
+                          <span className="flex items-center gap-1.5 text-[#4a3b1a] font-medium">
+                            <Paperclip className="w-3.5 h-3.5 text-[#8a7750]" />
+                            Executive Briefing
+                          </span>
+                          <span className="text-[10px]">
                             {todo.completedAt ? 'Completed' : 'Ready'}
                           </span>
                         </div>
@@ -365,7 +266,7 @@ export const AgentDrawer: React.FC<AgentDrawerProps> = ({
                       <ShieldCheck className="w-10 h-10 text-[#9bd8a9] mx-auto" />
                       <h4 className="font-editorial text-lg text-[#030302]">All Clear</h4>
                       <p className="text-xs text-[#bebbba] max-w-xs mx-auto leading-relaxed">
-                        No high-stakes actions pending human approval. The assistant is operating within autonomous Tier 1 limits.
+                        No actions pending approval.
                       </p>
                     </div>
                   ) : (
@@ -464,9 +365,6 @@ export const AgentDrawer: React.FC<AgentDrawerProps> = ({
                             />
                           </div>
                           Researching...
-                        </span>
-                        <span className="text-[10px] font-mono text-[#0087ff] animate-pulse">
-                          Active
                         </span>
                       </div>
                       <h4 className="font-editorial text-lg text-[#030302]">{todo.title}</h4>

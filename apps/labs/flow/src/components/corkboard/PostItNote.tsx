@@ -405,49 +405,21 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
           <div />
         )}
 
-        {/* Dynamic Agent Status Badge */}
+        {/* Dynamic Agent Status Indicator (quiet, non-redundant) */}
         {todo.assignedTo === 'agent' && (
-          <div
-            onClick={(e) => {
-              if (todo.agentStatus === 'completed') {
-                e.stopPropagation();
-                onOpenInspector?.();
-              }
-            }}
-            className={`px-2 py-0.5 rounded-full text-[10px] font-mono flex items-center gap-1 font-medium transition-all ${
-              todo.agentStatus === 'in_progress'
-                ? 'bg-[#b8caf5]/80 text-[#1b2b5a] animate-pulse border border-[#0087ff]/40 shadow-xs'
-                : todo.agentStatus === 'awaiting_approval'
-                ? 'bg-[#ffeedd] text-[#ff4500] border border-[#ff4500]/50 font-bold'
-                : 'bg-[#9bd8a9]/60 text-[#164e2e] border border-[#9bd8a9] hover:bg-[#9bd8a9]/80 cursor-pointer hover:scale-105 active:scale-95'
-            }`}
-            title={todo.agentStatus === 'completed' ? 'Click to inspect Dossier' : undefined}
-          >
-            {todo.agentStatus === 'in_progress' && (
-              <>
-                <BotAvatar type={avatarType} state="working" size={14} />
-                <span>Researching...</span>
-              </>
-            )}
-            {todo.agentStatus === 'awaiting_approval' && (
-              <>
-                <AlertTriangle className="w-3 h-3 text-[#ff4500]" />
-                <span>Approval Needed</span>
-              </>
-            )}
-            {todo.agentStatus === 'completed' && (
-              <>
-                <Paperclip className="w-3 h-3 text-[#164e2e]" />
-                <span>Dossier Ready</span>
-              </>
-            )}
-            {todo.agentStatus === 'idle' && (
-              <>
-                <BotAvatar type={avatarType} state="default" size={14} />
-                <span>Assistant</span>
-              </>
-            )}
-          </div>
+          todo.agentStatus === 'awaiting_approval' ? (
+            <div
+              className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-[#ffeedd] text-[#ff4500] border border-[#ff4500]/50 font-bold flex items-center gap-1"
+            >
+              <AlertTriangle className="w-3 h-3 text-[#ff4500]" />
+              <span>Approval Needed</span>
+            </div>
+          ) : todo.agentStatus === 'idle' ? (
+            <div className="flex items-center gap-1 text-[10px] font-mono text-[#8a7f75]">
+              <BotAvatar type={avatarType} state="default" size={14} />
+              <span>Assistant</span>
+            </div>
+          ) : null
         )}
 
         {/* Checkmark Status Toggle at bottom-right */}
