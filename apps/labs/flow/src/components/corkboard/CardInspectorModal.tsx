@@ -379,7 +379,7 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
                               : activeTodo.agentStatus === 'failed'
                               ? 'Resting (Models Overloaded)'
                               : activeTodo.agentStatus === 'completed'
-                              ? 'Briefing ready'
+                              ? 'Task Done · Briefing ready'
                               : 'Ready'}
                           </p>
                         </div>

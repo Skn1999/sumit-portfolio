@@ -7,7 +7,7 @@ import {
   useTransform,
   animate,
 } from 'framer-motion';
-import { Check, Bot, Archive, Mail, Paperclip, Sparkles, AlertTriangle } from 'lucide-react';
+import { Check, Bot, Archive, Mail, Paperclip, Sparkles, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { TodoItem } from '../../types';
 import { Pushpin } from './Pushpin';
 import { BotAvatar } from 'bot-avatars';
@@ -432,21 +432,26 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
           </div>
         )}
 
-        {/* AI Completed Dossier Preview Block */}
-        {todo.assignedTo === 'agent' && todo.agentStatus === 'completed' && todo.agentArtifacts && todo.agentArtifacts.length > 0 && (
+        {/* AI Completed Dossier Preview Block with Idle Avatar */}
+        {todo.assignedTo === 'agent' && todo.agentStatus === 'completed' && (
           <div
             onClick={(e) => {
               e.stopPropagation();
               onOpenInspector?.();
             }}
             className="mt-1.5 p-2 rounded-lg bg-white/85 border border-[#d3b57a]/70 shadow-2xs cursor-pointer hover:bg-white hover:border-[#b89349] transition-all group/dossier"
-            title="Click to view full executive research dossier"
+            title="Task finished! Click to view executive research dossier"
           >
-            <div className="flex items-center justify-between text-[10px] font-mono font-bold text-[#4a3b1a] mb-0.5">
-              <span className="flex items-center gap-1">
-                <Sparkles className="w-3 h-3 text-[#c49a45]" />
-                Executive Briefing
-              </span>
+            <div className="flex items-center justify-between text-[10px] font-mono font-bold text-[#4a3b1a] mb-1">
+              <div className="flex items-center gap-1.5">
+                <div className="w-5 h-5 rounded-md bg-[#f7f0e4] border border-[#e4d5c1] flex items-center justify-center overflow-hidden flex-shrink-0">
+                  <BotAvatar type={avatarType} state="default" size={16} />
+                </div>
+                <span className="text-[#2d6a4f] flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-[#2d6a4f]" />
+                  Task Done
+                </span>
+              </div>
               <span className="text-[#0087ff] group-hover/dossier:underline flex items-center gap-0.5">
                 Inspect ↗
               </span>
@@ -458,7 +463,7 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
         )}
 
         {/* Fallback Manual Description */}
-        {!(todo.assignedTo === 'agent' && (todo.agentStatus === 'in_progress' || todo.agentStatus === 'failed' || (todo.agentStatus === 'completed' && todo.agentArtifacts && todo.agentArtifacts.length > 0))) && (
+        {!(todo.assignedTo === 'agent' && (todo.agentStatus === 'in_progress' || todo.agentStatus === 'failed' || todo.agentStatus === 'completed')) && (
           todo.description?.trim() ? (
             <p
               className={`font-handwriting leading-snug ${
@@ -523,6 +528,11 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
                 <BotAvatar type={avatarType} state="sleeping" size={14} />
               </div>
               <span>Resting</span>
+            </div>
+          ) : todo.agentStatus === 'completed' ? (
+            <div className="flex items-center gap-1 text-[10px] font-mono text-[#2d6a4f] font-medium">
+              <BotAvatar type={avatarType} state="default" size={14} />
+              <span>Task Done</span>
             </div>
           ) : todo.agentStatus === 'idle' ? (
             <div className="flex items-center gap-1 text-[10px] font-mono text-[#8a7f75]">
