@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bot, AlertCircle, CheckCircle2, RefreshCw, X, Paperclip } from 'lucide-react';
+import { Clock, AlertCircle, CheckCircle2, RefreshCw, X, Paperclip } from 'lucide-react';
 import { AgentNotification } from '../types';
 
 interface NotificationToastProps {
@@ -69,7 +69,7 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
                 {isOverloaded ? (
                   <AlertCircle className="w-4 h-4" />
                 ) : isPickup ? (
-                  <Bot className="w-4 h-4" />
+                  <Clock className="w-4 h-4" />
                 ) : isApproval ? (
                   <AlertCircle className="w-4 h-4 text-[#ff4500]" />
                 ) : notif.type === 'sync' ? (
@@ -82,7 +82,7 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
               <div className="flex-1 min-w-0 pr-1">
                 <div className="flex items-center justify-between gap-2">
                   <h4 className="text-xs font-semibold text-[#030302] truncate">
-                    {notif.title}
+                    {notif.title.replace(/^🤖\s*/, '')}
                   </h4>
                   <span className="text-[10px] text-[#bebbba] flex-shrink-0">
                     {notif.timestamp}

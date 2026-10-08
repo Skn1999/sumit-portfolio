@@ -593,7 +593,7 @@ export const FlowExperience: React.FC = () => {
     // 2. DISPATCH INSTANT NOTIFICATION
     pushNotification(
       'pickup',
-      '🤖 Assistant Picked Up Task',
+      'Assistant Picked Up Task',
       `Assistant started working on: "${target.title}"`,
       { taskId: todoId }
     );
@@ -678,7 +678,7 @@ export const FlowExperience: React.FC = () => {
 
         pushNotification(
           'completed',
-          '🤖 Assistant Finished Research',
+          'Assistant Finished Research',
           `Deliverables ready for: "${target.title}"`,
           { taskId: todoId }
         );
