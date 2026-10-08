@@ -342,9 +342,9 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
 
         {/* AI In-Progress State */}
         {todo.assignedTo === 'agent' && todo.agentStatus === 'in_progress' && (
-          <div className="mt-2 p-2 rounded-xl bg-[#b8caf5]/35 border border-[#b8caf5] text-[11px] font-mono text-[#1b2b5a] flex items-center gap-2">
-            <div className="w-6 h-6 rounded-lg bg-white/90 border border-[#b8caf5] flex items-center justify-center overflow-hidden flex-shrink-0">
-              <BotAvatar type={avatarType} state="working" size={20} />
+          <div className="mt-2 p-2 rounded-xl bg-[#b8caf5]/35 border border-[#b8caf5] text-[11px] font-mono text-[#1b2b5a] flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-white/90 border border-[#b8caf5] flex items-center justify-center overflow-hidden flex-shrink-0 shadow-2xs">
+              <BotAvatar type={avatarType} state="working" size={26} />
             </div>
             <span className="line-clamp-2 leading-tight">
               {todo.agentNotes || 'Assistant researching in background...'}
@@ -356,9 +356,9 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
         {todo.assignedTo === 'agent' && todo.agentStatus === 'failed' && (
           <div className="mt-1.5 p-2 rounded-xl bg-[#fff9ef] border border-[#e8d7bd] text-[#524434] shadow-2xs font-ui flex flex-col gap-1.5">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-lg bg-[#f7f0e4] border border-[#e4d5c1] flex items-center justify-center overflow-hidden flex-shrink-0 shadow-inner">
+              <div className="w-8 h-8 rounded-lg bg-[#f7f0e4] border border-[#e4d5c1] flex items-center justify-center overflow-hidden flex-shrink-0 shadow-inner">
                 <div className="filter grayscale-[25%] opacity-90">
-                  <BotAvatar type={avatarType} state="sleeping" size={20} />
+                  <BotAvatar type={avatarType} state="sleeping" size={26} />
                 </div>
               </div>
               <div className="min-w-0 flex-1">
@@ -442,17 +442,17 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
             className="mt-1.5 p-2 rounded-lg bg-white/85 border border-[#d3b57a]/70 shadow-2xs cursor-pointer hover:bg-white hover:border-[#b89349] transition-all group/dossier"
             title="Task finished! Click to view executive research dossier"
           >
-            <div className="flex items-center justify-between text-[10px] font-mono font-bold text-[#4a3b1a] mb-1">
-              <div className="flex items-center gap-1.5">
-                <div className="w-5 h-5 rounded-md bg-[#f7f0e4] border border-[#e4d5c1] flex items-center justify-center overflow-hidden flex-shrink-0">
-                  <BotAvatar type={avatarType} state="default" size={16} />
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-[#f7f0e4] border border-[#e4d5c1] flex items-center justify-center overflow-hidden flex-shrink-0 shadow-2xs">
+                  <BotAvatar type={avatarType} state="default" size={26} />
                 </div>
-                <span className="text-[#2d6a4f] flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3 text-[#2d6a4f]" />
+                <span className="text-[#2d6a4f] font-mono text-[11px] font-bold flex items-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#2d6a4f]" />
                   Task Done
                 </span>
               </div>
-              <span className="text-[#0087ff] group-hover/dossier:underline flex items-center gap-0.5">
+              <span className="text-[10px] font-mono text-[#0087ff] group-hover/dossier:underline flex items-center gap-0.5">
                 Inspect ↗
               </span>
             </div>
@@ -514,32 +514,13 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
         )}
 
         {/* Dynamic Agent Status Indicator (quiet, non-redundant) */}
-        {todo.assignedTo === 'agent' && (
-          todo.agentStatus === 'awaiting_approval' ? (
-            <div
-              className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-[#ffeedd] text-[#ff4500] border border-[#ff4500]/50 font-bold flex items-center gap-1"
-            >
-              <AlertTriangle className="w-3 h-3 text-[#ff4500]" />
-              <span>Approval Needed</span>
-            </div>
-          ) : todo.agentStatus === 'failed' ? (
-            <div className="flex items-center gap-1 text-[10px] font-mono text-[#8c5820]">
-              <div className="filter grayscale-[25%] opacity-85">
-                <BotAvatar type={avatarType} state="sleeping" size={14} />
-              </div>
-              <span>Resting</span>
-            </div>
-          ) : todo.agentStatus === 'completed' ? (
-            <div className="flex items-center gap-1 text-[10px] font-mono text-[#2d6a4f] font-medium">
-              <BotAvatar type={avatarType} state="default" size={14} />
-              <span>Task Done</span>
-            </div>
-          ) : todo.agentStatus === 'idle' ? (
-            <div className="flex items-center gap-1 text-[10px] font-mono text-[#8a7f75]">
-              <BotAvatar type={avatarType} state="default" size={14} />
-              <span>Assistant</span>
-            </div>
-          ) : null
+        {todo.assignedTo === 'agent' && todo.agentStatus === 'awaiting_approval' && (
+          <div
+            className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-[#ffeedd] text-[#ff4500] border border-[#ff4500]/50 font-bold flex items-center gap-1"
+          >
+            <AlertTriangle className="w-3 h-3 text-[#ff4500]" />
+            <span>Approval Needed</span>
+          </div>
         )}
 
         {/* Checkmark Status Toggle at bottom-right */}
