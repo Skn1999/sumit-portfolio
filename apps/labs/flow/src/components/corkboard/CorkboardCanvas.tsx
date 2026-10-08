@@ -270,6 +270,12 @@ export const CorkboardCanvas: React.FC<CorkboardCanvasProps> = ({
         onDelegateNoteToAgent(id);
         return true;
       }
+    } else {
+      // If note was assigned to agent and dropped outside the assistant folder, reclaim it!
+      const targetTodo = todos.find((t) => t.id === id);
+      if (type === 'todo' && targetTodo?.assignedTo === 'agent') {
+        onRevertTodoFromAgent?.(id);
+      }
     }
 
     return false;
@@ -611,9 +617,16 @@ export const CorkboardCanvas: React.FC<CorkboardCanvasProps> = ({
             onCancelCountdown={onCancelCountdown}
             onRevertToManualNote={() => onRevertTodoFromAgent?.(todo.id)}
             onPositionChange={(pos) => {
-              // If note is dragged outside the folder back to working board, reclaim it!
-              if (todo.assignedTo === 'agent' && pos.x < folderX - 80) {
-                onRevertTodoFromAgent?.(todo.id);
+              // If note is dragged outside the assistant folder back to working board, reclaim it!
+              if (todo.assignedTo === 'agent') {
+                const isInsideFolder =
+                  pos.x >= folderX - 40 &&
+                  pos.x <= folderX + folderWidth + 30 &&
+                  pos.y >= folderY - 40 &&
+                  pos.y <= folderY + folderHeight + 40;
+                if (!isInsideFolder) {
+                  onRevertTodoFromAgent?.(todo.id);
+                }
               }
               onUpdateTodoPosition(todo.id, pos);
             }}

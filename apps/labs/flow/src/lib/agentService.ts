@@ -41,6 +41,28 @@ const MODEL_CANDIDATES = [
   'gemini-flash-lite-latest',
 ];
 
+// Helper: Cancellable sleep with AbortSignal support
+export function cancellableSleep(ms: number, signal?: AbortSignal): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (signal?.aborted) {
+      const err = new Error('Aborted');
+      err.name = 'AbortError';
+      return reject(err);
+    }
+    const timer = setTimeout(() => {
+      signal?.removeEventListener('abort', onAbort);
+      resolve();
+    }, ms);
+    const onAbort = () => {
+      clearTimeout(timer);
+      const err = new Error('Aborted');
+      err.name = 'AbortError';
+      reject(err);
+    };
+    signal?.addEventListener('abort', onAbort, { once: true });
+  });
+}
+
 // Helper: Sleep utility
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -94,15 +116,21 @@ interface GeminiCallResult {
   error: { code?: number; status?: string; message: string } | null;
 }
 
-// Robust Gemini API caller with progressive exponential backoff, jitter, and multi-model fallback rotation
+// Robust Gemini API caller with progressive exponential backoff, jitter, multi-model rotation, and AbortSignal
 async function callGeminiWithRetry(
   apiKey: string,
   requestBody: any,
-  { maxRetries = 3, initialDelayMs = 2000, label = 'Request' } = {}
+  { maxRetries = 3, initialDelayMs = 2000, label = 'Request', signal }: { maxRetries?: number; initialDelayMs?: number; label?: string; signal?: AbortSignal } = {}
 ): Promise<GeminiCallResult> {
   let modelIndex = 0;
 
   for (let attempt = 1; attempt <= maxRetries + 1; attempt++) {
+    if (signal?.aborted) {
+      const err = new Error('Aborted');
+      err.name = 'AbortError';
+      throw err;
+    }
+
     const currentModel = MODEL_CANDIDATES[modelIndex] || MODEL_CANDIDATES[MODEL_CANDIDATES.length - 1];
     const modelPath = currentModel.startsWith('models/') ? currentModel : `models/${currentModel}`;
     const url = `https://generativelanguage.googleapis.com/v1beta/${modelPath}:generateContent?key=${apiKey}`;
@@ -116,6 +144,7 @@ async function callGeminiWithRetry(
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody),
+        signal,
       });
 
       rawText = await response.text();
@@ -216,14 +245,65 @@ export function classifyTaskIntent(context: TaskContext): 'research' | 'email_dr
   return 'research';
 }
 
+export interface ExecuteAgentOptions {
+  signal?: AbortSignal;
+}
+
 /**
- * Executes multi-turn agent workflow with live Gemini API calls,
- * candidate model rotation, and progressive status updates.
+ * Executes agent workflow with simulated 5-second realistic delay,
+ * progressive milestone feedback, AbortSignal support, and dummy deliverables.
  */
 export async function executeAgentWorkflow(
   context: TaskContext,
-  onProgress?: (statusText: string) => void
+  onProgress?: (statusText: string) => void,
+  options?: ExecuteAgentOptions
 ): Promise<AgentDeliverable> {
+  const signal = options?.signal;
+  const intent = classifyTaskIntent(context);
+
+  if (signal?.aborted) {
+    const err = new Error('Aborted');
+    err.name = 'AbortError';
+    throw err;
+  }
+
+  // Check for simulated busy/overloaded state via title keywords
+  const isSimulateBusy =
+    context.title.toLowerCase().includes('[busy]') ||
+    context.title.toLowerCase().includes('[overload]') ||
+    (context.description && context.description.toLowerCase().includes('[busy]'));
+
+  if (isSimulateBusy) {
+    onProgress?.('Querying candidate models (gemini-3.8-flash, gemini-3.7-flash)...');
+    await cancellableSleep(1500, signal);
+    throw new ModelsOverloadedError('All candidate models are at capacity right now (HTTP 503 Service Unavailable).');
+  }
+
+  // --- 5-SECOND REALISTIC INTERACTION SIMULATION WITH DUMMY RESPONSE ---
+  // Milestone 1: Deconstruction & query mapping (0s -> 1.6s)
+  onProgress?.('Assistant deconstructing inquiry & context...');
+  await cancellableSleep(1600, signal);
+
+  // Milestone 2: Research synthesis & signal scanning (1.6s -> 3.4s)
+  onProgress?.('Scanning signals & synthesizing research...');
+  await cancellableSleep(1800, signal);
+
+  // Milestone 3: Executive briefing compilation & verification (3.4s -> 5.0s)
+  onProgress?.('Synthesizing executive briefing dossier & verifying actions...');
+  await cancellableSleep(1600, signal);
+
+  return generateHeuristicReport(context, intent);
+}
+
+/**
+ * Live multi-turn Gemini API execution engine (preserved for production use)
+ */
+export async function executeLiveGeminiWorkflow(
+  context: TaskContext,
+  onProgress?: (statusText: string) => void,
+  options?: ExecuteAgentOptions
+): Promise<AgentDeliverable> {
+  const signal = options?.signal;
   const intent = classifyTaskIntent(context);
   const apiKey = (
     (typeof window !== 'undefined' ? localStorage.getItem('gemini_api_key') : null) ||
@@ -501,6 +581,26 @@ Keep the prose crisp, authoritative, and completely devoid of generic filler or 
  */
 function generateHeuristicReport(context: TaskContext, intent: string): AgentDeliverable {
   const topic = context.title.replace(/^(research|look up|investigate|find info on)\s*/i, '').trim() || context.title;
+
+  if (intent === 'email_draft') {
+    const authorName = context.source?.author || 'there';
+    const recipient = context.source?.authorEmail || 'contact@client.com';
+    const cleanSubject = context.title.replace(/^(re:|fwd:)\s*/i, '');
+    const draftBody = `Hi ${authorName.split(' ')[0]},\n\nThank you for getting in touch regarding "${cleanSubject}".\n\nI have reviewed the details and everything is aligned on our end. We are ready to proceed with the next steps as discussed.\n\nPlease let me know if you need any additional clarification.\n\nBest regards,\nSumit`;
+
+    return {
+      type: 'email_draft',
+      summary: `Prepared draft response to ${authorName}`,
+      markdownReport: `### ✉️ Outbound Email Draft\n\n**To:** \`${recipient}\`  \n**Subject:** *Re: ${cleanSubject}*\n\n---\n\n${draftBody}\n\n---\n*Status: Awaiting human sign-off before sending via Gmail API.*`,
+      draftEmail: {
+        recipient,
+        subject: `Re: ${cleanSubject}`,
+        body: draftBody,
+      },
+      requiresApproval: true,
+      approvalSummary: `Send outbound email response to ${recipient} regarding "${cleanSubject}"`,
+    };
+  }
 
   const report = `# Executive Briefing: ${topic}
  

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   INITIAL_THREADS,
   INITIAL_TODOS,
@@ -135,6 +135,9 @@ export const FlowExperience: React.FC = () => {
     mode: 'initial_2days',
     lastSynced: 'Synced 5m ago',
   });
+
+  // Registry of in-flight AbortControllers for active agent tasks
+  const activeAgentControllersRef = useRef<Map<string, AbortController>>(new Map());
 
   // Persist state
   useEffect(() => {
@@ -373,6 +376,13 @@ export const FlowExperience: React.FC = () => {
 
   // Archive Todo
   const handleArchiveTodo = (id: string) => {
+    // Abort in-flight task if delegated to agent
+    const activeCtrl = activeAgentControllersRef.current.get(id);
+    if (activeCtrl) {
+      activeCtrl.abort();
+      activeAgentControllersRef.current.delete(id);
+    }
+
     const target = todos.find((t) => t.id === id);
     if (target) {
       const archived: ArchivedItem = {
@@ -556,6 +566,16 @@ export const FlowExperience: React.FC = () => {
     const target = initialTodo || todos.find((t) => t.id === todoId);
     if (!target) return;
 
+    // Abort any prior in-flight workflow for this task
+    const existingCtrl = activeAgentControllersRef.current.get(todoId);
+    if (existingCtrl) {
+      existingCtrl.abort();
+      activeAgentControllersRef.current.delete(todoId);
+    }
+
+    const controller = new AbortController();
+    activeAgentControllersRef.current.set(todoId, controller);
+
     // 1. Mark task in progress with Assistant
     setTodos((prev) =>
       prev.map((t) =>
@@ -589,11 +609,16 @@ export const FlowExperience: React.FC = () => {
           source: target.source,
         },
         (progressText) => {
+          if (controller.signal.aborted) return;
           setTodos((prev) =>
             prev.map((t) => (t.id === todoId ? { ...t, agentNotes: progressText } : t))
           );
-        }
+        },
+        { signal: controller.signal }
       );
+
+      if (controller.signal.aborted) return;
+      activeAgentControllersRef.current.delete(todoId);
 
       if (deliverable.requiresApproval && deliverable.draftEmail) {
         // Tier 2 High-Stakes Action: Register approval request
@@ -659,6 +684,12 @@ export const FlowExperience: React.FC = () => {
         );
       }
     } catch (err: any) {
+      activeAgentControllersRef.current.delete(todoId);
+      // Suppress error toast if user aborted intentionally (e.g., dragged note away from AI area)
+      if (controller.signal.aborted || err?.name === 'AbortError') {
+        return;
+      }
+
       console.error('Agent execution error:', err);
       const isBusy =
         err instanceof ModelsOverloadedError ||
@@ -862,6 +893,13 @@ export const FlowExperience: React.FC = () => {
 
   // Reclaim Todo from Assistant (when user drags note back to working board or reverts)
   const handleRevertTodoFromAgent = (todoId: string) => {
+    // Immediately abort any in-flight agent workflow for this task
+    const activeCtrl = activeAgentControllersRef.current.get(todoId);
+    if (activeCtrl) {
+      activeCtrl.abort();
+      activeAgentControllersRef.current.delete(todoId);
+    }
+
     setTodos((prev) =>
       prev.map((t) =>
         t.id === todoId
