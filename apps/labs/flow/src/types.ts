@@ -45,6 +45,7 @@ export interface TodoItem {
   source?: SourceReference;
   assignedTo: 'user' | 'agent' | 'collaborative';
   agentStatus: AgentStatus;
+  agentAvatar?: 'clover' | 'star' | 'ghost' | 'mech' | 'flower' | 'circle';
   agentNotes?: string;
   agentArtifacts?: string[];
   approvalId?: string;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X,
@@ -14,6 +14,8 @@ import {
 } from 'lucide-react';
 import { IngestionThread, TodoItem, NoteItem } from '../../types';
 import { ArcButton } from '../arc/ArcButton';
+import { BotAvatar } from 'bot-avatars';
+import { getAgentAvatarForTask } from '../../lib/avatarService';
 
 interface CardInspectorModalProps {
   isOpen: boolean;
@@ -72,7 +74,183 @@ const parseFormattedText = (text: string): React.ReactNode => {
   });
 };
 
-const renderDossierContent = (content: string) => {
+interface ParsedDossier {
+  title: string;
+  summary: string;
+  findings: Array<{ title: string; text: string }>;
+  actions: string[];
+  sources: Array<{ label: string; url: string }>;
+  isParsed: boolean;
+}
+
+const parseExecutiveDossier = (content: string): ParsedDossier => {
+  let title = '';
+  let summary = '';
+  const findings: Array<{ title: string; text: string }> = [];
+  const actions: string[] = [];
+  const sources: Array<{ label: string; url: string }> = [];
+
+  const lines = content.split('\n');
+  let currentSection = '';
+
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    if (!trimmed) continue;
+
+    if (trimmed.startsWith('# ')) {
+      title = trimmed.slice(2).replace(/^Executive Briefing Dossier:\s*/i, '');
+      continue;
+    }
+
+    if (trimmed.startsWith('## ')) {
+      const header = trimmed.slice(3).toLowerCase();
+      if (header.includes('summary')) currentSection = 'summary';
+      else if (header.includes('finding') || header.includes('signal') || header.includes('market') || header.includes('context')) currentSection = 'findings';
+      else if (header.includes('step') || header.includes('action') || header.includes('implication')) currentSection = 'actions';
+      else if (header.includes('source') || header.includes('reference')) currentSection = 'sources';
+      else currentSection = 'other';
+      continue;
+    }
+
+    if (currentSection === 'summary') {
+      if (!trimmed.startsWith('---') && !trimmed.startsWith('**Prepared')) {
+        summary += (summary ? ' ' : '') + trimmed;
+      }
+    } else if (currentSection === 'findings') {
+      if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
+        const item = trimmed.slice(2);
+        const match = item.match(/^\*\*(.*?)\*\*[:\-]?\s*(.*)$/);
+        if (match) {
+          findings.push({ title: match[1].trim(), text: match[2].trim() });
+        } else {
+          findings.push({ title: 'Key Insight', text: item });
+        }
+      }
+    } else if (currentSection === 'actions') {
+      const numMatch = trimmed.match(/^(\d+)\.\s+(.*)$/);
+      if (numMatch) {
+        const text = numMatch[2].replace(/^\*\*(.*?)\*\*[:\-]?\s*/, '$1: ');
+        actions.push(text);
+      } else if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
+        actions.push(trimmed.slice(2));
+      }
+    } else if (currentSection === 'sources') {
+      const linkMatch = trimmed.match(/\[(.*?)\]\((.*?)\)/);
+      if (linkMatch) {
+        sources.push({ label: linkMatch[1], url: linkMatch[2] });
+      }
+    }
+  }
+
+  return {
+    title,
+    summary,
+    findings,
+    actions,
+    sources,
+    isParsed: Boolean(summary || findings.length > 0),
+  };
+};
+
+const renderDossierContent = (
+  content: string,
+  onPinAction?: (actionText: string) => void
+) => {
+  const parsed = parseExecutiveDossier(content);
+
+  if (parsed.isParsed) {
+    return (
+      <div className="space-y-4 font-sans text-xs text-[#2d220f] leading-relaxed">
+        {parsed.title && (
+          <div className="border-b border-[#e8d7b8] pb-1.5">
+            <h3 className="font-editorial text-lg font-bold text-[#1a140b]">
+              {parsed.title}
+            </h3>
+          </div>
+        )}
+
+        {parsed.summary && (
+          <div className="p-3.5 rounded-xl bg-[#fffbf2] border border-[#ebd8ba] text-xs font-editorial leading-relaxed text-[#241c10]">
+            {parseFormattedText(parsed.summary)}
+          </div>
+        )}
+
+        {parsed.findings.length > 0 && (
+          <div className="space-y-1.5">
+            <span className="text-[10px] font-mono text-[#8a7f75] uppercase block">
+              Strategic Findings
+            </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              {parsed.findings.map((f, idx) => (
+                <div
+                  key={idx}
+                  className="p-3 rounded-xl bg-[#faf7f2] border border-[#e5dfd5] space-y-1"
+                >
+                  <h4 className="font-editorial text-xs font-bold text-[#030302]">
+                    {f.title}
+                  </h4>
+                  <p className="text-[11px] text-[#524942] leading-relaxed">
+                    {parseFormattedText(f.text)}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {parsed.actions.length > 0 && (
+          <div className="space-y-1.5 pt-1">
+            <span className="text-[10px] font-mono text-[#8a7f75] uppercase block">
+              Recommended Next Steps
+            </span>
+            <div className="space-y-1.5">
+              {parsed.actions.map((act, idx) => (
+                <div
+                  key={idx}
+                  className="px-3 py-2 rounded-xl border border-[#ece6dd] bg-[#faf7f2] flex items-center justify-between gap-2 text-xs"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-[10px] text-[#8a7f75]">{idx + 1}.</span>
+                    <span className="text-[#030302] text-[11px]">{parseFormattedText(act)}</span>
+                  </div>
+                  {onPinAction && (
+                    <button
+                      type="button"
+                      onClick={() => onPinAction(act)}
+                      className="px-2 py-0.5 rounded-full text-[10px] text-[#6e645c] hover:bg-[#ede6dc] hover:text-[#030302] transition-colors flex items-center gap-1 cursor-pointer flex-shrink-0"
+                      title="Pin this action as a note"
+                    >
+                      <Pin className="w-2.5 h-2.5" />
+                      <span>Pin</span>
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {parsed.sources.length > 0 && (
+          <div className="pt-2 border-t border-[#ece6dd] flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[10px] font-mono text-[#7d746c]">
+            <span>Sources:</span>
+            {parsed.sources.map((s, idx) => (
+              <a
+                key={idx}
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#0066cc] hover:underline inline-flex items-center gap-0.5"
+              >
+                {s.label}
+                <ExternalLink className="w-2.5 h-2.5" />
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   const lines = content.split('\n');
   return (
     <div className="space-y-2.5 font-sans text-xs text-[#2d220f] leading-relaxed">
@@ -161,6 +339,27 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
   const [todoDesc, setTodoDesc] = useState('');
   const [copiedDossier, setCopiedDossier] = useState(false);
 
+  const todoTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const noteTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-focus the details textarea whenever modal opens
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        if (selectedType === 'todo' && todoTextareaRef.current) {
+          todoTextareaRef.current.focus();
+          const len = todoTextareaRef.current.value.length;
+          todoTextareaRef.current.setSelectionRange(len, len);
+        } else if (selectedType === 'note' && noteTextareaRef.current) {
+          noteTextareaRef.current.focus();
+          const len = noteTextareaRef.current.value.length;
+          noteTextareaRef.current.setSelectionRange(len, len);
+        }
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, selectedType]);
+
   // Sync draft state whenever modal opens or active item changes
   useEffect(() => {
     if (activeNote) {
@@ -188,12 +387,16 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
     onClose();
   };
 
-  // Save Todo Handler
+  // Save Todo Handler (automatically derives title from details if empty)
   const handleSaveTodo = () => {
     if (!activeTodo) return;
+    const derivedTitle =
+      todoTitle.trim() ||
+      todoDesc.trim().split('\n')[0]?.slice(0, 60) ||
+      'Action Item';
     onUpdateTodo({
       ...activeTodo,
-      title: todoTitle.trim(),
+      title: derivedTitle,
       description: todoDesc,
       updatedAt: new Date().toISOString(),
     });
@@ -391,25 +594,13 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
 
               {/* 2. TODO INSPECTOR */}
               {selectedType === 'todo' && activeTodo && (
-                <div className="space-y-5">
-                  <div>
-                    <label className="block text-xs font-mono text-[#bebbba] uppercase mb-1">
-                      Task Title
-                    </label>
-                    <input
-                      type="text"
-                      value={todoTitle}
-                      onChange={(e) => setTodoTitle(e.target.value)}
-                      className="w-full font-editorial text-2xl text-[#030302] tracking-tight bg-[#f7f7f7] px-3.5 py-2 rounded-xl border border-[#e1e1e1] focus:outline-none focus:ring-1 focus:ring-[#030302]"
-                      placeholder="Task title..."
-                    />
-                  </div>
-
+                <div className="space-y-4">
                   <div>
                     <label className="block text-xs font-mono text-[#bebbba] uppercase mb-1.5">
                       Context & Details (Resizable)
                     </label>
                     <textarea
+                      ref={todoTextareaRef}
                       value={todoDesc}
                       onChange={(e) => setTodoDesc(e.target.value)}
                       rows={6}
@@ -421,9 +612,13 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
                   {/* AI Agent Status card & Deliverables */}
                   <div className="p-4 rounded-2xl bg-[#f7f7f7] border border-[#b8caf5] space-y-3">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="p-1.5 rounded-lg bg-[#b8caf5]/50 text-[#1b2b5a]">
-                          <Bot className="w-4 h-4" />
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-xl bg-white border border-[#b8caf5] flex items-center justify-center overflow-hidden flex-shrink-0">
+                          <BotAvatar
+                            type={getAgentAvatarForTask(activeTodo.id, activeTodo.agentAvatar)}
+                            state={activeTodo.agentStatus === 'in_progress' ? 'working' : 'default'}
+                            size={28}
+                          />
                         </div>
                         <div>
                           <h4 className="text-xs font-bold text-[#030302]">Autonomous Assistant</h4>
@@ -507,7 +702,14 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
                               backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.4), transparent 30%)`,
                             }}
                           >
-                            {renderDossierContent(artifact)}
+                            {renderDossierContent(artifact, (actionText) => {
+                              onPinDossierAsNote?.({
+                                ...activeTodo,
+                                title: actionText,
+                                description: actionText,
+                                agentNotes: actionText,
+                              });
+                            })}
                           </div>
                         ))}
                       </div>
@@ -542,25 +744,13 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
 
               {/* 3. NOTE INSPECTOR (WITH DEDICATED SAVE BUTTON) */}
               {selectedType === 'note' && activeNote && (
-                <div className="space-y-5">
-                  <div>
-                    <label className="block text-xs font-mono text-[#bebbba] uppercase mb-1">
-                      Note Title
-                    </label>
-                    <input
-                      type="text"
-                      value={noteTitle}
-                      onChange={(e) => setNoteTitle(e.target.value)}
-                      placeholder="Note Title..."
-                      className="w-full font-editorial text-2xl text-[#030302] tracking-tight bg-[#f7f7f7] px-3.5 py-2 rounded-xl border border-[#e1e1e1] focus:outline-none focus:ring-1 focus:ring-[#030302]"
-                    />
-                  </div>
-
+                <div className="space-y-4">
                   <div>
                     <label className="block text-xs font-mono text-[#bebbba] uppercase mb-1.5">
                       Note Content (Resizable)
                     </label>
                     <textarea
+                      ref={noteTextareaRef}
                       value={noteContent}
                       onChange={(e) => setNoteContent(e.target.value)}
                       rows={12}

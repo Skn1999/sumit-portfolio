@@ -378,13 +378,7 @@ Evaluate:
   const turn3Prompt = `Now compile the full findings into a definitive, executive-grade research dossier in clean GitHub-flavored Markdown.
 
 Follow this exact structure:
-# Executive Briefing Dossier: ${context.title}
-
-**Prepared by:** Autonomous Assistant (Gemini Multi-Turn Engine)  
-**Date:** ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}  
-**Classification:** Tier 1 Autonomous Deliverable  
-
----
+# Executive Briefing: ${context.title}
 
 ## 📋 Executive Summary
 (A punchy, 2-3 sentence executive synthesis of the verdict)
@@ -401,7 +395,7 @@ Follow this exact structure:
 ## 🔗 Sources & Reference Queries
 (Curated list of authoritative resources, search terms, or links)
 
-Keep the prose crisp, authoritative, and completely devoid of generic filler.`;
+Keep the prose crisp, authoritative, and completely devoid of generic filler or meta commentary.`;
 
   conversationHistory.push({ role: 'user', parts: [{ text: turn3Prompt }] });
 
@@ -466,16 +460,10 @@ Keep the prose crisp, authoritative, and completely devoid of generic filler.`;
 function generateHeuristicReport(context: TaskContext, intent: string): AgentDeliverable {
   const topic = context.title.replace(/^(research|look up|investigate|find info on)\s*/i, '').trim() || context.title;
 
-  const report = `# Executive Briefing Dossier: ${topic}
-
-**Prepared by:** Autonomous Assistant  
-**Date:** ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}  
-**Classification:** Tier 1 Autonomous Deliverable  
-
----
-
-## 📋 Executive Summary
-A structured briefing on **${topic}**. Contextual signals indicate demand for high-leverage spatial organization, low-latency execution, and human-in-the-loop oversight.
+  const report = `# Executive Briefing: ${topic}
+ 
+ ## 📋 Executive Summary
+ A structured briefing on **${topic}**. Contextual signals indicate demand for high-leverage spatial organization, low-latency execution, and human-in-the-loop oversight.
 
 ## 🔍 Market Signals & Key Findings
 - **High-Leverage Workflows:** Active development and user migration towards focused spatial tools that eliminate context switching.

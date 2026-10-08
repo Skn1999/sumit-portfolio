@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bot, Sparkles, FileText, ChevronRight, CheckCircle2, Clock } from 'lucide-react';
 import { Pushpin } from './Pushpin';
+import { BotAvatar } from 'bot-avatars';
 
 interface AssistantFolderProps {
   isDragOver: boolean;
@@ -43,7 +44,7 @@ export const AssistantFolder: React.FC<AssistantFolderProps> = ({
 
       {/* Manila Folder Tab */}
       <div className="absolute -top-7 left-6 z-10 flex items-center gap-1.5 px-4 py-1.5 rounded-t-xl bg-[#e8cf9b] border-t border-l border-r border-[#d3b57a] shadow-xs text-xs font-mono font-bold text-[#4a3b1a] tracking-wide uppercase">
-        <Bot className={`w-3.5 h-3.5 text-[#1b2b5a] ${isWorking ? 'animate-bounce' : ''}`} />
+        <BotAvatar type="clover" state={isWorking ? 'working' : 'default'} size={18} />
         <span>Assistant</span>
         {isWorking && (
           <span className="w-2 h-2 rounded-full bg-[#0087ff] animate-pulse ml-1" />

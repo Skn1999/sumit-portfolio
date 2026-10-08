@@ -10,6 +10,8 @@ import {
 import { Check, Bot, Archive, Mail, Paperclip, Sparkles, AlertTriangle } from 'lucide-react';
 import { TodoItem } from '../../types';
 import { Pushpin } from './Pushpin';
+import { BotAvatar } from 'bot-avatars';
+import { getAgentAvatarForTask } from '../../lib/avatarService';
 
 interface PostItNoteProps {
   todo: TodoItem;
@@ -43,6 +45,7 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
   const isPinned = todo.position?.isPinned ?? true;
   const rotation = todo.position?.rotation ?? 0;
   const isCompleted = todo.status === 'completed';
+  const avatarType = getAgentAvatarForTask(todo.id, todo.agentAvatar);
 
   const posX = todo.position?.x ?? 0;
   const posY = todo.position?.y ?? 0;
@@ -316,8 +319,10 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
 
         {/* AI In-Progress State */}
         {todo.assignedTo === 'agent' && todo.agentStatus === 'in_progress' && (
-          <div className="mt-2 p-2 rounded-lg bg-[#b8caf5]/35 border border-[#b8caf5] text-[11px] font-mono text-[#1b2b5a] flex items-center gap-1.5 animate-pulse">
-            <Bot className="w-3.5 h-3.5 animate-spin text-[#0087ff] flex-shrink-0" />
+          <div className="mt-2 p-2 rounded-xl bg-[#b8caf5]/35 border border-[#b8caf5] text-[11px] font-mono text-[#1b2b5a] flex items-center gap-2">
+            <div className="w-6 h-6 rounded-lg bg-white/90 border border-[#b8caf5] flex items-center justify-center overflow-hidden flex-shrink-0">
+              <BotAvatar type={avatarType} state="working" size={20} />
+            </div>
             <span className="line-clamp-2 leading-tight">
               {todo.agentNotes || 'Assistant researching in background...'}
             </span>
@@ -420,7 +425,7 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
           >
             {todo.agentStatus === 'in_progress' && (
               <>
-                <Bot className="w-3 h-3 animate-spin" />
+                <BotAvatar type={avatarType} state="working" size={14} />
                 <span>Researching...</span>
               </>
             )}
@@ -438,7 +443,7 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
             )}
             {todo.agentStatus === 'idle' && (
               <>
-                <Bot className="w-3 h-3" />
+                <BotAvatar type={avatarType} state="default" size={14} />
                 <span>Assistant</span>
               </>
             )}

@@ -17,6 +17,8 @@ import {
 import { ApprovalRequest, TodoItem } from '../types';
 import { ArcBadge } from './arc/ArcBadge';
 import { ArcConfirmMorph } from './arc/ArcConfirmMorph';
+import { BotAvatar } from 'bot-avatars';
+import { getAgentAvatarForTask } from '../lib/avatarService';
 
 interface AgentDrawerProps {
   isOpen: boolean;
@@ -172,8 +174,8 @@ export const AgentDrawer: React.FC<AgentDrawerProps> = ({
             {/* Drawer Header */}
             <div className="p-5 border-b border-[#e1e1e1] flex items-center justify-between bg-[#fff3e7]">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 rounded-xl bg-[#030302] text-[#ffffff]">
-                  <Bot className="w-5 h-5 text-[#b8caf5]" />
+                <div className="w-9 h-9 rounded-xl bg-white border border-[#e1e1e1] flex items-center justify-center overflow-hidden flex-shrink-0">
+                  <BotAvatar type="clover" state="default" size={26} />
                 </div>
                 <div>
                   <h3 className="font-editorial text-xl font-medium text-[#030302] tracking-tight">
@@ -242,7 +244,7 @@ export const AgentDrawer: React.FC<AgentDrawerProps> = ({
                       : 'bg-transparent text-[#41413f] hover:bg-black/5'
                   }`}
                 >
-                  <Bot className="w-3.5 h-3.5 animate-spin text-[#0087ff]" />
+                  <BotAvatar type="clover" state="working" size={16} />
                   <span>In Progress</span>
                   <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
                     activeTab === 'progress' ? 'bg-white/20 text-white' : 'bg-black/10 text-[#41413f]'
@@ -453,8 +455,14 @@ export const AgentDrawer: React.FC<AgentDrawerProps> = ({
                       className="p-4 rounded-2xl bg-[#f0f4fd] border border-[#b8caf5] text-left space-y-2"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-semibold text-[#1b2b5a] flex items-center gap-1.5">
-                          <Bot className="w-4 h-4 animate-spin text-[#0087ff]" />
+                        <span className="text-xs font-semibold text-[#1b2b5a] flex items-center gap-2">
+                          <div className="w-5 h-5 rounded-md bg-white border border-[#b8caf5] flex items-center justify-center overflow-hidden flex-shrink-0">
+                            <BotAvatar
+                              type={getAgentAvatarForTask(todo.id, todo.agentAvatar)}
+                              state="working"
+                              size={18}
+                            />
+                          </div>
                           Researching...
                         </span>
                         <span className="text-[10px] font-mono text-[#0087ff] animate-pulse">
