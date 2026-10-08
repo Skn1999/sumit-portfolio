@@ -79,6 +79,16 @@ function isTransientError(status: number, errorObj: any, rawText: string = ''): 
   return false;
 }
 
+export class ModelsOverloadedError extends Error {
+  code = 'MODELS_BUSY';
+  reason: string;
+  constructor(message = 'All candidate models are at capacity right now.') {
+    super(message);
+    this.name = 'ModelsOverloadedError';
+    this.reason = message;
+  }
+}
+
 interface GeminiCallResult {
   data: any;
   error: { code?: number; status?: string; message: string } | null;
@@ -312,6 +322,17 @@ Snippet / Notes: "${context.description || context.source?.snippet || context.ti
   }
 
   // --- MULTI-TURN RESEARCH & STRATEGY AGENT (Tier 1 Autonomous) ---
+  const isSimulateBusy =
+    context.title.toLowerCase().includes('[busy]') ||
+    context.title.toLowerCase().includes('[overload]') ||
+    (context.description && context.description.toLowerCase().includes('[busy]'));
+
+  if (isSimulateBusy) {
+    onProgress?.('Querying candidate models (gemini-2.5-flash, gemini-1.5-flash)...');
+    await sleep(1500);
+    throw new ModelsOverloadedError('All candidate models are at capacity right now (HTTP 503 Service Unavailable).');
+  }
+
   const conversationHistory: Array<{ role: 'user' | 'model'; parts: Array<{ text: string }> }> = [];
 
   // TURN 1: Task Decomposition & Research Strategy
@@ -341,6 +362,16 @@ Provide your preliminary breakdown concisely.`;
     },
     { maxRetries: 3, label: 'Turn-1-Decomposition' }
   );
+
+  if (apiKey && turn1Result.error) {
+    const err = turn1Result.error;
+    const isBusy = isTransientError(Number(err.code) || 0, err, err.message || '');
+    throw new ModelsOverloadedError(
+      isBusy
+        ? 'All candidate models are at capacity right now (503 / busy).'
+        : (err.message || 'Unable to connect to model candidates.')
+    );
+  }
 
   const turn1Text = turn1Result.data?.candidates?.[0]?.content?.parts?.[0]?.text;
   if (turn1Text) {
@@ -450,7 +481,18 @@ Keep the prose crisp, authoritative, and completely devoid of generic filler or 
     };
   }
 
-  // Fallback if API returned empty
+  // If live API key was provided but failed across candidate models
+  if (apiKey) {
+    const err = turn3Result?.error;
+    const isBusy = err ? isTransientError(Number(err.code) || 0, err, err.message || '') : true;
+    throw new ModelsOverloadedError(
+      isBusy
+        ? 'All candidate models are at capacity right now (HTTP 503 Service Unavailable).'
+        : (err?.message || 'Synthesis timed out across candidate models.')
+    );
+  }
+
+  // Fallback heuristic report when no API key configured
   return generateHeuristicReport(context, intent);
 }
 

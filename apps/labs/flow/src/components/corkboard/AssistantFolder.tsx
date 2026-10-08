@@ -1,15 +1,13 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bot, Sparkles, FileText, ChevronRight, CheckCircle2, Clock } from 'lucide-react';
+import { Sparkles, FileText, CheckCircle2 } from 'lucide-react';
 import { Pushpin } from './Pushpin';
-import { BotAvatar } from 'bot-avatars';
 
 interface AssistantFolderProps {
   isDragOver: boolean;
   activeTaskCount: number;
   inProgressTaskCount: number;
   completedTaskCount: number;
-  onOpenDrawer: () => void;
   style?: React.CSSProperties;
 }
 
@@ -18,7 +16,6 @@ export const AssistantFolder: React.FC<AssistantFolderProps> = ({
   activeTaskCount,
   inProgressTaskCount,
   completedTaskCount,
-  onOpenDrawer,
   style,
 }) => {
   const isWorking = inProgressTaskCount > 0;
@@ -34,8 +31,7 @@ export const AssistantFolder: React.FC<AssistantFolderProps> = ({
           : '0 16px 28px -8px rgba(70, 50, 20, 0.22), 0 4px 10px -2px rgba(70, 50, 20, 0.1)',
       }}
       transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-      onClick={onOpenDrawer}
-      className="relative w-72 h-[340px] sm:w-80 sm:h-[360px] rounded-2xl cursor-pointer select-none transition-all group flex flex-col justify-between font-ui"
+      className="relative w-72 h-[340px] sm:w-80 sm:h-[360px] rounded-2xl select-none transition-all group flex flex-col justify-between font-ui"
     >
       {/* Brass Pushpin at top center of folder back */}
       <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
@@ -44,7 +40,6 @@ export const AssistantFolder: React.FC<AssistantFolderProps> = ({
 
       {/* Manila Folder Tab */}
       <div className="absolute -top-7 left-6 z-10 flex items-center gap-1.5 px-4 py-1.5 rounded-t-xl bg-[#e8cf9b] border-t border-l border-r border-[#d3b57a] shadow-xs text-xs font-mono font-bold text-[#4a3b1a] tracking-wide uppercase">
-        <BotAvatar type="clover" state={isWorking ? 'working' : 'default'} size={18} />
         <span>Assistant</span>
         {isWorking && (
           <span className="w-2 h-2 rounded-full bg-[#0087ff] animate-pulse ml-1" />
@@ -132,23 +127,16 @@ export const AssistantFolder: React.FC<AssistantFolderProps> = ({
 
         {/* Folder Footer & Statistics */}
         <div className="pt-3 border-t border-[#dfbe82] flex items-center justify-between text-xs font-mono text-[#5c4722]">
-          <div className="flex items-center gap-3">
-            <span title="Delegated tasks" className="flex items-center gap-1">
-              <FileText className="w-3.5 h-3.5 opacity-70" />
-              <strong>{activeTaskCount}</strong> delegated
+          <span title="Delegated tasks" className="flex items-center gap-1">
+            <FileText className="w-3.5 h-3.5 opacity-70" />
+            <strong>{activeTaskCount}</strong> delegated
+          </span>
+          {completedTaskCount > 0 && (
+            <span title="Completed deliverables" className="flex items-center gap-1 text-[#2d6a4f]">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              <strong>{completedTaskCount}</strong> ready
             </span>
-            {completedTaskCount > 0 && (
-              <span title="Completed deliverables" className="flex items-center gap-1 text-[#2d6a4f]">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                <strong>{completedTaskCount}</strong>
-              </span>
-            )}
-          </div>
-
-          <div className="flex items-center gap-1 text-[#4a3b1a] group-hover:translate-x-1 transition-transform">
-            <span className="text-[11px] underline">Open Dossier</span>
-            <ChevronRight className="w-3.5 h-3.5" />
-          </div>
+          )}
         </div>
       </div>
     </motion.div>

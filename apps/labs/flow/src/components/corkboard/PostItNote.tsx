@@ -23,6 +23,10 @@ interface PostItNoteProps {
   onTogglePin: () => void;
   onArchive?: () => void;
   onDelegateToAgent: () => void;
+  onRetryAgent?: (id: string) => void;
+  onScheduleRetry?: (id: string, seconds: number) => void;
+  onCancelCountdown?: (id: string) => void;
+  onRevertToManualNote?: (id: string) => void;
   onPositionChange: (pos: { x: number; y: number }) => void;
   onDragMove?: (point: { x: number; y: number }) => void;
   onDragEndWithPoint?: (point: { x: number; y: number }, offset: { x: number; y: number }) => boolean;
@@ -38,6 +42,10 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
   onTogglePin,
   onArchive,
   onDelegateToAgent,
+  onRetryAgent,
+  onScheduleRetry,
+  onCancelCountdown,
+  onRevertToManualNote,
   onPositionChange,
   onDragMove,
   onDragEndWithPoint,
@@ -46,6 +54,21 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
   const rotation = todo.position?.rotation ?? 0;
   const isCompleted = todo.status === 'completed';
   const avatarType = getAgentAvatarForTask(todo.id, todo.agentAvatar);
+
+  // Countdown tick for scheduled retry if models were busy
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    if (todo.agentRetryAt) {
+      const interval = setInterval(() => setNow(Date.now()), 1000);
+      return () => clearInterval(interval);
+    }
+  }, [todo.agentRetryAt]);
+
+  const retryAtMs = todo.agentRetryAt ? new Date(todo.agentRetryAt).getTime() : 0;
+  const remainingSeconds = retryAtMs > now ? Math.ceil((retryAtMs - now) / 1000) : 0;
+  const mins = Math.floor(remainingSeconds / 60);
+  const secs = remainingSeconds % 60;
+  const formattedCountdown = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 
   const posX = todo.position?.x ?? 0;
   const posY = todo.position?.y ?? 0;
@@ -329,6 +352,86 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
           </div>
         )}
 
+        {/* AI Overloaded / Resting State (Chamomile Parchment with 3 tactile escape hatches) */}
+        {todo.assignedTo === 'agent' && todo.agentStatus === 'failed' && (
+          <div className="mt-1.5 p-2 rounded-xl bg-[#fff9ef] border border-[#e8d7bd] text-[#524434] shadow-2xs font-ui flex flex-col gap-1.5">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-lg bg-[#f7f0e4] border border-[#e4d5c1] flex items-center justify-center overflow-hidden flex-shrink-0 shadow-inner">
+                <div className="filter grayscale-[25%] opacity-90">
+                  <BotAvatar type={avatarType} state="sleeping" size={20} />
+                </div>
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#8c5820]">
+                    Resting
+                  </span>
+                  <span className="text-[9px] font-mono text-[#aa7a44] bg-[#f5e9d3] px-1 py-0.2 rounded">
+                    Capacity
+                  </span>
+                </div>
+                <p className="text-[10px] font-sans text-[#524434] leading-tight line-clamp-1 mt-0.5">
+                  {todo.agentErrorReason || 'Models are at capacity right now.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Tactile Recovery Actions */}
+            <div className="flex items-center gap-1.5 pt-1 border-t border-[#f0e2cd] text-[10px] font-sans">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRetryAgent?.(todo.id);
+                }}
+                className="px-2 py-0.5 rounded bg-[#2b1f0d] text-[#fff9ef] hover:bg-[#433118] transition-colors font-medium cursor-pointer shadow-xs"
+                title="Retry research now"
+              >
+                Retry
+              </button>
+
+              {remainingSeconds > 0 ? (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onCancelCountdown?.(todo.id);
+                  }}
+                  className="px-1.5 py-0.5 rounded bg-[#faeedd] border border-[#e5cb9f] text-[#845218] hover:bg-[#f3dfc5] transition-colors font-mono text-[9px] flex items-center gap-1 cursor-pointer"
+                  title="Click to cancel automatic retry"
+                >
+                  <span>⏱ {formattedCountdown}</span>
+                  <span className="text-[#a57038] hover:text-[#524434] font-bold">✕</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onScheduleRetry?.(todo.id, 300);
+                  }}
+                  className="px-2 py-0.5 rounded bg-white border border-[#e8d7bd] text-[#6b553e] hover:bg-[#faeedd] transition-colors font-medium cursor-pointer"
+                  title="Try again in 5 minutes"
+                >
+                  In 5m
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRevertToManualNote?.(todo.id);
+                }}
+                className="ml-auto text-[10px] text-[#8c5820] hover:text-[#2b1f0d] hover:underline cursor-pointer"
+                title="Revert to manual note without losing your notes"
+              >
+                Revert
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* AI Completed Dossier Preview Block */}
         {todo.assignedTo === 'agent' && todo.agentStatus === 'completed' && todo.agentArtifacts && todo.agentArtifacts.length > 0 && (
           <div
@@ -355,7 +458,7 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
         )}
 
         {/* Fallback Manual Description */}
-        {!(todo.assignedTo === 'agent' && (todo.agentStatus === 'in_progress' || (todo.agentStatus === 'completed' && todo.agentArtifacts && todo.agentArtifacts.length > 0))) && (
+        {!(todo.assignedTo === 'agent' && (todo.agentStatus === 'in_progress' || todo.agentStatus === 'failed' || (todo.agentStatus === 'completed' && todo.agentArtifacts && todo.agentArtifacts.length > 0))) && (
           todo.description?.trim() ? (
             <p
               className={`font-handwriting leading-snug ${
@@ -413,6 +516,13 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
             >
               <AlertTriangle className="w-3 h-3 text-[#ff4500]" />
               <span>Approval Needed</span>
+            </div>
+          ) : todo.agentStatus === 'failed' ? (
+            <div className="flex items-center gap-1 text-[10px] font-mono text-[#8c5820]">
+              <div className="filter grayscale-[25%] opacity-85">
+                <BotAvatar type={avatarType} state="sleeping" size={14} />
+              </div>
+              <span>Resting</span>
             </div>
           ) : todo.agentStatus === 'idle' ? (
             <div className="flex items-center gap-1 text-[10px] font-mono text-[#8a7f75]">

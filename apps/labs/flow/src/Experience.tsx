@@ -16,7 +16,6 @@ import {
   BoardPile,
   ArchivedItem,
 } from './types';
-import { AgentDrawer } from './components/AgentDrawer';
 import { NotificationToast } from './components/NotificationToast';
 import { CorkboardCanvas } from './components/corkboard/CorkboardCanvas';
 import { CardInspectorModal } from './components/corkboard/CardInspectorModal';
@@ -31,7 +30,7 @@ import {
   authenticateGmail,
   fetchGmailProfile,
 } from './lib/gmailService';
-import { executeAgentWorkflow } from './lib/agentService';
+import { executeAgentWorkflow, ModelsOverloadedError } from './lib/agentService';
 import { Bot, Bell, RefreshCw, Mail } from 'lucide-react';
 import './styles/craftTheme.css';
 
@@ -125,7 +124,6 @@ export const FlowExperience: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<'thread' | 'todo' | 'note' | null>(null);
   const [isInspectorOpen, setIsInspectorOpen] = useState(false);
-  const [isAgentDrawerOpen, setIsAgentDrawerOpen] = useState(false);
   const [isGmailModalOpen, setIsGmailModalOpen] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(() => localStorage.getItem('flow_gmail_user_email'));
 
@@ -660,21 +658,108 @@ export const FlowExperience: React.FC = () => {
           { taskId: todoId }
         );
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Agent execution error:', err);
+      const isBusy =
+        err instanceof ModelsOverloadedError ||
+        err?.code === 'MODELS_BUSY' ||
+        err?.message?.includes('capacity') ||
+        err?.message?.includes('503') ||
+        err?.message?.includes('busy') ||
+        err?.message?.includes('overload');
+      const errorMsg = isBusy
+        ? 'All candidate models are at capacity right now.'
+        : (err?.message || 'Assistant encountered an error executing research.');
+
       setTodos((prev) =>
         prev.map((t) =>
           t.id === todoId
             ? {
                 ...t,
-                agentStatus: 'idle',
-                agentNotes: 'Assistant encountered an error executing research.',
+                agentStatus: 'failed',
+                agentErrorReason: errorMsg,
+                agentNotes: errorMsg,
               }
             : t
         )
       );
+
+      pushNotification(
+        'overloaded',
+        'Models at Capacity',
+        `Assistant could not finish "${target.title}". Models are resting.`,
+        { taskId: todoId }
+      );
     }
   };
+
+  // Retry Assistant Execution on a Failed / Overloaded Task
+  const handleRetryAgent = (todoId: string) => {
+    setTodos((prev) =>
+      prev.map((t) =>
+        t.id === todoId
+          ? {
+              ...t,
+              agentStatus: 'in_progress',
+              agentRetryAt: undefined,
+              agentErrorReason: undefined,
+              agentNotes: 'Assistant reconnecting to candidate models...',
+            }
+          : t
+      )
+    );
+    handleDelegateTodoToAgent(todoId);
+  };
+
+  // Schedule a Future Retry (e.g. 5 minutes)
+  const handleScheduleRetry = (todoId: string, seconds: number = 300) => {
+    const retryAt = new Date(Date.now() + seconds * 1000).toISOString();
+    setTodos((prev) =>
+      prev.map((t) =>
+        t.id === todoId
+          ? {
+              ...t,
+              agentRetryAt: retryAt,
+            }
+          : t
+      )
+    );
+    pushNotification(
+      'sync',
+      'Retry Scheduled',
+      `Assistant will retry in ${Math.round(seconds / 60)} minutes.`
+    );
+  };
+
+  // Cancel Scheduled Retry Countdown
+  const handleCancelCountdown = (todoId: string) => {
+    setTodos((prev) =>
+      prev.map((t) =>
+        t.id === todoId
+          ? {
+              ...t,
+              agentRetryAt: undefined,
+            }
+          : t
+      )
+    );
+  };
+
+  // Automatic retry ticker for tasks scheduled with agentRetryAt
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = Date.now();
+      todos.forEach((t) => {
+        if (t.assignedTo === 'agent' && t.agentStatus === 'failed' && t.agentRetryAt) {
+          const retryTime = new Date(t.agentRetryAt).getTime();
+          if (now >= retryTime) {
+            handleRetryAgent(t.id);
+          }
+        }
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [todos]);
 
   // Delegate Thread to AI Assistant
   const handleDelegateThreadToAgent = (threadId: string) => {
@@ -775,7 +860,7 @@ export const FlowExperience: React.FC = () => {
     pushNotification('completed', 'Dossier Pinned', `Saved briefing as a permanent note on corkboard.`);
   };
 
-  // Reclaim Todo from Assistant (when user drags note back to working board)
+  // Reclaim Todo from Assistant (when user drags note back to working board or reverts)
   const handleRevertTodoFromAgent = (todoId: string) => {
     setTodos((prev) =>
       prev.map((t) =>
@@ -785,6 +870,8 @@ export const FlowExperience: React.FC = () => {
               assignedTo: 'user',
               agentStatus: 'idle',
               agentNotes: undefined,
+              agentErrorReason: undefined,
+              agentRetryAt: undefined,
             }
           : t
       )
@@ -1016,31 +1103,6 @@ export const FlowExperience: React.FC = () => {
               <RefreshCw className="w-3 h-3" />
             </button>
           </div>
-
-          {/* AI Agent Status Pill */}
-          <button
-            onClick={() => setIsAgentDrawerOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#b8caf5]/30 hover:bg-[#b8caf5]/50 text-[#1b2b5a] border border-[#b8caf5]/60 transition-colors shadow-sm cursor-pointer"
-            title="Open AI Agent Approvals & Activity Feed"
-          >
-            <Bot className="w-3.5 h-3.5 text-[#1b2b5a] animate-pulse" />
-            <span>Agent: Active</span>
-            {approvals.length > 0 && (
-              <span className="w-2 h-2 rounded-full bg-[#ff4500]" />
-            )}
-          </button>
-
-          {/* Notification Alert Trigger */}
-          <button
-            onClick={() => setIsAgentDrawerOpen(true)}
-            className="relative p-2 rounded-full hover:bg-[#efefef] text-[#41413f] transition-colors cursor-pointer"
-            aria-label="Notifications"
-          >
-            <Bell className="w-4 h-4" />
-            {approvals.length > 0 && (
-              <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-[#ff4500] border-2 border-[#ffffff]" />
-            )}
-          </button>
         </div>
       </header>
 
@@ -1068,7 +1130,9 @@ export const FlowExperience: React.FC = () => {
           onToggleNotePin={handleToggleNotePin}
           onDelegateTodoToAgent={handleDelegateTodoToAgent}
           onRevertTodoFromAgent={handleRevertTodoFromAgent}
-          onOpenAgentDrawer={() => setIsAgentDrawerOpen(true)}
+          onRetryAgent={handleRetryAgent}
+          onScheduleRetry={handleScheduleRetry}
+          onCancelCountdown={handleCancelCountdown}
           onUpdateThreadPosition={(id, pos) => {
             setThreads((prev) =>
               prev.map((t) => (t.id === id ? { ...t, position: { ...t.position!, ...pos } } : t))
@@ -1131,26 +1195,21 @@ export const FlowExperience: React.FC = () => {
         onDelegateTodoToAgent={handleDelegateTodoToAgent}
         onRequestApproval={handleRequestApproval}
         onPinDossierAsNote={handlePinDossierAsNote}
-      />
-
-      {/* Floating Agent Approvals Drawer */}
-      <AgentDrawer
-        isOpen={isAgentDrawerOpen}
-        onClose={() => setIsAgentDrawerOpen(false)}
-        approvals={approvals}
-        agentTodos={todos.filter((t) => t.assignedTo === 'agent')}
-        onApprove={handleApprove}
-        onReject={handleReject}
-        onOpenInspector={(taskId) => handleOpenInspector(taskId, 'todo')}
-        onPinDossierAsNote={handlePinDossierAsNote}
+        onRetryAgent={handleRetryAgent}
+        onScheduleRetry={handleScheduleRetry}
+        onCancelCountdown={handleCancelCountdown}
+        onRevertTodoFromAgent={handleRevertTodoFromAgent}
       />
 
       {/* Real-time Notification Toasts */}
       <NotificationToast
         notifications={notifications}
         onDismiss={(id) => setNotifications((prev) => prev.filter((n) => n.id !== id))}
-        onViewApproval={() => {
-          setIsAgentDrawerOpen(true);
+        onViewApproval={(approvalId) => {
+          const approval = approvals.find((a) => a.id === approvalId);
+          if (approval) {
+            handleOpenInspector(approval.taskId, 'todo');
+          }
         }}
         onViewDossier={(taskId) => {
           handleOpenInspector(taskId, 'todo');

@@ -31,7 +31,9 @@ interface CorkboardCanvasProps {
   onDelegateThreadToAgent?: (id: string) => void;
   onDelegateNoteToAgent?: (id: string) => void;
   onRevertTodoFromAgent?: (id: string) => void;
-  onOpenAgentDrawer?: () => void;
+  onRetryAgent?: (id: string) => void;
+  onScheduleRetry?: (id: string, seconds: number) => void;
+  onCancelCountdown?: (id: string) => void;
   onUpdateThreadPosition: (id: string, pos: { x: number; y: number }) => void;
   onUpdateTodoPosition: (id: string, pos: { x: number; y: number }) => void;
   onUpdateNotePosition: (id: string, pos: { x: number; y: number }) => void;
@@ -71,7 +73,9 @@ export const CorkboardCanvas: React.FC<CorkboardCanvasProps> = ({
   onDelegateThreadToAgent,
   onDelegateNoteToAgent,
   onRevertTodoFromAgent,
-  onOpenAgentDrawer,
+  onRetryAgent,
+  onScheduleRetry,
+  onCancelCountdown,
   onUpdateThreadPosition,
   onUpdateTodoPosition,
   onUpdateNotePosition,
@@ -515,7 +519,6 @@ export const CorkboardCanvas: React.FC<CorkboardCanvasProps> = ({
           completedTaskCount={
             todos.filter((t) => t.assignedTo === 'agent' && t.agentStatus === 'completed').length
           }
-          onOpenDrawer={() => onOpenAgentDrawer?.()}
         />
       </div>
 
@@ -603,6 +606,10 @@ export const CorkboardCanvas: React.FC<CorkboardCanvasProps> = ({
               )
             }
             onDelegateToAgent={() => onDelegateTodoToAgent(todo.id)}
+            onRetryAgent={onRetryAgent}
+            onScheduleRetry={onScheduleRetry}
+            onCancelCountdown={onCancelCountdown}
+            onRevertToManualNote={() => onRevertTodoFromAgent?.(todo.id)}
             onPositionChange={(pos) => {
               // If note is dragged outside the folder back to working board, reclaim it!
               if (todo.assignedTo === 'agent' && pos.x < folderX - 80) {

@@ -38,6 +38,7 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
         {visible.map((notif) => {
           const isPickup = notif.type === 'pickup';
           const isApproval = notif.type === 'approval_required';
+          const isOverloaded = notif.type === 'overloaded';
 
           return (
             <motion.div
@@ -46,21 +47,29 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 450, damping: 30 }}
-              className="pointer-events-auto p-3.5 bg-[#ffffff] border border-[#e1e1e1] rounded-2xl shadow-xl flex items-start gap-3 text-left font-ui"
+              className={`pointer-events-auto p-3.5 ${
+                isOverloaded
+                  ? 'bg-[#fff9ef] border border-[#e8d7bd]'
+                  : 'bg-[#ffffff] border border-[#e1e1e1]'
+              } rounded-2xl shadow-xl flex items-start gap-3 text-left font-ui`}
               style={{
                 boxShadow: 'rgba(0, 0, 0, 0.05) 0px 20px 30px 0px, rgba(0, 0, 0, 0.08) 0px 3px 10px 0px',
               }}
             >
               <div
                 className={`p-2 rounded-xl flex-shrink-0 ${
-                  isPickup
+                  isOverloaded
+                    ? 'bg-[#f7f0e4] text-[#8c5820] border border-[#e4d5c1]'
+                    : isPickup
                     ? 'bg-[#b8caf5]/40 text-[#1a2e66]'
                     : isApproval
                     ? 'bg-[#ff4500]/15 text-[#aa2d00]'
                     : 'bg-[#9bd8a9]/40 text-[#194425]'
                 }`}
               >
-                {isPickup ? (
+                {isOverloaded ? (
+                  <BotAvatar type="clover" state="sleeping" size={16} />
+                ) : isPickup ? (
                   <BotAvatar type="clover" state="working" size={16} />
                 ) : isApproval ? (
                   <AlertCircle className="w-4 h-4 text-[#ff4500]" />
@@ -100,6 +109,15 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
                   >
                     <Paperclip className="w-3 h-3 text-[#164e2e]" />
                     <span>View Dossier →</span>
+                  </button>
+                )}
+
+                {isOverloaded && notif.taskId && onViewDossier && (
+                  <button
+                    onClick={() => onViewDossier(notif.taskId!)}
+                    className="mt-2 text-[11px] font-semibold text-[#8c5820] hover:underline inline-flex items-center gap-1 cursor-pointer"
+                  >
+                    <span>Inspect Note →</span>
                   </button>
                 )}
               </div>

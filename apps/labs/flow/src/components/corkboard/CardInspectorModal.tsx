@@ -15,7 +15,7 @@ import {
 import { IngestionThread, TodoItem, NoteItem } from '../../types';
 import { ArcButton } from '../arc/ArcButton';
 import { BotAvatar } from 'bot-avatars';
-import { getAgentAvatarForTask } from '../../lib/avatarService';
+import { getAgentAvatarForTask, BOT_AVATAR_DETAILS } from '../../lib/avatarService';
 import { renderDossierContent } from '../../lib/dossierRenderer';
 
 interface CardInspectorModalProps {
@@ -33,6 +33,10 @@ interface CardInspectorModalProps {
   onDelegateTodoToAgent: (id: string) => void;
   onRequestApproval?: (id: string) => void;
   onPinDossierAsNote?: (todo: TodoItem) => void;
+  onRetryAgent?: (id: string) => void;
+  onScheduleRetry?: (id: string, seconds: number) => void;
+  onCancelCountdown?: (id: string) => void;
+  onRevertTodoFromAgent?: (id: string) => void;
 }
 
 export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
@@ -49,6 +53,10 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
   onUpdateNote,
   onDelegateTodoToAgent,
   onPinDossierAsNote,
+  onRetryAgent,
+  onScheduleRetry,
+  onCancelCountdown,
+  onRevertTodoFromAgent,
 }) => {
   // Local editable draft state for Notes
   const [noteTitle, setNoteTitle] = useState('');
@@ -58,6 +66,21 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
   const [todoTitle, setTodoTitle] = useState('');
   const [todoDesc, setTodoDesc] = useState('');
   const [copiedDossier, setCopiedDossier] = useState(false);
+
+  // Modal countdown tick for scheduled retry
+  const [modalNow, setModalNow] = useState(Date.now());
+  useEffect(() => {
+    if (activeTodo?.agentRetryAt) {
+      const interval = setInterval(() => setModalNow(Date.now()), 1000);
+      return () => clearInterval(interval);
+    }
+  }, [activeTodo?.agentRetryAt]);
+
+  const modalRetryAtMs = activeTodo?.agentRetryAt ? new Date(activeTodo.agentRetryAt).getTime() : 0;
+  const remainingSeconds = modalRetryAtMs > modalNow ? Math.ceil((modalRetryAtMs - modalNow) / 1000) : 0;
+  const mins = Math.floor(remainingSeconds / 60);
+  const secs = remainingSeconds % 60;
+  const formattedCountdown = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 
   const todoTextareaRef = useRef<HTMLTextAreaElement>(null);
   const noteTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -336,15 +359,25 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
                         <div className="w-8 h-8 rounded-xl bg-white border border-[#b8caf5] flex items-center justify-center overflow-hidden flex-shrink-0">
                           <BotAvatar
                             type={getAgentAvatarForTask(activeTodo.id, activeTodo.agentAvatar)}
-                            state={activeTodo.agentStatus === 'in_progress' ? 'working' : 'default'}
+                            state={
+                              activeTodo.agentStatus === 'in_progress'
+                                ? 'working'
+                                : activeTodo.agentStatus === 'failed'
+                                ? 'sleeping'
+                                : 'default'
+                            }
                             size={28}
                           />
                         </div>
                         <div>
-                          <h4 className="text-xs font-semibold text-[#030302]">Assistant</h4>
+                          <h4 className="text-xs font-semibold text-[#030302]">
+                            {BOT_AVATAR_DETAILS[getAgentAvatarForTask(activeTodo.id, activeTodo.agentAvatar)]?.name || 'Assistant'}
+                          </h4>
                           <p className="text-[11px] text-[#6e6e6d]">
                             {activeTodo.agentStatus === 'in_progress'
                               ? 'Researching...'
+                              : activeTodo.agentStatus === 'failed'
+                              ? 'Resting (Models Overloaded)'
                               : activeTodo.agentStatus === 'completed'
                               ? 'Briefing ready'
                               : 'Ready'}
@@ -367,8 +400,97 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
                       )}
                     </div>
 
+                    {/* Overloaded / Capacity State with recovery actions */}
+                    {activeTodo.agentStatus === 'failed' && (
+                      <div className="p-3.5 rounded-2xl bg-[#fff9ef] border border-[#e8d7bd] text-[#524434] space-y-3 font-ui">
+                        <div className="flex items-start gap-3">
+                          <div className="w-9 h-9 rounded-xl bg-[#f7f0e4] border border-[#e4d5c1] flex items-center justify-center overflow-hidden flex-shrink-0 shadow-inner">
+                            <div className="filter grayscale-[25%] opacity-90">
+                              <BotAvatar
+                                type={getAgentAvatarForTask(activeTodo.id, activeTodo.agentAvatar)}
+                                state="sleeping"
+                                size={26}
+                              />
+                            </div>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-bold text-[#8c5820]">
+                                Assistant is Resting
+                              </span>
+                              <span className="text-[10px] font-mono bg-[#f5e9d3] text-[#aa7a44] px-1.5 py-0.5 rounded font-medium">
+                                Capacity Limit
+                              </span>
+                            </div>
+                            <p className="text-xs text-[#524434] mt-1 leading-relaxed">
+                              {activeTodo.agentErrorReason ||
+                                'All candidate models are at capacity right now (503 Service Busy). Your task notes and state are fully preserved.'}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Diagnostics Foldout */}
+                        <details className="text-[11px] font-mono text-[#8c5820]/80 cursor-pointer pt-1 border-t border-[#f0e2cd]/80">
+                          <summary className="hover:text-[#524434] select-none py-0.5 font-medium">
+                            Diagnostic details (candidate models attempted)
+                          </summary>
+                          <div className="mt-1.5 p-2 bg-[#f8efe2] rounded-lg text-[10px] space-y-0.5 text-[#634825]">
+                            <div>• Candidate 1: <code>gemini-3.8-flash</code> (capacity / busy)</div>
+                            <div>• Candidate 2: <code>gemini-3.7-flash</code> (capacity / busy)</div>
+                            <div>• Candidate 3: <code>gemini-flash-lite-latest</code> (capacity / busy)</div>
+                            <div className="text-[#8c5820] font-semibold mt-1">Status: HTTP 503 / Backoff engaged</div>
+                          </div>
+                        </details>
+
+                        {/* Recovery Actions Bar */}
+                        <div className="flex items-center gap-2 pt-1 border-t border-[#f0e2cd]">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              onRetryAgent?.(activeTodo.id);
+                              onClose();
+                            }}
+                            className="px-3 py-1.5 rounded-lg bg-[#2b1f0d] text-[#fff9ef] hover:bg-[#433118] text-xs font-medium transition-colors cursor-pointer shadow-xs"
+                          >
+                            Retry Now
+                          </button>
+
+                          {remainingSeconds > 0 ? (
+                            <button
+                              type="button"
+                              onClick={() => onCancelCountdown?.(activeTodo.id)}
+                              className="px-3 py-1.5 rounded-lg bg-[#faeedd] border border-[#e5cb9f] text-[#845218] hover:bg-[#f3dfc5] text-xs font-mono transition-colors flex items-center gap-1.5 cursor-pointer"
+                              title="Cancel scheduled retry"
+                            >
+                              <span>⏱ Retry in {formattedCountdown}</span>
+                              <span className="font-bold text-[#a57038] hover:text-[#524434]">✕</span>
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => onScheduleRetry?.(activeTodo.id, 300)}
+                              className="px-3 py-1.5 rounded-lg bg-white border border-[#e8d7bd] text-[#6b553e] hover:bg-[#faeedd] text-xs font-medium transition-colors cursor-pointer"
+                            >
+                              Try in 5 minutes
+                            </button>
+                          )}
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              onRevertTodoFromAgent?.(activeTodo.id);
+                              onClose();
+                            }}
+                            className="ml-auto px-3 py-1.5 rounded-lg text-xs text-[#8c5820] hover:text-[#2b1f0d] hover:bg-[#f5e9d3] transition-colors cursor-pointer"
+                          >
+                            Revert to Manual Note
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Agent Notes / Live Progress */}
-                    {activeTodo.agentNotes && (
+                    {activeTodo.agentStatus !== 'failed' && activeTodo.agentNotes && (
                       <div className="p-2.5 rounded-xl bg-white border border-[#e1e1e1] text-[11px] font-mono text-[#41413f] flex items-start gap-2">
                         <Sparkles className="w-3.5 h-3.5 text-[#0087ff] flex-shrink-0 mt-0.5" />
                         <span className="leading-snug">{activeTodo.agentNotes}</span>
