@@ -27,3 +27,7 @@ dist-ssr
 .optimized-images.json
 research/
 tasks/TODOS.md
+.env*
+.turbo
+.claude
+.terminalgraph

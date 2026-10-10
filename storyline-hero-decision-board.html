@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero Storyline & Scroll Motion Decision Matrix</title>
+  <style>
+    :root {
+      --bg: #080c15;
+      --card-bg: #0f1624;
+      --border: #1e293b;
+      --accent-blue: #38bdf8;
+      --accent-green: #10b981;
+      --accent-yellow: #f59e0b;
+      --accent-red: #ef4444;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --ease-emil: cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text-main); font-family: var(--font-stack); padding: 40px 28px 100px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 1180px; margin: 0 auto; }
+    
+    /* Header */
+    header { margin-bottom: 36px; border-bottom: 1px solid var(--border); padding-bottom: 24px; }
+    .tagline-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--accent-blue); background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 4px; padding: 4px 10px; margin-bottom: 12px; font-family: var(--font-mono); }
+    h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.025em; color: #fff; margin-bottom: 8px; }
+    p.lead { color: var(--text-muted); font-size: 15px; max-width: 880px; line-height: 1.6; }
+
+    /* Section Headers */
+    .section-title { font-size: 19px; font-weight: 700; color: #fff; margin: 44px 0 20px; display: flex; align-items: center; gap: 10px; }
+    .section-title span { font-size: 12px; color: var(--accent-blue); font-family: var(--font-mono); font-weight: 600; background: rgba(56, 189, 248, 0.1); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(56, 189, 248, 0.2); }
+
+    /* Strictly ONE EXPLORATION PER ROW (Full-width stacked cards) */
+    .row-stack { display: flex; flex-direction: column; gap: 28px; width: 100%; margin-bottom: 36px; }
+    
+    .arch-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 26px 28px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s;
+    }
+    .arch-card.approved { border-color: var(--accent-green); box-shadow: 0 0 24px rgba(16, 185, 129, 0.18); }
+    .arch-card.rejected { border-color: var(--accent-red); opacity: 0.45; }
+    .arch-card.discuss { border-color: var(--accent-yellow); box-shadow: 0 0 24px rgba(245, 158, 11, 0.18); }
+
+    .card-title-row { display: flex; justify-content: space-between; align-items: baseline; }
+    .card-title { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
+    .subtle-badge { font-size: 11px; font-weight: 600; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* Before / After Comparison Layout (Strictly 1 Comparison per Row, Side-by-Side) */
+    .comparison-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      width: 100%;
+      margin: 4px 0;
+    }
+    .comparison-pane {
+      background: #050811;
+      border: 1px solid #1a2234;
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .comparison-pane.before { border-left: 4px solid var(--accent-red); }
+    .comparison-pane.after { border-left: 4px solid var(--accent-green); }
+    .comparison-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #141c2c;
+    }
+    .comparison-label span.tag-before { color: #fca5a5; font-family: var(--font-mono); }
+    .comparison-label span.tag-after { color: #86efac; font-family: var(--font-mono); }
+
+    /* Live Visual Representation Viewports */
+    .visual-preview {
+      background: #050811;
+      border: 1px solid #1a2234;
+      border-radius: 10px;
+      padding: 22px;
+      width: 100%;
+    }
+    
+    /* Full-width Split Preview: Left Text Column + Right Video Mock */
+    .story-split-container {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 24px;
+      align-items: stretch;
+      min-height: 240px;
+    }
+    .story-beats-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-right: 12px;
+    }
+    .story-beat-item {
+      border-left: 2px solid #233148;
+      padding-left: 14px;
+      transition: all 0.25s var(--ease-emil);
+    }
+    .story-beat-item.active {
+      border-left-color: var(--accent-blue);
+    }
+    .beat-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent-blue);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    .beat-content {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #94a3b8;
+    }
+    .story-beat-item.active .beat-content {
+      color: #f1f5f9;
+    }
+    .beat-content strong {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    /* Video Puppet Mock (Anchored at 70% width on right) */
+    .video-puppet-mock {
+      background: radial-gradient(circle at 65% 45%, #1e293b 0%, #080e1a 100%);
+      border: 1px dashed #334155;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 18px 12px;
+      color: #94a3b8;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      user-select: none;
+      position: relative;
+    }
+    .video-puppet-mock .puppet-graphic {
+      font-size: 36px;
+      margin-bottom: 8px;
+      filter: drop-shadow(0 4px 12px rgba(56, 189, 248, 0.3));
+    }
+    .video-puppet-mock .status-sub {
+      font-size: 9px;
+      color: #64748b;
+      margin-top: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    /* Part 2: Interactive Motion Simulator Stage */
+    .motion-full-stage {
+      background: #050811;
+      border: 1px solid #1a2234;
+      border-radius: 10px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+    .motion-controls-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      border-bottom: 1px solid #141c2c;
+      padding-bottom: 10px;
+    }
+    .scrub-slider {
+      width: 100%;
+      height: 6px;
+      accent-color: var(--accent-blue);
+      cursor: pointer;
+      margin: 4px 0;
+    }
+    .motion-live-box {
+      background: #090e1a;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 20px;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Specs & Tradeoffs */
+    .specs-list { list-style: none; font-size: 13px; display: flex; flex-direction: column; gap: 6px; }
+    .specs-list li { color: #cbd5e1; }
+    .specs-list li strong { color: #94a3b8; font-weight: 600; }
+    
+    .tradeoffs {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(31, 41, 61, 0.7);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 12.5px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .tradeoffs .pro { color: #86efac; }
+    .tradeoffs .con { color: #fca5a5; }
+
+    /* Action Row - Don't make me think */
+    .decision-actions { display: flex; gap: 10px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .btn { flex: 1; padding: 10px 14px; border-radius: 6px; font-size: 12.5px; font-weight: 600; cursor: pointer; border: 1px solid transparent; background: #1e293b; color: #cbd5e1; transition: all 0.15s ease; text-align: center; }
+    .btn:hover { background: #334155; color: #fff; }
+    .btn.btn-approve.active { background: rgba(16, 185, 129, 0.22); border-color: var(--accent-green); color: #6ee7b7; }
+    .btn.btn-reject.active { background: rgba(239, 68, 68, 0.22); border-color: var(--accent-red); color: #fca5a5; }
+    .btn.btn-discuss.active { background: rgba(245, 158, 11, 0.22); border-color: var(--accent-yellow); color: #fde047; }
+    
+    .notes-input { width: 100%; background: #050811; border: 1px solid #1e293b; border-radius: 6px; padding: 8px 12px; font-size: 12.5px; color: #e2e8f0; outline: none; display: none; }
+    .notes-input:focus { border-color: var(--accent-blue); }
+    .notes-input.visible { display: block; }
+
+    /* Bottom Prompt Generation Engine */
+    .prompt-box-section { background: #0c1322; border: 1px solid #1e293d; border-radius: 14px; padding: 26px; margin-top: 40px; }
+    .prompt-box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .prompt-box-header h3 { font-size: 16px; font-weight: 700; color: var(--accent-blue); }
+    .btn-copy { background: var(--accent-blue); color: #090d16; border: none; padding: 8px 18px; border-radius: 6px; font-weight: 700; font-size: 12.5px; cursor: pointer; transition: background 0.15s; }
+    .btn-copy:hover { background: #7dd3fc; }
+    .btn-copy.copied { background: var(--accent-green); color: #fff; }
+    textarea#codedPrompt { width: 100%; height: 260px; background: #040710; border: 1px solid #1a2234; border-radius: 8px; color: #38bdf8; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.6; padding: 16px; resize: vertical; outline: none; }
+    .status-summary { display: flex; gap: 20px; font-size: 12.5px; color: var(--text-muted); margin-top: 14px; font-family: var(--font-mono); }
+    .status-count { color: #cbd5e1; font-weight: 600; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="tagline-badge">ONE EXPLORATION PER ROW &bull; EMIL KOWALSKI MOTION PRINCIPLES</div>
+    <h1>Hero Storyline & Scroll Motion Decision Matrix</h1>
+    <p class="lead">
+      Evaluating personal 5-beat storylines and Emil Kowalski scroll-motion architectures for Sumit's hero section. Every exploration is presented <strong>one per row</strong> with full horizontal clearance for rigorous evaluation. Text remains strictly left-aligned to leave 40% negative space on the right for the interactive scrub video.
+    </p>
+  </header>
+
+  <!-- SECTION 0: BEFORE VS AFTER COMPARISON (ONE ROW) -->
+  <div class="section-title">
+    <span>FOUNDATION</span> High-Level Transformation: Before vs. After
+  </div>
+  <div class="row-stack">
+    <div class="arch-card" style="border-color: #2a374f;">
+      <div class="card-title-row">
+        <span class="card-title">Structural Evolution of the Hero Section</span>
+        <span class="subtle-badge">Side-by-Side Comparison</span>
+      </div>
+      
+      <div class="comparison-row">
+        <!-- BEFORE -->
+        <div class="comparison-pane before">
+          <div class="comparison-label">
+            <span>Current Hero Implementation</span>
+            <span class="tag-before">BEFORE</span>
+          </div>
+          <div style="font-size: 13.5px; line-height: 1.6; color: #cbd5e1;">
+            <div style="font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 8px; letter-spacing: -0.02em;">
+              "AI builds fast. <br>I make sure it builds right."
+            </div>
+            <p style="color: #94a3b8; font-size: 13px;">
+              "Hi, I'm Sumit. I oversee AI-assisted Design and Dev process so your product keeps its human touch."
+            </p>
+            <div style="margin-top: 10px; font-size: 11.5px; color: #64748b; font-family: var(--font-mono);">
+              &bull; Static, two-sentence blurb.<br>
+              &bull; Misses the authentic human story: India &rarr; Finland, double M.Sc., Optmyzr 4yr SaaS scale, climate volunteering.
+            </div>
+          </div>
+        </div>
+
+        <!-- AFTER -->
+        <div class="comparison-pane after">
+          <div class="comparison-label">
+            <span>Scroll-Driven Storyline Narrative</span>
+            <span class="tag-after">AFTER</span>
+          </div>
+          <div style="font-size: 13.5px; line-height: 1.6; color: #cbd5e1;">
+            <div style="font-size: 18px; font-weight: 800; color: #38bdf8; margin-bottom: 8px; letter-spacing: -0.02em;">
+              5-Beat Unveiling Storyline on Scroll
+            </div>
+            <p style="color: #cbd5e1; font-size: 13px;">
+              Story illuminates progressively as user scrolls: <strong>Who I am</strong> &rarr; <strong>Journey to Finland</strong> &rarr; <strong>Where I've Shipped (Optmyzr, Dedanext, Groundwork)</strong> &rarr; <strong>Off the clock (Sustainability Community, YOU)</strong> &rarr; <strong>Teams I care about</strong>.
+            </p>
+            <div style="margin-top: 10px; font-size: 11.5px; color: #86efac; font-family: var(--font-mono);">
+              &bull; Left-aligned, leaves right 40% open for scrub video.<br>
+              &bull; Emil Kowalski GPU transforms &amp; subtle blur masks.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 1: STORYLINE COPY CHOICES (ONE PER ROW) -->
+  <div class="section-title">
+    <span>PART 1</span> Narrative Storyline Tone &amp; Structure (1 Exploration Per Row)
+  </div>
+  <div class="row-stack" id="storyRowStack"></div>
+
+  <!-- PART 2: MOTION & SCROLL MECHANISM CHOICES (ONE PER ROW) -->
+  <div class="section-title">
+    <span>PART 2</span> Emil Kowalski Scroll-Driven Motion Architecture (1 Exploration Per Row)
+  </div>
+  <div class="row-stack" id="motionRowStack"></div>
+
+  <!-- SUMMARY & PROMPT BOX -->
+  <div class="prompt-box-section">
+    <div class="prompt-box-header">
+      <h3>Live Coded Prompt for Antigravity (Implementation Directive)</h3>
+      <button class="btn-copy" id="copyBtn" onclick="copyPrompt()">Copy Coded Prompt</button>
+    </div>
+    <textarea id="codedPrompt" readonly></textarea>
+    <div class="status-summary" id="statusSummary">
+      <span>Approved: <span id="approvedCount" class="status-count">0</span></span>
+      <span>Discuss: <span id="discussCount" class="status-count">0</span></span>
+      <span>Rejected: <span id="rejectedCount" class="status-count">0</span></span>
+    </div>
+  </div>
+</div>
+
+<script>
+// --- DATA: PART 1 (Storyline Tone Options - Full Width Rows) ---
+const storyOptions = [
+  {
+    id: "story-1",
+    title: "Exploration 1: The Authentic Craftsman (Warm, Direct, Human)",
+    badge: "Recommended",
+    beats: [
+      {
+        tag: "01 &bull; WHO I AM",
+        text: "I'm <strong>Sumit Nayyar</strong> — a Design Engineer working at the intersection of cognitive science, product craft, and production code."
+      },
+      {
+        tag: "02 &bull; THE JOURNEY TO FINLAND",
+        text: "After a Computer Science degree in India, I became obsessed with understanding the human mind behind the screen. That curiosity brought me to Helsinki for a double Master's in HCI &amp; Cognitive Science between <strong>Aalto University</strong> and the <strong>University of Trento</strong> — where I fell in love with Nordic design, sauna culture, and quiet intentionality."
+      },
+      {
+        tag: "03 &bull; WHERE I'VE SHIPPED",
+        text: "I spent 4+ years as a design engineer at <strong>Optmyzr</strong> building core analytics for 10,000+ accounts, researched ambient sensor interfaces with 200+ users at <strong>Dedanext</strong> in Italy, and co-founded <strong>Groundwork</strong> in Finland to build open accessibility tools (2nd place, EIT Jumpstarter Grand Final)."
+      },
+      {
+        tag: "04 &bull; OFF THE CLOCK / WHAT MAKES ME 'ME'",
+        text: "When I'm not inspecting React components, I design visual identities for the <strong>Sustainability Community of Finland</strong>, hack on distraction-countering prototypes like <em>YOU (Super Ego)</em>, and explore the Finnish woods in search of stillness."
+      },
+      {
+        tag: "05 &bull; TEAMS I CARE ABOUT",
+        text: "I do my best work with teams that treat software as an honest craft: where designers write code, AI is held to verifiable guardrails, and products respect the user's cognitive attention instead of exploiting it."
+      }
+    ],
+    specs: [
+      "<strong>Voice:</strong> Humble yet authoritative; reads like an intimate studio introduction.",
+      "<strong>Authenticity:</strong> Explicitly reveals the transition from Indian CS undergrad &rarr; European double M.Sc. &rarr; life in Helsinki.",
+      "<strong>Visual Space:</strong> 5 distinct left-aligned blocks that leave 40% right-side clearance for the video puppet."
+    ],
+    pro: "Balances technical credibility (Optmyzr, React, EIT) with deeply relatable personal warmth.",
+    con: "Slightly longer reading time (~45s across all 5 beats) requiring deliberate scroll pacing."
+  },
+  {
+    id: "story-2",
+    title: "Exploration 2: The Cognitive Systems Narrative (Sharp, Empirical, Product-First)",
+    badge: "Empirical & Systems",
+    beats: [
+      {
+        tag: "01 &bull; WHO I AM",
+        text: "I'm <strong>Sumit</strong>. I design interfaces and write production frontend for software where human trust and system correctness cannot fail."
+      },
+      {
+        tag: "02 &bull; FROM CODE TO COGNITIVE SCIENCE",
+        text: "I started in India writing high-throughput frontend code, but realized engineering alone doesn't solve flawed mental models. I moved to Finland to study how people decide and perceive at <strong>Aalto University</strong> and <strong>Uni Trento</strong>, anchoring my engineering in cognitive psychology."
+      },
+      {
+        tag: "03 &bull; TRACK RECORD &amp; SCALE",
+        text: "4 years engineering core analytics dashboards down to &lt;1s load times at <strong>Optmyzr</strong>; empirical ambient display research across 200+ participants at <strong>Dedanext</strong>; and accessibility ventures with <strong>Groundwork</strong> (EIT Jumpstarter Bauhaus finalist)."
+      },
+      {
+        tag: "04 &bull; LIFE &amp; COMMUNITY",
+        text: "Outside production repos, I build brand systems for the <strong>Sustainability Community of Finland</strong> and design friction-first habit prototypes to curb dopamine loops on mobile devices."
+      },
+      {
+        tag: "05 &bull; TARGET TEAMS",
+        text: "I look for ambitious teams building high-stakes, AI-native tools who believe the future of software belongs to builders who own both the Figma canvas and the TypeScript pull request."
+      }
+    ],
+    specs: [
+      "<strong>Voice:</strong> Focused, analytical, direct; emphasizes mental models and cognitive ergonomics.",
+      "<strong>Differentiation:</strong> Shows why having both CS and Cognitive Science makes Sumit rare.",
+      "<strong>Pacing:</strong> Shorter sentence rhythm, faster scanning speed."
+    ],
+    pro: "Strongest appeal for fast-moving AI startups and technical design leaders who value speed and empirical thinking.",
+    con: "Slightly less relaxed storytelling tone compared to Exploration 1."
+  },
+  {
+    id: "story-3",
+    title: "Exploration 3: The Conversational Letter (Personal, Reflective, Manifesto)",
+    badge: "Studio Tone",
+    beats: [
+      {
+        tag: "01 &bull; HELLO",
+        text: "Hi, I'm <strong>Sumit Nayyar</strong>. I design and code digital tools from Helsinki, Finland."
+      },
+      {
+        tag: "02 &bull; WHY FINLAND",
+        text: "Moving from India to the Nordics was driven by a single question: <em>why do we build software that drains people?</em> Pursuing a double Master's in Cognitive Science at Aalto University taught me that good software isn't just about faster code — it's about calm, dignified human experiences."
+      },
+      {
+        tag: "03 &bull; PAST COLLABORATIONS",
+        text: "I've brought that mindset to enterprise SaaS at <strong>Optmyzr</strong> (4+ years), EU-Horizon environmental research at <strong>Dedanext</strong> in Italy, and early-stage accessibility work at <strong>Groundwork</strong>."
+      },
+      {
+        tag: "04 &bull; WHAT MAKES ME 'ME'",
+        text: "I believe in climate advocacy, slow Nordic design, cold plunges, and building tools like <em>ActAI</em> and <em>YOU</em> that return agency to human hands instead of delegating everything blindly to black boxes."
+      },
+      {
+        tag: "05 &bull; WHO I WORK WITH",
+        text: "I partner with small, high-agency teams who care deeply about taste, maintain high standards, and want a design engineer who can ship from zero to production."
+      }
+    ],
+    specs: [
+      "<strong>Voice:</strong> Candid, reflective, philosophical; feels like reading a handwritten manifesto.",
+      "<strong>Nordic Connection:</strong> Connects Finnish lifestyle, calm tech, and climate directly to design values.",
+      "<strong>Format:</strong> Uncluttered prose that pairs naturally with understated typography."
+    ],
+    pro: "Leaves a memorable personal impression; hiring managers remember the human being.",
+    con: "Mentions fewer specific engineering numbers and metrics than Exploration 2."
+  }
+];
+
+// --- DATA: PART 2 (Emil Kowalski Scroll Motion Options - Full Width Rows) ---
+const motionOptions = [
+  {
+    id: "motion-1",
+    title: "Motion Exploration 1: Progressive Text Illumination + Blur Mask (Apple / Emil Standard)",
+    badge: "Recommended",
+    emilRule: "Use blur to mask transitions & hardware-accelerated opacity (off main thread)",
+    specs: [
+      "<strong>Mechanism:</strong> As user scrolls, the active story beat is 100% white (`opacity: 1`, `filter: blur(0px)`). Inactive beats rest at `opacity: 0.22` with soft `blur(1.5px)`.",
+      "<strong>Emil Principle:</strong> Avoids abrupt layout jumps. Soft blur mask blends transitions smoothly off the GPU (`will-change: opacity, filter`).",
+      "<strong>Video Sync:</strong> The video puppet on the right smoothly reacts to cursor position independently while the story text illuminates on scroll."
+    ],
+    pro: "Unbelievably high-end, editorial feel. Never pushes the video out of frame; keeps reader's eye focused on one thought at a time.",
+    con: "Requires calibrating scroll height threshold so beats don't switch too quickly."
+  },
+  {
+    id: "motion-2",
+    title: "Motion Exploration 2: Staggered Vertical Slide with Custom Easing (Spatial Stacking)",
+    badge: "Natural Flow",
+    emilRule: "Custom ease-out cubic-bezier(0.23, 1, 0.32, 1) + never start from scale(0)",
+    specs: [
+      "<strong>Mechanism:</strong> Story beats enter as natural scroll landmarks. Each beat transitions in from `translateY(24px)` to `translateY(0)` with `opacity: 0 &rarr; 1` at 220ms.",
+      "<strong>Emil Principle:</strong> Uses strong custom `cubic-bezier(0.23, 1, 0.32, 1)` — starts fast, decelerates silky smooth. Absolutely zero `ease-in` sluggishness.",
+      "<strong>Reduced Motion:</strong> Automatically removes `translateY` and only uses soft opacity fade when `prefers-reduced-motion` is detected."
+    ],
+    pro: "Completely standard, accessible scrolling behavior that feels native on both desktop trackpads and mobile touch screens.",
+    con: "Takes up vertical scroll height down the page rather than pinning the video in place."
+  },
+  {
+    id: "motion-3",
+    title: "Motion Exploration 3: Sticky Pinned Chapter Teleprompter (Spring Physics)",
+    badge: "Interactive Stage",
+    emilRule: "Interruptible spring physics (stiffness: 120, damping: 20)",
+    specs: [
+      "<strong>Mechanism:</strong> The hero section is pinned for 2.5x viewport scroll height. Scrolling acts as a timeline that scrubs between chapters with a side step indicator (1/5 &rarr; 5/5).",
+      "<strong>Emil Principle:</strong> Governed by Motion's `useSpring` so fast scroll gestures don't glitch or restart keyframes; transitions smoothly glide and settle.",
+      "<strong>Layout Lock:</strong> Video puppet on the right stays anchored at 70% width for the entire 5 chapters."
+    ],
+    pro: "Creates a dedicated cinematic storytelling moment where video and narrative remain perfectly framed together.",
+    con: "Scroll-jacking feel if not tuned with generous exit boundaries."
+  }
+];
+
+const allOptions = [...storyOptions, ...motionOptions];
+const state = {};
+allOptions.forEach(opt => {
+  state[opt.id] = { status: null, note: "" };
+});
+
+function renderStoryRows() {
+  const container = document.getElementById("storyRowStack");
+  container.innerHTML = storyOptions.map(opt => `
+    <div class="arch-card" id="card-${opt.id}">
+      <div class="card-title-row">
+        <span class="card-title">${opt.title}</span>
+        <span class="subtle-badge">${opt.badge}</span>
+      </div>
+
+      <div class="visual-preview">
+        <div class="story-split-container">
+          <div class="story-beats-flow">
+            ${opt.beats.map((b, i) => `
+              <div class="story-beat-item ${i === 0 ? 'active' : ''}">
+                <div class="beat-tag">${b.tag}</div>
+                <div class="beat-content">${b.text}</div>
+              </div>
+            `).join('')}
+          </div>
+          
+          <div class="video-puppet-mock">
+            <div class="puppet-graphic">🤖</div>
+            <strong style="color: #f1f5f9; font-size: 11px;">Scrub Video</strong>
+            <span class="status-sub">Anchored on Right (70% viewport)</span>
+            <span class="status-sub" style="margin-top: 10px; opacity: 0.7;">Cursor scrub tracked</span>
+          </div>
+        </div>
+      </div>
+
+      <ul class="specs-list">
+        ${opt.specs.map(s => `<li>${s}</li>`).join('')}
+      </ul>
+
+      <div class="tradeoffs">
+        <div class="pro"><strong>+ Advantage:</strong> ${opt.pro}</div>
+        <div class="con"><strong>- Trade-off:</strong> ${opt.con}</div>
+      </div>
+
+      <div>
+        <div class="decision-actions">
+          <button class="btn btn-approve" onclick="setStatus('${opt.id}', 'approved')">Approve</button>
+          <button class="btn btn-discuss" onclick="setStatus('${opt.id}', 'discuss')">Discuss</button>
+          <button class="btn btn-reject" onclick="setStatus('${opt.id}', 'rejected')">Reject</button>
+        </div>
+        <input 
+          type="text" 
+          class="notes-input" 
+          id="note-${opt.id}" 
+          placeholder="Tweaks to words, specific mentions, or tone preference..." 
+          oninput="setNote('${opt.id}', this.value)"
+        />
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderMotionRows() {
+  const container = document.getElementById("motionRowStack");
+  container.innerHTML = motionOptions.map((opt, idx) => `
+    <div class="arch-card" id="card-${opt.id}">
+      <div class="card-title-row">
+        <span class="card-title">${opt.title}</span>
+        <span class="subtle-badge">${opt.badge}</span>
+      </div>
+
+      <div class="motion-full-stage">
+        <div class="motion-controls-row">
+          <span>INTERACTIVE SCROLL SIMULATION:</span>
+          <span id="scrubVal-${opt.id}" style="color: var(--accent-blue); font-weight: 700;">${idx === 0 ? '30%' : '0%'}</span>
+        </div>
+        <input 
+          type="range" 
+          min="0" 
+          max="100" 
+          value="${idx === 0 ? 30 : 0}" 
+          class="scrub-slider" 
+          oninput="handleScrub('${opt.id}', this.value)"
+        />
+
+        <div class="motion-live-box">
+          <div id="motion-target-${opt.id}" style="transition: all 0.25s var(--ease-emil); color: #f1f5f9; font-size: 13.5px; line-height: 1.6;">
+            ${idx === 0 
+              ? '<strong>Beat Active:</strong> "After my CS degree in India, I moved to Helsinki to study how the human mind perceives at Aalto University..."' 
+              : idx === 1 
+              ? '<strong>TranslateY + Opacity:</strong> Smooth entrance along custom cubic-bezier curve without dropped frames.' 
+              : '<strong>Chapter Pinned:</strong> Pinned view transitions seamlessly between beats while puppet video scrubs.'
+            }
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-blue);">
+        ✦ EMIL PRINCIPLE: ${opt.emilRule}
+      </div>
+
+      <ul class="specs-list">
+        ${opt.specs.map(s => `<li>${s}</li>`).join('')}
+      </ul>
+
+      <div class="tradeoffs">
+        <div class="pro"><strong>+ Advantage:</strong> ${opt.pro}</div>
+        <div class="con"><strong>- Trade-off:</strong> ${opt.con}</div>
+      </div>
+
+      <div>
+        <div class="decision-actions">
+          <button class="btn btn-approve" onclick="setStatus('${opt.id}', 'approved')">Approve</button>
+          <button class="btn btn-discuss" onclick="setStatus('${opt.id}', 'discuss')">Discuss</button>
+          <button class="btn btn-reject" onclick="setStatus('${opt.id}', 'rejected')">Reject</button>
+        </div>
+        <input 
+          type="text" 
+          class="notes-input" 
+          id="note-${opt.id}" 
+          placeholder="Animation speed, easing, or behavior notes..." 
+          oninput="setNote('${opt.id}', this.value)"
+        />
+      </div>
+    </div>
+  `).join('');
+}
+
+function handleScrub(id, val) {
+  document.getElementById(`scrubVal-${id}`).innerText = `${val}%`;
+  const target = document.getElementById(`motion-target-${id}`);
+  
+  if (id === 'motion-1') {
+    const active = val > 20 && val < 80;
+    target.style.opacity = active ? 1 : 0.22;
+    target.style.filter = active ? 'blur(0px)' : 'blur(1.8px)';
+  } else if (id === 'motion-2') {
+    const offset = Math.max(0, (50 - val) * 0.6);
+    target.style.transform = `translateY(${offset}px)`;
+    target.style.opacity = Math.min(1, val / 40);
+  } else if (id === 'motion-3') {
+    const chapter = Math.min(5, Math.floor(val / 20) + 1);
+    target.innerHTML = `<strong>Chapter ${chapter}/5 Active:</strong> Story beat ${chapter} settled with spring physics.`;
+  }
+}
+
+function setStatus(id, status) {
+  if (state[id].status === status) {
+    state[id].status = null;
+  } else {
+    state[id].status = status;
+  }
+  updateUI();
+}
+
+function setNote(id, note) {
+  state[id].note = note;
+  updatePrompt();
+}
+
+function updateUI() {
+  allOptions.forEach(opt => {
+    const card = document.getElementById(`card-${opt.id}`);
+    const noteInput = document.getElementById(`note-${opt.id}`);
+    const current = state[opt.id].status;
+
+    card.classList.remove('approved', 'rejected', 'discuss');
+    if (current) card.classList.add(current);
+
+    const approveBtn = card.querySelector('.btn-approve');
+    const discussBtn = card.querySelector('.btn-discuss');
+    const rejectBtn = card.querySelector('.btn-reject');
+
+    approveBtn.classList.toggle('active', current === 'approved');
+    discussBtn.classList.toggle('active', current === 'discuss');
+    rejectBtn.classList.toggle('active', current === 'rejected');
+
+    if (current) {
+      noteInput.classList.add('visible');
+    } else {
+      noteInput.classList.remove('visible');
+    }
+  });
+
+  updatePrompt();
+}
+
+function updatePrompt() {
+  const approved = [];
+  const discuss = [];
+  const rejected = [];
+
+  allOptions.forEach(opt => {
+    const s = state[opt.id];
+    const noteStr = s.note.trim() ? ` (User Note: "${s.note.trim()}")` : "";
+    if (s.status === 'approved') approved.push(`- [APPROVED] ${opt.title}${noteStr}`);
+    else if (s.status === 'discuss') discuss.push(`- [DISCUSS] ${opt.title}${noteStr}`);
+    else if (s.status === 'rejected') rejected.push(`- [REJECTED] ${opt.title}${noteStr}`);
+  });
+
+  document.getElementById('approvedCount').innerText = approved.length;
+  document.getElementById('discussCount').innerText = discuss.length;
+  document.getElementById('rejectedCount').innerText = rejected.length;
+
+  let prompt = `ACTION DIRECTIVE: HERO STORYLINE & SCROLL MOTION IMPLEMENTATION\n\n`;
+
+  prompt += `APPROVED SELECTIONS:\n`;
+  prompt += approved.length ? approved.join('\n') + '\n\n' : `- None selected yet\n\n`;
+
+  prompt += `ITEMS TO DISCUSS / CLARIFY:\n`;
+  prompt += discuss.length ? discuss.join('\n') + '\n\n' : `- None\n\n`;
+
+  prompt += `REJECTED OPTIONS:\n`;
+  prompt += rejected.length ? rejected.join('\n') + '\n\n' : `- None\n\n`;
+
+  prompt += `IMPLEMENTATION DIRECTIVES FOR ANTIGRAVITY:\n`;
+  if (approved.length) {
+    prompt += `1. Apply the approved Storyline copy option to HeroSection.tsx without disrupting existing video logic.\n`;
+    prompt += `2. Keep text left-aligned to preserve the 70% viewport space for the interactive mouse-scrubbed video on the right.\n`;
+    prompt += `3. Implement the chosen scroll motion pattern applying Emil Kowalski's rules (cubic-bezier(0.23, 1, 0.32, 1), GPU transforms, no scale(0), prefers-reduced-motion support).\n`;
+    prompt += `4. Verify responsiveness and live playback in the browser.\n`;
+  } else {
+    prompt += `1. Select one Storyline tone (Part 1) and one Motion architecture (Part 2) above to generate immediate implementation instructions.\n`;
+  }
+
+  document.getElementById('codedPrompt').value = prompt;
+}
+
+function copyPrompt() {
+  const ta = document.getElementById('codedPrompt');
+  ta.select();
+  navigator.clipboard.writeText(ta.value).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.innerText = "Copied to Clipboard!";
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerText = "Copy Coded Prompt";
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+renderStoryRows();
+renderMotionRows();
+updateUI();
+</script>
+</body>
+</html>

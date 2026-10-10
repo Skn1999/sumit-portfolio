@@ -34,17 +34,17 @@ const IndexContent = () => {
       >
         <ScrollProgress />
         <div className="relative z-10 scroll-blur-content">
-          {/* Section 1: Hero Section */}
+          {/* Section 1: Hero Storyline Section with Fixed Mouse-Scrub Video */}
           <HeroSection />
 
-          {/* Section 2: About & AI Philosophy */}
-          <AboutSection />
+          {/* Section 2: About & AI Philosophy (Temporarily commented out for storyline exploration) */}
+          {/* <AboutSection /> */}
 
-          {/* Section 3: Achievements */}
-          <AchievementsSection />
+          {/* Section 3: Achievements (Temporarily commented out for storyline exploration) */}
+          {/* <AchievementsSection /> */}
 
-          {/* Section 4: Product Hunt Launch */}
-          <section id="product-hunt-launch" className="py-20 md:py-32 bg-paper-bg border-t border-paper-border">
+          {/* Section 4: Product Hunt Launch (Temporarily commented out for storyline exploration) */}
+          {/* <section id="product-hunt-launch" className="py-20 md:py-32 bg-paper-bg border-t border-paper-border">
             <div className="max-w-6xl mx-auto px-4 md:px-8">
               <motion.div
                 initial={{ opacity: 0, filter: "blur(6px)", y: 16 }}
@@ -65,10 +65,10 @@ const IndexContent = () => {
               </motion.div>
               <ProductHuntBadge />
             </div>
-          </section>
+          </section> */}
 
-          {/* Section 5: Contact */}
-          <Contact />
+          {/* Section 5: Contact (Temporarily commented out - integrated into storyline finale) */}
+          {/* <Contact /> */}
 
           {/* <UnsaidMoments /> */}
 

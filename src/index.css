@@ -977,3 +977,29 @@ pre {
 .scroll-blur-content {
   /* Motion blur disabled */
 }
+
+/* Emil Kowalski motion design: pop-style em-dash tooltip */
+.emdash-tooltip {
+  transform: translate(-50%, 4px) scale(0.92);
+  opacity: 0;
+  transform-origin: bottom center;
+  transition: opacity 100ms ease-out, transform 100ms ease-out;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .group\/emdash:hover .emdash-tooltip {
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+    transition: opacity 160ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                transform 160ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+}
+
+.group\/emdash[data-open="true"] .emdash-tooltip,
+.group\/emdash:focus-within .emdash-tooltip {
+  transform: translate(-50%, 0) scale(1);
+  opacity: 1;
+  transition: opacity 160ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              transform 160ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
