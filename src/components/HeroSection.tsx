@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { HelsinkiSolarDial } from "./HelsinkiSolarDial";
+import { TextReveal } from "@/components/arc/text-reveal/text-reveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -291,12 +292,15 @@ const HeroSection: React.FC = () => {
         <div className="mx-auto px-6 sm:px-10 md:px-12 w-full">
           {/* Constrained editorial content column: stays strictly on the left side of the viewport so the video character on the right is completely unobstructed */}
           <div className="max-w-lg md:max-w-xl lg:max-w-[520px] xl:max-w-[560px]">
-            {/* Header Title with Preston-style rotated sticker tag */}
+            {/* Header Title with Preston-style rotated sticker tag and UI Arc TextReveal */}
             <div className="relative mb-10 sm:mb-12 md:mb-14">
               <div className="relative inline-block">
-                <h1 className="font-display tracking-tight font-bold text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] text-ink-primary leading-[0.95]">
-                  Sumit Nayyar
-                </h1>
+                <TextReveal
+                  as="h1"
+                  text="Sumit Nayyar"
+                  delay={0.1}
+                  className="font-display tracking-tight font-bold text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] text-ink-primary leading-[0.95]"
+                />
                 {/* Rotated pill badge like Preston Booth reference - perched over top-right of Nayyar */}
                 <span className="hidden sm:inline-block absolute -top-4 -right-2 sm:-top-5 sm:-right-4 border-2 border-emerald-500 bg-paper-card/90 text-emerald-600 dark:text-emerald-400 font-mono text-[11px] sm:text-xs font-semibold px-3 py-0.5 rounded-full uppercase tracking-wider -rotate-12 shadow-sm select-none pointer-events-none">
                   Design Engineer
@@ -327,12 +331,17 @@ const HeroSection: React.FC = () => {
             {/* Preston Booth style text reveal container: raw, high-impact typography without card boxes */}
             <div
               ref={textContainerRef}
-              className="home-text-reveal space-y-10 sm:space-y-12 md:space-y-14 text-lg sm:text-xl md:text-2xl lg:text-[1.75rem] font-medium text-ink-primary"
+              className="home-text-reveal space-y-10 sm:space-y-12 md:space-y-14 text-lg sm:text-xl md:text-2xl lg:text-[1.75rem] text-ink-primary"
             >
-              {/* Paragraph 1: Identity Anchor */}
-              <Paragraph>
-                I'm a <strong className="text-ink-primary font-semibold">Design Engineer</strong> working at the intersection of cognitive science, design craft, and production code. Sometimes I get identity crises and I keep switching between the three.
-              </Paragraph>
+              {/* Paragraph 1: Identity Anchor with UI Arc TextReveal */}
+              <div>
+                <TextReveal
+                  as="p"
+                  text={"I'm a Design Engineer working at the intersection of cognitive science, design craft, and production code. Sometimes I get identity crises and I keep switching between the three."}
+                  delay={0.3}
+                  className="text-lg sm:text-xl md:text-2xl lg:text-[1.75rem] text-ink-primary leading-relaxed max-w-none"
+                />
+              </div>
 
               {/* Paragraph 2: Journey & Why Finland */}
               <Paragraph>
