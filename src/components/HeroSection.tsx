@@ -291,7 +291,7 @@ const HeroSection: React.FC = () => {
               <InViewTextReveal
                 as="p"
                 text={
-                  "I care about working with fast-paced teams, who care about the craft as well as overall experience — where designers write production code, and software respects the user's attention instead of exploiting it. In a world where anyone can generate a feature in seconds, craft is the differentiator."
+                  "I care about working with fast-paced teams, who care about the craft as well as overall experience — where designers write production code, and software respects the user's attention instead of exploiting it. In a world where anyone can generate a feature in seconds, [[craft:craft is the differentiator]]."
                 }
                 delay={0.05}
                 className={PARAGRAPH_CLASS}

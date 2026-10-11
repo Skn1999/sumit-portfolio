@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Award, RotateCw, MapPin, Sparkles, BookOpen } from "lucide-react";
+import { ArrowUpRight, Award, MapPin, Sparkles } from "lucide-react";
 import {
   HoverCard,
   HoverCardContent,
@@ -16,7 +16,7 @@ interface BaseEntityProps {
  */
 export const OptmyzrEntity: React.FC<BaseEntityProps> = ({ children }) => {
   return (
-    <HoverCard openDelay={200} closeDelay={150}>
+    <HoverCard openDelay={90} closeDelay={150}>
       <HoverCardTrigger asChild>
         <span className="inline-flex items-center gap-1 font-semibold text-ink-primary hover:text-emerald-500 dark:hover:text-emerald-400 underline decoration-paper-border hover:decoration-emerald-500 underline-offset-4 cursor-pointer transition-colors select-none">
           <img
@@ -28,36 +28,38 @@ export const OptmyzrEntity: React.FC<BaseEntityProps> = ({ children }) => {
           <span>{children || "Optmyzr"}</span>
         </span>
       </HoverCardTrigger>
-      <HoverCardContent align="start" className="w-80 text-left">
-        <div className="flex items-center gap-2.5 mb-2">
-          <img
-            src="/images/logos/optmyzr.png"
-            alt="Optmyzr"
-            className="w-6 h-6 rounded-md object-contain border border-paper-border/60 bg-paper-bg p-0.5"
-          />
+      <HoverCardContent align="start" className="w-84 sm:w-96 text-left">
+        <div className="flex items-center gap-3.5 mb-3">
+          <div className="w-11 h-11 rounded-xl border border-paper-border/70 bg-paper-bg p-1.5 shrink-0 shadow-xs flex items-center justify-center">
+            <img
+              src="/images/logos/optmyzr.png"
+              alt="Optmyzr"
+              className="w-full h-full rounded-md object-contain"
+            />
+          </div>
           <div>
-            <h4 className="font-display font-bold text-sm text-ink-primary leading-tight">
+            <h4 className="font-sans font-semibold text-lg text-ink-primary leading-tight">
               Optmyzr
             </h4>
-            <span className="font-mono text-[11px] text-ink-muted">
+            <span className="font-sans text-[15px] text-ink-muted">
               Design Engineer • 4+ Years
             </span>
           </div>
         </div>
-        <p className="text-xs text-ink-muted leading-relaxed mb-3">
+        <p className="font-sans text-base text-ink-muted leading-relaxed mb-4">
           Core frontend architecture and design systems for enterprise PPC analytics across 10,000+ global advertiser accounts.
         </p>
-        <div className="flex flex-col gap-1.5 pt-2 border-t border-paper-border/60 font-mono text-xs">
+        <div className="flex flex-col gap-2 pt-3 border-t border-paper-border/60 font-sans text-base">
           <Link
             to="/projects/optmyzr-onboarding-experience"
-            className="inline-flex items-center justify-between text-ink-primary hover:text-emerald-500 transition-colors py-0.5 group"
+            className="inline-flex items-center justify-between text-ink-primary hover:text-emerald-500 transition-colors py-0.5 group font-medium"
           >
             <span>Fixing Onboarding Churn</span>
             <span className="text-emerald-500 group-hover:translate-x-0.5 transition-transform">→</span>
           </Link>
           <Link
             to="/projects/optmyzr-dashboard-migration"
-            className="inline-flex items-center justify-between text-ink-primary hover:text-emerald-500 transition-colors py-0.5 group"
+            className="inline-flex items-center justify-between text-ink-primary hover:text-emerald-500 transition-colors py-0.5 group font-medium"
           >
             <span>Dashboard Latency Migration</span>
             <span className="text-emerald-500 group-hover:translate-x-0.5 transition-transform">→</span>
@@ -73,7 +75,7 @@ export const OptmyzrEntity: React.FC<BaseEntityProps> = ({ children }) => {
  */
 export const DedanextEntity: React.FC<BaseEntityProps> = ({ children }) => {
   return (
-    <HoverCard openDelay={200} closeDelay={150}>
+    <HoverCard openDelay={90} closeDelay={150}>
       <HoverCardTrigger asChild>
         <span className="inline-flex items-center gap-1 font-semibold text-ink-primary hover:text-emerald-500 dark:hover:text-emerald-400 underline decoration-paper-border hover:decoration-emerald-500 underline-offset-4 cursor-pointer transition-colors select-none">
           <img
@@ -85,29 +87,31 @@ export const DedanextEntity: React.FC<BaseEntityProps> = ({ children }) => {
           <span>{children || "Dedanext"}</span>
         </span>
       </HoverCardTrigger>
-      <HoverCardContent align="start" className="w-80 text-left">
-        <div className="flex items-center gap-2.5 mb-2">
-          <img
-            src="/images/logos/dedanext.png"
-            alt="Dedanext"
-            className="w-6 h-6 rounded-md object-contain border border-paper-border/60 bg-paper-bg p-0.5"
-          />
+      <HoverCardContent align="start" className="w-84 sm:w-96 text-left">
+        <div className="flex items-center gap-3.5 mb-3">
+          <div className="w-11 h-11 rounded-xl border border-paper-border/70 bg-paper-bg p-1.5 shrink-0 shadow-xs flex items-center justify-center">
+            <img
+              src="/images/logos/dedanext.png"
+              alt="Dedanext"
+              className="w-full h-full rounded-md object-contain"
+            />
+          </div>
           <div>
-            <h4 className="font-display font-bold text-sm text-ink-primary leading-tight">
+            <h4 className="font-sans font-semibold text-lg text-ink-primary leading-tight">
               Dedanext S.p.a
             </h4>
-            <span className="font-mono text-[11px] text-ink-muted">
-              Trento, Italy 🇮🇹 • Product Design &amp; Research
+            <span className="font-sans text-[15px] text-ink-muted">
+              Trento, Italy • Product Design &amp; Research
             </span>
           </div>
         </div>
-        <p className="text-xs text-ink-muted leading-relaxed mb-3">
+        <p className="font-sans text-base text-ink-muted leading-relaxed mb-4">
           EU Horizon EDIAQI initiative: designed role-separated decision support systems and semi-ambient sensor interfaces tested with 200+ users.
         </p>
-        <div className="pt-2 border-t border-paper-border/60">
+        <div className="pt-3 border-t border-paper-border/60">
           <Link
             to="/projects/ediaqi-decision-support-system"
-            className="inline-flex items-center justify-between w-full font-mono text-xs text-emerald-600 dark:text-emerald-400 hover:underline group"
+            className="inline-flex items-center justify-between w-full font-sans text-base font-medium text-emerald-600 dark:text-emerald-400 hover:underline group"
           >
             <span>Read EDIAQI Case Study</span>
             <span className="group-hover:translate-x-0.5 transition-transform">→</span>
@@ -123,7 +127,7 @@ export const DedanextEntity: React.FC<BaseEntityProps> = ({ children }) => {
  */
 export const GroundworkEntity: React.FC<BaseEntityProps> = ({ children }) => {
   return (
-    <HoverCard openDelay={200} closeDelay={150}>
+    <HoverCard openDelay={90} closeDelay={150}>
       <HoverCardTrigger asChild>
         <span className="inline-flex items-center gap-1 font-semibold text-ink-primary hover:text-emerald-500 dark:hover:text-emerald-400 underline decoration-paper-border hover:decoration-emerald-500 underline-offset-4 cursor-pointer transition-colors select-none">
           <img
@@ -135,33 +139,35 @@ export const GroundworkEntity: React.FC<BaseEntityProps> = ({ children }) => {
           <span>{children || "Groundwork"}</span>
         </span>
       </HoverCardTrigger>
-      <HoverCardContent align="start" className="w-80 text-left">
-        <div className="flex items-center gap-2.5 mb-2">
-          <img
-            src="/images/logos/groundwork.svg"
-            alt="Groundwork"
-            className="w-6 h-6 rounded-md object-contain border border-paper-border/60 bg-paper-bg p-0.5"
-          />
+      <HoverCardContent align="start" className="w-84 sm:w-96 text-left">
+        <div className="flex items-center gap-3.5 mb-3">
+          <div className="w-11 h-11 rounded-xl border border-paper-border/70 bg-paper-bg p-1.5 shrink-0 shadow-xs flex items-center justify-center">
+            <img
+              src="/images/logos/groundwork.svg"
+              alt="Groundwork"
+              className="w-full h-full rounded-md object-contain"
+            />
+          </div>
           <div>
-            <h4 className="font-display font-bold text-sm text-ink-primary leading-tight">
+            <h4 className="font-sans font-semibold text-lg text-ink-primary leading-tight">
               Groundwork
             </h4>
-            <span className="font-mono text-[11px] text-ink-muted">
+            <span className="font-sans text-[15px] text-ink-muted">
               Co-founder &amp; Product Lead
             </span>
           </div>
         </div>
-        <div className="mb-2.5 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono text-[10px] font-semibold">
-          <Award className="w-3 h-3" />
+        <div className="mb-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-sans text-xs font-semibold">
+          <Award className="w-3.5 h-3.5 shrink-0" />
           <span>2nd Place Grand Finalist • EIT Jumpstarter</span>
         </div>
-        <p className="text-xs text-ink-muted leading-relaxed mb-3">
+        <p className="font-sans text-base text-ink-muted leading-relaxed mb-4">
           Selected out of 900+ European startups: turning EU digital accessibility mandates into actionable, automated design systems.
         </p>
-        <div className="pt-2 border-t border-paper-border/60">
+        <div className="pt-3 border-t border-paper-border/60">
           <Link
             to="/projects/groundwork"
-            className="inline-flex items-center justify-between w-full font-mono text-xs text-emerald-600 dark:text-emerald-400 hover:underline group"
+            className="inline-flex items-center justify-between w-full font-sans text-base font-medium text-emerald-600 dark:text-emerald-400 hover:underline group"
           >
             <span>Read Groundwork Case Study</span>
             <span className="group-hover:translate-x-0.5 transition-transform">→</span>
@@ -177,26 +183,28 @@ export const GroundworkEntity: React.FC<BaseEntityProps> = ({ children }) => {
  */
 export const EITJumpstarterEntity: React.FC<BaseEntityProps> = ({ children }) => {
   return (
-    <HoverCard openDelay={200} closeDelay={150}>
+    <HoverCard openDelay={90} closeDelay={150}>
       <HoverCardTrigger asChild>
         <span className="underline decoration-dotted decoration-emerald-500/80 underline-offset-4 cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors select-none">
           {children || "(awarded 2nd place at the EIT Jumpstarter Grand Final)"}
         </span>
       </HoverCardTrigger>
-      <HoverCardContent align="start" className="w-72 text-left">
-        <div className="flex items-center gap-2 mb-1.5">
-          <span className="w-5 h-5 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-xs">
-            🏆
-          </span>
-          <h4 className="font-display font-bold text-sm text-ink-primary">
-            EIT Jumpstarter Grand Final 2025
-          </h4>
+      <HoverCardContent align="start" className="w-84 sm:w-96 text-left">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+            <Award className="w-5 h-5" />
+          </div>
+          <div>
+            <h4 className="font-sans font-semibold text-lg text-ink-primary leading-tight">
+              EIT Jumpstarter Grand Final 2025
+            </h4>
+            <div className="flex items-center gap-1 text-[13px] font-sans text-ink-muted mt-0.5">
+              <MapPin className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+              <span>Budapest, Hungary</span>
+            </div>
+          </div>
         </div>
-        <div className="flex items-center gap-1 text-[11px] font-mono text-ink-muted mb-2">
-          <MapPin className="w-3 h-3 text-emerald-500" />
-          <span>Budapest, Hungary 🇭🇺</span>
-        </div>
-        <p className="text-xs text-ink-muted leading-relaxed">
+        <p className="font-sans text-base text-ink-muted leading-relaxed">
           Awarded 2nd Place in the New European Bauhaus category by the European Institute of Innovation &amp; Technology (EIT), competing against top EU deep-tech teams.
         </p>
       </HoverCardContent>
@@ -209,7 +217,7 @@ export const EITJumpstarterEntity: React.FC<BaseEntityProps> = ({ children }) =>
  */
 export const AaltoEntity: React.FC<BaseEntityProps> = ({ children }) => {
   return (
-    <HoverCard openDelay={200} closeDelay={150}>
+    <HoverCard openDelay={90} closeDelay={150}>
       <HoverCardTrigger asChild>
         <span className="inline-flex items-center gap-1 font-semibold text-ink-primary hover:text-emerald-500 dark:hover:text-emerald-400 underline decoration-paper-border hover:decoration-emerald-500 underline-offset-4 cursor-pointer transition-colors select-none">
           <img
@@ -221,31 +229,33 @@ export const AaltoEntity: React.FC<BaseEntityProps> = ({ children }) => {
           <span>{children || "Aalto University"}</span>
         </span>
       </HoverCardTrigger>
-      <HoverCardContent align="start" className="w-80 text-left">
-        <div className="flex items-center gap-2.5 mb-2">
-          <img
-            src="/images/logos/aalto.png"
-            alt="Aalto University"
-            className="w-6 h-6 rounded-md object-contain border border-paper-border/60 bg-paper-bg p-0.5"
-          />
+      <HoverCardContent align="start" className="w-84 sm:w-96 text-left">
+        <div className="flex items-center gap-3.5 mb-3">
+          <div className="w-11 h-11 rounded-xl border border-paper-border/70 bg-paper-bg p-1.5 shrink-0 shadow-xs flex items-center justify-center">
+            <img
+              src="/images/logos/aalto.png"
+              alt="Aalto University"
+              className="w-full h-full rounded-md object-contain"
+            />
+          </div>
           <div>
-            <h4 className="font-display font-bold text-sm text-ink-primary leading-tight">
+            <h4 className="font-sans font-semibold text-lg text-ink-primary leading-tight">
               Aalto University
             </h4>
-            <span className="font-mono text-[11px] text-ink-muted">
-              Espoo / Helsinki, Finland 🇫🇮
+            <span className="font-sans text-[15px] text-ink-muted">
+              Espoo / Helsinki, Finland
             </span>
           </div>
         </div>
-        <div className="space-y-1.5 text-xs text-ink-muted">
+        <div className="space-y-2 text-base font-sans text-ink-muted">
           <div>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-ink-primary block">
+            <span className="text-xs uppercase tracking-wider text-ink-primary font-semibold block mb-0.5">
               Degree Track
             </span>
             <span>M.Sc. Human-Computer Interaction &amp; Design</span>
           </div>
           <div>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-ink-primary block">
+            <span className="text-xs uppercase tracking-wider text-ink-primary font-semibold block mb-0.5">
               Focus
             </span>
             <span className="text-emerald-600 dark:text-emerald-400 font-medium">
@@ -263,7 +273,7 @@ export const AaltoEntity: React.FC<BaseEntityProps> = ({ children }) => {
  */
 export const TrentoEntity: React.FC<BaseEntityProps> = ({ children }) => {
   return (
-    <HoverCard openDelay={200} closeDelay={150}>
+    <HoverCard openDelay={90} closeDelay={150}>
       <HoverCardTrigger asChild>
         <span className="inline-flex items-center gap-1 font-semibold text-ink-primary hover:text-emerald-500 dark:hover:text-emerald-400 underline decoration-paper-border hover:decoration-emerald-500 underline-offset-4 cursor-pointer transition-colors select-none">
           <img
@@ -275,31 +285,33 @@ export const TrentoEntity: React.FC<BaseEntityProps> = ({ children }) => {
           <span>{children || "University of Trento"}</span>
         </span>
       </HoverCardTrigger>
-      <HoverCardContent align="start" className="w-80 text-left">
-        <div className="flex items-center gap-2.5 mb-2">
-          <img
-            src="/images/logos/unitn.png"
-            alt="University of Trento"
-            className="w-6 h-6 rounded-md object-contain border border-paper-border/60 bg-paper-bg p-0.5"
-          />
+      <HoverCardContent align="start" className="w-84 sm:w-96 text-left">
+        <div className="flex items-center gap-3.5 mb-3">
+          <div className="w-11 h-11 rounded-xl border border-paper-border/70 bg-paper-bg p-1.5 shrink-0 shadow-xs flex items-center justify-center">
+            <img
+              src="/images/logos/unitn.png"
+              alt="University of Trento"
+              className="w-full h-full rounded-md object-contain"
+            />
+          </div>
           <div>
-            <h4 className="font-display font-bold text-sm text-ink-primary leading-tight">
+            <h4 className="font-sans font-semibold text-lg text-ink-primary leading-tight">
               University of Trento
             </h4>
-            <span className="font-mono text-[11px] text-ink-muted">
-              Trento, Italy 🇮🇹
+            <span className="font-sans text-[15px] text-ink-muted">
+              Trento, Italy
             </span>
           </div>
         </div>
-        <div className="space-y-1.5 text-xs text-ink-muted">
+        <div className="space-y-2 text-base font-sans text-ink-muted">
           <div>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-ink-primary block">
+            <span className="text-xs uppercase tracking-wider text-ink-primary font-semibold block mb-0.5">
               Degree Track
             </span>
             <span>M.Sc. Cognitive Science &amp; Interaction Technology</span>
           </div>
           <div>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-ink-primary block">
+            <span className="text-xs uppercase tracking-wider text-ink-primary font-semibold block mb-0.5">
               Focus
             </span>
             <span className="text-emerald-600 dark:text-emerald-400 font-medium">
@@ -317,31 +329,31 @@ export const TrentoEntity: React.FC<BaseEntityProps> = ({ children }) => {
  */
 export const JourneyEntity: React.FC<BaseEntityProps> = ({ children }) => {
   return (
-    <HoverCard openDelay={200} closeDelay={150}>
+    <HoverCard openDelay={90} closeDelay={150}>
       <HoverCardTrigger asChild>
         <span className="underline decoration-dotted decoration-paper-border hover:decoration-emerald-500 underline-offset-4 cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors select-none">
           {children || "brought me to Europe"}
         </span>
       </HoverCardTrigger>
-      <HoverCardContent align="center" className="w-72 text-left">
-        <h4 className="font-display font-bold text-sm text-ink-primary mb-2 flex items-center gap-1.5">
-          <span>✈️ Cross-Continental Journey</span>
+      <HoverCardContent align="center" className="w-84 sm:w-96 text-left">
+        <h4 className="font-sans font-semibold text-lg text-ink-primary mb-3">
+          Cross-Continental Journey
         </h4>
-        <div className="space-y-2 font-mono text-xs text-ink-muted border-l-2 border-emerald-500/40 pl-3 ml-1 my-2">
+        <div className="space-y-2.5 font-sans text-base text-ink-muted border-l-2 border-emerald-500/40 pl-3.5 ml-1 my-3">
           <div>
-            <span className="font-bold text-ink-primary">🇮🇳 India</span>
-            <p className="text-[11px] text-ink-muted">B.Tech Computer Science</p>
+            <span className="font-semibold text-ink-primary block">India</span>
+            <p className="text-sm text-ink-muted">B.Tech Computer Science</p>
           </div>
           <div>
-            <span className="font-bold text-ink-primary">🇮🇹 Italy (Trento)</span>
-            <p className="text-[11px] text-ink-muted">Cognitive Science &amp; Perception</p>
+            <span className="font-semibold text-ink-primary block">Italy (Trento)</span>
+            <p className="text-sm text-ink-muted">Cognitive Science &amp; Human Perception</p>
           </div>
           <div>
-            <span className="font-bold text-ink-primary">🇫🇮 Finland (Helsinki)</span>
-            <p className="text-[11px] text-ink-muted">Nordic HCI &amp; Production Craft</p>
+            <span className="font-semibold text-ink-primary block">Finland (Helsinki)</span>
+            <p className="text-sm text-ink-muted">Nordic HCI &amp; Production Craft</p>
           </div>
         </div>
-        <p className="text-[11px] text-ink-muted pt-1">
+        <p className="font-sans text-sm text-ink-muted pt-2 border-t border-paper-border/60">
           6,400+ km transition anchoring frontend systems in human cognitive models.
         </p>
       </HoverCardContent>
@@ -354,7 +366,7 @@ export const JourneyEntity: React.FC<BaseEntityProps> = ({ children }) => {
  */
 export const SuscoEntity: React.FC<BaseEntityProps> = ({ children }) => {
   return (
-    <HoverCard openDelay={200} closeDelay={150}>
+    <HoverCard openDelay={90} closeDelay={150}>
       <HoverCardTrigger asChild>
         <span className="inline-flex items-center gap-1 font-semibold text-ink-primary hover:text-emerald-500 dark:hover:text-emerald-400 underline decoration-paper-border hover:decoration-emerald-500 underline-offset-4 cursor-pointer transition-colors select-none">
           <img
@@ -366,37 +378,39 @@ export const SuscoEntity: React.FC<BaseEntityProps> = ({ children }) => {
           <span>{children || "Sustainability Community of Finland"}</span>
         </span>
       </HoverCardTrigger>
-      <HoverCardContent align="start" className="w-80 text-left">
-        <div className="flex items-center gap-2.5 mb-2">
-          <img
-            src="/images/logos/susco.png"
-            alt="Susco"
-            className="w-7 h-7 rounded-md object-contain border border-paper-border/60 bg-paper-bg p-0.5"
-          />
+      <HoverCardContent align="start" className="w-84 sm:w-96 text-left">
+        <div className="flex items-center gap-3.5 mb-3">
+          <div className="w-11 h-11 rounded-xl border border-paper-border/70 bg-paper-bg p-1.5 shrink-0 shadow-xs flex items-center justify-center">
+            <img
+              src="/images/logos/susco.png"
+              alt="Susco"
+              className="w-full h-full rounded-md object-contain"
+            />
+          </div>
           <div>
-            <h4 className="font-display font-bold text-sm text-ink-primary leading-tight">
+            <h4 className="font-sans font-semibold text-lg text-ink-primary leading-tight">
               Sustainability Community Finland
             </h4>
-            <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-              <span className="font-mono text-[10px] text-amber-600 dark:text-amber-400 font-semibold uppercase tracking-wider">
+            <div className="flex items-center gap-1.5 mt-1">
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+              <span className="font-sans text-xs text-amber-600 dark:text-amber-400 font-semibold uppercase tracking-wider">
                 Work in progress
               </span>
             </div>
           </div>
         </div>
-        <p className="text-xs text-ink-muted leading-relaxed mb-3">
+        <p className="font-sans text-base text-ink-muted leading-relaxed mb-4">
           Designing the visual identity, brand tokens, and digital guidelines for Helsinki climate advocates.
         </p>
-        <div className="pt-2 border-t border-paper-border/60">
+        <div className="pt-3 border-t border-paper-border/60">
           <a
             href="https://susco.org/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-between w-full font-mono text-xs text-emerald-600 dark:text-emerald-400 hover:underline group"
+            className="inline-flex items-center justify-between w-full font-sans text-base font-medium text-emerald-600 dark:text-emerald-400 hover:underline group"
           >
             <span>Visit susco.org</span>
-            <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </a>
         </div>
       </HoverCardContent>
@@ -409,34 +423,34 @@ export const SuscoEntity: React.FC<BaseEntityProps> = ({ children }) => {
  */
 export const SuperEgoEntity: React.FC<BaseEntityProps> = ({ children }) => {
   return (
-    <HoverCard openDelay={200} closeDelay={150}>
+    <HoverCard openDelay={90} closeDelay={150}>
       <HoverCardTrigger asChild>
         <span className="inline-flex items-center gap-1 font-semibold text-ink-primary hover:text-emerald-500 dark:hover:text-emerald-400 underline decoration-paper-border hover:decoration-emerald-500 underline-offset-4 cursor-pointer transition-colors select-none">
           <Sparkles className="w-3.5 h-3.5 text-emerald-500 inline-block -translate-y-0.5" />
           <span>{children || "YOU (Super Ego)"}</span>
         </span>
       </HoverCardTrigger>
-      <HoverCardContent align="start" className="w-80 text-left">
-        <div className="flex items-center gap-2 mb-1.5">
-          <div className="w-6 h-6 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-bold font-mono">
+      <HoverCardContent align="start" className="w-84 sm:w-96 text-left">
+        <div className="flex items-center gap-3.5 mb-3">
+          <div className="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm font-bold font-sans shrink-0">
             YOU
           </div>
           <div>
-            <h4 className="font-display font-bold text-sm text-ink-primary leading-tight">
+            <h4 className="font-sans font-semibold text-lg text-ink-primary leading-tight">
               YOU (Super Ego)
             </h4>
-            <span className="font-mono text-[10px] text-ink-muted">
+            <span className="font-sans text-[15px] text-ink-muted">
               Master's Thesis Project • Aalto HCI
             </span>
           </div>
         </div>
-        <p className="text-xs text-ink-muted leading-relaxed mb-3">
+        <p className="font-sans text-base text-ink-muted leading-relaxed mb-4">
           Prototyping an operating-system-level assistant that adapts nudges to emotional awareness, countering mindless dopamine loops.
         </p>
-        <div className="pt-2 border-t border-paper-border/60">
+        <div className="pt-3 border-t border-paper-border/60">
           <Link
             to="/projects/super-ego-app"
-            className="inline-flex items-center justify-between w-full font-mono text-xs text-emerald-600 dark:text-emerald-400 hover:underline group"
+            className="inline-flex items-center justify-between w-full font-sans text-base font-medium text-emerald-600 dark:text-emerald-400 hover:underline group"
           >
             <span>Explore Super Ego Case Study</span>
             <span className="group-hover:translate-x-0.5 transition-transform">→</span>
@@ -452,7 +466,7 @@ export const SuperEgoEntity: React.FC<BaseEntityProps> = ({ children }) => {
  */
 export const SubstackEntity: React.FC<BaseEntityProps> = ({ children }) => {
   return (
-    <HoverCard openDelay={200} closeDelay={150}>
+    <HoverCard openDelay={90} closeDelay={150}>
       <HoverCardTrigger asChild>
         <span className="inline-flex items-center gap-1 font-semibold text-ink-primary hover:text-[#FF6719] underline decoration-paper-border hover:decoration-[#FF6719] underline-offset-4 cursor-pointer transition-colors select-none">
           <svg
@@ -468,9 +482,9 @@ export const SubstackEntity: React.FC<BaseEntityProps> = ({ children }) => {
           <span>{children || "substack"}</span>
         </span>
       </HoverCardTrigger>
-      <HoverCardContent align="start" className="w-80 text-left">
-        <div className="flex items-center gap-2.5 mb-2">
-          <div className="w-7 h-7 rounded-md bg-[#FF6719]/10 flex items-center justify-center p-1.5 border border-[#FF6719]/30">
+      <HoverCardContent align="start" className="w-84 sm:w-96 text-left">
+        <div className="flex items-center gap-3.5 mb-3">
+          <div className="w-11 h-11 rounded-xl bg-[#FF6719]/10 flex items-center justify-center p-2.5 border border-[#FF6719]/30 shrink-0">
             <svg viewBox="0 0 24 24" fill="none" className="w-full h-full">
               <path
                 d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"
@@ -479,26 +493,26 @@ export const SubstackEntity: React.FC<BaseEntityProps> = ({ children }) => {
             </svg>
           </div>
           <div>
-            <h4 className="font-display font-bold text-sm text-ink-primary leading-tight">
+            <h4 className="font-sans font-semibold text-lg text-ink-primary leading-tight">
               Unsaid Moments
             </h4>
-            <span className="font-mono text-[10px] text-ink-muted">
+            <span className="font-sans text-[15px] text-ink-muted">
               Substack by Sumit Nayyar
             </span>
           </div>
         </div>
-        <p className="text-xs text-ink-muted leading-relaxed mb-3">
+        <p className="font-sans text-base text-ink-muted leading-relaxed mb-4">
           Quiet observations and personal essays on human relations.
         </p>
-        <div className="pt-2 border-t border-paper-border/60">
+        <div className="pt-3 border-t border-paper-border/60">
           <a
             href="https://sumit6131.substack.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-between w-full font-mono text-xs text-[#FF6719] hover:underline group"
+            className="inline-flex items-center justify-between w-full font-sans text-base font-medium text-[#FF6719] hover:underline group"
           >
             <span>Read on Substack</span>
-            <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </a>
         </div>
       </HoverCardContent>
@@ -507,7 +521,7 @@ export const SubstackEntity: React.FC<BaseEntityProps> = ({ children }) => {
 };
 
 /**
- * Interactive "Identity Crisis" Trilemma Calculator
+ * Interactive "Identity Crisis" Trilemma Calculator with Stacked Horizontal Bar
  */
 export const TrilemmaEntity: React.FC<BaseEntityProps> = ({ children }) => {
   const [ratios, setRatios] = useState({
@@ -516,10 +530,10 @@ export const TrilemmaEntity: React.FC<BaseEntityProps> = ({ children }) => {
     code: 25,
   });
 
-  const recalculate = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    // Generate 3 random numbers that sum to 100
-    const r1 = Math.floor(Math.random() * 40) + 20; // 20 - 60
+  const recalculate = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    // Generate 3 numbers that sum to 100
+    const r1 = Math.floor(Math.random() * 35) + 25; // 25 - 60
     const remaining = 100 - r1;
     const r2 = Math.floor(Math.random() * (remaining - 20)) + 10;
     const r3 = 100 - r1 - r2;
@@ -527,7 +541,7 @@ export const TrilemmaEntity: React.FC<BaseEntityProps> = ({ children }) => {
   };
 
   return (
-    <HoverCard openDelay={200} closeDelay={150}>
+    <HoverCard openDelay={90} closeDelay={150}>
       <HoverCardTrigger asChild>
         <span
           onClick={recalculate}
@@ -537,71 +551,128 @@ export const TrilemmaEntity: React.FC<BaseEntityProps> = ({ children }) => {
           {children || "identity crises"}
         </span>
       </HoverCardTrigger>
-      <HoverCardContent align="center" className="w-80 text-left">
-        <div className="flex items-center justify-between mb-2">
-          <h4 className="font-display font-bold text-sm text-ink-primary flex items-center gap-1.5">
-            <span>🎭 Identity Distribution</span>
+      <HoverCardContent
+        align="center"
+        className="w-84 sm:w-96 text-left cursor-pointer select-none group"
+        onClick={() => recalculate()}
+      >
+        <div className="flex items-center justify-between mb-3">
+          <h4 className="font-sans font-semibold text-lg text-ink-primary">
+            Identity Distribution
           </h4>
-          <button
-            type="button"
-            onClick={recalculate}
-            className="inline-flex items-center gap-1 font-mono text-[10px] text-emerald-600 dark:text-emerald-400 hover:opacity-80 active:scale-95 transition-all px-2 py-0.5 rounded-md bg-emerald-500/10"
-          >
-            <RotateCw className="w-3 h-3" />
-            <span>Reroll</span>
-          </button>
+          <span className="font-sans text-xs text-ink-muted">
+            Click to recalculate
+          </span>
         </div>
 
-        <div className="space-y-2 py-2 font-mono text-xs">
-          <div>
-            <div className="flex justify-between text-[11px] mb-1">
-              <span className="text-ink-primary">🧠 Cognitive Science</span>
-              <span className="font-bold text-emerald-600 dark:text-emerald-400">
-                {ratios.cogSci}%
-              </span>
+        {/* Stacked Horizontal Bar Chart */}
+        <div className="h-3.5 w-full bg-paper-border/40 rounded-full overflow-hidden flex shadow-inner my-2.5">
+          <div
+            className="h-full bg-emerald-500 transition-all duration-500 ease-out"
+            style={{ width: `${ratios.cogSci}%` }}
+            title={`Cognitive Science: ${ratios.cogSci}%`}
+          />
+          <div
+            className="h-full bg-indigo-500 transition-all duration-500 ease-out"
+            style={{ width: `${ratios.design}%` }}
+            title={`Design Craft: ${ratios.design}%`}
+          />
+          <div
+            className="h-full bg-amber-500 transition-all duration-500 ease-out"
+            style={{ width: `${ratios.code}%` }}
+            title={`Production Code: ${ratios.code}%`}
+          />
+        </div>
+
+        {/* 3-Column Animating Values Breakdown */}
+        <div className="grid grid-cols-3 gap-2 pt-2 font-sans">
+          <div className="flex flex-col">
+            <div className="flex items-center gap-1.5 text-xs text-ink-muted mb-0.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+              <span className="truncate">Cognitive</span>
             </div>
-            <div className="h-1.5 w-full bg-paper-border/60 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-emerald-500 transition-all duration-300 ease-out"
-                style={{ width: `${ratios.cogSci}%` }}
-              />
-            </div>
+            <span className="font-semibold text-ink-primary text-base tabular-nums">
+              {ratios.cogSci}%
+            </span>
           </div>
 
-          <div>
-            <div className="flex justify-between text-[11px] mb-1">
-              <span className="text-ink-primary">✏️ Design Craft</span>
-              <span className="font-bold text-indigo-500">
-                {ratios.design}%
-              </span>
+          <div className="flex flex-col">
+            <div className="flex items-center gap-1.5 text-xs text-ink-muted mb-0.5">
+              <span className="w-2 h-2 rounded-full bg-indigo-500 shrink-0" />
+              <span className="truncate">Design</span>
             </div>
-            <div className="h-1.5 w-full bg-paper-border/60 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-indigo-500 transition-all duration-300 ease-out"
-                style={{ width: `${ratios.design}%` }}
-              />
-            </div>
+            <span className="font-semibold text-ink-primary text-base tabular-nums">
+              {ratios.design}%
+            </span>
           </div>
 
-          <div>
-            <div className="flex justify-between text-[11px] mb-1">
-              <span className="text-ink-primary">💻 Production Code</span>
-              <span className="font-bold text-amber-500">
-                {ratios.code}%
-              </span>
+          <div className="flex flex-col">
+            <div className="flex items-center gap-1.5 text-xs text-ink-muted mb-0.5">
+              <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
+              <span className="truncate">Code</span>
             </div>
-            <div className="h-1.5 w-full bg-paper-border/60 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-amber-500 transition-all duration-300 ease-out"
-                style={{ width: `${ratios.code}%` }}
-              />
-            </div>
+            <span className="font-semibold text-ink-primary text-base tabular-nums">
+              {ratios.code}%
+            </span>
           </div>
         </div>
 
-        <p className="text-[10px] font-mono text-ink-muted pt-1 border-t border-paper-border/60">
-          Fluctuates daily based on caffeine intake and git commits. Click to recalculate!
+        <p className="font-sans text-xs text-ink-muted pt-3 mt-3 border-t border-paper-border/60">
+          Fluctuates daily based on coffee intake and git commits. Click card to recalculate.
         </p>
+      </HoverCardContent>
+    </HoverCard>
+  );
+};
+
+/**
+ * Craft as Differentiator Entity Card
+ */
+export const CraftEntity: React.FC<BaseEntityProps> = ({ children }) => {
+  return (
+    <HoverCard openDelay={90} closeDelay={150}>
+      <HoverCardTrigger asChild>
+        <span className="font-semibold text-ink-primary underline decoration-emerald-500 decoration-wavy sm:decoration-solid underline-offset-4 cursor-pointer hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors select-none">
+          {children || "craft is the differentiator"}
+        </span>
+      </HoverCardTrigger>
+      <HoverCardContent align="start" className="w-84 sm:w-96 text-left">
+        <div className="flex items-center gap-3.5 mb-3">
+          <div className="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0 shadow-xs">
+            <Sparkles className="w-5 h-5" />
+          </div>
+          <div>
+            <h4 className="font-sans font-semibold text-lg text-ink-primary leading-tight">
+              The Craft Standard
+            </h4>
+            <span className="font-sans text-[15px] text-ink-muted">
+              Design Engineering Philosophy
+            </span>
+          </div>
+        </div>
+        <p className="font-sans text-base text-ink-muted leading-relaxed mb-3">
+          In an era where anyone can generate a feature in seconds, craft is the sole durable differentiator: sub-16ms framerates, typography calibrated to human cognition, and zero handoff loss between design intent and shipped production code.
+        </p>
+        <div className="space-y-2 py-2.5 border-t border-paper-border/60 font-sans text-sm">
+          <div className="flex items-baseline gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0 translate-y-[-1px]" />
+            <span className="text-ink-muted">
+              <strong className="text-ink-primary font-medium">Sub-16ms Framerate:</strong> Hardware-accelerated GPU transforms &amp; spring physics
+            </span>
+          </div>
+          <div className="flex items-baseline gap-2">
+            <span className="w-2 h-2 rounded-full bg-indigo-500 shrink-0 translate-y-[-1px]" />
+            <span className="text-ink-muted">
+              <strong className="text-ink-primary font-medium">Cognitive Calm:</strong> Respecting human attention rather than mining dopamine
+            </span>
+          </div>
+          <div className="flex items-baseline gap-2">
+            <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0 translate-y-[-1px]" />
+            <span className="text-ink-muted">
+              <strong className="text-ink-primary font-medium">Zero Handoff Gap:</strong> Designers shipping live components directly in production
+            </span>
+          </div>
+        </div>
       </HoverCardContent>
     </HoverCard>
   );

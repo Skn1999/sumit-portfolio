@@ -14,6 +14,7 @@ import {
   SuperEgoEntity,
   SubstackEntity,
   TrilemmaEntity,
+  CraftEntity,
 } from "@/components/storyline/StorylineEntities";
 
 /**
@@ -131,6 +132,8 @@ export function TextReveal({
           return <SubstackEntity>{token.entityLabel}</SubstackEntity>;
         case "trilemma":
           return <TrilemmaEntity>{token.entityLabel}</TrilemmaEntity>;
+        case "craft":
+          return <CraftEntity>{token.entityLabel}</CraftEntity>;
         default:
           return token.word;
       }

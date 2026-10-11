@@ -85,6 +85,10 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      transitionTimingFunction: {
+        "emil-out": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "emil-in-out": "cubic-bezier(0.77, 0, 0.175, 1)",
+      },
       keyframes: {
         "accordion-down": {
           from: {
