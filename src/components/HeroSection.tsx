@@ -11,8 +11,12 @@ gsap.registerPlugin(ScrollTrigger);
 // Module-level flag to ensure hero text only animates on initial site load
 let heroTextHasAnimated = false;
 
-// Damping / lag factor: 0.15 provides silky deceleration matching trackpad scroll
-const DAMPING_FACTOR = 0.15;
+// Increase sensitivity for snappy, responsive playback across natural wrist/cursor movements
+const SENSITIVITY = 2.2;
+
+// Damping / lag factor: lower values (0.05 - 0.08) introduce a silky, weighted inertia
+// where the video playback smoothly trails the cursor movement with gentle deceleration.
+const DAMPING_FACTOR = 0.1;
 
 // Interactive Em-Dash with Emil Kowalski pop-style tooltip ("Not written by AI")
 const EmDash: React.FC = () => {
@@ -331,7 +335,7 @@ const HeroSection: React.FC = () => {
             {/* Preston Booth style text reveal container: raw, high-impact typography without card boxes */}
             <div
               ref={textContainerRef}
-              className="home-text-reveal space-y-10 sm:space-y-12 md:space-y-14 text-lg sm:text-xl md:text-2xl lg:text-[1.75rem] text-ink-primary"
+              className="home-text-reveal space-y-10 sm:space-y-12 md:space-y-14 text-lg sm:text-xl md:text-2xl lg:text-[1.75rem] font-medium text-ink-primary"
             >
               {/* Paragraph 1: Identity Anchor with UI Arc TextReveal */}
               <div>
@@ -339,7 +343,7 @@ const HeroSection: React.FC = () => {
                   as="p"
                   text={"I'm a Design Engineer working at the intersection of cognitive science, design craft, and production code. Sometimes I get identity crises and I keep switching between the three."}
                   delay={0.3}
-                  className="text-lg sm:text-xl md:text-2xl lg:text-[1.75rem] text-ink-primary leading-relaxed max-w-none"
+                  className="leading-[1.5] sm:leading-[1.55] md:leading-[1.5] tracking-tight text-lg sm:text-xl md:text-2xl lg:text-[1.75rem] font-medium text-ink-primary max-w-none"
                 />
               </div>
 

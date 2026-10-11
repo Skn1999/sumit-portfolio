@@ -8,11 +8,11 @@
   margin: 0;
   overflow: visible;
   color: inherit;
-  text-wrap: balance;
 }
 
 :where(.reveal) {
   max-width: 24ch;
+  text-wrap: balance;
 }
 
 .line {
