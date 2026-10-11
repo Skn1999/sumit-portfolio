@@ -3,18 +3,15 @@ import { FileText } from "lucide-react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { HelsinkiSolarDial } from "./HelsinkiSolarDial";
 
 gsap.registerPlugin(ScrollTrigger);
 
 // Module-level flag to ensure hero text only animates on initial site load
 let heroTextHasAnimated = false;
 
-// Increase sensitivity for snappy, responsive playback across natural wrist/cursor movements
-const SENSITIVITY = 2.2;
-
-// Damping / lag factor: lower values (0.05 - 0.08) introduce a silky, weighted inertia
-// where the video playback smoothly trails the cursor movement with gentle deceleration.
-const DAMPING_FACTOR = 0.1;
+// Damping / lag factor: 0.15 provides silky deceleration matching trackpad scroll
+const DAMPING_FACTOR = 0.15;
 
 // Interactive Em-Dash with Emil Kowalski pop-style tooltip ("Not written by AI")
 const EmDash: React.FC = () => {
@@ -113,10 +110,9 @@ const HeroSection: React.FC = () => {
   const [isInitialRender] = useState(!heroTextHasAnimated);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const targetTimeRef = useRef<number>(2.0);
-  const displayTimeRef = useRef<number>(2.0);
-  const prevXRef = useRef<number | null>(null);
-  const durationRef = useRef<number>(4.0);
+  const targetTimeRef = useRef<number>(0);
+  const displayTimeRef = useRef<number>(0);
+  const durationRef = useRef<number>(8.0);
   const rafIdRef = useRef<number | null>(null);
   const textContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -132,10 +128,13 @@ const HeroSection: React.FC = () => {
     const onMeta = () => {
       if (video.duration && !isNaN(video.duration)) {
         durationRef.current = video.duration;
-        const midTime = video.duration * 0.5;
-        targetTimeRef.current = midTime;
-        displayTimeRef.current = midTime;
-        video.currentTime = midTime;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = maxScroll > 0 ? Math.min(1, Math.max(0, window.scrollY / maxScroll)) : 0;
+        const time = progress * video.duration;
+        targetTimeRef.current = time;
+        displayTimeRef.current = time;
+        video.currentTime = time;
+        ScrollTrigger.refresh();
       }
     };
 
@@ -206,71 +205,66 @@ const HeroSection: React.FC = () => {
     };
   }, []);
 
-  // Horizontal mouse movement scrubbing listener on window
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const currentX = e.clientX;
-      if (prevXRef.current === null) {
-        prevXRef.current = currentX;
-        return;
-      }
-
-      const delta = currentX - prevXRef.current;
-      prevXRef.current = currentX;
-
-      const video = videoRef.current;
-      const duration = video?.duration || durationRef.current || 4.0;
-      if (!duration || isNaN(duration)) return;
-
-      // Negate time offset so interactions align with video movement:
-      // moving cursor left turns puppet left (t -> 4), moving right turns puppet front/right (t -> 0)
-      const timeOffset = -((delta / window.innerWidth) * SENSITIVITY * duration);
-      const nextTarget = Math.max(0, Math.min(duration, targetTimeRef.current + timeOffset));
-      targetTimeRef.current = nextTarget;
-    };
-
-    const handleMouseLeave = () => {
-      prevXRef.current = null;
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseleave", handleMouseLeave);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, []);
-
-  // Preston Booth scroll-scrub word reveal animation
+  // Preston Booth scroll-scrub word reveal animation + full scroll-height video scrub
   useEffect(() => {
     const container = textContainerRef.current;
     if (!container) return;
 
+    // Direct scroll handler: calculates exact scroll progress from total document scrollHeight
+    const handleScroll = () => {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (maxScroll <= 0) return;
+      const progress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+      const duration = durationRef.current || 8.0;
+      targetTimeRef.current = Math.min(duration - 0.05, progress * duration);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+    // Trigger initial calculation
+    handleScroll();
+
     const ctx = gsap.context(() => {
       const words = gsap.utils.toArray<HTMLElement>(".home-text-reveal .reveal-word");
-      if (!words.length) return;
+      if (words.length) {
+        // Initialize all words at dimmed opacity (ghost text)
+        gsap.set(words, { opacity: 0.18 });
 
-      // Initialize all words at dimmed opacity (ghost text)
-      gsap.set(words, { opacity: 0.18 });
+        // Scrub timeline tied to editorial text: illuminates words one-by-one as the reader advances
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: container,
+            start: "top 72%",
+            end: "bottom 92%",
+            scrub: 0.5,
+          },
+        }).fromTo(
+          words,
+          { opacity: 0.18 },
+          { opacity: 1, duration: 0.08, stagger: 0.015, ease: "none" }
+        );
+      }
 
-      // Scrub timeline tied to page scroll: illuminates words one-by-one as the reader advances
-      // Fully completes before reaching the end of the page so all final words reach full opacity
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: container,
-          start: "top 72%",
-          end: "bottom 92%",
-          scrub: 0.5,
+      // Video playback: lasts until the end of the scroll, interpolated across full document scrollHeight
+      ScrollTrigger.create({
+        start: 0,
+        end: "max",
+        scrub: true,
+        onUpdate: (self) => {
+          const duration = durationRef.current || 8.0;
+          targetTimeRef.current = Math.min(
+            duration - 0.05,
+            Math.max(0, self.progress * duration)
+          );
         },
-      }).fromTo(
-        words,
-        { opacity: 0.18 },
-        { opacity: 1, duration: 0.08, stagger: 0.015, ease: "none" }
-      );
+      });
     }, container);
 
-    return () => ctx.revert();
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+      ctx.revert();
+    };
   }, []);
 
   return (
@@ -278,7 +272,7 @@ const HeroSection: React.FC = () => {
       {/* Background video FIXED across the entire scrolling storyline */}
       <video
         ref={videoRef}
-        src={`${import.meta.env.BASE_URL}hero-video.mp4`}
+        src={`${import.meta.env.BASE_URL}hero-video-2.mp4`}
         muted
         playsInline
         preload="auto"
@@ -293,7 +287,7 @@ const HeroSection: React.FC = () => {
         }}
       />
 
-      <div className="relative z-10 w-full pt-32 md:pt-80 pb-44">
+      <div className="relative z-10 w-full pt-32 md:pt-64 pb-44">
         <div className="mx-auto px-6 sm:px-10 md:px-12 w-full">
           {/* Constrained editorial content column: stays strictly on the left side of the viewport so the video character on the right is completely unobstructed */}
           <div className="max-w-lg md:max-w-xl lg:max-w-[520px] xl:max-w-[560px]">
@@ -317,9 +311,9 @@ const HeroSection: React.FC = () => {
               </div>
 
               {/* Sub-header status tag */}
-              <div className="flex items-center gap-3 font-mono text-xs tracking-widest text-ink-muted uppercase mt-5">
-                <span>HELSINKI, FINLAND</span>
-                <span>//</span>
+              <div className="flex flex-wrap items-center gap-3 font-mono text-xs tracking-widest text-ink-muted uppercase mt-5">
+                <HelsinkiSolarDial direction="bottom" />
+                <span className="hidden sm:inline-block">//</span>
                 <span className="flex items-center gap-2">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>

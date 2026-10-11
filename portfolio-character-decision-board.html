@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Character & Micro-Interaction Decision Matrix</title>
+  <style>
+    :root {
+      --bg: #080c15;
+      --card-bg: #0f1624;
+      --border: #1e293b;
+      --accent-blue: #38bdf8;
+      --accent-green: #10b981;
+      --accent-yellow: #f59e0b;
+      --accent-red: #ef4444;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --ease-emil: cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-stack);
+      padding: 40px 28px 120px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 1180px; margin: 0 auto; }
+
+    /* Header */
+    header {
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+    }
+    .tagline-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent-blue);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 4px;
+      padding: 4px 10px;
+      margin-bottom: 12px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+    }
+    h1 {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    p.lead {
+      color: var(--text-muted);
+      font-size: 15px;
+      max-width: 900px;
+      line-height: 1.6;
+    }
+
+    /* Full-width Stacked Layout (Strictly 1 exploration per row) */
+    .row-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      width: 100%;
+      margin: 28px 0;
+    }
+
+    .arch-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 26px 28px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s;
+    }
+    .arch-card.approved {
+      border-color: var(--accent-green);
+      box-shadow: 0 0 24px rgba(16, 185, 129, 0.18);
+    }
+    .arch-card.rejected {
+      border-color: var(--accent-red);
+      opacity: 0.45;
+    }
+    .arch-card.discuss {
+      border-color: var(--accent-yellow);
+      box-shadow: 0 0 24px rgba(245, 158, 11, 0.18);
+    }
+
+    .card-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .card-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.015em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-num {
+      color: var(--accent-blue);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .subtle-badge {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Live Interactive Preview Viewport */
+    .visual-preview {
+      background: #060911;
+      border: 1px solid #1a2234;
+      border-radius: 10px;
+      padding: 22px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: #64748b;
+      margin-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 8px;
+    }
+    .interactive-tag {
+      color: var(--accent-green);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .interactive-tag::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 8px var(--accent-green);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Side-by-side Before ➔ After Comparison (One per row, 50/50 split) */
+    .comparison-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+      margin: 4px 0;
+    }
+    .comparison-pane {
+      background: #090e18;
+      border: 1px solid #1a2234;
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .comparison-pane.before { border-left: 3px solid var(--accent-red); }
+    .comparison-pane.after { border-left: 3px solid var(--accent-green); }
+    .comparison-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+      font-family: var(--font-mono);
+    }
+    .comparison-pane.before .comparison-label { color: #f87171; }
+    .comparison-pane.after .comparison-label { color: #4ade80; }
+    .comparison-content {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    /* Specs List & Tradeoffs */
+    .specs-list {
+      list-style: none;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 4px 0;
+    }
+    .specs-list li { color: #cbd5e1; }
+    .specs-list li strong { color: #94a3b8; font-weight: 600; }
+
+    .tradeoffs {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 12.5px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .tradeoffs .pro { color: #86efac; }
+    .tradeoffs .con { color: #fca5a5; }
+
+    /* Action Row */
+    .decision-actions {
+      display: flex;
+      gap: 10px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .btn {
+      flex: 1;
+      padding: 9px 12px;
+      border-radius: 7px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      background: #1e293b;
+      color: #cbd5e1;
+      transition: all 0.15s ease;
+      text-align: center;
+    }
+    .btn:hover { background: #334155; color: #fff; }
+    .btn.btn-approve.active {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: var(--accent-green);
+      color: #6ee7b7;
+    }
+    .btn.btn-reject.active {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: var(--accent-red);
+      color: #fca5a5;
+    }
+    .btn.btn-discuss.active {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: var(--accent-yellow);
+      color: #fde047;
+    }
+
+    .notes-input {
+      width: 100%;
+      margin-top: 10px;
+      background: #060911;
+      border: 1px solid #1e293b;
+      border-radius: 7px;
+      padding: 8px 12px;
+      font-size: 12.5px;
+      color: #e2e8f0;
+      display: none;
+      outline: none;
+    }
+    .notes-input:focus { border-color: var(--accent-blue); }
+    .notes-input.visible { display: block; }
+
+    /* Bottom Coded Prompt Section */
+    .prompt-box-section {
+      background: #0d1320;
+      border: 1px solid #1f2a3e;
+      border-radius: 14px;
+      padding: 24px;
+      margin-top: 36px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .prompt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .prompt-header h3 {
+      font-size: 16px;
+      color: var(--accent-blue);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    textarea#codedPrompt {
+      width: 100%;
+      height: 200px;
+      background: #060911;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      color: #38bdf8;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      line-height: 1.55;
+      padding: 14px;
+      resize: vertical;
+      outline: none;
+    }
+    textarea#codedPrompt:focus { border-color: var(--accent-blue); }
+    .btn-copy {
+      background: var(--accent-blue);
+      color: #080c15;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-copy:hover { background: #7dd3fc; }
+    .btn-copy.copied { background: var(--accent-green); color: #fff; }
+
+    .status-summary {
+      display: flex;
+      gap: 18px;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 12px;
+      font-family: var(--font-mono);
+    }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    /* ─── LIVE COMPONENT STYLES ─── */
+
+    /* 1. Helsinki Time Dial */
+    .helsinki-preview-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #090e18;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 14px 20px;
+      position: relative;
+    }
+    .helsinki-clock-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .solar-orb {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fde047, #d97706);
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      animation: solarBreath 4s ease-in-out infinite;
+    }
+    @keyframes solarBreath {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 12px rgba(245, 158, 11, 0.35); }
+      50% { transform: scale(1.08); box-shadow: 0 0 22px rgba(245, 158, 11, 0.6); }
+    }
+    .time-digits {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+    }
+    .city-tag {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .helsinki-trigger-chip {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      color: var(--accent-blue);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 11.5px;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+    .helsinki-trigger-chip:hover {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: var(--accent-blue);
+    }
+    .helsinki-popover {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 20px;
+      background: #111827;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 12px 14px;
+      width: 260px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+      font-size: 11.5px;
+      color: #e2e8f0;
+      z-index: 50;
+      display: none;
+      animation: popIn 0.18s var(--ease-emil);
+      transform-origin: top right;
+    }
+    .helsinki-popover.visible { display: block; }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.94) translateY(-4px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* 2. Command Palette (⌘K) */
+    .cmdk-preview-stage {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .cmdk-trigger-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #090e18;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .cmdk-trigger-bar:hover { border-color: var(--accent-blue); }
+    .cmdk-search-placeholder {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #64748b;
+    }
+    .cmdk-badge {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 3px 7px;
+      color: #cbd5e1;
+    }
+    .cmdk-modal-mock {
+      background: #0f1624;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
+    }
+    .cmdk-input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-bottom: 1px solid #1e293b;
+    }
+    .cmdk-input-mock {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-size: 13.5px;
+      width: 100%;
+      font-family: inherit;
+    }
+    .cmdk-list {
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+    .cmdk-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .cmdk-item:hover, .cmdk-item.selected {
+      background: #1e293b;
+      color: #fff;
+    }
+    .cmdk-item-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cmdk-sound-indicator {
+      font-size: 10px;
+      color: var(--accent-blue);
+      font-family: var(--font-mono);
+    }
+
+    /* 3. Tactile Email Copy */
+    .copy-preview-stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 0;
+      gap: 16px;
+    }
+    .email-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #090e18;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 10px 16px;
+    }
+    .email-text {
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      color: #f1f5f9;
+    }
+    .tactile-copy-btn {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      padding: 7px 16px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      position: relative;
+      transition: transform 160ms var(--ease-emil), background 0.2s, border-color 0.2s;
+      user-select: none;
+    }
+    .tactile-copy-btn:hover { background: #334155; color: #fff; }
+    .tactile-copy-btn:active { transform: scale(0.97); }
+    .tactile-copy-btn.copied {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: var(--accent-green);
+      color: #6ee7b7;
+    }
+    .particle-canvas {
+      position: absolute;
+      pointer-events: none;
+      top: -10px;
+      left: 0;
+      width: 100%;
+      height: 150%;
+    }
+
+    /* 4. Director's Commentary Marginalia */
+    .marginalia-preview-stage {
+      background: #090e18;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 18px 22px;
+      line-height: 1.7;
+      font-size: 14px;
+      color: #cbd5e1;
+      position: relative;
+    }
+    .commentary-trigger {
+      cursor: pointer;
+      color: #38bdf8;
+      border-bottom: 1.5px dotted #38bdf8;
+      padding-bottom: 1px;
+      position: relative;
+      transition: color 0.15s;
+    }
+    .commentary-trigger:hover { color: #7dd3fc; }
+    .commentary-asterisk {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 11px;
+      vertical-align: super;
+      color: var(--accent-yellow);
+      margin-left: 2px;
+    }
+    .commentary-card {
+      position: absolute;
+      top: 55px;
+      right: 20px;
+      background: #111827;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 14px 16px;
+      width: 320px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+      z-index: 50;
+      font-size: 12px;
+      color: #cbd5e1;
+      display: none;
+      animation: popIn 0.2s var(--ease-emil);
+      transform-origin: top right;
+    }
+    .commentary-card.visible { display: block; }
+    .commentary-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--accent-yellow);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    /* 5. Blueprint Mode */
+    .blueprint-preview-stage {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .blueprint-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: #090e18;
+      border: 1px solid #1e293b;
+      border-radius: 6px;
+    }
+    .blueprint-toggle-btn {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      padding: 5px 12px;
+      border-radius: 5px;
+      font-size: 11.5px;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .blueprint-toggle-btn.active {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: var(--accent-blue);
+      color: #38bdf8;
+    }
+    .blueprint-sample-card {
+      background: #0b111e;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 18px;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .blueprint-sample-card.xray-active {
+      background: #060b14;
+      border: 1px dashed #38bdf8;
+      box-shadow: inset 0 0 20px rgba(56, 189, 248, 0.05);
+    }
+    .blueprint-guide-tag {
+      display: none;
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      background: rgba(56, 189, 248, 0.9);
+      color: #060911;
+      padding: 1px 4px;
+      border-radius: 2px;
+      font-weight: 700;
+    }
+    .blueprint-sample-card.xray-active .blueprint-guide-tag { display: inline-block; }
+    .blueprint-grid-lines {
+      display: none;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-size: 16px 16px;
+      background-image: linear-gradient(to right, rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+      pointer-events: none;
+    }
+    .blueprint-sample-card.xray-active .blueprint-grid-lines { display: block; }
+
+    /* 6. Circular Ink Wipe Theme Toggle */
+    .inkwipe-preview-stage {
+      position: relative;
+      height: 120px;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #1e293b;
+      background: #090e18;
+      transition: background 0.4s ease;
+    }
+    .inkwipe-canvas-layer {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      transition: clip-path 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .inkwipe-canvas-layer.light {
+      background: #f8fafc;
+      color: #0f172a;
+      clip-path: circle(0% at 50% 50%);
+    }
+    .inkwipe-canvas-layer.light.active {
+      clip-path: circle(150% at 50% 50%);
+    }
+    .inkwipe-btn {
+      position: relative;
+      z-index: 10;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #fff;
+      padding: 9px 18px;
+      border-radius: 24px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+      transition: transform 160ms ease;
+    }
+    .inkwipe-btn:active { transform: scale(0.96); }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="tagline-badge">// PORTFOLIO CRAFT &amp; CHARACTER // DECISION MATRIX</div>
+    <h1>Moments of Delight &amp; Micro-Interactions</h1>
+    <p class="lead">
+      Strategic evaluation of lightweight, studio-grade micro-interactions for Sumit Nayyar's portfolio. 
+      Designed to introduce memorable "aha!" moments, authentic human texture, and design engineering proof without bloat or gimmicks.
+    </p>
+  </header>
+
+  <!-- STRICTLY ONE EXPLORATION PER ROW (FULL-WIDTH STACKED CARDS) -->
+  <div class="row-stack" id="characterStack"></div>
+
+  <!-- BOTTOM LIVE CODED PROMPT BOX -->
+  <div class="prompt-box-section">
+    <div class="prompt-header">
+      <h3>
+        <span>Live Directives for Antigravity Implementation</span>
+      </h3>
+      <button class="btn-copy" id="copyBtn" onclick="copyPrompt()">Copy Coded Prompt</button>
+    </div>
+    <textarea id="codedPrompt" readonly></textarea>
+    <div class="status-summary">
+      <span class="status-pill"><span class="status-dot" style="background: var(--accent-green);"></span> Approved: <strong id="approvedCount">0</strong></span>
+      <span class="status-pill"><span class="status-dot" style="background: var(--accent-yellow);"></span> Discuss: <strong id="discussCount">0</strong></span>
+      <span class="status-pill"><span class="status-dot" style="background: var(--accent-red);"></span> Rejected: <strong id="rejectedCount">0</strong></span>
+    </div>
+  </div>
+</div>
+
+<script>
+// Web Audio Synth for crisp tactile micro-feedback (zero bundle overhead)
+const audioCtx = (typeof window !== 'undefined' && (window.AudioContext || window.webkitAudioContext)) 
+  ? new (window.AudioContext || window.webkitAudioContext)() 
+  : null;
+
+function playTactileTick(freq = 600, duration = 0.035) {
+  if (!audioCtx) return;
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'triangle';
+  osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+  gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + duration);
+}
+
+const explorations = [
+  {
+    id: "helsinki-dial",
+    num: "01",
+    title: "Helsinki Solar & Local Time Dial",
+    badge: "Header & Footer Ambient State",
+    previewType: "helsinki",
+    beforeText: "Static text in footer: 'Helsinki, FI // Available for new roles.' Zero interactivity, appears like a placeholder footer row.",
+    afterText: "Ticking tabular clock + glowing Nordic solar cycle dial. Hover reveals time difference popover: '2 hrs behind you • Code never sleeps, but Sumit is resting.'",
+    specs: [
+      "<strong>Tabular numerals:</strong> 'font-variant-numeric: tabular-nums' prevents 1px digit jitter on every second tick.",
+      "<strong>Nordic Solar Simulation:</strong> Ambient gradient shifts dynamically (polar night charcoal in winter vs midnight sun amber in summer).",
+      "<strong>Geo-Human Connection:</strong> Origin-anchored popover calculates visitor timezone difference with gentle self-deprecating humor.",
+      "<strong>Performance:</strong> Pure lightweight `requestAnimationFrame` or 1-second interval; 0ms overhead on main thread."
+    ],
+    pro: "Transforms a sterile location line into an authentic sense of place and personal identity.",
+    con: "Requires small client-side timezone calculation and fallback if browser privacy blocks local timezone."
+  },
+  {
+    id: "command-palette",
+    num: "02",
+    title: "Studio Command Bar (⌘K) with Web Audio Clicks",
+    badge: "Global Navigation & Power User Delight",
+    previewType: "cmdk",
+    beforeText: "'cmdk' library is installed in package.json and 'command.tsx' exists in components/ui, but is completely unmounted and inaccessible to visitors.",
+    afterText: "Studio-grade ⌘K palette opens with 0ms delay. Sub-5ms fuzzy search for UX Bites, Case Studies, Resume PDF, Theme Switch, and zero-byte Web Audio clicks.",
+    specs: [
+      "<strong>Emil Kowalski Rule:</strong> Keyboard-initiated actions have 0ms open/close transition (Raycast principle: repeated actions must feel instant).",
+      "<strong>Web Audio API Synthesis:</strong> 10 lines of vanilla JavaScript synthesize crisp 600Hz mechanical clicks (0 KB external audio asset).",
+      "<strong>Immediate Discovery:</strong> Visual '[⌘K]' trigger pill in the header navigation informs mouse users without clutter.",
+      "<strong>Keyboard Ergonomics:</strong> Full ArrowUp, ArrowDown, Enter, and Escape support with instant focus lock."
+    ],
+    pro: "The #1 pattern hiring managers and engineering leaders test to gauge design engineering caliber.",
+    con: "Must ensure mobile drawer fallback or clean suppression on touch-only viewports."
+  },
+  {
+    id: "tactile-copy",
+    num: "03",
+    title: "Tactile Email Copy with Spring Morph & Ink Particles",
+    badge: "Contact & Conversion Action",
+    previewType: "copy",
+    beforeText: "Contact card copy button simply swaps text to 'Copied!' for 2000ms with a generic CSS transition and no tactile physical feedback.",
+    afterText: "Active press scale(0.97) feedback, smooth spring morph into emerald checkmark, subtle audio tick, and 3 ephemeral floating ink particles.",
+    specs: [
+      "<strong>Emil Press Principle:</strong> 'transform: scale(0.97)' on :active makes buttons feel mechanically responsive to fingertip pressure.",
+      "<strong>Micro-Celebration:</strong> Reaching out is the highest-value conversion on the portfolio; treating it with physical polish rewards the visitor.",
+      "<strong>Particle Physics:</strong> 3 CSS keyframe ink dots that disperse upward and fade over 400ms without canvas overhead.",
+      "<strong>Asymmetric Timing:</strong> Instant press reaction (0ms), deliberate 2000ms success hold, silky 200ms ease-out reset."
+    ],
+    pro: "Leaves a lingering impression of craftsmanship on the exact screen where recruiters decide to reach out.",
+    con: "Requires careful gating on mobile so particles don't trigger unwanted touch scroll jitter."
+  },
+  {
+    id: "directors-commentary",
+    num: "04",
+    title: "Director's Commentary Inline Sidenotes",
+    badge: "Editorial Depth & Case Study Marginalia",
+    previewType: "commentary",
+    beforeText: "Hero em-dash '—' already has a delightful 'Not written by AI' tooltip, but the rest of the case studies and bio remain traditional static copy.",
+    afterText: "Subtle interactive asterisks [*] and dotted terms throughout case studies summon origin-aware margin cards with raw, authentic design rationale.",
+    specs: [
+      "<strong>Breaks the Fourth Wall:</strong> Shares authentic reflections: 'Why we scrapped the 3D dashboard', 'The user test quote that changed our roadmap'.",
+      "<strong>Origin-Aware Transform:</strong> Emil principle: Popovers scale from their trigger point (transform-origin: var(--origin)), never from screen center.",
+      "<strong>Non-Intrusive:</strong> Narrative remains 100% readable for fast skimming; commentary is an opt-in discovery for attentive readers.",
+      "<strong>Accessible:</strong> Accessible button semantics, Esc key dismissal, and proper aria-expanded labels."
+    ],
+    pro: "Demonstrates intellectual honesty, storytelling conviction, and human vulnerability over AI-generated corporate polish.",
+    con: "Requires Sumit to draft 4–6 genuine 2-sentence candid reflections across key projects."
+  },
+  {
+    id: "blueprint-mode",
+    num: "05",
+    title: "Blueprint & Inspection Mode (Shift + D)",
+    badge: "Design Engineer X-Ray Lens",
+    previewType: "blueprint",
+    beforeText: "Portfolio presents finished visual artifacts; visitors have no way to observe the underlying interaction architecture, spacing grid, or WCAG ratios.",
+    afterText: "Global 'X-Ray' toggle overlays an architectural cyan grid, bounding outlines, typography line-height indicators, and live WCAG AAA contrast badges.",
+    specs: [
+      "<strong>Proof of Hybrid Skill:</strong> Visually proves dual mastery in behavioral UX architecture AND strict frontend engineering tokens.",
+      "<strong>Pure CSS Implementation:</strong> Toggled by a single root class '.blueprint-mode'; zero DOM mutation or runtime re-renders.",
+      "<strong>Interactive Inspector:</strong> Hovering elements in Blueprint Mode reveals live computed padding, font-size, and contrast chips.",
+      "<strong>Keyboard Shortcut:</strong> Toggleable with 'Shift + D' or via the ⌘K command menu."
+    ],
+    pro: "Instantly separates Sumit from 99% of designers by giving reviewers interactive proof of technical precision.",
+    con: "Can look visually busy if enabled by default; must remain an intentional toggle or easter egg."
+  },
+  {
+    id: "ink-wipe-theme",
+    num: "06",
+    title: "Circular Ink-Wipe Day/Night Toggle (View Transitions)",
+    badge: "Theme Experience & Modern Web API",
+    previewType: "inkwipe",
+    beforeText: "Theme toggle in ThemeToggle.tsx is a standard two-pill button, unmounted in the main header, with abrupt global CSS color swapping.",
+    afterText: "Clicking theme toggle radiates a circular ink-droplet mask from the cursor coordinate across the viewport using document.startViewTransition.",
+    specs: [
+      "<strong>Modern View Transitions API:</strong> Uses native browser 'document.startViewTransition' with circular 'clip-path: circle()' animation.",
+      "<strong>Origin-Anchored Propagation:</strong> The dark charcoal ink or light paper expands outwards from the exact button click coordinate.",
+      "<strong>Progressive Enhancement:</strong> Gracefully falls back to standard instant CSS variable transitions on unsupported browsers.",
+      "<strong>Reduced Motion Compliant:</strong> Automatically switches to a simple 150ms opacity dissolve when 'prefers-reduced-motion: reduce' is active."
+    ],
+    pro: "Showcases bleeding-edge browser capability and turns the ubiquitous theme switch into pure tactile magic.",
+    con: "Requires polyfill check for Firefox/older Safari, though fallback behavior is clean and harmless."
+  }
+];
+
+const state = {};
+explorations.forEach(opt => {
+  state[opt.id] = { status: null, note: "" };
+});
+
+function renderCards() {
+  const container = document.getElementById("characterStack");
+  container.innerHTML = explorations.map(opt => `
+    <div class="arch-card" id="card-${opt.id}">
+      <div class="card-title-row">
+        <span class="card-title">
+          <span class="card-num">${opt.num} //</span>
+          ${opt.title}
+        </span>
+        <span class="subtle-badge">${opt.badge}</span>
+      </div>
+
+      <!-- LIVE INTERACTIVE PREVIEW VIEWPORT -->
+      <div class="visual-preview">
+        <div class="preview-header">
+          <span>LIVE COMPONENT PREVIEW (INTERACTIVE)</span>
+          <span class="interactive-tag">Click &amp; Test Live</span>
+        </div>
+        ${renderPreviewComponent(opt)}
+      </div>
+
+      <!-- STRICTLY ONE COMPARISON PER ROW: SIDE-BY-SIDE BEFORE ➔ AFTER -->
+      <div class="comparison-row">
+        <div class="comparison-pane before">
+          <div class="comparison-label">Before (Current Baseline)</div>
+          <div class="comparison-content">${opt.beforeText}</div>
+        </div>
+        <div class="comparison-pane after">
+          <div class="comparison-label">After (With Character Polish)</div>
+          <div class="comparison-content">${opt.afterText}</div>
+        </div>
+      </div>
+
+      <ul class="specs-list">
+        ${opt.specs.map(s => `<li>${s}</li>`).join('')}
+      </ul>
+
+      <div class="tradeoffs">
+        <div class="pro"><strong>+ Advantage:</strong> ${opt.pro}</div>
+        <div class="con"><strong>- Trade-off:</strong> ${opt.con}</div>
+      </div>
+
+      <div>
+        <div class="decision-actions">
+          <button class="btn btn-approve" onclick="setStatus('${opt.id}', 'approved')">Approve</button>
+          <button class="btn btn-discuss" onclick="setStatus('${opt.id}', 'discuss')">Discuss</button>
+          <button class="btn btn-reject" onclick="setStatus('${opt.id}', 'rejected')">Reject</button>
+        </div>
+        <input 
+          type="text" 
+          class="notes-input" 
+          id="note-${opt.id}" 
+          placeholder="Specific tweaks to wording, animation speed, or implementation preference..." 
+          oninput="setNote('${opt.id}', this.value)"
+        />
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderPreviewComponent(opt) {
+  if (opt.previewType === 'helsinki') {
+    return `
+      <div class="helsinki-preview-box">
+        <div class="helsinki-clock-group">
+          <div class="solar-orb" id="helsinkiOrb" title="Nordic Daylight Dial">☀️</div>
+          <div>
+            <div class="time-digits" id="liveHelsinkiTime">00:58:12 EEST</div>
+            <div class="city-tag">Helsinki, FI // Daylight cycle active</div>
+          </div>
+        </div>
+        <div>
+          <button class="helsinki-trigger-chip" onclick="toggleHelsinkiPopover(event)">
+            <span>Compare Timezone ▾</span>
+          </button>
+          <div class="helsinki-popover" id="helsinkiPopover">
+            <div style="font-weight: 700; color: #38bdf8; margin-bottom: 4px; font-family: var(--font-mono);">HELSINKI // YOUR LOCATION</div>
+            <p style="line-height: 1.5; color: #cbd5e1; margin-bottom: 6px;">
+              Currently <strong style="color: #fff;">00:58</strong> in Helsinki (UTC+3). Sumit is likely asleep, but responses arrive within 12 hours.
+            </p>
+            <div style="font-size: 10px; color: #94a3b8; border-top: 1px solid #1e293b; padding-top: 6px;">
+              ✨ Sun rises at 07:18 • Polar dusk mode active
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  if (opt.previewType === 'cmdk') {
+    return `
+      <div class="cmdk-preview-stage">
+        <div class="cmdk-trigger-bar" onclick="focusCmdkInput()">
+          <div class="cmdk-search-placeholder">
+            <span>🔍 Type a command or search portfolio...</span>
+          </div>
+          <span class="cmdk-badge">⌘K</span>
+        </div>
+        <div class="cmdk-modal-mock">
+          <div class="cmdk-input-row">
+            <span style="color: var(--accent-blue);">❯</span>
+            <input 
+              type="text" 
+              id="cmdkSearchInput" 
+              class="cmdk-input-mock" 
+              placeholder="Search UX Bites, projects, or actions (try 'theme', 'email', 'bites')..."
+              oninput="filterCmdkItems(this.value)"
+            />
+            <span class="cmdk-sound-indicator">♫ Audio synth active</span>
+          </div>
+          <div class="cmdk-list" id="cmdkListContainer">
+            <div class="cmdk-item" onclick="triggerCmdkAction('UX Bites: Urakkamaailma Pricing Gap')">
+              <div class="cmdk-item-left"><span>📄</span> <span>UX Bites: Urakkamaailma Pricing Gap</span></div>
+              <span class="cmdk-badge">Jump</span>
+            </div>
+            <div class="cmdk-item" onclick="triggerCmdkAction('Copy sknayyar.sk@gmail.com')">
+              <div class="cmdk-item-left"><span>✉️</span> <span>Copy Direct Email</span></div>
+              <span class="cmdk-badge">Action</span>
+            </div>
+            <div class="cmdk-item" onclick="triggerCmdkAction('Toggle Blueprint Mode')">
+              <div class="cmdk-item-left"><span>📐</span> <span>Toggle Blueprint X-Ray (Shift+D)</span></div>
+              <span class="cmdk-badge">View</span>
+            </div>
+            <div class="cmdk-item" onclick="triggerCmdkAction('Download Master CV (PDF)')">
+              <div class="cmdk-item-left"><span>💼</span> <span>Download Master Resume / CV</span></div>
+              <span class="cmdk-badge">Doc</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  if (opt.previewType === 'copy') {
+    return `
+      <div class="copy-preview-stage">
+        <div class="email-container">
+          <span class="email-text">sknayyar.sk@gmail.com</span>
+          <button class="tactile-copy-btn" id="demoCopyBtn" onclick="demoTactileCopy(this)">
+            <span id="copyBtnLabel">Copy Email</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  if (opt.previewType === 'commentary') {
+    return `
+      <div class="marginalia-preview-stage">
+        <p>
+          "When architecting the decision-support system for Ediaqi, our team initially designed a complex 3D atmospheric dispersion map
+          <span class="commentary-trigger" onclick="toggleCommentary(event)">
+            [which we scrapped after user testing<span class="commentary-asterisk">*</span>]
+          </span>
+          to favor rapid tabular clarity."
+        </p>
+        <div class="commentary-card" id="commentaryCard">
+          <div class="commentary-header">
+            <span>DIRECTOR'S NOTE // BEHIND THE SCENES</span>
+            <span style="cursor: pointer;" onclick="toggleCommentary(event)">✕</span>
+          </div>
+          <p style="line-height: 1.5; color: #cbd5e1; margin-bottom: 6px;">
+            "HCI research with EU researchers revealed 3D maps caused 4.2s cognitive latency in crisis response. Cutting the 3D map felt painful, but tabular triage cut task completion time by 62%."
+          </p>
+          <div style="font-size: 10px; color: #94a3b8; font-family: var(--font-mono); border-top: 1px solid #1e293b; padding-top: 6px;">
+            // Aalto University field trial note • May 2025
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  if (opt.previewType === 'blueprint') {
+    return `
+      <div class="blueprint-preview-stage">
+        <div class="blueprint-toolbar">
+          <span style="font-family: var(--font-mono); font-size: 11px; color: #94a3b8;">X-Ray Mode Simulator:</span>
+          <button class="blueprint-toggle-btn" id="blueprintToggleBtn" onclick="toggleBlueprintPreview()">
+            <span>Blueprint Lens: OFF</span>
+          </button>
+        </div>
+        <div class="blueprint-sample-card" id="blueprintCard">
+          <div class="blueprint-grid-lines"></div>
+          <span class="blueprint-guide-tag" style="top: 6px; right: 8px;">WCAG AAA • 7.2:1</span>
+          <span class="blueprint-guide-tag" style="bottom: 6px; left: 8px;">PADDING: 18px • GAP: 12px</span>
+          <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px;">Ediaqi Decision Support System</div>
+          <div style="font-size: 12px; color: #94a3b8; font-family: var(--font-mono);">Indoor Air Quality Monitoring • EU Horizon Project</div>
+        </div>
+      </div>
+    `;
+  }
+
+  if (opt.previewType === 'inkwipe') {
+    return `
+      <div class="inkwipe-preview-stage" id="inkWipeContainer">
+        <div class="inkwipe-canvas-layer light" id="inkWipeLightLayer">
+          <div style="padding: 24px; text-align: center;">
+            <div style="font-size: 13px; font-weight: 700; color: #0f172a;">Paper Light Mode Active</div>
+            <div style="font-size: 11px; color: #64748b; font-family: var(--font-mono);">Warm Japanese paper background</div>
+          </div>
+        </div>
+        <button class="inkwipe-btn" id="inkWipeBtn" onclick="triggerInkWipe(event)">
+          <span>Toggle Ink Wipe</span>
+        </button>
+      </div>
+    `;
+  }
+
+  return ``;
+}
+
+/* Interactive Component Functions */
+function toggleHelsinkiPopover(e) {
+  e.stopPropagation();
+  playTactileTick(750, 0.03);
+  const popover = document.getElementById("helsinkiPopover");
+  popover.classList.toggle("visible");
+}
+
+function focusCmdkInput() {
+  playTactileTick(650, 0.03);
+  const input = document.getElementById("cmdkSearchInput");
+  if (input) input.focus();
+}
+
+function filterCmdkItems(query) {
+  playTactileTick(800, 0.02);
+  const list = document.getElementById("cmdkListContainer");
+  const items = list.getElementsByClassName("cmdk-item");
+  const q = query.toLowerCase();
+  for (let item of items) {
+    const text = item.innerText.toLowerCase();
+    item.style.display = text.includes(q) ? 'flex' : 'none';
+  }
+}
+
+function triggerCmdkAction(actionName) {
+  playTactileTick(900, 0.04);
+  alert(`[⌘K Executed]: ${actionName}`);
+}
+
+function demoTactileCopy(btn) {
+  playTactileTick(550, 0.05);
+  btn.classList.add('copied');
+  const label = document.getElementById("copyBtnLabel");
+  label.innerText = "✓ Copied to Clipboard";
+  setTimeout(() => {
+    btn.classList.remove('copied');
+    label.innerText = "Copy Email";
+  }, 2000);
+}
+
+function toggleCommentary(e) {
+  e.stopPropagation();
+  playTactileTick(700, 0.03);
+  const card = document.getElementById("commentaryCard");
+  card.classList.toggle("visible");
+}
+
+function toggleBlueprintPreview() {
+  playTactileTick(500, 0.04);
+  const btn = document.getElementById("blueprintToggleBtn");
+  const card = document.getElementById("blueprintCard");
+  const isActive = card.classList.toggle("xray-active");
+  btn.classList.toggle("active", isActive);
+  btn.innerText = isActive ? "Blueprint Lens: ON" : "Blueprint Lens: OFF";
+}
+
+let isLight = false;
+function triggerInkWipe(e) {
+  playTactileTick(450, 0.05);
+  const layer = document.getElementById("inkWipeLightLayer");
+  isLight = !isLight;
+  layer.classList.toggle("active", isLight);
+  const btn = document.getElementById("inkWipeBtn");
+  btn.innerText = isLight ? "Switch to Dark Charcoal" : "Switch to Light Paper";
+}
+
+// Live Clock Update
+setInterval(() => {
+  const clock = document.getElementById("liveHelsinkiTime");
+  if (clock) {
+    const now = new Date();
+    // Format to Helsinki time (UTC+3)
+    const helsinkiTime = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/Helsinki',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    }).format(now);
+    clock.innerText = `${helsinkiTime} EEST`;
+  }
+}, 1000);
+
+/* Close popovers on click outside */
+document.addEventListener('click', (e) => {
+  const helsinkiPopover = document.getElementById("helsinkiPopover");
+  if (helsinkiPopover && !e.target.closest('#helsinkiPopover') && !e.target.closest('.helsinki-trigger-chip')) {
+    helsinkiPopover.classList.remove('visible');
+  }
+  const commentaryCard = document.getElementById("commentaryCard");
+  if (commentaryCard && !e.target.closest('#commentaryCard') && !e.target.closest('.commentary-trigger')) {
+    commentaryCard.classList.remove('visible');
+  }
+});
+
+/* Decision Matrix State Management */
+function setStatus(id, status) {
+  playTactileTick(700, 0.02);
+  if (state[id].status === status) {
+    state[id].status = null;
+  } else {
+    state[id].status = status;
+  }
+  updateUI();
+}
+
+function setNote(id, note) {
+  state[id].note = note;
+  updatePrompt();
+}
+
+function updateUI() {
+  explorations.forEach(opt => {
+    const card = document.getElementById(`card-${opt.id}`);
+    const noteInput = document.getElementById(`note-${opt.id}`);
+    const current = state[opt.id].status;
+
+    card.classList.remove('approved', 'rejected', 'discuss');
+    if (current) card.classList.add(current);
+
+    const approveBtn = card.querySelector('.btn-approve');
+    const discussBtn = card.querySelector('.btn-discuss');
+    const rejectBtn = card.querySelector('.btn-reject');
+
+    approveBtn.classList.toggle('active', current === 'approved');
+    discussBtn.classList.toggle('active', current === 'discuss');
+    rejectBtn.classList.toggle('active', current === 'rejected');
+
+    if (current) {
+      noteInput.classList.add('visible');
+    } else {
+      noteInput.classList.remove('visible');
+    }
+  });
+
+  updatePrompt();
+}
+
+function updatePrompt() {
+  const approved = [];
+  const discuss = [];
+  const rejected = [];
+
+  explorations.forEach(opt => {
+    const s = state[opt.id];
+    const noteStr = s.note.trim() ? ` (User Note: "${s.note.trim()}")` : "";
+    if (s.status === 'approved') approved.push(`- [APPROVED] ${opt.title}${noteStr}`);
+    else if (s.status === 'discuss') discuss.push(`- [DISCUSS] ${opt.title}${noteStr}`);
+    else if (s.status === 'rejected') rejected.push(`- [REJECTED] ${opt.title}${noteStr}`);
+  });
+
+  document.getElementById('approvedCount').innerText = approved.length;
+  document.getElementById('discussCount').innerText = discuss.length;
+  document.getElementById('rejectedCount').innerText = rejected.length;
+
+  let prompt = `ACTION DIRECTIVE: PORTFOLIO CHARACTER & DELIGHT IMPLEMENTATION\n\n`;
+
+  prompt += `SELECTED / APPROVED OPTION(S):\n`;
+  prompt += approved.length ? approved.join('\n') + '\n\n' : `- None selected yet\n\n`;
+
+  prompt += `ITEMS TO DISCUSS / CLARIFY:\n`;
+  prompt += discuss.length ? discuss.join('\n') + '\n\n' : `- None\n\n`;
+
+  prompt += `REJECTED OPTIONS:\n`;
+  prompt += rejected.length ? rejected.join('\n') + '\n\n' : `- None\n\n`;
+
+  prompt += `NEXT STEPS FOR ANTIGRAVITY:\n`;
+  if (approved.length) {
+    prompt += `1. Implement the approved micro-interaction(s) in the portfolio codebase.\n`;
+    prompt += `2. Adhere strictly to Emil Kowalski's polish rules (scale(0.97) on press, origin-aware transforms, custom ease-out cubic-beziers, 0ms keyboard animation).\n`;
+    prompt += `3. Preserve existing responsive layouts and ensure 100% prefers-reduced-motion compatibility.\n`;
+    prompt += `4. Run preview build and verify in the browser.\n`;
+  } else {
+    prompt += `1. Review the options above and click Approve, Discuss, or Reject on each card.\n`;
+  }
+
+  document.getElementById('codedPrompt').value = prompt;
+}
+
+function copyPrompt() {
+  playTactileTick(880, 0.05);
+  const ta = document.getElementById('codedPrompt');
+  ta.select();
+  navigator.clipboard.writeText(ta.value).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.innerText = "✓ Copied to Clipboard!";
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerText = "Copy Coded Prompt";
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+renderCards();
+updateUI();
+</script>
+</body>
+</html>
