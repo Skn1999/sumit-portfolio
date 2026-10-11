@@ -10,6 +10,7 @@ import {
   MapPin,
   ExternalLink,
 } from "lucide-react";
+import ThemeToggle from "@/components/ThemeToggle";
 
 interface NavItem {
   label: string;
@@ -99,7 +100,7 @@ export const NavigationDock: React.FC = () => {
         className="fixed inset-x-0 bottom-0 z-[39] h-28 sm:h-32 pointer-events-none"
         style={{
           background:
-            "linear-gradient(to top, hsl(var(--paper-bg)) 0%, hsla(var(--paper-bg), 0.75) 50%, transparent 100%)",
+            "linear-gradient(to top, hsl(var(--paper-bg)) 0%, hsl(var(--paper-bg) / 0.75) 50%, transparent 100%)",
         }}
       />
 
@@ -262,6 +263,14 @@ export const NavigationDock: React.FC = () => {
                         Web CV
                       </span>
                     </Link>
+                  </div>
+
+                  {/* Day / Night Theme Toggle */}
+                  <div className="mt-4 pt-3 border-t border-paper-border flex items-center justify-between">
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-ink-muted">
+                      Theme
+                    </span>
+                    <ThemeToggle />
                   </div>
                 </div>
               </motion.div>

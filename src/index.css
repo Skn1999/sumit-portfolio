@@ -80,14 +80,20 @@ All colors MUST be HSL.
 
   /* ===== DARK MODE — Tea Ceremony (warm charcoal, aligned with UX Bites) ===== */
   .dark {
-    --background: 28 12% 9%;
-    --foreground: 220 15% 96%;
+    --paper-bg: 28 12% 9%;
+    --paper-card: 28 10% 13%;
+    --ink-primary: 220 15% 96%;
+    --ink-muted: 28 10% 65%;
+    --paper-border: 30 10% 22%;
 
-    --card: 28 10% 13%;
-    --card-foreground: 220 15% 96%;
+    --background: var(--paper-bg);
+    --foreground: var(--ink-primary);
 
-    --popover: 28 10% 13%;
-    --popover-foreground: 220 15% 96%;
+    --card: var(--paper-card);
+    --card-foreground: var(--ink-primary);
+
+    --popover: var(--paper-card);
+    --popover-foreground: var(--ink-primary);
 
     --primary: 270 90% 65%;
     --primary-foreground: 28 12% 9%;
