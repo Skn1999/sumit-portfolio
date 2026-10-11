@@ -3,14 +3,14 @@ import { useInView } from "framer-motion";
 import { TextReveal, TextRevealProps } from "./text-reveal";
 
 export interface InViewTextRevealProps extends TextRevealProps {
-  /** Optional viewport trigger margin to delay or hasten trigger, e.g. "-10% 0px -20% 0px" */
+  /** Optional viewport trigger margin to delay or hasten trigger. Defaults to top 60% threshold ("0px 0px -40% 0px") */
   viewportMargin?: string;
 }
 
 /**
  * Wraps TextReveal to ensure it ONLY executes when scrolled into view.
- * Keeps text hidden/invisible before entering viewport so readers are never
- * overwhelmed by a large wall of text above or around the fold.
+ * Default margin "0px 0px -40% 0px" ensures text only reveals once it has
+ * entered the top 60% of the viewport height.
  */
 export const InViewTextReveal: React.FC<InViewTextRevealProps> = ({
   text,
@@ -18,7 +18,7 @@ export const InViewTextReveal: React.FC<InViewTextRevealProps> = ({
   className,
   id,
   delay = 0.05,
-  viewportMargin = "-10% 0px -15% 0px",
+  viewportMargin = "0px 0px -40% 0px",
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, {
