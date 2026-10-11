@@ -639,54 +639,87 @@ export const TrilemmaEntity: React.FC<BaseEntityProps> = ({ children }) => {
 };
 
 /**
- * Craft as Differentiator Entity Card
+ * "Craft is the differentiator" - Interactive Metallic Shimmer
+ * A gentle metallic platinum shimmer that glints and glides as the user's cursor sweeps across the sentence.
  */
 export const CraftEntity: React.FC<BaseEntityProps> = ({ children }) => {
+  const content = children || "craft is the differentiator";
+  const [isHovered, setIsHovered] = useState(false);
+  const [glideX, setGlideX] = useState<number>(50);
+  const spanRef = React.useRef<HTMLSpanElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLSpanElement>) => {
+    if (!spanRef.current) return;
+    const rect = spanRef.current.getBoundingClientRect();
+    if (rect.width > 0) {
+      const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+      setGlideX(x);
+    }
+  };
+
   return (
-    <HoverCard openDelay={90} closeDelay={150}>
-      <HoverCardTrigger asChild>
-        <span className="font-semibold text-ink-primary underline decoration-emerald-500 decoration-wavy sm:decoration-solid underline-offset-4 cursor-pointer hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors select-none">
-          {children || "craft is the differentiator"}
-        </span>
-      </HoverCardTrigger>
-      <HoverCardContent align="start" className="w-84 sm:w-96 text-left">
-        <div className="flex items-center gap-3.5 mb-3">
-          <div className="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0 shadow-xs">
-            <Sparkles className="w-5 h-5" />
-          </div>
-          <div>
-            <h4 className="font-sans font-semibold text-lg text-ink-primary leading-tight">
-              The Craft Standard
-            </h4>
-            <span className="font-sans text-[15px] text-ink-muted">
-              Design Engineering Philosophy
-            </span>
-          </div>
-        </div>
-        <p className="font-sans text-base text-ink-muted leading-relaxed mb-3">
-          In an era where anyone can generate a feature in seconds, craft is the sole durable differentiator: sub-16ms framerates, typography calibrated to human cognition, and zero handoff loss between design intent and shipped production code.
-        </p>
-        <div className="space-y-2 py-2.5 border-t border-paper-border/60 font-sans text-sm">
-          <div className="flex items-baseline gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0 translate-y-[-1px]" />
-            <span className="text-ink-muted">
-              <strong className="text-ink-primary font-medium">Sub-16ms Framerate:</strong> Hardware-accelerated GPU transforms &amp; spring physics
-            </span>
-          </div>
-          <div className="flex items-baseline gap-2">
-            <span className="w-2 h-2 rounded-full bg-indigo-500 shrink-0 translate-y-[-1px]" />
-            <span className="text-ink-muted">
-              <strong className="text-ink-primary font-medium">Cognitive Calm:</strong> Respecting human attention rather than mining dopamine
-            </span>
-          </div>
-          <div className="flex items-baseline gap-2">
-            <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0 translate-y-[-1px]" />
-            <span className="text-ink-muted">
-              <strong className="text-ink-primary font-medium">Zero Handoff Gap:</strong> Designers shipping live components directly in production
-            </span>
-          </div>
-        </div>
-      </HoverCardContent>
-    </HoverCard>
+    <span
+      ref={spanRef}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onMouseMove={handleMouseMove}
+      className="relative inline-block font-semibold text-ink-primary cursor-default select-none group/craft align-baseline"
+      style={
+        {
+          "--glide-x": `${glideX}%`,
+        } as React.CSSProperties
+      }
+    >
+      {/* Base readable text */}
+      <span className="relative z-0 text-ink-primary">
+        {content}
+      </span>
+
+      {/* Dynamic metallic specular sheen following pointer glide */}
+      <span
+        aria-hidden="true"
+        className={cn(
+          "absolute inset-0 z-10 pointer-events-none select-none transition-opacity duration-300 ease-out",
+          isHovered ? "opacity-100" : "opacity-0"
+        )}
+        style={{
+          background: `radial-gradient(ellipse 90px 40px at var(--glide-x, 50%) 50%, rgba(255, 255, 255, 0.95) 0%, rgba(226, 232, 240, 0.8) 28%, rgba(148, 163, 184, 0.3) 55%, transparent 75%)`,
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+      >
+        {content}
+      </span>
+
+      {/* Ambient metallic sheen sweep across the sentence */}
+      <span
+        aria-hidden="true"
+        className={cn(
+          "absolute inset-0 z-20 pointer-events-none select-none metallic-craft-sheen transition-opacity duration-300 ease-out",
+          isHovered ? "opacity-75" : "opacity-0"
+        )}
+        style={{
+          background: `linear-gradient(115deg, transparent 20%, rgba(203, 213, 225, 0.3) 38%, rgba(255, 255, 255, 0.95) 50%, rgba(203, 213, 225, 0.3) 62%, transparent 80%)`,
+          backgroundSize: "200% 100%",
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+      >
+        {content}
+      </span>
+
+      {/* Hairline metallic highlight along base */}
+      <span
+        aria-hidden="true"
+        className={cn(
+          "absolute left-0 right-0 -bottom-0.5 h-[1.5px] rounded-full pointer-events-none transition-all duration-300 ease-out",
+          isHovered
+            ? "opacity-80 scale-x-100 bg-gradient-to-r from-transparent via-slate-300 dark:via-slate-200 to-transparent"
+            : "opacity-0 scale-x-50"
+        )}
+      />
+    </span>
   );
 };
