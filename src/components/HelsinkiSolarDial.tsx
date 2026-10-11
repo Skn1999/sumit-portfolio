@@ -1,6 +1,11 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { Sun, Moon, Sparkles, Clock, Globe, X } from "lucide-react";
+import React, { useState, useEffect, useMemo } from "react";
+import { Sun, Moon, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 interface SolarPhase {
   name: string;
@@ -21,10 +26,7 @@ export const HelsinkiSolarDial: React.FC<HelsinkiSolarDialProps> = ({
   direction = "bottom",
 }) => {
   const [mounted, setMounted] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const [now, setNow] = useState<Date>(new Date());
-  const popoverRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -35,9 +37,9 @@ export const HelsinkiSolarDial: React.FC<HelsinkiSolarDialProps> = ({
   }, []);
 
   // Compute live Helsinki time & components
-  const { timeString, hour, minute, second, tzName } = useMemo(() => {
+  const { timeString, hour } = useMemo(() => {
     if (!mounted) {
-      return { timeString: "--:--:--", hour: 12, minute: "00", second: "00", tzName: "EEST" };
+      return { timeString: "--:--:--", hour: 12, tzName: "EEST" };
     }
     const formatter = new Intl.DateTimeFormat("en-GB", {
       timeZone: "Europe/Helsinki",
@@ -55,8 +57,6 @@ export const HelsinkiSolarDial: React.FC<HelsinkiSolarDialProps> = ({
     return {
       timeString: `${h.toString().padStart(2, "0")}:${m}:${s} ${tz}`,
       hour: h,
-      minute: m,
-      second: s,
       tzName: tz,
     };
   }, [now, mounted]);
@@ -137,180 +137,123 @@ export const HelsinkiSolarDial: React.FC<HelsinkiSolarDialProps> = ({
     }
   }, [now, mounted]);
 
-  // Dismiss on outside click or Escape
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
-        setIsOpen(false);
-        triggerRef.current?.focus();
-      }
-    };
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        isOpen &&
-        popoverRef.current &&
-        !popoverRef.current.contains(e.target as Node) &&
-        triggerRef.current &&
-        !triggerRef.current.contains(e.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen]);
-
   return (
     <div className={cn("relative inline-flex items-center text-xs font-mono", className)}>
-      {/* Interactive Trigger Button */}
-      <button
-        ref={triggerRef}
-        type="button"
-        onClick={() => setIsOpen((prev) => !prev)}
-        aria-expanded={isOpen}
-        aria-haspopup="dialog"
-        aria-label={`Helsinki local time is ${timeString}. Click to inspect timezone comparison.`}
-        className={cn(
-          "group/dial relative inline-flex items-center gap-2.5 px-3 py-1.5 rounded-md",
-          "border border-paper-border bg-paper-card/70 hover:bg-paper-card",
-          "hover:border-ink-primary/30 transition-all duration-200 ease-out",
-          "active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-          isOpen && "border-ink-primary/40 bg-paper-card shadow-sm"
-        )}
-      >
-        {/* Breathing Celestial Solar / Lunar Orb */}
-        <span
-          className={cn(
-            "relative flex items-center justify-center w-4 h-4 rounded-full bg-gradient-to-br shadow-sm overflow-hidden shrink-0",
-            phase.orbClass,
-            "transition-transform duration-300 group-hover/dial:scale-110 motion-reduce:transition-none"
-          )}
-        >
-          {phase.isNight ? (
-            <Moon className="w-2.5 h-2.5 text-indigo-100/90" />
-          ) : (
-            <Sun className="w-2.5 h-2.5 text-amber-100" />
-          )}
-          {/* Ambient Breathing Pulse Ring */}
-          <span
-            aria-hidden="true"
+      <HoverCard openDelay={90} closeDelay={150}>
+        <HoverCardTrigger asChild>
+          <button
+            type="button"
+            aria-label={`Helsinki local time is ${timeString}. Hover to inspect timezone comparison.`}
             className={cn(
-              "absolute inset-0 rounded-full animate-ping opacity-25 motion-reduce:animate-none",
-              phase.isNight ? "bg-indigo-400" : "bg-amber-400"
+              "group/dial relative inline-flex items-center gap-2.5 px-3 py-1.5 rounded-md",
+              "border border-paper-border bg-paper-card/70 hover:bg-paper-card",
+              "hover:border-ink-primary/30 transition-all duration-150 ease-emil-out",
+              "active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent cursor-pointer select-none"
             )}
-            style={{ animationDuration: "3.5s" }}
-          />
-        </span>
+          >
+            {/* Breathing Celestial Solar / Lunar Orb */}
+            <span
+              className={cn(
+                "relative flex items-center justify-center w-4 h-4 rounded-full bg-gradient-to-br shadow-sm overflow-hidden shrink-0",
+                phase.orbClass,
+                "transition-transform duration-300 group-hover/dial:scale-110 motion-reduce:transition-none"
+              )}
+            >
+              {phase.isNight ? (
+                <Moon className="w-2.5 h-2.5 text-indigo-100/90" />
+              ) : (
+                <Sun className="w-2.5 h-2.5 text-amber-100" />
+              )}
+              {/* Ambient Breathing Pulse Ring */}
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "absolute inset-0 rounded-full animate-ping opacity-25 motion-reduce:animate-none",
+                  phase.isNight ? "bg-indigo-400" : "bg-amber-400"
+                )}
+                style={{ animationDuration: "3.5s" }}
+              />
+            </span>
 
-        {/* Tabular Numerals (zero jitter) */}
-        <span className="flex items-center gap-1.5 text-ink-primary font-semibold tracking-tight">
-          <span className="tabular-nums font-mono">{timeString}</span>
-        </span>
+            {/* Tabular Numerals (zero jitter) */}
+            <span className="flex items-center gap-1.5 text-ink-primary font-semibold tracking-tight">
+              <span className="tabular-nums font-mono">{timeString}</span>
+            </span>
 
-        <span className="text-paper-border select-none" aria-hidden="true">
-          /
-        </span>
+            <span className="text-paper-border select-none" aria-hidden="true">
+              /
+            </span>
 
-        {/* Location & Status Summary */}
-        <span className="text-ink-muted group-hover/dial:text-ink-primary transition-colors flex items-center gap-1.5 uppercase tracking-wider">
-          <span>Helsinki, Finland</span>
-          <span className="hidden sm:inline-block opacity-75">({phase.badge.split("//")[0].trim()})</span>
-          <span className="text-[10px] text-accent font-semibold ml-0.5 group-hover/dial:translate-y-[-1px] transition-transform">
-            ▾
-          </span>
-        </span>
-      </button>
+            {/* Location & Status Summary */}
+            <span className="text-ink-muted group-hover/dial:text-ink-primary transition-colors flex items-center gap-1.5 uppercase tracking-wider">
+              <span>Helsinki, Finland</span>
+              <span className="hidden sm:inline-block opacity-75">
+                ({phase.badge.split("//")[0].trim()})
+              </span>
+              <span className="text-[10px] text-accent font-semibold ml-0.5 group-hover/dial:translate-y-[-1px] transition-transform">
+                ▾
+              </span>
+            </span>
+          </button>
+        </HoverCardTrigger>
 
-      {/* Origin-Aware Popover Card */}
-      {isOpen && (
-        <div
-          ref={popoverRef}
-          role="dialog"
-          aria-label="Helsinki Solar & Timezone Intelligence"
-          className={cn(
-            "absolute left-0 z-50 w-[300px] sm:w-[320px]",
-            direction === "top"
-              ? "bottom-full mb-2.5 origin-bottom-left"
-              : "top-full mt-2.5 origin-top-left",
-            "bg-paper-card border border-paper-border rounded-xl p-4 shadow-xl shadow-black/10 dark:shadow-black/50",
-            "transition-all duration-200 ease-out",
-            "animate-in fade-in zoom-in-95 motion-reduce:animate-none"
-          )}
-          style={{
-            animationDuration: "180ms",
-            animationTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)",
-          }}
+        <HoverCardContent
+          align="start"
+          side={direction}
+          className="w-84 sm:w-96 text-left"
         >
           {/* Header */}
-          {/* <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-paper-border">
-            <div className="flex items-center gap-1.5 text-ink-primary font-bold text-xs uppercase tracking-wider">
-              <Globe className="w-3.5 h-3.5 text-accent" />
-              <span>Helsinki Presence</span>
-            </div>
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="p-1 rounded text-ink-muted hover:text-ink-primary hover:bg-paper-bg transition-colors active:scale-95"
-              aria-label="Close popover"
+          <div className="flex items-center gap-3.5 mb-3">
+            <div
+              className={cn(
+                "w-11 h-11 rounded-xl border border-paper-border/70 p-1.5 shrink-0 shadow-xs flex items-center justify-center bg-gradient-to-br",
+                phase.orbClass
+              )}
             >
-              <X className="w-3.5 h-3.5" />
-            </button>
-          </div> */}
-
-          {/* Time & Solar Phase Details */}
-          <div className="space-y-2.5 text-xs">
-            <div className="flex items-start justify-between bg-paper-bg/70 p-2.5 rounded-lg border border-paper-border">
-              <div>
-                <div className="text-[10px] uppercase tracking-wider text-ink-muted font-semibold">
-                  Local Solar Cycle
-                </div>
-                <div className="text-ink-primary font-bold text-sm tabular-nums mt-0.5">
-                  {timeString}
-                </div>
-              </div>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-accent/10 text-accent border border-accent/20">
-                <Sparkles className="w-2.5 h-2.5" />
-                {phase.name}
-              </span>
+              {phase.isNight ? (
+                <Moon className="w-6 h-6 text-indigo-100" />
+              ) : (
+                <Sun className="w-6 h-6 text-amber-100" />
+              )}
             </div>
+            <div>
+              <h4 className="font-sans font-semibold text-lg text-ink-primary leading-tight">
+                Helsinki, Finland
+              </h4>
+              <div className="flex items-center gap-2 mt-0.5 font-sans text-[15px] text-ink-muted">
+                <span className="tabular-nums font-mono font-medium text-ink-primary">
+                  {timeString}
+                </span>
+                <span>•</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                  {phase.name}
+                </span>
+              </div>
+            </div>
+          </div>
 
-            {/* Timezone Comparison */}
+          {/* Presence Status Description */}
+          <p className="font-sans text-base text-ink-muted leading-relaxed mb-4">
+            {phase.statusText}
+          </p>
+
+          {/* Timezone Comparison & Insight */}
+          <div className="space-y-2 pt-3 border-t border-paper-border/60 font-sans text-sm">
             {timezoneDiff && (
-              <div className="text-[11px] text-ink-muted flex items-center gap-1.5 px-1">
-                <Clock className="w-3 h-3 text-accent shrink-0" />
+              <div className="flex items-center gap-2 text-ink-primary font-medium">
+                <Clock className="w-4 h-4 text-emerald-500 shrink-0" />
                 <span>{timezoneDiff.diffText}</span>
               </div>
             )}
-
-            {/* Human Presence State */}
-            {/* <p className="text-[11.5px] leading-relaxed text-ink-primary/90 bg-paper-bg/40 p-2 rounded border border-paper-border/60">
-              {phase.statusText}
-            </p> */}
-
-            {/* Solar Insight */}
-            {/* <div className="text-[10px] text-ink-muted border-t border-paper-border/60 pt-2 flex items-center justify-between">
+            <div className="flex items-center justify-between text-xs text-ink-muted pt-1">
               <span>{phase.solarInsight}</span>
-              <span className="text-emerald-500 font-semibold">Available for roles</span>
-            </div> */}
+              <span className="text-emerald-600 dark:text-emerald-400 font-semibold uppercase tracking-wider font-mono text-[11px]">
+                Open for roles
+              </span>
+            </div>
           </div>
-
-          {/* Origin-Anchored Caret */}
-          <span
-            aria-hidden="true"
-            className={cn(
-              "absolute left-6 w-3 h-3 rotate-45 bg-paper-card",
-              direction === "top"
-                ? "-bottom-1.5 border-r border-b border-paper-border"
-                : "-top-1.5 border-l border-t border-paper-border"
-            )}
-          />
-        </div>
-      )}
+        </HoverCardContent>
+      </HoverCard>
     </div>
   );
 };
