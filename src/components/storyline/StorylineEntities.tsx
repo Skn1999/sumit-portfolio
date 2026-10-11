@@ -524,14 +524,16 @@ export const SubstackEntity: React.FC<BaseEntityProps> = ({ children }) => {
  * Interactive "Identity Crisis" Trilemma Calculator with Stacked Horizontal Bar
  */
 export const TrilemmaEntity: React.FC<BaseEntityProps> = ({ children }) => {
-  const [ratios, setRatios] = useState({
+  const BASELINE_RATIOS = {
     cogSci: 40,
     design: 35,
     code: 25,
-  });
+  };
 
-  const recalculate = (e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
+  const [ratios, setRatios] = useState(BASELINE_RATIOS);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const recalculate = () => {
     // Generate 3 numbers that sum to 100
     const r1 = Math.floor(Math.random() * 35) + 25; // 25 - 60
     const remaining = 100 - r1;
@@ -540,29 +542,40 @@ export const TrilemmaEntity: React.FC<BaseEntityProps> = ({ children }) => {
     setRatios({ cogSci: r1, design: r2, code: r3 });
   };
 
+  useEffect(() => {
+    if (!isOpen) {
+      // Reset to baseline so the animation replays on next hover
+      setRatios(BASELINE_RATIOS);
+      return;
+    }
+
+    // Time-based animation: automatically recalculates on its own after 600ms
+    const timer = setTimeout(() => {
+      recalculate();
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, [isOpen]);
+
   return (
-    <HoverCard openDelay={90} closeDelay={150}>
+    <HoverCard openDelay={90} closeDelay={150} onOpenChange={setIsOpen}>
       <HoverCardTrigger asChild>
         <span
           onClick={recalculate}
           className="underline decoration-dotted decoration-emerald-500/80 hover:decoration-solid underline-offset-4 cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors select-none group"
-          title="Click to recalculate ratio"
         >
           {children || "identity crises"}
         </span>
       </HoverCardTrigger>
       <HoverCardContent
         align="center"
-        className="w-84 sm:w-96 text-left cursor-pointer select-none group"
+        className="w-84 sm:w-96 text-left select-none group"
         onClick={() => recalculate()}
       >
         <div className="flex items-center justify-between mb-3">
           <h4 className="font-sans font-semibold text-lg text-ink-primary">
             Identity Distribution
           </h4>
-          <span className="font-sans text-xs text-ink-muted">
-            Click to recalculate
-          </span>
         </div>
 
         {/* Stacked Horizontal Bar Chart */}
@@ -618,7 +631,7 @@ export const TrilemmaEntity: React.FC<BaseEntityProps> = ({ children }) => {
         </div>
 
         <p className="font-sans text-xs text-ink-muted pt-3 mt-3 border-t border-paper-border/60">
-          Fluctuates daily based on coffee intake and git commits. Click card to recalculate.
+          Fluctuates daily based on coffee intake and git commits.
         </p>
       </HoverCardContent>
     </HoverCard>
