@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "./Header";
+import NavigationDock from "./NavigationDock";
 
 export const Container: React.FC<
   React.PropsWithChildren<{ className?: string }>
@@ -18,9 +18,9 @@ export const Layout: React.FC<
 > = ({ children, className }) => {
   return (
     <div className={`min-h-screen flex flex-col ${className ?? ""}`}>
-      {/* Global mode toggle lives at top-level so it's present across pages */}
-      <Header />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 pb-28 sm:pb-32">{children}</main>
+      {/* Preston-style floating bottom dock */}
+      <NavigationDock />
     </div>
   );
 };
