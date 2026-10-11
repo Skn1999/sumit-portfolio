@@ -41,7 +41,7 @@ export const InViewTextReveal: React.FC<InViewTextRevealProps> = ({
           className={`${className || ""} opacity-0 select-none pointer-events-none aria-hidden`}
           aria-hidden="true"
         >
-          {text}
+          {text.replace(/\*\*/g, "")}
         </p>
       )}
     </div>

@@ -19,6 +19,32 @@ export interface TextRevealProps {
 /** Total stagger stays under this many seconds, however long the text is. */
 const MAX_STAGGER = motionTokens.duration.considered;
 
+interface WordToken {
+  word: string;
+  isBold: boolean;
+}
+
+function parseLine(line: string): WordToken[] {
+  const tokens: WordToken[] = [];
+  const parts = line.split(/(\*\*[^*]+\*\*)/g);
+  for (const part of parts) {
+    if (!part) continue;
+    if (part.startsWith("**") && part.endsWith("**")) {
+      const boldContent = part.slice(2, -2);
+      const words = boldContent.split(/\s+/).filter(Boolean);
+      for (const w of words) {
+        tokens.push({ word: w, isBold: true });
+      }
+    } else {
+      const words = part.split(/\s+/).filter(Boolean);
+      for (const w of words) {
+        tokens.push({ word: w, isBold: false });
+      }
+    }
+  }
+  return tokens;
+}
+
 export function TextReveal({
   text,
   as = "h2",
@@ -27,7 +53,7 @@ export function TextReveal({
   delay = 0,
 }: TextRevealProps) {
   const Tag = as;
-  const lines = text.split("\n").map((line) => line.split(" ").filter(Boolean));
+  const lines = text.split("\n").map(parseLine);
   const count = lines.reduce((total, words) => total + words.length, 0);
   const step = Math.min(
     motionTokens.stagger.word,
@@ -42,17 +68,24 @@ export function TextReveal({
       className={[styles.reveal, className].filter(Boolean).join(" ")}
       style={{ "--reveal-blur": `${blur}px` } as CSSProperties}
     >
-      <span className={styles.srOnly}>{text.replace(/\n/g, " ")}</span>
+      <span className={styles.srOnly}>
+        {text.replace(/\*\*/g, "").replace(/\n/g, " ")}
+      </span>
       {lines.map((words, lineIndex) => (
         <Fragment key={lineIndex}>
           <span className={styles.line} aria-hidden="true">
-            {words.map((word, wordIndex) => {
+            {words.map((token, wordIndex) => {
               const position = index++;
               return (
-                <Fragment key={`${word}-${position}`}>
+                <Fragment key={`${token.word}-${position}`}>
                   <span className={styles.clip}>
                     <span
-                      className={styles.word}
+                      className={[
+                        styles.word,
+                        token.isBold ? "font-semibold text-ink-primary" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
                       style={
                         {
                           "--reveal-delay": `${
@@ -61,7 +94,7 @@ export function TextReveal({
                         } as CSSProperties
                       }
                     >
-                      {word}
+                      {token.word}
                     </span>
                   </span>
                   {wordIndex < words.length - 1 ? " " : null}
