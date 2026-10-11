@@ -2,6 +2,19 @@ import { Fragment, type CSSProperties } from "react";
 import { motionTokens } from "../motion-tokens";
 import styles from "./text-reveal.module.css";
 import { EmDash } from "@/components/EmDash";
+import {
+  OptmyzrEntity,
+  DedanextEntity,
+  GroundworkEntity,
+  EITJumpstarterEntity,
+  AaltoEntity,
+  TrentoEntity,
+  JourneyEntity,
+  SuscoEntity,
+  SuperEgoEntity,
+  SubstackEntity,
+  TrilemmaEntity,
+} from "@/components/storyline/StorylineEntities";
 
 /**
  * Reveals a short headline or sentence once, as it mounts: each word rises out of its own clip while it sharpens from a soft blur.
@@ -22,33 +35,51 @@ const MAX_STAGGER = motionTokens.duration.considered;
 
 interface WordToken {
   word: string;
-  isBold: boolean;
-  isEmDash: boolean;
+  isBold?: boolean;
+  isEmDash?: boolean;
+  entityKey?: string;
+  entityLabel?: string;
 }
 
 function parseLine(line: string): WordToken[] {
   const tokens: WordToken[] = [];
-  const parts = line.split(/(\*\*[^*]+\*\*)/g);
-  for (const part of parts) {
+  // Split by [[entityKey:Label]] first
+  const entityParts = line.split(/(\[\[[a-zA-Z0-9_-]+:[^\]]+\]\])/g);
+  for (const part of entityParts) {
     if (!part) continue;
-    if (part.startsWith("**") && part.endsWith("**")) {
-      const boldContent = part.slice(2, -2);
-      const words = boldContent.split(/(\s+|—)/).filter((s) => s && !/^\s+$/.test(s));
-      for (const w of words) {
-        tokens.push({
-          word: w,
-          isBold: true,
-          isEmDash: w === "—",
-        });
-      }
-    } else {
-      const words = part.split(/(\s+|—)/).filter((s) => s && !/^\s+$/.test(s));
-      for (const w of words) {
-        tokens.push({
-          word: w,
-          isBold: false,
-          isEmDash: w === "—",
-        });
+    const entityMatch = part.match(/^\[\[([a-zA-Z0-9_-]+):([^\]]+)\]\]$/);
+    if (entityMatch) {
+      const [, entityKey, entityLabel] = entityMatch;
+      tokens.push({
+        word: entityLabel,
+        entityKey,
+        entityLabel,
+      });
+      continue;
+    }
+
+    const boldParts = part.split(/(\*\*[^*]+\*\*)/g);
+    for (const bPart of boldParts) {
+      if (!bPart) continue;
+      if (bPart.startsWith("**") && bPart.endsWith("**")) {
+        const boldContent = bPart.slice(2, -2);
+        const words = boldContent.split(/(\s+|—)/).filter((s) => s && !/^\s+$/.test(s));
+        for (const w of words) {
+          tokens.push({
+            word: w,
+            isBold: true,
+            isEmDash: w === "—",
+          });
+        }
+      } else {
+        const words = bPart.split(/(\s+|—)/).filter((s) => s && !/^\s+$/.test(s));
+        for (const w of words) {
+          tokens.push({
+            word: w,
+            isBold: false,
+            isEmDash: w === "—",
+          });
+        }
       }
     }
   }
@@ -72,6 +103,41 @@ export function TextReveal({
   const blur = as === "p" ? motionTokens.blur.soft : motionTokens.blur.text;
   let index = 0;
 
+  const renderToken = (token: WordToken) => {
+    if (token.isEmDash || token.word === "—") {
+      return <EmDash />;
+    }
+    if (token.entityKey) {
+      switch (token.entityKey) {
+        case "optmyzr":
+          return <OptmyzrEntity>{token.entityLabel}</OptmyzrEntity>;
+        case "dedanext":
+          return <DedanextEntity>{token.entityLabel}</DedanextEntity>;
+        case "groundwork":
+          return <GroundworkEntity>{token.entityLabel}</GroundworkEntity>;
+        case "eit-jumpstarter":
+          return <EITJumpstarterEntity>{token.entityLabel}</EITJumpstarterEntity>;
+        case "aalto":
+          return <AaltoEntity>{token.entityLabel}</AaltoEntity>;
+        case "unitn":
+          return <TrentoEntity>{token.entityLabel}</TrentoEntity>;
+        case "journey":
+          return <JourneyEntity>{token.entityLabel}</JourneyEntity>;
+        case "susco":
+          return <SuscoEntity>{token.entityLabel}</SuscoEntity>;
+        case "super-ego":
+          return <SuperEgoEntity>{token.entityLabel}</SuperEgoEntity>;
+        case "substack":
+          return <SubstackEntity>{token.entityLabel}</SubstackEntity>;
+        case "trilemma":
+          return <TrilemmaEntity>{token.entityLabel}</TrilemmaEntity>;
+        default:
+          return token.word;
+      }
+    }
+    return token.word;
+  };
+
   return (
     <Tag
       id={id}
@@ -79,20 +145,25 @@ export function TextReveal({
       style={{ "--reveal-blur": `${blur}px` } as CSSProperties}
     >
       <span className={styles.srOnly}>
-        {text.replace(/\*\*/g, "").replace(/\n/g, " ")}
+        {text
+          .replace(/\[\[[^:]+:([^\]]+)\]\]/g, "$1")
+          .replace(/\*\*/g, "")
+          .replace(/\n/g, " ")}
       </span>
       {lines.map((words, lineIndex) => (
         <Fragment key={lineIndex}>
           <span className={styles.line} aria-hidden="true">
             {words.map((token, wordIndex) => {
               const position = index++;
-              const isEmDash = token.isEmDash || token.word === "—";
+              const isSpecial =
+                token.isEmDash || token.word === "—" || Boolean(token.entityKey);
+
               return (
                 <Fragment key={`${token.word}-${position}`}>
-                  <span className={isEmDash ? styles.clipEmDash : styles.clip}>
+                  <span className={isSpecial ? styles.clipEmDash : styles.clip}>
                     <span
                       className={[
-                        isEmDash ? styles.wordEmDash : styles.word,
+                        isSpecial ? styles.wordEmDash : styles.word,
                         token.isBold ? "font-semibold text-ink-primary" : "",
                       ]
                         .filter(Boolean)
@@ -105,7 +176,7 @@ export function TextReveal({
                         } as CSSProperties
                       }
                     >
-                      {isEmDash ? <EmDash /> : token.word}
+                      {renderToken(token)}
                     </span>
                   </span>
                   {wordIndex < words.length - 1 ? " " : null}

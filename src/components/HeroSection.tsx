@@ -243,7 +243,7 @@ const HeroSection: React.FC = () => {
               <TextReveal
                 as="p"
                 text={
-                  "I'm a **Design Engineer** working at the intersection of cognitive science, design craft, and production code. Sometimes I get identity crises and I keep switching between the three."
+                  "I'm a **Design Engineer** working at the intersection of cognitive science, design craft, and production code. Sometimes I get [[trilemma:identity crises]] and I keep switching between the three."
                 }
                 delay={0.3}
                 className={PARAGRAPH_CLASS}
@@ -255,7 +255,7 @@ const HeroSection: React.FC = () => {
               <InViewTextReveal
                 as="p"
                 text={
-                  "After completing a Computer Science degree in India, I became obsessed with understanding the human mind behind the interface — why so much software feels frustrating or draining. That curiosity brought me to Europe for a double Master's in HCI and Cognitive Science between **Aalto University** and the **University of Trento** — studying mental models and user-centric design."
+                  "After completing a Computer Science degree in India, I became obsessed with understanding the human mind behind the interface — why so much software feels frustrating or draining. That curiosity [[journey:brought me to Europe]] for a double Master's in HCI and Cognitive Science between [[aalto:Aalto University]] and the [[unitn:University of Trento]] — studying mental models and user-centric design."
                 }
                 delay={0.05}
                 className={PARAGRAPH_CLASS}
@@ -267,7 +267,7 @@ const HeroSection: React.FC = () => {
               <InViewTextReveal
                 as="p"
                 text={
-                  "Over the past several years, I've brought that combination of human insight and frontend systems to high-impact products: spending 4+ years as a design engineer at **Optmyzr** scaling core analytics across 10,000+ accounts, researching semi-ambient sensor interfaces with 200+ users at **Dedanext** in Italy, and co-founded **Groundwork** in Finland to turn accessibility regulations into practical tools (awarded 2nd place at the EIT Jumpstarter Grand Final)."
+                  "Over the past several years, I've brought that combination of human insight and frontend systems to high-impact products: spending 4+ years as a design engineer at [[optmyzr:Optmyzr]] scaling core analytics across 10,000+ accounts, researching semi-ambient sensor interfaces with 200+ users at [[dedanext:Dedanext]] in Italy, and co-founded [[groundwork:Groundwork]] in Finland to turn accessibility regulations into practical tools [[eit-jumpstarter:(awarded 2nd place at the EIT Jumpstarter Grand Final)]]."
                 }
                 delay={0.05}
                 className={PARAGRAPH_CLASS}
@@ -279,7 +279,7 @@ const HeroSection: React.FC = () => {
               <InViewTextReveal
                 as="p"
                 text={
-                  "When I'm not having an identity crisis, I design visual identities for the **Sustainability Community of Finland**, or just do random side-projects like YOU (Super Ego) or contemplate about human relations on substack."
+                  "When I'm not having an identity crisis, I design visual identities for the [[susco:Sustainability Community of Finland]], or just do random side-projects like [[super-ego:YOU (Super Ego)]] or contemplate about human relations on [[substack:substack]]."
                 }
                 delay={0.05}
                 className={PARAGRAPH_CLASS}

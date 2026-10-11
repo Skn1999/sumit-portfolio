@@ -20,7 +20,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { label: "Home", path: "/" },
   { label: "Work", path: "/work" },
-  { label: "For Startups", path: "/for-startups" },
+  { label: "Build Together?", path: "/for-startups" },
 ];
 
 export const NavigationDock: React.FC = () => {
@@ -287,11 +287,10 @@ export const NavigationDock: React.FC = () => {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`relative z-10 px-3.5 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm transition-colors duration-150 rounded-full select-none ${
-                      active
-                        ? "text-ink-primary font-semibold"
-                        : "text-ink-muted font-medium hover:text-ink-primary"
-                    }`}
+                    className={`relative z-10 px-3.5 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm transition-colors duration-150 rounded-full select-none ${active
+                      ? "text-ink-primary font-semibold"
+                      : "text-ink-muted font-medium hover:text-ink-primary"
+                      }`}
                   >
                     {active && (
                       <motion.div
@@ -324,11 +323,10 @@ export const NavigationDock: React.FC = () => {
               transition={{ type: "spring", stiffness: 500, damping: 25 }}
               aria-label={contactOpen ? "Close contact profile" : "Open contact profile"}
               aria-expanded={contactOpen}
-              className={`group relative size-8 sm:size-9 shrink-0 overflow-hidden rounded-full border-2 transition-all cursor-pointer ${
-                contactOpen
-                  ? "border-emerald-500 ring-2 ring-emerald-500/20"
-                  : "border-paper-border hover:border-ink-primary/60"
-              }`}
+              className={`group relative size-8 sm:size-9 shrink-0 overflow-hidden rounded-full border-2 transition-all cursor-pointer ${contactOpen
+                ? "border-emerald-500 ring-2 ring-emerald-500/20"
+                : "border-paper-border hover:border-ink-primary/60"
+                }`}
             >
               {!imageError ? (
                 <img
