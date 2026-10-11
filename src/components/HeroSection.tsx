@@ -321,4 +321,5 @@ const HeroSection: React.FC = () => {
   );
 };
 
+export { EmDash } from "./EmDash";
 export default HeroSection;

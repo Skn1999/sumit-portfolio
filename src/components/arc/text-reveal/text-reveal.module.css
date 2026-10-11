@@ -30,10 +30,29 @@
   mask-image: linear-gradient(#000 calc(100% - 0.18em), transparent);
 }
 
+/* For em-dashes: keep vertical alignment and spacing, but avoid masking so interactive pop tooltips can overflow freely above */
+.clipEmDash {
+  display: inline-block;
+  vertical-align: top;
+  padding: 0.1em 0.16em 0.24em;
+  margin: -0.1em -0.16em -0.24em;
+  overflow: visible;
+}
+
 /* Three tracks: the rise settles longest, the fade finishes first, and the blur clears between them.
    Backwards fill holds the hidden start through each word's delay, then lets go at the end, so resting words keep no transform or filter layer and render as crisp as plain text. */
 .word {
   display: inline-block;
+  animation:
+    rise 0.76s var(--ease-enter, cubic-bezier(0.16, 1, 0.3, 1)) var(--reveal-delay, 0s) backwards,
+    fade 0.44s var(--ease-standard, cubic-bezier(0.22, 1, 0.36, 1)) var(--reveal-delay, 0s) backwards,
+    focus 0.58s var(--ease-enter, cubic-bezier(0.16, 1, 0.3, 1)) var(--reveal-delay, 0s) backwards;
+}
+
+.wordEmDash {
+  display: inline-block;
+  position: relative;
+  overflow: visible;
   animation:
     rise 0.76s var(--ease-enter, cubic-bezier(0.16, 1, 0.3, 1)) var(--reveal-delay, 0s) backwards,
     fade 0.44s var(--ease-standard, cubic-bezier(0.22, 1, 0.36, 1)) var(--reveal-delay, 0s) backwards,
@@ -76,7 +95,8 @@
     -webkit-mask-image: none;
     mask-image: none;
   }
-  .word {
+  .word,
+  .wordEmDash {
     animation: fade var(--duration-fast, 0.16s) var(--ease-standard, cubic-bezier(0.22, 1, 0.36, 1)) backwards;
   }
 }

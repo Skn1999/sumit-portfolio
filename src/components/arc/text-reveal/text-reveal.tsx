@@ -1,6 +1,7 @@
 import { Fragment, type CSSProperties } from "react";
 import { motionTokens } from "../motion-tokens";
 import styles from "./text-reveal.module.css";
+import { EmDash } from "@/components/EmDash";
 
 /**
  * Reveals a short headline or sentence once, as it mounts: each word rises out of its own clip while it sharpens from a soft blur.
@@ -22,6 +23,7 @@ const MAX_STAGGER = motionTokens.duration.considered;
 interface WordToken {
   word: string;
   isBold: boolean;
+  isEmDash: boolean;
 }
 
 function parseLine(line: string): WordToken[] {
@@ -31,14 +33,22 @@ function parseLine(line: string): WordToken[] {
     if (!part) continue;
     if (part.startsWith("**") && part.endsWith("**")) {
       const boldContent = part.slice(2, -2);
-      const words = boldContent.split(/\s+/).filter(Boolean);
+      const words = boldContent.split(/(\s+|—)/).filter((s) => s && !/^\s+$/.test(s));
       for (const w of words) {
-        tokens.push({ word: w, isBold: true });
+        tokens.push({
+          word: w,
+          isBold: true,
+          isEmDash: w === "—",
+        });
       }
     } else {
-      const words = part.split(/\s+/).filter(Boolean);
+      const words = part.split(/(\s+|—)/).filter((s) => s && !/^\s+$/.test(s));
       for (const w of words) {
-        tokens.push({ word: w, isBold: false });
+        tokens.push({
+          word: w,
+          isBold: false,
+          isEmDash: w === "—",
+        });
       }
     }
   }
@@ -76,12 +86,13 @@ export function TextReveal({
           <span className={styles.line} aria-hidden="true">
             {words.map((token, wordIndex) => {
               const position = index++;
+              const isEmDash = token.isEmDash || token.word === "—";
               return (
                 <Fragment key={`${token.word}-${position}`}>
-                  <span className={styles.clip}>
+                  <span className={isEmDash ? styles.clipEmDash : styles.clip}>
                     <span
                       className={[
-                        styles.word,
+                        isEmDash ? styles.wordEmDash : styles.word,
                         token.isBold ? "font-semibold text-ink-primary" : "",
                       ]
                         .filter(Boolean)
@@ -94,7 +105,7 @@ export function TextReveal({
                         } as CSSProperties
                       }
                     >
-                      {token.word}
+                      {isEmDash ? <EmDash /> : token.word}
                     </span>
                   </span>
                   {wordIndex < words.length - 1 ? " " : null}
