@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Award, MapPin, Sparkles } from "lucide-react";
 import {
@@ -549,12 +549,12 @@ export const TrilemmaEntity: React.FC<BaseEntityProps> = ({ children }) => {
       return;
     }
 
-    // Time-based animation: automatically recalculates on its own after 600ms
-    const timer = setTimeout(() => {
+    // Time-based animation: runs on a loop every 600ms while the card is open
+    const interval = setInterval(() => {
       recalculate();
     }, 600);
 
-    return () => clearTimeout(timer);
+    return () => clearInterval(interval);
   }, [isOpen]);
 
   return (
