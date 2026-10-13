@@ -18,6 +18,9 @@ import { IngestionThread, TodoItem, NoteItem, Priority } from '../types';
 import { ArcButton } from './arc/ArcButton';
 import { ArcBadge } from './arc/ArcBadge';
 import { ArcConfirmMorph } from './arc/ArcConfirmMorph';
+import { BotAvatar } from 'bot-avatars';
+import { getAgentAvatarForTask } from '../lib/avatarService';
+import { renderDossierContent } from '../lib/dossierRenderer';
 
 interface WorkspaceViewProps {
   selectedType: 'thread' | 'todo' | 'note' | null;
@@ -239,46 +242,54 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
             </div>
           )}
 
-          {/* AI AGENT WORKSPACE CARD */}
+          {/* ASSISTANT WORKSPACE CARD */}
           <div className="p-5 rounded-2xl bg-[#f7f7f7] border border-[#b8caf5]/70 space-y-3">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-lg bg-[#b8caf5]/40 text-[#1b2b5a]">
-                  <Bot className="w-4 h-4" />
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-white border border-[#b8caf5] flex items-center justify-center overflow-hidden flex-shrink-0">
+                  <BotAvatar
+                    type={getAgentAvatarForTask(activeTodo.id, activeTodo.agentAvatar)}
+                    state={activeTodo.agentStatus === 'in_progress' ? 'working' : 'default'}
+                    size={26}
+                  />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-[#030302]">Autonomous AI Agent</h4>
-                  <p className="text-[10px] text-[#bebbba] font-mono">
-                    Status: <span className="uppercase font-semibold text-[#1b2b5a]">{activeTodo.agentStatus}</span>
+                  <h4 className="text-xs font-semibold text-[#030302]">Assistant</h4>
+                  <p className="text-[11px] text-[#6e6e6d]">
+                    {activeTodo.agentStatus === 'in_progress'
+                      ? 'Researching...'
+                      : activeTodo.agentStatus === 'completed'
+                      ? 'Briefing ready'
+                      : 'Ready'}
                   </p>
                 </div>
               </div>
 
               {activeTodo.agentStatus === 'awaiting_approval' && (
                 <ArcBadge variant="papaya" size="sm">
-                  ⚠️ Action Held for Approval
+                  Action Held for Approval
                 </ArcBadge>
               )}
             </div>
 
             {activeTodo.agentNotes && (
               <div className="p-3 rounded-xl bg-[#ffffff] border border-[#e1e1e1] text-xs text-[#41413f] leading-relaxed">
-                <p className="font-semibold text-[#030302] text-[11px] mb-1">Agent Reasoning:</p>
+                <p className="font-semibold text-[#030302] text-[11px] mb-1">Notes:</p>
                 <p>{activeTodo.agentNotes}</p>
               </div>
             )}
 
             {activeTodo.agentArtifacts && activeTodo.agentArtifacts.length > 0 && (
-              <div className="space-y-1.5">
-                <span className="text-[11px] font-mono text-[#bebbba] uppercase">
-                  Prepared Deliverables:
+              <div className="space-y-2 pt-1">
+                <span className="text-[11px] font-mono text-[#8a7f75]">
+                  Deliverables:
                 </span>
                 {activeTodo.agentArtifacts.map((art, idx) => (
                   <div
                     key={idx}
-                    className="p-3 rounded-xl bg-[#ffffff] border border-[#e1e1e1] text-xs text-[#030302] font-mono whitespace-pre-wrap"
+                    className="p-4 rounded-xl bg-[#fffef9] border border-[#d3b57a]/60 shadow-xs max-h-72 overflow-y-auto"
                   >
-                    {art}
+                    {renderDossierContent(art)}
                   </div>
                 ))}
               </div>

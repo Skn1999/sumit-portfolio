@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import { ViewCategory, IngestionThread, TodoItem, NoteItem } from '../types';
 import { ArcBadge } from './arc/ArcBadge';
+import { BotAvatar } from 'bot-avatars';
+import { getAgentAvatarForTask } from '../lib/avatarService';
 
 interface StreamViewProps {
   activeView: ViewCategory;
@@ -228,11 +230,6 @@ export const StreamView: React.FC<StreamViewProps> = ({
                           P2 High
                         </ArcBadge>
                       )}
-                      {todo.priority === 3 && (
-                        <ArcBadge variant="mint" size="sm">
-                          P3 Normal
-                        </ArcBadge>
-                      )}
 
                       {todo.dueDate && (
                         <span className="text-[10px] text-[#bebbba] flex items-center gap-1 font-mono">
@@ -249,13 +246,20 @@ export const StreamView: React.FC<StreamViewProps> = ({
                       )}
 
                       {todo.assignedTo === 'agent' && (
-                        <ArcBadge variant="periwinkle" size="sm" icon={<Bot className="w-3 h-3" />}>
-                          {todo.agentStatus === 'completed'
-                            ? 'Draft Ready'
-                            : todo.agentStatus === 'awaiting_approval'
-                            ? 'Needs Approval'
-                            : 'Agent Working'}
-                        </ArcBadge>
+                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-mono bg-[#b8caf5]/30 text-[#1b2b5a] border border-[#b8caf5]">
+                          <BotAvatar
+                            type={getAgentAvatarForTask(todo.id, todo.agentAvatar)}
+                            state={todo.agentStatus === 'in_progress' ? 'working' : 'default'}
+                            size={14}
+                          />
+                          <span>
+                            {todo.agentStatus === 'completed'
+                              ? 'Dossier Ready'
+                              : todo.agentStatus === 'awaiting_approval'
+                              ? 'Needs Approval'
+                              : 'Researching...'}
+                          </span>
+                        </span>
                       )}
                     </div>
                   </div>

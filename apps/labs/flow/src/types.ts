@@ -45,8 +45,11 @@ export interface TodoItem {
   source?: SourceReference;
   assignedTo: 'user' | 'agent' | 'collaborative';
   agentStatus: AgentStatus;
+  agentAvatar?: 'clover' | 'star' | 'ghost' | 'mech' | 'flower' | 'circle';
   agentNotes?: string;
   agentArtifacts?: string[];
+  agentErrorReason?: string;
+  agentRetryAt?: string;
   approvalId?: string;
   position?: BoardPosition;
   createdAt: string;
@@ -105,7 +108,7 @@ export interface ApprovalRequest {
 
 export interface AgentNotification {
   id: string;
-  type: 'pickup' | 'completed' | 'approval_required' | 'sync';
+  type: 'pickup' | 'completed' | 'approval_required' | 'sync' | 'overloaded';
   title: string;
   message: string;
   timestamp: string;
