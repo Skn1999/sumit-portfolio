@@ -7,9 +7,11 @@ import {
   useTransform,
   animate,
 } from 'framer-motion';
-import { Check, Bot, Archive, Mail, Paperclip, Sparkles, AlertTriangle } from 'lucide-react';
+import { Check, Bot, Archive, Mail, Paperclip, Sparkles, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { TodoItem } from '../../types';
 import { Pushpin } from './Pushpin';
+import { BotAvatar } from 'bot-avatars';
+import { getAgentAvatarForTask } from '../../lib/avatarService';
 
 interface PostItNoteProps {
   todo: TodoItem;
@@ -21,6 +23,10 @@ interface PostItNoteProps {
   onTogglePin: () => void;
   onArchive?: () => void;
   onDelegateToAgent: () => void;
+  onRetryAgent?: (id: string) => void;
+  onScheduleRetry?: (id: string, seconds: number) => void;
+  onCancelCountdown?: (id: string) => void;
+  onRevertToManualNote?: (id: string) => void;
   onPositionChange: (pos: { x: number; y: number }) => void;
   onDragMove?: (point: { x: number; y: number }) => void;
   onDragEndWithPoint?: (point: { x: number; y: number }, offset: { x: number; y: number }) => boolean;
@@ -36,6 +42,10 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
   onTogglePin,
   onArchive,
   onDelegateToAgent,
+  onRetryAgent,
+  onScheduleRetry,
+  onCancelCountdown,
+  onRevertToManualNote,
   onPositionChange,
   onDragMove,
   onDragEndWithPoint,
@@ -43,6 +53,22 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
   const isPinned = todo.position?.isPinned ?? true;
   const rotation = todo.position?.rotation ?? 0;
   const isCompleted = todo.status === 'completed';
+  const avatarType = getAgentAvatarForTask(todo.id, todo.agentAvatar);
+
+  // Countdown tick for scheduled retry if models were busy
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    if (todo.agentRetryAt) {
+      const interval = setInterval(() => setNow(Date.now()), 1000);
+      return () => clearInterval(interval);
+    }
+  }, [todo.agentRetryAt]);
+
+  const retryAtMs = todo.agentRetryAt ? new Date(todo.agentRetryAt).getTime() : 0;
+  const remainingSeconds = retryAtMs > now ? Math.ceil((retryAtMs - now) / 1000) : 0;
+  const mins = Math.floor(remainingSeconds / 60);
+  const secs = remainingSeconds % 60;
+  const formattedCountdown = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 
   const posX = todo.position?.x ?? 0;
   const posY = todo.position?.y ?? 0;
@@ -316,30 +342,117 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
 
         {/* AI In-Progress State */}
         {todo.assignedTo === 'agent' && todo.agentStatus === 'in_progress' && (
-          <div className="mt-2 p-2 rounded-lg bg-[#b8caf5]/35 border border-[#b8caf5] text-[11px] font-mono text-[#1b2b5a] flex items-center gap-1.5 animate-pulse">
-            <Bot className="w-3.5 h-3.5 animate-spin text-[#0087ff] flex-shrink-0" />
+          <div className="mt-2 p-2 rounded-xl bg-[#b8caf5]/35 border border-[#b8caf5] text-[11px] font-mono text-[#1b2b5a] flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-white/90 border border-[#b8caf5] flex items-center justify-center overflow-hidden flex-shrink-0 shadow-2xs">
+              <BotAvatar type={avatarType} state="working" size={26} />
+            </div>
             <span className="line-clamp-2 leading-tight">
               {todo.agentNotes || 'Assistant researching in background...'}
             </span>
           </div>
         )}
 
-        {/* AI Completed Dossier Preview Block */}
-        {todo.assignedTo === 'agent' && todo.agentStatus === 'completed' && todo.agentArtifacts && todo.agentArtifacts.length > 0 && (
+        {/* AI Overloaded / Resting State (Chamomile Parchment with 3 tactile escape hatches) */}
+        {todo.assignedTo === 'agent' && todo.agentStatus === 'failed' && (
+          <div className="mt-1.5 p-2 rounded-xl bg-[#fff9ef] border border-[#e8d7bd] text-[#524434] shadow-2xs font-ui flex flex-col gap-1.5">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-[#f7f0e4] border border-[#e4d5c1] flex items-center justify-center overflow-hidden flex-shrink-0 shadow-inner">
+                <div className="filter grayscale-[25%] opacity-90">
+                  <BotAvatar type={avatarType} state="sleeping" size={26} />
+                </div>
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#8c5820]">
+                    Resting
+                  </span>
+                  <span className="text-[9px] font-mono text-[#aa7a44] bg-[#f5e9d3] px-1 py-0.2 rounded">
+                    Capacity
+                  </span>
+                </div>
+                <p className="text-[10px] font-sans text-[#524434] leading-tight line-clamp-1 mt-0.5">
+                  {todo.agentErrorReason || 'Models are at capacity right now.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Tactile Recovery Actions */}
+            <div className="flex items-center gap-1.5 pt-1 border-t border-[#f0e2cd] text-[10px] font-sans">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRetryAgent?.(todo.id);
+                }}
+                className="px-2 py-0.5 rounded bg-[#2b1f0d] text-[#fff9ef] hover:bg-[#433118] transition-colors font-medium cursor-pointer shadow-xs"
+                title="Retry research now"
+              >
+                Retry
+              </button>
+
+              {remainingSeconds > 0 ? (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onCancelCountdown?.(todo.id);
+                  }}
+                  className="px-1.5 py-0.5 rounded bg-[#faeedd] border border-[#e5cb9f] text-[#845218] hover:bg-[#f3dfc5] transition-colors font-mono text-[9px] flex items-center gap-1 cursor-pointer"
+                  title="Click to cancel automatic retry"
+                >
+                  <span>⏱ {formattedCountdown}</span>
+                  <span className="text-[#a57038] hover:text-[#524434] font-bold">✕</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onScheduleRetry?.(todo.id, 300);
+                  }}
+                  className="px-2 py-0.5 rounded bg-white border border-[#e8d7bd] text-[#6b553e] hover:bg-[#faeedd] transition-colors font-medium cursor-pointer"
+                  title="Try again in 5 minutes"
+                >
+                  In 5m
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRevertToManualNote?.(todo.id);
+                }}
+                className="ml-auto text-[10px] text-[#8c5820] hover:text-[#2b1f0d] hover:underline cursor-pointer"
+                title="Revert to manual note without losing your notes"
+              >
+                Revert
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* AI Completed Dossier Preview Block with Idle Avatar */}
+        {todo.assignedTo === 'agent' && todo.agentStatus === 'completed' && (
           <div
             onClick={(e) => {
               e.stopPropagation();
               onOpenInspector?.();
             }}
             className="mt-1.5 p-2 rounded-lg bg-white/85 border border-[#d3b57a]/70 shadow-2xs cursor-pointer hover:bg-white hover:border-[#b89349] transition-all group/dossier"
-            title="Click to view full executive research dossier"
+            title="Task finished! Click to view executive research dossier"
           >
-            <div className="flex items-center justify-between text-[10px] font-mono font-bold text-[#4a3b1a] mb-0.5">
-              <span className="flex items-center gap-1">
-                <Sparkles className="w-3 h-3 text-[#c49a45]" />
-                Executive Briefing
-              </span>
-              <span className="text-[#0087ff] group-hover/dossier:underline flex items-center gap-0.5">
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-[#f7f0e4] border border-[#e4d5c1] flex items-center justify-center overflow-hidden flex-shrink-0 shadow-2xs">
+                  <BotAvatar type={avatarType} state="default" size={26} />
+                </div>
+                <span className="text-[#2d6a4f] font-mono text-[11px] font-bold flex items-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#2d6a4f]" />
+                  Task Done
+                </span>
+              </div>
+              <span className="text-[10px] font-mono text-[#0087ff] group-hover/dossier:underline flex items-center gap-0.5">
                 Inspect ↗
               </span>
             </div>
@@ -350,7 +463,7 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
         )}
 
         {/* Fallback Manual Description */}
-        {!(todo.assignedTo === 'agent' && (todo.agentStatus === 'in_progress' || (todo.agentStatus === 'completed' && todo.agentArtifacts && todo.agentArtifacts.length > 0))) && (
+        {!(todo.assignedTo === 'agent' && (todo.agentStatus === 'in_progress' || todo.agentStatus === 'failed' || todo.agentStatus === 'completed')) && (
           todo.description?.trim() ? (
             <p
               className={`font-handwriting leading-snug ${
@@ -400,48 +513,13 @@ export const PostItNote: React.FC<PostItNoteProps> = ({
           <div />
         )}
 
-        {/* Dynamic Agent Status Badge */}
-        {todo.assignedTo === 'agent' && (
+        {/* Dynamic Agent Status Indicator (quiet, non-redundant) */}
+        {todo.assignedTo === 'agent' && todo.agentStatus === 'awaiting_approval' && (
           <div
-            onClick={(e) => {
-              if (todo.agentStatus === 'completed') {
-                e.stopPropagation();
-                onOpenInspector?.();
-              }
-            }}
-            className={`px-2 py-0.5 rounded-full text-[10px] font-mono flex items-center gap-1 font-medium transition-all ${
-              todo.agentStatus === 'in_progress'
-                ? 'bg-[#b8caf5]/80 text-[#1b2b5a] animate-pulse border border-[#0087ff]/40 shadow-xs'
-                : todo.agentStatus === 'awaiting_approval'
-                ? 'bg-[#ffeedd] text-[#ff4500] border border-[#ff4500]/50 font-bold'
-                : 'bg-[#9bd8a9]/60 text-[#164e2e] border border-[#9bd8a9] hover:bg-[#9bd8a9]/80 cursor-pointer hover:scale-105 active:scale-95'
-            }`}
-            title={todo.agentStatus === 'completed' ? 'Click to inspect Dossier' : undefined}
+            className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-[#ffeedd] text-[#ff4500] border border-[#ff4500]/50 font-bold flex items-center gap-1"
           >
-            {todo.agentStatus === 'in_progress' && (
-              <>
-                <Bot className="w-3 h-3 animate-spin" />
-                <span>Researching...</span>
-              </>
-            )}
-            {todo.agentStatus === 'awaiting_approval' && (
-              <>
-                <AlertTriangle className="w-3 h-3 text-[#ff4500]" />
-                <span>Approval Needed</span>
-              </>
-            )}
-            {todo.agentStatus === 'completed' && (
-              <>
-                <Paperclip className="w-3 h-3 text-[#164e2e]" />
-                <span>Dossier Ready</span>
-              </>
-            )}
-            {todo.agentStatus === 'idle' && (
-              <>
-                <Bot className="w-3 h-3" />
-                <span>Assistant</span>
-              </>
-            )}
+            <AlertTriangle className="w-3 h-3 text-[#ff4500]" />
+            <span>Approval Needed</span>
           </div>
         )}
 

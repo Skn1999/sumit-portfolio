@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X,
@@ -14,6 +14,9 @@ import {
 } from 'lucide-react';
 import { IngestionThread, TodoItem, NoteItem } from '../../types';
 import { ArcButton } from '../arc/ArcButton';
+import { BotAvatar } from 'bot-avatars';
+import { getAgentAvatarForTask, BOT_AVATAR_DETAILS } from '../../lib/avatarService';
+import { renderDossierContent } from '../../lib/dossierRenderer';
 
 interface CardInspectorModalProps {
   isOpen: boolean;
@@ -30,112 +33,11 @@ interface CardInspectorModalProps {
   onDelegateTodoToAgent: (id: string) => void;
   onRequestApproval?: (id: string) => void;
   onPinDossierAsNote?: (todo: TodoItem) => void;
+  onRetryAgent?: (id: string) => void;
+  onScheduleRetry?: (id: string, seconds: number) => void;
+  onCancelCountdown?: (id: string) => void;
+  onRevertTodoFromAgent?: (id: string) => void;
 }
-const parseFormattedText = (text: string): React.ReactNode => {
-  const regex = /(\[.*?\]\(.*?\)|\*\*.*?\*\*|`.*?`)/g;
-  const parts = text.split(regex);
-
-  return parts.map((part, i) => {
-    if (!part) return null;
-    if (part.startsWith('[') && part.includes('](') && part.endsWith(')')) {
-      const match = part.match(/^\[(.*?)\]\((.*?)\)$/);
-      if (match) {
-        return (
-          <a
-            key={i}
-            href={match[2]}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#0066cc] underline hover:text-[#004499] inline-flex items-center gap-0.5 font-medium cursor-pointer"
-          >
-            {match[1]}
-            <ExternalLink className="w-2.5 h-2.5 inline" />
-          </a>
-        );
-      }
-    }
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return (
-        <strong key={i} className="font-semibold text-[#1a140b]">
-          {part.slice(2, -2)}
-        </strong>
-      );
-    }
-    if (part.startsWith('`') && part.endsWith('`')) {
-      return (
-        <code key={i} className="px-1.5 py-0.5 rounded bg-black/5 font-mono text-[11px] text-[#4a3b1a] border border-[#ebd8ba]">
-          {part.slice(1, -1)}
-        </code>
-      );
-    }
-    return part;
-  });
-};
-
-const renderDossierContent = (content: string) => {
-  const lines = content.split('\n');
-  return (
-    <div className="space-y-2.5 font-sans text-xs text-[#2d220f] leading-relaxed">
-      {lines.map((line, idx) => {
-        const trimmed = line.trim();
-        if (!trimmed) return <div key={idx} className="h-0.5" />;
-
-        // Main Title (# )
-        if (trimmed.startsWith('# ')) {
-          return (
-            <h3 key={idx} className="font-editorial text-lg font-bold text-[#1a140b] border-b border-[#e8d7b8] pb-1.5 pt-1">
-              {trimmed.slice(2)}
-            </h3>
-          );
-        }
-        // Section Header (## )
-        if (trimmed.startsWith('## ')) {
-          return (
-            <h4 key={idx} className="font-editorial text-sm font-bold text-[#3d2c14] pt-2.5 pb-0.5 flex items-center gap-1.5">
-              {trimmed.slice(3)}
-            </h4>
-          );
-        }
-        // Horizontal Rule (---)
-        if (trimmed === '---') {
-          return <hr key={idx} className="border-t border-[#ebd8ba] my-2" />;
-        }
-        // Bullet Point (* or -)
-        if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
-          const itemText = trimmed.slice(2);
-          return (
-            <div key={idx} className="flex items-start gap-2 pl-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#c4a56a] mt-1.5 flex-shrink-0" />
-              <div className="flex-1 leading-relaxed">
-                {parseFormattedText(itemText)}
-              </div>
-            </div>
-          );
-        }
-        // Numbered List
-        const numMatch = trimmed.match(/^(\d+)\.\s+(.*)$/);
-        if (numMatch) {
-          return (
-            <div key={idx} className="flex items-start gap-2 pl-1.5">
-              <span className="font-mono text-[10px] font-bold text-[#c4a56a] mt-0.5 flex-shrink-0 w-3.5">
-                {numMatch[1]}.
-              </span>
-              <div className="flex-1 leading-relaxed">
-                {parseFormattedText(numMatch[2])}
-              </div>
-            </div>
-          );
-        }
-        // Paragraph / Metadata
-        return (
-          <p key={idx} className="leading-relaxed">
-            {parseFormattedText(trimmed)}
-          </p>
-        );
-      })}
-    </div>
-  );
-};
 
 export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
   isOpen,
@@ -151,6 +53,10 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
   onUpdateNote,
   onDelegateTodoToAgent,
   onPinDossierAsNote,
+  onRetryAgent,
+  onScheduleRetry,
+  onCancelCountdown,
+  onRevertTodoFromAgent,
 }) => {
   // Local editable draft state for Notes
   const [noteTitle, setNoteTitle] = useState('');
@@ -160,6 +66,42 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
   const [todoTitle, setTodoTitle] = useState('');
   const [todoDesc, setTodoDesc] = useState('');
   const [copiedDossier, setCopiedDossier] = useState(false);
+
+  // Modal countdown tick for scheduled retry
+  const [modalNow, setModalNow] = useState(Date.now());
+  useEffect(() => {
+    if (activeTodo?.agentRetryAt) {
+      const interval = setInterval(() => setModalNow(Date.now()), 1000);
+      return () => clearInterval(interval);
+    }
+  }, [activeTodo?.agentRetryAt]);
+
+  const modalRetryAtMs = activeTodo?.agentRetryAt ? new Date(activeTodo.agentRetryAt).getTime() : 0;
+  const remainingSeconds = modalRetryAtMs > modalNow ? Math.ceil((modalRetryAtMs - modalNow) / 1000) : 0;
+  const mins = Math.floor(remainingSeconds / 60);
+  const secs = remainingSeconds % 60;
+  const formattedCountdown = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+  const todoTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const noteTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-focus the details textarea whenever modal opens
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        if (selectedType === 'todo' && todoTextareaRef.current) {
+          todoTextareaRef.current.focus();
+          const len = todoTextareaRef.current.value.length;
+          todoTextareaRef.current.setSelectionRange(len, len);
+        } else if (selectedType === 'note' && noteTextareaRef.current) {
+          noteTextareaRef.current.focus();
+          const len = noteTextareaRef.current.value.length;
+          noteTextareaRef.current.setSelectionRange(len, len);
+        }
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, selectedType]);
 
   // Sync draft state whenever modal opens or active item changes
   useEffect(() => {
@@ -188,12 +130,16 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
     onClose();
   };
 
-  // Save Todo Handler
+  // Save Todo Handler (automatically derives title from details if empty)
   const handleSaveTodo = () => {
     if (!activeTodo) return;
+    const derivedTitle =
+      todoTitle.trim() ||
+      todoDesc.trim().split('\n')[0]?.slice(0, 60) ||
+      'Action Item';
     onUpdateTodo({
       ...activeTodo,
-      title: todoTitle.trim(),
+      title: derivedTitle,
       description: todoDesc,
       updatedAt: new Date().toISOString(),
     });
@@ -391,25 +337,13 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
 
               {/* 2. TODO INSPECTOR */}
               {selectedType === 'todo' && activeTodo && (
-                <div className="space-y-5">
+                <div className="space-y-4">
                   <div>
-                    <label className="block text-xs font-mono text-[#bebbba] uppercase mb-1">
-                      Task Title
-                    </label>
-                    <input
-                      type="text"
-                      value={todoTitle}
-                      onChange={(e) => setTodoTitle(e.target.value)}
-                      className="w-full font-editorial text-2xl text-[#030302] tracking-tight bg-[#f7f7f7] px-3.5 py-2 rounded-xl border border-[#e1e1e1] focus:outline-none focus:ring-1 focus:ring-[#030302]"
-                      placeholder="Task title..."
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-mono text-[#bebbba] uppercase mb-1.5">
-                      Context & Details (Resizable)
+                    <label className="block text-xs font-mono text-[#8a8785] mb-1.5">
+                      Context & Details
                     </label>
                     <textarea
+                      ref={todoTextareaRef}
                       value={todoDesc}
                       onChange={(e) => setTodoDesc(e.target.value)}
                       rows={6}
@@ -421,19 +355,37 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
                   {/* AI Agent Status card & Deliverables */}
                   <div className="p-4 rounded-2xl bg-[#f7f7f7] border border-[#b8caf5] space-y-3">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="p-1.5 rounded-lg bg-[#b8caf5]/50 text-[#1b2b5a]">
-                          <Bot className="w-4 h-4" />
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-xl bg-white border border-[#b8caf5] flex items-center justify-center overflow-hidden flex-shrink-0">
+                          <BotAvatar
+                            type={getAgentAvatarForTask(activeTodo.id, activeTodo.agentAvatar)}
+                            state={
+                              activeTodo.agentStatus === 'in_progress'
+                                ? 'working'
+                                : activeTodo.agentStatus === 'failed'
+                                ? 'sleeping'
+                                : 'default'
+                            }
+                            size={28}
+                          />
                         </div>
                         <div>
-                          <h4 className="text-xs font-bold text-[#030302]">Autonomous Assistant</h4>
-                          <p className="text-[10px] text-[#bebbba] font-mono">
-                            Status: <span className="uppercase text-[#1b2b5a] font-bold">{activeTodo.agentStatus}</span>
+                          <h4 className="text-xs font-semibold text-[#030302]">
+                            {BOT_AVATAR_DETAILS[getAgentAvatarForTask(activeTodo.id, activeTodo.agentAvatar)]?.name || 'Assistant'}
+                          </h4>
+                          <p className="text-[11px] text-[#6e6e6d]">
+                            {activeTodo.agentStatus === 'in_progress'
+                              ? 'Researching...'
+                              : activeTodo.agentStatus === 'failed'
+                              ? 'Resting (Models Overloaded)'
+                              : activeTodo.agentStatus === 'completed'
+                              ? 'Task Done · Briefing ready'
+                              : 'Ready'}
                           </p>
                         </div>
                       </div>
 
-                      {activeTodo.assignedTo !== 'agent' ? (
+                      {activeTodo.assignedTo !== 'agent' && (
                         <ArcButton
                           variant="secondary"
                           size="sm"
@@ -445,15 +397,100 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
                         >
                           Delegate to Assistant
                         </ArcButton>
-                      ) : (
-                        <span className="text-[10px] font-mono text-[#0087ff] bg-white px-2 py-0.5 rounded-full border border-[#b8caf5]">
-                          Assigned to Assistant
-                        </span>
                       )}
                     </div>
 
+                    {/* Overloaded / Capacity State with recovery actions */}
+                    {activeTodo.agentStatus === 'failed' && (
+                      <div className="p-3.5 rounded-2xl bg-[#fff9ef] border border-[#e8d7bd] text-[#524434] space-y-3 font-ui">
+                        <div className="flex items-start gap-3">
+                          <div className="w-9 h-9 rounded-xl bg-[#f7f0e4] border border-[#e4d5c1] flex items-center justify-center overflow-hidden flex-shrink-0 shadow-inner">
+                            <div className="filter grayscale-[25%] opacity-90">
+                              <BotAvatar
+                                type={getAgentAvatarForTask(activeTodo.id, activeTodo.agentAvatar)}
+                                state="sleeping"
+                                size={26}
+                              />
+                            </div>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-bold text-[#8c5820]">
+                                Assistant is Resting
+                              </span>
+                              <span className="text-[10px] font-mono bg-[#f5e9d3] text-[#aa7a44] px-1.5 py-0.5 rounded font-medium">
+                                Capacity Limit
+                              </span>
+                            </div>
+                            <p className="text-xs text-[#524434] mt-1 leading-relaxed">
+                              {activeTodo.agentErrorReason ||
+                                'All candidate models are at capacity right now (503 Service Busy). Your task notes and state are fully preserved.'}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Diagnostics Foldout */}
+                        <details className="text-[11px] font-mono text-[#8c5820]/80 cursor-pointer pt-1 border-t border-[#f0e2cd]/80">
+                          <summary className="hover:text-[#524434] select-none py-0.5 font-medium">
+                            Diagnostic details (candidate models attempted)
+                          </summary>
+                          <div className="mt-1.5 p-2 bg-[#f8efe2] rounded-lg text-[10px] space-y-0.5 text-[#634825]">
+                            <div>• Candidate 1: <code>gemini-3.8-flash</code> (capacity / busy)</div>
+                            <div>• Candidate 2: <code>gemini-3.7-flash</code> (capacity / busy)</div>
+                            <div>• Candidate 3: <code>gemini-flash-lite-latest</code> (capacity / busy)</div>
+                            <div className="text-[#8c5820] font-semibold mt-1">Status: HTTP 503 / Backoff engaged</div>
+                          </div>
+                        </details>
+
+                        {/* Recovery Actions Bar */}
+                        <div className="flex items-center gap-2 pt-1 border-t border-[#f0e2cd]">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              onRetryAgent?.(activeTodo.id);
+                              onClose();
+                            }}
+                            className="px-3 py-1.5 rounded-lg bg-[#2b1f0d] text-[#fff9ef] hover:bg-[#433118] text-xs font-medium transition-colors cursor-pointer shadow-xs"
+                          >
+                            Retry Now
+                          </button>
+
+                          {remainingSeconds > 0 ? (
+                            <button
+                              type="button"
+                              onClick={() => onCancelCountdown?.(activeTodo.id)}
+                              className="px-3 py-1.5 rounded-lg bg-[#faeedd] border border-[#e5cb9f] text-[#845218] hover:bg-[#f3dfc5] text-xs font-mono transition-colors flex items-center gap-1.5 cursor-pointer"
+                              title="Cancel scheduled retry"
+                            >
+                              <span>⏱ Retry in {formattedCountdown}</span>
+                              <span className="font-bold text-[#a57038] hover:text-[#524434]">✕</span>
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => onScheduleRetry?.(activeTodo.id, 300)}
+                              className="px-3 py-1.5 rounded-lg bg-white border border-[#e8d7bd] text-[#6b553e] hover:bg-[#faeedd] text-xs font-medium transition-colors cursor-pointer"
+                            >
+                              Try in 5 minutes
+                            </button>
+                          )}
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              onRevertTodoFromAgent?.(activeTodo.id);
+                              onClose();
+                            }}
+                            className="ml-auto px-3 py-1.5 rounded-lg text-xs text-[#8c5820] hover:text-[#2b1f0d] hover:bg-[#f5e9d3] transition-colors cursor-pointer"
+                          >
+                            Revert to Manual Note
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Agent Notes / Live Progress */}
-                    {activeTodo.agentNotes && (
+                    {activeTodo.agentStatus !== 'failed' && activeTodo.agentNotes && (
                       <div className="p-2.5 rounded-xl bg-white border border-[#e1e1e1] text-[11px] font-mono text-[#41413f] flex items-start gap-2">
                         <Sparkles className="w-3.5 h-3.5 text-[#0087ff] flex-shrink-0 mt-0.5" />
                         <span className="leading-snug">{activeTodo.agentNotes}</span>
@@ -464,9 +501,9 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
                     {activeTodo.agentArtifacts && activeTodo.agentArtifacts.length > 0 && (
                       <div className="pt-2 space-y-2">
                         <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-mono uppercase text-[#4a3b1a] font-bold flex items-center gap-1">
-                            <Paperclip className="w-3.5 h-3.5 text-[#4a3b1a]" />
-                            Executive Research Dossier
+                          <span className="text-xs font-editorial font-medium text-[#2d220f] flex items-center gap-1.5">
+                            <Paperclip className="w-3.5 h-3.5 text-[#8a7750]" />
+                            Executive Briefing
                           </span>
                           <div className="flex items-center gap-3">
                             {onPinDossierAsNote && (
@@ -507,7 +544,14 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
                               backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.4), transparent 30%)`,
                             }}
                           >
-                            {renderDossierContent(artifact)}
+                            {renderDossierContent(artifact, (actionText) => {
+                              onPinDossierAsNote?.({
+                                ...activeTodo,
+                                title: actionText,
+                                description: actionText,
+                                agentNotes: actionText,
+                              });
+                            })}
                           </div>
                         ))}
                       </div>
@@ -542,25 +586,13 @@ export const CardInspectorModal: React.FC<CardInspectorModalProps> = ({
 
               {/* 3. NOTE INSPECTOR (WITH DEDICATED SAVE BUTTON) */}
               {selectedType === 'note' && activeNote && (
-                <div className="space-y-5">
+                <div className="space-y-4">
                   <div>
-                    <label className="block text-xs font-mono text-[#bebbba] uppercase mb-1">
-                      Note Title
-                    </label>
-                    <input
-                      type="text"
-                      value={noteTitle}
-                      onChange={(e) => setNoteTitle(e.target.value)}
-                      placeholder="Note Title..."
-                      className="w-full font-editorial text-2xl text-[#030302] tracking-tight bg-[#f7f7f7] px-3.5 py-2 rounded-xl border border-[#e1e1e1] focus:outline-none focus:ring-1 focus:ring-[#030302]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-mono text-[#bebbba] uppercase mb-1.5">
-                      Note Content (Resizable)
+                    <label className="block text-xs font-mono text-[#8a8785] mb-1.5">
+                      Note Content
                     </label>
                     <textarea
+                      ref={noteTextareaRef}
                       value={noteContent}
                       onChange={(e) => setNoteContent(e.target.value)}
                       rows={12}

@@ -41,6 +41,28 @@ const MODEL_CANDIDATES = [
   'gemini-flash-lite-latest',
 ];
 
+// Helper: Cancellable sleep with AbortSignal support
+export function cancellableSleep(ms: number, signal?: AbortSignal): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (signal?.aborted) {
+      const err = new Error('Aborted');
+      err.name = 'AbortError';
+      return reject(err);
+    }
+    const timer = setTimeout(() => {
+      signal?.removeEventListener('abort', onAbort);
+      resolve();
+    }, ms);
+    const onAbort = () => {
+      clearTimeout(timer);
+      const err = new Error('Aborted');
+      err.name = 'AbortError';
+      reject(err);
+    };
+    signal?.addEventListener('abort', onAbort, { once: true });
+  });
+}
+
 // Helper: Sleep utility
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -79,20 +101,36 @@ function isTransientError(status: number, errorObj: any, rawText: string = ''): 
   return false;
 }
 
+export class ModelsOverloadedError extends Error {
+  code = 'MODELS_BUSY';
+  reason: string;
+  constructor(message = 'All candidate models are at capacity right now.') {
+    super(message);
+    this.name = 'ModelsOverloadedError';
+    this.reason = message;
+  }
+}
+
 interface GeminiCallResult {
   data: any;
   error: { code?: number; status?: string; message: string } | null;
 }
 
-// Robust Gemini API caller with progressive exponential backoff, jitter, and multi-model fallback rotation
+// Robust Gemini API caller with progressive exponential backoff, jitter, multi-model rotation, and AbortSignal
 async function callGeminiWithRetry(
   apiKey: string,
   requestBody: any,
-  { maxRetries = 3, initialDelayMs = 2000, label = 'Request' } = {}
+  { maxRetries = 3, initialDelayMs = 2000, label = 'Request', signal }: { maxRetries?: number; initialDelayMs?: number; label?: string; signal?: AbortSignal } = {}
 ): Promise<GeminiCallResult> {
   let modelIndex = 0;
 
   for (let attempt = 1; attempt <= maxRetries + 1; attempt++) {
+    if (signal?.aborted) {
+      const err = new Error('Aborted');
+      err.name = 'AbortError';
+      throw err;
+    }
+
     const currentModel = MODEL_CANDIDATES[modelIndex] || MODEL_CANDIDATES[MODEL_CANDIDATES.length - 1];
     const modelPath = currentModel.startsWith('models/') ? currentModel : `models/${currentModel}`;
     const url = `https://generativelanguage.googleapis.com/v1beta/${modelPath}:generateContent?key=${apiKey}`;
@@ -106,6 +144,7 @@ async function callGeminiWithRetry(
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody),
+        signal,
       });
 
       rawText = await response.text();
@@ -206,14 +245,65 @@ export function classifyTaskIntent(context: TaskContext): 'research' | 'email_dr
   return 'research';
 }
 
+export interface ExecuteAgentOptions {
+  signal?: AbortSignal;
+}
+
 /**
- * Executes multi-turn agent workflow with live Gemini API calls,
- * candidate model rotation, and progressive status updates.
+ * Executes agent workflow with simulated 5-second realistic delay,
+ * progressive milestone feedback, AbortSignal support, and dummy deliverables.
  */
 export async function executeAgentWorkflow(
   context: TaskContext,
-  onProgress?: (statusText: string) => void
+  onProgress?: (statusText: string) => void,
+  options?: ExecuteAgentOptions
 ): Promise<AgentDeliverable> {
+  const signal = options?.signal;
+  const intent = classifyTaskIntent(context);
+
+  if (signal?.aborted) {
+    const err = new Error('Aborted');
+    err.name = 'AbortError';
+    throw err;
+  }
+
+  // Check for simulated busy/overloaded state via title keywords
+  const isSimulateBusy =
+    context.title.toLowerCase().includes('[busy]') ||
+    context.title.toLowerCase().includes('[overload]') ||
+    (context.description && context.description.toLowerCase().includes('[busy]'));
+
+  if (isSimulateBusy) {
+    onProgress?.('Querying candidate models (gemini-3.8-flash, gemini-3.7-flash)...');
+    await cancellableSleep(1500, signal);
+    throw new ModelsOverloadedError('All candidate models are at capacity right now (HTTP 503 Service Unavailable).');
+  }
+
+  // --- 5-SECOND REALISTIC INTERACTION SIMULATION WITH DUMMY RESPONSE ---
+  // Milestone 1: Deconstruction & query mapping (0s -> 1.6s)
+  onProgress?.('Assistant deconstructing inquiry & context...');
+  await cancellableSleep(1600, signal);
+
+  // Milestone 2: Research synthesis & signal scanning (1.6s -> 3.4s)
+  onProgress?.('Scanning signals & synthesizing research...');
+  await cancellableSleep(1800, signal);
+
+  // Milestone 3: Executive briefing compilation & verification (3.4s -> 5.0s)
+  onProgress?.('Synthesizing executive briefing dossier & verifying actions...');
+  await cancellableSleep(1600, signal);
+
+  return generateHeuristicReport(context, intent);
+}
+
+/**
+ * Live multi-turn Gemini API execution engine (preserved for production use)
+ */
+export async function executeLiveGeminiWorkflow(
+  context: TaskContext,
+  onProgress?: (statusText: string) => void,
+  options?: ExecuteAgentOptions
+): Promise<AgentDeliverable> {
+  const signal = options?.signal;
   const intent = classifyTaskIntent(context);
   const apiKey = (
     (typeof window !== 'undefined' ? localStorage.getItem('gemini_api_key') : null) ||
@@ -312,6 +402,17 @@ Snippet / Notes: "${context.description || context.source?.snippet || context.ti
   }
 
   // --- MULTI-TURN RESEARCH & STRATEGY AGENT (Tier 1 Autonomous) ---
+  const isSimulateBusy =
+    context.title.toLowerCase().includes('[busy]') ||
+    context.title.toLowerCase().includes('[overload]') ||
+    (context.description && context.description.toLowerCase().includes('[busy]'));
+
+  if (isSimulateBusy) {
+    onProgress?.('Querying candidate models (gemini-2.5-flash, gemini-1.5-flash)...');
+    await sleep(1500);
+    throw new ModelsOverloadedError('All candidate models are at capacity right now (HTTP 503 Service Unavailable).');
+  }
+
   const conversationHistory: Array<{ role: 'user' | 'model'; parts: Array<{ text: string }> }> = [];
 
   // TURN 1: Task Decomposition & Research Strategy
@@ -341,6 +442,16 @@ Provide your preliminary breakdown concisely.`;
     },
     { maxRetries: 3, label: 'Turn-1-Decomposition' }
   );
+
+  if (apiKey && turn1Result.error) {
+    const err = turn1Result.error;
+    const isBusy = isTransientError(Number(err.code) || 0, err, err.message || '');
+    throw new ModelsOverloadedError(
+      isBusy
+        ? 'All candidate models are at capacity right now (503 / busy).'
+        : (err.message || 'Unable to connect to model candidates.')
+    );
+  }
 
   const turn1Text = turn1Result.data?.candidates?.[0]?.content?.parts?.[0]?.text;
   if (turn1Text) {
@@ -378,13 +489,7 @@ Evaluate:
   const turn3Prompt = `Now compile the full findings into a definitive, executive-grade research dossier in clean GitHub-flavored Markdown.
 
 Follow this exact structure:
-# Executive Briefing Dossier: ${context.title}
-
-**Prepared by:** Autonomous Assistant (Gemini Multi-Turn Engine)  
-**Date:** ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}  
-**Classification:** Tier 1 Autonomous Deliverable  
-
----
+# Executive Briefing: ${context.title}
 
 ## 📋 Executive Summary
 (A punchy, 2-3 sentence executive synthesis of the verdict)
@@ -401,7 +506,7 @@ Follow this exact structure:
 ## 🔗 Sources & Reference Queries
 (Curated list of authoritative resources, search terms, or links)
 
-Keep the prose crisp, authoritative, and completely devoid of generic filler.`;
+Keep the prose crisp, authoritative, and completely devoid of generic filler or meta commentary.`;
 
   conversationHistory.push({ role: 'user', parts: [{ text: turn3Prompt }] });
 
@@ -456,7 +561,18 @@ Keep the prose crisp, authoritative, and completely devoid of generic filler.`;
     };
   }
 
-  // Fallback if API returned empty
+  // If live API key was provided but failed across candidate models
+  if (apiKey) {
+    const err = turn3Result?.error;
+    const isBusy = err ? isTransientError(Number(err.code) || 0, err, err.message || '') : true;
+    throw new ModelsOverloadedError(
+      isBusy
+        ? 'All candidate models are at capacity right now (HTTP 503 Service Unavailable).'
+        : (err?.message || 'Synthesis timed out across candidate models.')
+    );
+  }
+
+  // Fallback heuristic report when no API key configured
   return generateHeuristicReport(context, intent);
 }
 
@@ -466,16 +582,30 @@ Keep the prose crisp, authoritative, and completely devoid of generic filler.`;
 function generateHeuristicReport(context: TaskContext, intent: string): AgentDeliverable {
   const topic = context.title.replace(/^(research|look up|investigate|find info on)\s*/i, '').trim() || context.title;
 
-  const report = `# Executive Briefing Dossier: ${topic}
+  if (intent === 'email_draft') {
+    const authorName = context.source?.author || 'there';
+    const recipient = context.source?.authorEmail || 'contact@client.com';
+    const cleanSubject = context.title.replace(/^(re:|fwd:)\s*/i, '');
+    const draftBody = `Hi ${authorName.split(' ')[0]},\n\nThank you for getting in touch regarding "${cleanSubject}".\n\nI have reviewed the details and everything is aligned on our end. We are ready to proceed with the next steps as discussed.\n\nPlease let me know if you need any additional clarification.\n\nBest regards,\nSumit`;
 
-**Prepared by:** Autonomous Assistant  
-**Date:** ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}  
-**Classification:** Tier 1 Autonomous Deliverable  
+    return {
+      type: 'email_draft',
+      summary: `Prepared draft response to ${authorName}`,
+      markdownReport: `### ✉️ Outbound Email Draft\n\n**To:** \`${recipient}\`  \n**Subject:** *Re: ${cleanSubject}*\n\n---\n\n${draftBody}\n\n---\n*Status: Awaiting human sign-off before sending via Gmail API.*`,
+      draftEmail: {
+        recipient,
+        subject: `Re: ${cleanSubject}`,
+        body: draftBody,
+      },
+      requiresApproval: true,
+      approvalSummary: `Send outbound email response to ${recipient} regarding "${cleanSubject}"`,
+    };
+  }
 
----
-
-## 📋 Executive Summary
-A structured briefing on **${topic}**. Contextual signals indicate demand for high-leverage spatial organization, low-latency execution, and human-in-the-loop oversight.
+  const report = `# Executive Briefing: ${topic}
+ 
+ ## 📋 Executive Summary
+ A structured briefing on **${topic}**. Contextual signals indicate demand for high-leverage spatial organization, low-latency execution, and human-in-the-loop oversight.
 
 ## 🔍 Market Signals & Key Findings
 - **High-Leverage Workflows:** Active development and user migration towards focused spatial tools that eliminate context switching.

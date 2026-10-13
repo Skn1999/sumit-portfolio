@@ -31,7 +31,9 @@ interface CorkboardCanvasProps {
   onDelegateThreadToAgent?: (id: string) => void;
   onDelegateNoteToAgent?: (id: string) => void;
   onRevertTodoFromAgent?: (id: string) => void;
-  onOpenAgentDrawer?: () => void;
+  onRetryAgent?: (id: string) => void;
+  onScheduleRetry?: (id: string, seconds: number) => void;
+  onCancelCountdown?: (id: string) => void;
   onUpdateThreadPosition: (id: string, pos: { x: number; y: number }) => void;
   onUpdateTodoPosition: (id: string, pos: { x: number; y: number }) => void;
   onUpdateNotePosition: (id: string, pos: { x: number; y: number }) => void;
@@ -71,7 +73,9 @@ export const CorkboardCanvas: React.FC<CorkboardCanvasProps> = ({
   onDelegateThreadToAgent,
   onDelegateNoteToAgent,
   onRevertTodoFromAgent,
-  onOpenAgentDrawer,
+  onRetryAgent,
+  onScheduleRetry,
+  onCancelCountdown,
   onUpdateThreadPosition,
   onUpdateTodoPosition,
   onUpdateNotePosition,
@@ -265,6 +269,12 @@ export const CorkboardCanvas: React.FC<CorkboardCanvasProps> = ({
       if (type === 'note' && onDelegateNoteToAgent) {
         onDelegateNoteToAgent(id);
         return true;
+      }
+    } else {
+      // If note was assigned to agent and dropped outside the assistant folder, reclaim it!
+      const targetTodo = todos.find((t) => t.id === id);
+      if (type === 'todo' && targetTodo?.assignedTo === 'agent') {
+        onRevertTodoFromAgent?.(id);
       }
     }
 
@@ -515,7 +525,6 @@ export const CorkboardCanvas: React.FC<CorkboardCanvasProps> = ({
           completedTaskCount={
             todos.filter((t) => t.assignedTo === 'agent' && t.agentStatus === 'completed').length
           }
-          onOpenDrawer={() => onOpenAgentDrawer?.()}
         />
       </div>
 
@@ -603,10 +612,21 @@ export const CorkboardCanvas: React.FC<CorkboardCanvasProps> = ({
               )
             }
             onDelegateToAgent={() => onDelegateTodoToAgent(todo.id)}
+            onRetryAgent={onRetryAgent}
+            onScheduleRetry={onScheduleRetry}
+            onCancelCountdown={onCancelCountdown}
+            onRevertToManualNote={() => onRevertTodoFromAgent?.(todo.id)}
             onPositionChange={(pos) => {
-              // If note is dragged outside the folder back to working board, reclaim it!
-              if (todo.assignedTo === 'agent' && pos.x < folderX - 80) {
-                onRevertTodoFromAgent?.(todo.id);
+              // If note is dragged outside the assistant folder back to working board, reclaim it!
+              if (todo.assignedTo === 'agent') {
+                const isInsideFolder =
+                  pos.x >= folderX - 40 &&
+                  pos.x <= folderX + folderWidth + 30 &&
+                  pos.y >= folderY - 40 &&
+                  pos.y <= folderY + folderHeight + 40;
+                if (!isInsideFolder) {
+                  onRevertTodoFromAgent?.(todo.id);
+                }
               }
               onUpdateTodoPosition(todo.id, pos);
             }}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bot, Sparkles, FileText, ChevronRight, CheckCircle2, Clock } from 'lucide-react';
+import { Sparkles, FileText, CheckCircle2 } from 'lucide-react';
 import { Pushpin } from './Pushpin';
 
 interface AssistantFolderProps {
@@ -8,7 +8,6 @@ interface AssistantFolderProps {
   activeTaskCount: number;
   inProgressTaskCount: number;
   completedTaskCount: number;
-  onOpenDrawer: () => void;
   style?: React.CSSProperties;
 }
 
@@ -17,7 +16,6 @@ export const AssistantFolder: React.FC<AssistantFolderProps> = ({
   activeTaskCount,
   inProgressTaskCount,
   completedTaskCount,
-  onOpenDrawer,
   style,
 }) => {
   const isWorking = inProgressTaskCount > 0;
@@ -33,8 +31,7 @@ export const AssistantFolder: React.FC<AssistantFolderProps> = ({
           : '0 16px 28px -8px rgba(70, 50, 20, 0.22), 0 4px 10px -2px rgba(70, 50, 20, 0.1)',
       }}
       transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-      onClick={onOpenDrawer}
-      className="relative w-72 h-[340px] sm:w-80 sm:h-[360px] rounded-2xl cursor-pointer select-none transition-all group flex flex-col justify-between font-ui"
+      className="relative w-72 h-[340px] sm:w-80 sm:h-[360px] rounded-2xl select-none transition-all group flex flex-col justify-between font-ui"
     >
       {/* Brass Pushpin at top center of folder back */}
       <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
@@ -43,7 +40,6 @@ export const AssistantFolder: React.FC<AssistantFolderProps> = ({
 
       {/* Manila Folder Tab */}
       <div className="absolute -top-7 left-6 z-10 flex items-center gap-1.5 px-4 py-1.5 rounded-t-xl bg-[#e8cf9b] border-t border-l border-r border-[#d3b57a] shadow-xs text-xs font-mono font-bold text-[#4a3b1a] tracking-wide uppercase">
-        <Bot className={`w-3.5 h-3.5 text-[#1b2b5a] ${isWorking ? 'animate-bounce' : ''}`} />
         <span>Assistant</span>
         {isWorking && (
           <span className="w-2 h-2 rounded-full bg-[#0087ff] animate-pulse ml-1" />
@@ -114,45 +110,33 @@ export const AssistantFolder: React.FC<AssistantFolderProps> = ({
 
         {/* Middle Folder Stamp / Description */}
         <div className="my-auto text-left space-y-1.5 pt-2">
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-[#dfbe82] text-[#4a3b1a] font-bold tracking-wider">
-              Autonomous Desk
-            </span>
-            {isWorking && (
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-[#b8caf5]/70 text-[#1b2b5a] font-medium flex items-center gap-1 animate-pulse">
-                <Clock className="w-2.5 h-2.5" />
-                Working...
-              </span>
-            )}
-          </div>
+          {isWorking && (
+            <div className="flex items-center gap-1.5 text-[11px] font-mono text-[#1b2b5a]">
+              <span className="w-2 h-2 rounded-full bg-[#0087ff] animate-pulse" />
+              <span>Researching...</span>
+            </div>
+          )}
 
           <h3 className="font-editorial text-2xl font-medium text-[#2d220f] leading-tight">
             Secretary's Briefcase
           </h3>
           <p className="text-xs text-[#5c4722] leading-relaxed">
-            Hands-off delegation. Researches topics on the web, prepares drafts, and organizes action steps.
+            Drop notes here to delegate research and synthesis.
           </p>
         </div>
 
         {/* Folder Footer & Statistics */}
         <div className="pt-3 border-t border-[#dfbe82] flex items-center justify-between text-xs font-mono text-[#5c4722]">
-          <div className="flex items-center gap-3">
-            <span title="Delegated tasks" className="flex items-center gap-1">
-              <FileText className="w-3.5 h-3.5 opacity-70" />
-              <strong>{activeTaskCount}</strong> delegated
+          <span title="Delegated tasks" className="flex items-center gap-1">
+            <FileText className="w-3.5 h-3.5 opacity-70" />
+            <strong>{activeTaskCount}</strong> delegated
+          </span>
+          {completedTaskCount > 0 && (
+            <span title="Completed deliverables" className="flex items-center gap-1 text-[#2d6a4f]">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              <strong>{completedTaskCount}</strong> ready
             </span>
-            {completedTaskCount > 0 && (
-              <span title="Completed deliverables" className="flex items-center gap-1 text-[#2d6a4f]">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                <strong>{completedTaskCount}</strong>
-              </span>
-            )}
-          </div>
-
-          <div className="flex items-center gap-1 text-[#4a3b1a] group-hover:translate-x-1 transition-transform">
-            <span className="text-[11px] underline">Open Dossier</span>
-            <ChevronRight className="w-3.5 h-3.5" />
-          </div>
+          )}
         </div>
       </div>
     </motion.div>
