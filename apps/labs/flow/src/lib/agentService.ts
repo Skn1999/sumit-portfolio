@@ -250,10 +250,37 @@ export interface ExecuteAgentOptions {
 }
 
 /**
- * Executes agent workflow with simulated 5-second realistic delay,
- * progressive milestone feedback, AbortSignal support, and dummy deliverables.
+ * Executes agent workflow.
+ * 
+ * IN PRODUCTION (import.meta.env.PROD):
+ * ALWAYS executes live multi-turn Gemini API calls (executeLiveGeminiWorkflow).
+ * Never uses simulated dummy responses.
+ * 
+ * IN LOCAL DEVELOPMENT (import.meta.env.DEV):
+ * Runs simulated 5-second workflow ONLY if explicitly requested via VITE_USE_DUMMY_AI === 'true'
+ * or localStorage.getItem('tack_dev_use_dummy') === 'true'. Otherwise, runs live Gemini API.
  */
 export async function executeAgentWorkflow(
+  context: TaskContext,
+  onProgress?: (statusText: string) => void,
+  options?: ExecuteAgentOptions
+): Promise<AgentDeliverable> {
+  const isDevDummyEnabled =
+    import.meta.env.DEV &&
+    (import.meta.env.VITE_USE_DUMMY_AI === 'true' ||
+      (typeof window !== 'undefined' && localStorage.getItem('tack_dev_use_dummy') === 'true'));
+
+  if (!isDevDummyEnabled) {
+    return executeLiveGeminiWorkflow(context, onProgress, options);
+  }
+
+  return executeSimulatedDevWorkflow(context, onProgress, options);
+}
+
+/**
+ * Simulated 5-second realistic interaction with dummy response (LOCAL DEV ONLY).
+ */
+async function executeSimulatedDevWorkflow(
   context: TaskContext,
   onProgress?: (statusText: string) => void,
   options?: ExecuteAgentOptions
@@ -279,13 +306,13 @@ export async function executeAgentWorkflow(
     throw new ModelsOverloadedError('All candidate models are at capacity right now (HTTP 503 Service Unavailable).');
   }
 
-  // --- 5-SECOND REALISTIC INTERACTION SIMULATION WITH DUMMY RESPONSE ---
+  // --- 5-SECOND REALISTIC INTERACTION SIMULATION WITH DUMMY RESPONSE (DEV ONLY) ---
   // Milestone 1: Deconstruction & query mapping (0s -> 1.6s)
-  onProgress?.('Assistant deconstructing inquiry & context...');
+  onProgress?.('Assistant deconstructing inquiry & context (Dev Dummy Mode)...');
   await cancellableSleep(1600, signal);
 
   // Milestone 2: Research synthesis & signal scanning (1.6s -> 3.4s)
-  onProgress?.('Scanning signals & synthesizing research...');
+  onProgress?.('Scanning signals & synthesizing research (Dev Dummy Mode)...');
   await cancellableSleep(1800, signal);
 
   // Milestone 3: Executive briefing compilation & verification (3.4s -> 5.0s)
@@ -296,7 +323,7 @@ export async function executeAgentWorkflow(
 }
 
 /**
- * Live multi-turn Gemini API execution engine (preserved for production use)
+ * Live multi-turn Gemini API execution engine (production & default engine)
  */
 export async function executeLiveGeminiWorkflow(
   context: TaskContext,
@@ -354,7 +381,7 @@ Snippet / Notes: "${context.description || context.source?.snippet || context.ti
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
         generationConfig: { temperature: 0.2 },
       },
-      { maxRetries: 3, label: 'Email-Draft-Generation' }
+      { maxRetries: 3, label: 'Email-Draft-Generation', signal }
     );
 
     if (!error && data?.candidates?.[0]?.content?.parts?.[0]?.text) {
@@ -440,7 +467,7 @@ Provide your preliminary breakdown concisely.`;
       contents: conversationHistory,
       generationConfig: { temperature: 0.2 },
     },
-    { maxRetries: 3, label: 'Turn-1-Decomposition' }
+    { maxRetries: 3, label: 'Turn-1-Decomposition', signal }
   );
 
   if (apiKey && turn1Result.error) {
@@ -475,7 +502,7 @@ Evaluate:
       contents: conversationHistory,
       generationConfig: { temperature: 0.2 },
     },
-    { maxRetries: 3, label: 'Turn-2-Synthesis' }
+    { maxRetries: 3, label: 'Turn-2-Synthesis', signal }
   );
 
   const turn2Text = turn2Result.data?.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -516,7 +543,7 @@ Keep the prose crisp, authoritative, and completely devoid of generic filler or 
       contents: conversationHistory,
       generationConfig: { temperature: 0.2 },
     },
-    { maxRetries: 3, label: 'Turn-3-Final-Dossier' }
+    { maxRetries: 3, label: 'Turn-3-Final-Dossier', signal }
   );
 
   const finalMarkdown = turn3Result.data?.candidates?.[0]?.content?.parts?.[0]?.text;
