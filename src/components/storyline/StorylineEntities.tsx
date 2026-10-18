@@ -16,10 +16,29 @@ interface BaseEntityProps {
  * Optmyzr Entity Card
  */
 export const OptmyzrEntity: React.FC<BaseEntityProps> = ({ children }) => {
+  const handleMouseEnter = () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("storyline-spotlight", { detail: "optmyzr" })
+      );
+    }
+  };
+  const handleMouseLeave = () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("storyline-spotlight", { detail: null })
+      );
+    }
+  };
+
   return (
     <HoverCard openDelay={90} closeDelay={150}>
       <HoverCardTrigger asChild>
-        <span className="inline-flex items-center gap-1 font-semibold text-ink-primary hover:text-emerald-500 dark:hover:text-emerald-400 underline decoration-paper-border hover:decoration-emerald-500 underline-offset-4 cursor-pointer transition-colors select-none">
+        <span
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className="inline-flex items-center gap-1 font-semibold text-ink-primary hover:text-emerald-500 dark:hover:text-emerald-400 underline decoration-paper-border hover:decoration-emerald-500 underline-offset-4 cursor-pointer transition-colors select-none"
+        >
           <img
             src="/images/logos/optmyzr.png"
             alt="Optmyzr logo"
@@ -75,10 +94,29 @@ export const OptmyzrEntity: React.FC<BaseEntityProps> = ({ children }) => {
  * Dedanext Entity Card
  */
 export const DedanextEntity: React.FC<BaseEntityProps> = ({ children }) => {
+  const handleMouseEnter = () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("storyline-spotlight", { detail: "dedanext" })
+      );
+    }
+  };
+  const handleMouseLeave = () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("storyline-spotlight", { detail: null })
+      );
+    }
+  };
+
   return (
     <HoverCard openDelay={90} closeDelay={150}>
       <HoverCardTrigger asChild>
-        <span className="inline-flex items-center gap-1 font-semibold text-ink-primary hover:text-emerald-500 dark:hover:text-emerald-400 underline decoration-paper-border hover:decoration-emerald-500 underline-offset-4 cursor-pointer transition-colors select-none">
+        <span
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className="inline-flex items-center gap-1 font-semibold text-ink-primary hover:text-emerald-500 dark:hover:text-emerald-400 underline decoration-paper-border hover:decoration-emerald-500 underline-offset-4 cursor-pointer transition-colors select-none"
+        >
           <img
             src="/images/logos/dedanext.png"
             alt="Dedanext logo"
@@ -127,10 +165,29 @@ export const DedanextEntity: React.FC<BaseEntityProps> = ({ children }) => {
  * Groundwork Entity Card
  */
 export const GroundworkEntity: React.FC<BaseEntityProps> = ({ children }) => {
+  const handleMouseEnter = () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("storyline-spotlight", { detail: "groundwork" })
+      );
+    }
+  };
+  const handleMouseLeave = () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("storyline-spotlight", { detail: null })
+      );
+    }
+  };
+
   return (
     <HoverCard openDelay={90} closeDelay={150}>
       <HoverCardTrigger asChild>
-        <span className="inline-flex items-center gap-1 font-semibold text-ink-primary hover:text-emerald-500 dark:hover:text-emerald-400 underline decoration-paper-border hover:decoration-emerald-500 underline-offset-4 cursor-pointer transition-colors select-none">
+        <span
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className="inline-flex items-center gap-1 font-semibold text-ink-primary hover:text-emerald-500 dark:hover:text-emerald-400 underline decoration-paper-border hover:decoration-emerald-500 underline-offset-4 cursor-pointer transition-colors select-none"
+        >
           <img
             src="/images/logos/groundwork.svg"
             alt="Groundwork logo"

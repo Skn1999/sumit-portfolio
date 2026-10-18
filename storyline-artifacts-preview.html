@@ -1,0 +1,2420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curator's Stage: Storyline Artifacts Sandbox (V7 Jitter Blur Swirl)</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #0f1624;
+      --card-inner: #151f33;
+      --border: #1e293b;
+      --border-focus: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-indigo: #6366f1;
+      --accent-blue: #38bdf8;
+      --accent-rose: #f43f5e;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-display: "Space Grotesk", sans-serif;
+      --font-mono: "Space Mono", ui-monospace, Menlo, Monaco, monospace;
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      padding: 36px 24px 120px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 1240px; margin: 0 auto; }
+
+    /* Header */
+    header {
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+    }
+    .badge-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent-emerald);
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .tag.blue {
+      color: var(--accent-blue);
+      background: rgba(56, 189, 248, 0.1);
+      border-color: rgba(56, 189, 248, 0.25);
+    }
+    .tag.amber {
+      color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.1);
+      border-color: rgba(245, 158, 11, 0.25);
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    p.lead {
+      color: var(--text-muted);
+      font-size: 15px;
+      max-width: 980px;
+      line-height: 1.6;
+    }
+
+    /* Top Simulator */
+    .simulator-panel {
+      background: #080b12;
+      border: 1px solid #1e293b;
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 48px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .sim-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #1e293b;
+    }
+    .sim-header h3 {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sim-controls {
+      display: flex;
+      gap: 6px;
+    }
+    .step-btn {
+      background: #151f33;
+      border: 1px solid #2a3a54;
+      color: #94a3b8;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .step-btn:hover, .step-btn.active {
+      background: var(--accent-emerald);
+      color: #061e14;
+      border-color: var(--accent-emerald);
+      font-weight: 700;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+    }
+
+    .sim-body {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 32px;
+      min-height: 460px;
+      align-items: center;
+    }
+    @media (max-width: 900px) {
+      .sim-body { grid-template-columns: 1fr; }
+    }
+
+    .sim-text-col {
+      padding: 26px;
+      background: rgba(15, 22, 36, 0.6);
+      border-radius: 14px;
+      border: 1px solid #1a253a;
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .sim-step-indicator {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent-emerald);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sim-p-text {
+      font-size: 19px;
+      line-height: 1.6;
+      color: #f1f5f9;
+      letter-spacing: -0.01em;
+    }
+    .sim-p-text strong {
+      color: #fff;
+      font-weight: 700;
+    }
+    .sim-hover-tag {
+      color: var(--accent-emerald);
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 4px;
+      cursor: pointer;
+      padding: 1px 4px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .sim-hover-tag:hover {
+      color: #fff;
+      text-decoration-style: solid;
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    .sim-stage-col {
+      perspective: 1200px;
+      min-height: 440px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .stage-wrapper {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .stage-view {
+      position: absolute;
+      width: 100%;
+      max-width: 480px;
+      transition: all 0.55s var(--ease-spring);
+      opacity: 0;
+      transform: translateZ(-70px) scale(0.92);
+      pointer-events: none;
+      filter: blur(5px);
+    }
+    .stage-view.active {
+      opacity: 1;
+      transform: translateZ(0) scale(1);
+      pointer-events: auto;
+      filter: blur(0px);
+    }
+
+    /* Section Titles */
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      margin: 44px 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+    }
+    .section-title span.num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--accent-emerald);
+      background: rgba(16, 185, 129, 0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    /* Artifact Review Cards */
+    .artifact-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 26px;
+      margin-bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .artifact-card.approved {
+      border-color: var(--accent-emerald);
+      box-shadow: 0 0 28px rgba(16, 185, 129, 0.2);
+    }
+    .artifact-card.rejected {
+      border-color: var(--accent-rose);
+      opacity: 0.55;
+    }
+    .artifact-card.discuss {
+      border-color: var(--accent-amber);
+      box-shadow: 0 0 28px rgba(245, 158, 11, 0.2);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid #1a253a;
+      padding-bottom: 14px;
+    }
+    .card-title h4 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .card-title p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .preview-stage {
+      background: #090e18;
+      border: 1px solid #1c273c;
+      border-radius: 14px;
+      padding: 32px;
+      min-height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .preview-stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+
+    /* Specs Grid */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      font-size: 13px;
+    }
+    .spec-item {
+      background: #0d131f;
+      border: 1px solid #1a253a;
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+    .spec-item strong { color: #f1f5f9; }
+
+    /* Action Buttons & Feedback Inputs */
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid #1a253a;
+      padding-top: 16px;
+      margin-top: 6px;
+    }
+    .btn-group { display: flex; gap: 8px; }
+    .eval-btn {
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .eval-btn.approve {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: #34d399;
+    }
+    .eval-btn.approve:hover, .eval-btn.approve.active {
+      background: var(--accent-emerald);
+      color: #062316;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.4);
+    }
+    .eval-btn.reject {
+      background: rgba(244, 63, 94, 0.12);
+      border-color: rgba(244, 63, 94, 0.3);
+      color: #fb7185;
+    }
+    .eval-btn.reject:hover, .eval-btn.reject.active {
+      background: var(--accent-rose);
+      color: #fff;
+      box-shadow: 0 0 14px rgba(244, 63, 94, 0.4);
+    }
+    .eval-btn.discuss {
+      background: rgba(245, 158, 11, 0.12);
+      border-color: rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+    }
+    .eval-btn.discuss:hover, .eval-btn.discuss.active {
+      background: var(--accent-amber);
+      color: #2b1f0d;
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.4);
+    }
+
+    .notes-input {
+      width: 100%;
+      background: #090e18;
+      border: 1px solid #202d44;
+      border-radius: 8px;
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      padding: 10px 14px;
+      margin-top: 10px;
+      display: none;
+    }
+    .notes-input.visible { display: block; }
+
+    /* Bottom Prompt Generator */
+    .prompt-card {
+      background: #0c121e;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 48px;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5);
+    }
+    .prompt-card h4 {
+      font-family: var(--font-display);
+      font-size: 17px;
+      color: #fff;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .prompt-area {
+      width: 100%;
+      height: 170px;
+      background: #060911;
+      border: 1px solid #1c273c;
+      border-radius: 10px;
+      color: #38bdf8;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.6;
+      padding: 14px;
+      resize: vertical;
+      margin-top: 12px;
+    }
+    .copy-pill {
+      background: #1c273c;
+      border: 1px solid #2d3e5e;
+      color: #e2e8f0;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      padding: 5px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .copy-pill:hover { background: var(--accent-blue); color: #041221; font-weight: 700; }
+
+    /* ========================================================
+       SECTION 1: AVATAR WITH MULTIPLAYER FIGMA CURSORS (RIGHT-ALIGNED)
+       ======================================================== */
+    .avatar-curator-stage {
+      position: relative;
+      width: 440px;
+      height: 350px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #0d1422;
+      border: 1px solid #1f2c42;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5);
+      user-select: none;
+    }
+    .avatar-video-bg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 75% center; /* Focuses puppet on right side */
+      pointer-events: none;
+    }
+    /* Figma Cursor Component */
+    .figma-cursor {
+      position: absolute;
+      display: inline-flex;
+      align-items: flex-start;
+      gap: 3px;
+      pointer-events: none;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 20;
+    }
+    .cursor-pointer-svg {
+      width: 15px;
+      height: 15px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+      flex-shrink: 0;
+    }
+    .cursor-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+      padding: 2.5px 7px;
+      border-radius: 4px;
+      border-top-left-radius: 1px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+
+    /* RIGHT-ALIGNED CURSORS (Framing the Puppet on Right Side) */
+    #cursorCog, .cursor-cog-inst {
+      top: 40px; right: 90px;
+      color: #10b981;
+      animation: floatRight1 6s infinite ease-in-out;
+    }
+    #cursorCog .cursor-tag, .cursor-cog-inst .cursor-tag { background: #10b981; }
+
+    #cursorDesign, .cursor-design-inst {
+      top: 150px; right: 25px;
+      color: #818cf8;
+      animation: floatRight2 7s infinite ease-in-out;
+    }
+    #cursorDesign .cursor-tag, .cursor-design-inst .cursor-tag { background: #6366f1; }
+
+    #cursorCode, .cursor-code-inst {
+      bottom: 45px; right: 110px;
+      color: #f59e0b;
+      animation: floatRight3 6.5s infinite ease-in-out;
+    }
+    #cursorCode .cursor-tag, .cursor-code-inst .cursor-tag { background: #d97706; }
+
+    @keyframes floatRight1 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-8px, -10px); }
+    }
+    @keyframes floatRight2 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(8px, 8px); }
+    }
+    @keyframes floatRight3 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-10px, 8px); }
+    }
+
+    /* ========================================================
+       SECTION 2: BOARDING TICKET WITH MOUSE PAPER PHYSICS
+       ======================================================== */
+    .ticket-stage {
+      perspective: 900px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+    .paper-ticket {
+      width: 440px;
+      max-width: 100%;
+      background: #fbf8f1;
+      color: #1c1917;
+      border-radius: 12px;
+      display: grid;
+      grid-template-columns: 2.8fr 1fr;
+      position: relative;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.45);
+      border: 1px solid #d5cdbf;
+      cursor: grab;
+      user-select: none;
+      transform-style: preserve-3d;
+      transition: transform 0.15s ease-out, box-shadow 0.2s;
+    }
+    .paper-ticket::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      background: radial-gradient(circle at var(--light-x, 50%) var(--light-y, 50%), rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 65%);
+      pointer-events: none;
+      z-index: 10;
+    }
+    .pt-left {
+      padding: 20px 22px;
+      border-right: 2px dashed #b5ab99;
+      position: relative;
+    }
+    .pt-left::after {
+      content: "";
+      position: absolute;
+      right: -8px;
+      top: -8px;
+      width: 14px;
+      height: 14px;
+      background: #090e18;
+      border-radius: 50%;
+    }
+    .pt-left::before {
+      content: "";
+      position: absolute;
+      right: -8px;
+      bottom: -8px;
+      width: 14px;
+      height: 14px;
+      background: #090e18;
+      border-radius: 50%;
+    }
+    .pt-route {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0 16px;
+    }
+    .pt-city-code {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .pt-city-name {
+      font-size: 10px;
+      color: #78716c;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-top: 3px;
+    }
+    .pt-arrow {
+      color: #0284c7;
+      font-size: 17px;
+      font-weight: 900;
+    }
+    .pt-meta-strip {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #e7dfd2;
+      padding-top: 10px;
+      font-size: 11px;
+    }
+    .pt-col span.l {
+      display: block;
+      font-size: 8.5px;
+      text-transform: uppercase;
+      color: #a8a29e;
+      font-weight: 800;
+    }
+    .pt-col span.v {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: #292524;
+    }
+    .pt-stamp {
+      display: inline-block;
+      margin-top: 12px;
+      border: 1.5px solid #059669;
+      color: #059669;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transform: rotate(-3deg);
+    }
+    .pt-right {
+      padding: 18px 12px;
+      background: #f4ecdc;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      border-radius: 0 12px 12px 0;
+    }
+    .pt-seat {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 900;
+      color: #1c1917;
+    }
+
+    /* ========================================================
+       SECTION 3: JITTER BLUR SWIRL VORTEX & FLOATING CARDS
+       ======================================================== */
+    /* 1. Jitter Blur Swirl Vortex */
+    .vortex-stage-container {
+      width: 100%;
+      max-width: 490px;
+      height: 410px;
+      position: relative;
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+    .vortex-interactive-wrapper {
+      position: relative;
+      width: 520px;
+      height: 440px;
+      transform-style: preserve-3d;
+      transition: transform 0.25s ease-out;
+    }
+    /* The Revolving Swirl Disc */
+    .vortex-disc {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+      animation: vortexGalaxySpin 42s linear infinite;
+      transform-origin: 260px 220px;
+    }
+    .vortex-interactive-wrapper:hover .vortex-disc {
+      animation-play-state: paused;
+    }
+    @keyframes vortexGalaxySpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Individual Swirl Cards along the Logarithmic Spiral */
+    .swirl-card {
+      position: absolute;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.75);
+      background: #111827;
+      cursor: pointer;
+      display: block;
+      text-decoration: none;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.35s ease,
+                  opacity 0.35s ease,
+                  border-color 0.35s ease,
+                  box-shadow 0.35s ease;
+      transform-origin: center center;
+    }
+    .swirl-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Card Tooltip on Hover */
+    .swirl-tooltip {
+      position: absolute;
+      bottom: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(9, 14, 24, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      font-weight: 700;
+      color: #38bdf8;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+      z-index: 120;
+    }
+    .swirl-card:hover .swirl-tooltip {
+      opacity: 1;
+    }
+
+    /* Coordinates, Scale & Depth-of-Field Blur across the 8 Spiral Nodes */
+    /* Origin: (260, 220) with Open Vortex Eye */
+    .swirl-node-1 {
+      width: 170px; height: 108px;
+      left: 335px; top: 300px;
+      transform: rotate(16deg);
+      filter: blur(0px);
+      opacity: 1.0;
+      z-index: 20;
+    }
+    .swirl-node-2 {
+      width: 156px; height: 98px;
+      left: 73px; top: 325px;
+      transform: rotate(-18deg);
+      filter: blur(0px);
+      opacity: 1.0;
+      z-index: 18;
+    }
+    .swirl-node-3 {
+      width: 140px; height: 88px;
+      left: 31px; top: 102px;
+      transform: rotate(22deg);
+      filter: blur(0.8px);
+      opacity: 0.94;
+      z-index: 16;
+    }
+    .swirl-node-4 {
+      width: 124px; height: 78px;
+      left: 266px; top: 36px;
+      transform: rotate(-20deg);
+      filter: blur(1.6px);
+      opacity: 0.88;
+      z-index: 14;
+    }
+    .swirl-node-5 {
+      width: 108px; height: 68px;
+      left: 337px; top: 234px;
+      transform: rotate(28deg);
+      filter: blur(2.5px);
+      opacity: 0.78;
+      z-index: 12;
+    }
+    .swirl-node-6 {
+      width: 94px; height: 58px;
+      left: 192px; top: 309px;
+      transform: rotate(-28deg);
+      filter: blur(3.6px);
+      opacity: 0.65;
+      z-index: 10;
+    }
+    .swirl-node-7 {
+      width: 80px; height: 50px;
+      left: 120px; top: 195px;
+      transform: rotate(36deg);
+      filter: blur(4.8px);
+      opacity: 0.50;
+      z-index: 8;
+    }
+    .swirl-node-8 {
+      width: 66px; height: 42px;
+      left: 213px; top: 120px;
+      transform: rotate(-14deg);
+      filter: blur(5.8px);
+      opacity: 0.38;
+      z-index: 6;
+    }
+
+    /* Hover State on Individual Swirl Cards */
+    .swirl-card:hover {
+      transform: scale(1.18) translateZ(45px) !important;
+      filter: blur(0px) brightness(1.15) !important;
+      opacity: 1 !important;
+      z-index: 100 !important;
+      border-color: #38bdf8 !important;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.95), 0 0 0 1px #38bdf8 !important;
+    }
+
+    /* Paragraph Text-Hover Spotlight Linking */
+    .swirl-card.highlight {
+      transform: scale(1.15) translateZ(40px) !important;
+      filter: blur(0px) brightness(1.2) !important;
+      opacity: 1 !important;
+      z-index: 95 !important;
+      border-color: #38bdf8 !important;
+      box-shadow: 0 20px 42px rgba(0, 0, 0, 0.9), 0 0 0 2px #38bdf8 !important;
+    }
+    .swirl-card.dimmed {
+      opacity: 0.16 !important;
+      filter: blur(8px) grayscale(80%) !important;
+      transform: scale(0.88) !important;
+    }
+
+    /* P3 Mode Switcher Bar */
+    .p3-toggle-bar {
+      display: inline-flex;
+      background: #090e18;
+      border: 1px solid #1f2d45;
+      border-radius: 999px;
+      padding: 3px;
+      margin-bottom: 16px;
+    }
+    .p3-mode-btn {
+      padding: 6px 16px;
+      border-radius: 999px;
+      border: none;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #64748b;
+      background: transparent;
+      transition: all 0.2s;
+    }
+    .p3-mode-btn.active {
+      background: var(--accent-blue);
+      color: #041221;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+    }
+
+    /* 2. Zero-Gravity Floating Cards (Fallback View) */
+    .zero-gravity-space {
+      width: 100%;
+      max-width: 480px;
+      height: 380px;
+      position: relative;
+      perspective: 1200px;
+      transform-style: preserve-3d;
+    }
+    .floating-card-image {
+      position: absolute;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.65);
+      cursor: pointer;
+      display: block;
+      background: #141c2c;
+      transition: border-color 0.3s, transform 0.3s, opacity 0.3s, filter 0.3s;
+    }
+    .floating-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    @keyframes zeroGrav1 {
+      0% { transform: translate3d(0, 0, 15px) rotate(-4deg); }
+      50% { transform: translate3d(8px, -14px, 25px) rotate(-1deg); }
+      100% { transform: translate3d(0, 0, 15px) rotate(-4deg); }
+    }
+    @keyframes zeroGrav2 {
+      0% { transform: translate3d(0, 0, 0px) rotate(3deg); }
+      50% { transform: translate3d(-10px, 12px, 12px) rotate(5deg); }
+      100% { transform: translate3d(0, 0, 0px) rotate(3deg); }
+    }
+    @keyframes zeroGrav3 {
+      0% { transform: translate3d(0, 0, 25px) rotate(2deg); }
+      50% { transform: translate3d(12px, 10px, 35px) rotate(-2deg); }
+      100% { transform: translate3d(0, 0, 25px) rotate(2deg); }
+    }
+    @keyframes zeroGrav4 {
+      0% { transform: translate3d(0, 0, -5px) rotate(-3deg); }
+      50% { transform: translate3d(-8px, -16px, 10px) rotate(1deg); }
+      100% { transform: translate3d(0, 0, -5px) rotate(-3deg); }
+    }
+    #zgCard1, #lZgCard1 {
+      width: 210px; height: 130px;
+      top: 15px; left: 10px;
+      animation: zeroGrav1 14s infinite ease-in-out;
+      z-index: 4;
+    }
+    #zgCard2, #lZgCard2 {
+      width: 200px; height: 125px;
+      top: 25px; right: 15px;
+      animation: zeroGrav2 18s infinite ease-in-out;
+      z-index: 3;
+    }
+    #zgCard3, #lZgCard3 {
+      width: 215px; height: 135px;
+      bottom: 25px; left: 20px;
+      animation: zeroGrav3 16s infinite ease-in-out;
+      z-index: 5;
+    }
+    #zgCard4, #lZgCard4 {
+      width: 195px; height: 120px;
+      bottom: 15px; right: 20px;
+      animation: zeroGrav4 20s infinite ease-in-out;
+      z-index: 2;
+    }
+    .floating-card-image:hover {
+      animation-play-state: paused !important;
+      z-index: 100 !important;
+      transform: scale(1.08) translateZ(50px) !important;
+      border-color: #38bdf8 !important;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.85) !important;
+    }
+    .floating-card-image.highlight {
+      border-color: #38bdf8 !important;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.85) !important;
+      opacity: 1 !important;
+      filter: none !important;
+      z-index: 50 !important;
+      transform: scale(1.04) translateZ(35px) !important;
+    }
+    .floating-card-image.dimmed {
+      opacity: 0.25 !important;
+      filter: grayscale(80%) blur(1px) !important;
+    }
+
+    /* ========================================================
+       SECTION 4: REAL 3D ISOMETRIC DOSSIER FOLDER
+       ======================================================== */
+    .folder-stage-container {
+      perspective: 1200px;
+      width: 440px;
+      height: 340px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+    /* 3D Isometric Rig with Mouse Tilt */
+    .folder-3d-rig {
+      width: 390px;
+      height: 280px;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateX(13deg) rotateY(-18deg) rotateZ(-1deg);
+      transition: transform 0.25s ease-out;
+    }
+
+    /* Back Cover of the Folder */
+    .folder-back-cover {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(140deg, #182234 0%, #0c121e 100%);
+      border: 1px solid #2d3b55;
+      border-radius: 12px 16px 14px 14px;
+      box-shadow: 0 24px 50px rgba(0,0,0,0.7);
+      transform: translateZ(0px);
+    }
+    .folder-inner-shadow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 100%, rgba(0,0,0,0.6) 0%, transparent 70%);
+      pointer-events: none;
+      border-radius: 12px 16px 14px 14px;
+    }
+    .folder-top-tab {
+      position: absolute;
+      top: -24px;
+      left: 20px;
+      height: 25px;
+      padding: 4px 18px 0;
+      background: #182234;
+      border: 1px solid #2d3b55;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      color: #94a3b8;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* File Inserts nestled INSIDE the sleeve between back and front */
+    .folder-sheet {
+      position: absolute;
+      width: 340px;
+      height: 215px;
+      left: 25px;
+      top: 30px;
+      border-radius: 8px 8px 6px 6px;
+      background: #fdfbf7;
+      color: #1c1917;
+      border: 1px solid #e2ded5;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+      transform-style: preserve-3d;
+      transition: transform 0.5s var(--ease-spring), box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    /* Staggered Index Tabs sticking up from each sheet */
+    .sheet-tab {
+      position: absolute;
+      top: -21px;
+      height: 22px;
+      padding: 3px 12px 0;
+      background: #fdfbf7;
+      border: 1px solid #e2ded5;
+      border-bottom: 1px solid #fdfbf7;
+      border-radius: 6px 6px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      color: #44403c;
+      letter-spacing: 0.04em;
+      box-shadow: 0 -3px 6px rgba(0,0,0,0.06);
+      transition: all 0.2s;
+    }
+    .sheet-tab:hover {
+      background: #ffffff;
+      color: #0f172a;
+    }
+    .tab-left { left: 14px; }
+    .tab-center { left: 115px; }
+    .tab-right { right: 14px; }
+
+    .sheet-tab-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .dot-emerald { background: #10b981; }
+    .dot-amber { background: #f59e0b; }
+    .dot-orange { background: #ea580c; }
+
+    /* Inactive tucked state: resting deep inside the sleeve pocket */
+    .folder-sheet.sheet-1 {
+      transform: translateY(24px) translateZ(8px) rotate(-1deg);
+      z-index: 10;
+    }
+    .folder-sheet.sheet-2 {
+      transform: translateY(20px) translateZ(14px) rotate(1.2deg);
+      z-index: 11;
+    }
+    .folder-sheet.sheet-3 {
+      transform: translateY(16px) translateZ(20px) rotate(-0.8deg);
+      z-index: 12;
+    }
+
+    .folder-sheet:not(.active):hover {
+      transform: translateY(8px) translateZ(22px) rotate(0deg);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.4);
+    }
+
+    /* Active State: The card glides UP out of the sleeve, BUT its bottom remains strictly tucked inside the front pocket! */
+    .folder-sheet.active {
+      transform: translateY(-82px) translateZ(26px) rotate(0deg) !important;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5) !important;
+      z-index: 20 !important; /* STRICTLY lower than front pocket (z-index: 30) so lower half is concealed! */
+    }
+    .folder-sheet.active .sheet-tab {
+      background: #ffffff;
+      border-color: #cbd5e1;
+      color: #0f172a;
+      box-shadow: 0 -4px 8px rgba(0,0,0,0.12);
+    }
+
+    /* Bottom tucked paper detail (disappears behind pocket wall) */
+    .sheet-tuck-lines {
+      position: absolute;
+      bottom: 12px;
+      left: 20px;
+      right: 20px;
+      height: 40px;
+      border-top: 1px dashed #e2ded5;
+      background: repeating-linear-gradient(180deg, transparent, transparent 7px, #f1f0eb 7px, #f1f0eb 8px);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    /* Front Pocket Sleeve (physically sits in front, enclosing the cards) */
+    .folder-front-pocket {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 175px;
+      background: linear-gradient(180deg, #1c273c 0%, #0e1421 100%);
+      border: 1px solid #334462;
+      border-top: 2px solid #38bdf8;
+      border-radius: 0 0 14px 14px;
+      transform: translateZ(36px) rotateX(-4deg);
+      transform-origin: bottom center;
+      box-shadow: inset 0 16px 20px -6px rgba(0,0,0,0.85), inset 0 2px 3px rgba(255,255,255,0.08), 0 12px 26px rgba(0,0,0,0.6);
+      z-index: 30; /* ALWAYS in front of all sheets! */
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      pointer-events: auto;
+    }
+
+    /* Pocket Thumb Notch at center top */
+    .pocket-thumb-notch {
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 12px;
+      background: #0d131f;
+      border: 1px solid #334462;
+      border-top: none;
+      border-radius: 0 0 25px 25px;
+      box-shadow: inset 0 4px 6px rgba(0,0,0,0.7);
+    }
+
+    .pocket-label-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #090e18;
+      border: 1px solid #1f2d45;
+      padding: 4px 10px;
+      border-radius: 4px;
+      width: fit-content;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--accent-emerald);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    /* Tabs Bar to control sheets */
+    .folder-controls-bar {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 14px;
+    }
+    .f-ctrl-btn {
+      background: #141c2b;
+      border: 1px solid #28374f;
+      color: #94a3b8;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .f-ctrl-btn.active {
+      background: var(--accent-blue);
+      color: #041221;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+    }
+
+    /* Super Ego Breathing Orb (Inside Sheet 1) */
+    .breath-circle-outer {
+      width: 66px;
+      height: 66px;
+      border: 1px dashed rgba(16, 185, 129, 0.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 3px auto 4px;
+    }
+    .breath-circle-inner {
+      width: 42px;
+      height: 42px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.5) 0%, rgba(16, 185, 129, 0.1) 70%);
+      border: 2px solid var(--accent-emerald);
+      border-radius: 50%;
+      animation: superEgoBreath 8s infinite cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      font-weight: 700;
+    }
+    @keyframes superEgoBreath {
+      0% { transform: scale(0.65); opacity: 0.5; }
+      35% { transform: scale(1.35); opacity: 1; box-shadow: 0 0 20px rgba(16, 185, 129, 0.5); }
+      50% { transform: scale(1.35); opacity: 1; }
+      85% { transform: scale(0.65); opacity: 0.5; }
+      100% { transform: scale(0.65); opacity: 0.5; }
+    }
+
+    /* ========================================================
+       SECTION 5: REFINED CRAFT SANDBOX (NO FILLER TEXT)
+       ======================================================== */
+    .craft-sandbox-card {
+      width: 440px;
+      background: #0f1624;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 28px 24px;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5);
+      text-align: center;
+    }
+    .craft-tabs-center {
+      display: inline-flex;
+      background: #090e18;
+      border: 1px solid #1f2d45;
+      border-radius: 999px;
+      padding: 4px;
+      margin-bottom: 22px; /* Clean gap without any text under tabs */
+    }
+    .ct-btn {
+      padding: 7px 20px;
+      border-radius: 999px;
+      border: none;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #64748b;
+      background: transparent;
+      transition: all 0.2s;
+    }
+    .ct-btn.active {
+      background: var(--accent-emerald);
+      color: #051d13;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+    }
+    .interactive-button-testbed {
+      background: #090e17;
+      border: 1px dashed #202d44;
+      border-radius: 12px;
+      padding: 28px 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .demo-spring-btn {
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .demo-spring-btn.craft-feel {
+      background: linear-gradient(180deg, #1f2d47 0%, #101826 100%);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.25);
+    }
+    .demo-spring-btn.craft-feel:hover {
+      transform: translateY(-2px) scale(1.02);
+      border-color: #38bdf8;
+      box-shadow: 0 12px 24px rgba(56, 189, 248, 0.25), inset 0 1px 1px rgba(255,255,255,0.4);
+    }
+    .demo-spring-btn.craft-feel:active {
+      transform: translateY(1px) scale(0.97);
+    }
+    .demo-spring-btn.slop-feel {
+      background: #334155;
+      border-color: #475569;
+      box-shadow: none;
+    }
+    .cs-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    .action-pill-btn {
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .action-pill-btn.primary {
+      background: #f1f5f9;
+      color: #090d16;
+      border: 1px solid #fff;
+    }
+    .action-pill-btn.primary:hover {
+      background: #fff;
+      transform: translateY(-1px);
+    }
+    .action-pill-btn.secondary {
+      background: #141c2b;
+      color: #94a3b8;
+      border: 1px solid #28374f;
+    }
+    .action-pill-btn.secondary:hover {
+      color: #fff;
+      border-color: #3b5073;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <header>
+    <div class="badge-bar">
+      <span class="tag">Stage Artifacts Review V7</span>
+      <span class="tag blue">Jitter Blur Swirl Exploration</span>
+      <span class="tag amber">8-Cover Depth Vortex</span>
+    </div>
+    <h1>Curator's Stage: Storyline Artifacts Sandbox (V7)</h1>
+    <p class="lead">
+      Updated with your Jitter reference:
+      <strong>P1</strong> positions the Figma multiplayer cursors right around your avatar character on the right;
+      <strong>P2</strong> features approved boarding pass paper physics;
+      <strong>P3</strong> showcases the new <strong>Jitter Blur Swirl Vortex</strong> (8 project covers along a logarithmic spiral with progressive depth-of-field blur, 3D pointer tilt, and text spotlighting);
+      <strong>P4</strong> features cards authentically tucked inside the 3D folder sleeve with staggered index tabs;
+      and <strong>P5</strong> features clean centered tabs with zero filler text.
+    </p>
+  </header>
+
+  <!-- ========================================================
+       TOP SECTION: LIVE SCROLL STAGE SIMULATOR
+       ======================================================== -->
+  <div class="simulator-panel">
+    <div class="sim-header">
+      <h3>
+        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981;"></span>
+        Live Stage Simulation (Paragraph Scroll $\leftrightarrow$ 3D Depth Drift)
+      </h3>
+      <div class="sim-controls">
+        <button class="step-btn active" onclick="setSimStep(1)">01 Identity</button>
+        <button class="step-btn" onclick="setSimStep(2)">02 Journey</button>
+        <button class="step-btn" onclick="setSimStep(3)">03 Shipped Work</button>
+        <button class="step-btn" onclick="setSimStep(4)">04 3D Folder</button>
+        <button class="step-btn" onclick="setSimStep(5)">05 Manifesto</button>
+      </div>
+    </div>
+
+    <div class="sim-body">
+      <!-- Left Column: Storyline text simulation -->
+      <div class="sim-text-col" id="simTextContainer">
+        <!-- Rendered dynamically via JS -->
+      </div>
+
+      <!-- Right Column: 3D Stage Transition Viewport -->
+      <div class="sim-stage-col">
+        <div class="stage-wrapper">
+
+          <!-- View 1: Avatar with Right-Aligned Multiplayer Figma Cursors -->
+          <div class="stage-view active" id="simView1">
+            <div class="avatar-curator-stage" onmousemove="handleAvatarStageMouse(event)">
+              <video src="public/hero-video.mp4" autoplay loop muted playsinline class="avatar-video-bg"></video>
+
+              <!-- Figma Cursor 1: Cognitive Science (Top Right over Avatar Head) -->
+              <div class="figma-cursor" id="cursorCog">
+                <svg class="cursor-pointer-svg" viewBox="0 0 16 16" fill="none">
+                  <path d="M0 0 L13 9.5 L7.5 9.5 L5.5 15 Z" fill="#10b981" stroke="#000" stroke-width="1"/>
+                </svg>
+                <div class="cursor-tag">Cognitive Science</div>
+              </div>
+
+              <!-- Figma Cursor 2: Design Craft (Mid Right over Avatar) -->
+              <div class="figma-cursor" id="cursorDesign">
+                <svg class="cursor-pointer-svg" viewBox="0 0 16 16" fill="none">
+                  <path d="M0 0 L13 9.5 L7.5 9.5 L5.5 15 Z" fill="#818cf8" stroke="#000" stroke-width="1"/>
+                </svg>
+                <div class="cursor-tag">Design Craft</div>
+              </div>
+
+              <!-- Figma Cursor 3: Production Code (Lower Right over Avatar Hands/Laptop) -->
+              <div class="figma-cursor" id="cursorCode">
+                <svg class="cursor-pointer-svg" viewBox="0 0 16 16" fill="none">
+                  <path d="M0 0 L13 9.5 L7.5 9.5 L5.5 15 Z" fill="#f59e0b" stroke="#000" stroke-width="1"/>
+                </svg>
+                <div class="cursor-tag">Production Code</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- View 2: Boarding Pass with Paper Physics -->
+          <div class="stage-view" id="simView2">
+            <div class="ticket-stage">
+              <div class="paper-ticket" id="simTicket" onmousemove="handleTicketMouse(event, 'simTicket')" onmouseleave="resetTicketMouse('simTicket')">
+                <div class="pt-left">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size: 8.5px; font-weight:800; text-transform:uppercase; color:#0284c7; letter-spacing:0.06em;">Scholar Transnational Ticket</span>
+                    <span style="font-family:var(--font-mono); font-size:9.5px; color:#78716c;">SN-2024</span>
+                  </div>
+                  <div class="pt-route">
+                    <div>
+                      <div class="pt-city-code">DEL</div>
+                      <div class="pt-city-name">New Delhi</div>
+                    </div>
+                    <div class="pt-arrow">➔</div>
+                    <div>
+                      <div class="pt-city-code">TRN</div>
+                      <div class="pt-city-name">Trento</div>
+                    </div>
+                    <div class="pt-arrow">➔</div>
+                    <div>
+                      <div class="pt-city-code">HEL</div>
+                      <div class="pt-city-name">Helsinki</div>
+                    </div>
+                  </div>
+                  <div class="pt-meta-strip">
+                    <div class="pt-col"><span class="l">DISTANCE</span><span class="v">6,400+ KM</span></div>
+                    <div class="pt-col"><span class="l">DOUBLE DEGREE</span><span class="v">M.SC. HCI</span></div>
+                    <div class="pt-col"><span class="l">UNIVERSITIES</span><span class="v">AALTO / TRENTO</span></div>
+                  </div>
+                  <div class="pt-stamp">✓ Transit Approved • Cognitive Ergonomics</div>
+                </div>
+                <div class="pt-right">
+                  <span style="font-size: 8px; font-weight:bold; color:#78716c;">SEAT</span>
+                  <div class="pt-seat">01A</div>
+                  <div style="width:100%; height:38px; background: repeating-linear-gradient(90deg, #1c1917, #1c1917 2px, transparent 2px, transparent 4px);"></div>
+                  <span style="font-size: 7.5px; font-family:var(--font-mono); color:#a8a29e;">AY-122</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- View 3: Jitter Blur Swirl Vortex (Project Covers) -->
+          <div class="stage-view" id="simView3">
+            <div id="simSwirlView" class="vortex-stage-container" onmousemove="handleVortexMouse(event, 'simVortexWrap')" onmouseleave="resetVortexMouse('simVortexWrap')">
+              <div class="vortex-interactive-wrapper" id="simVortexWrap">
+                <!-- Revolving Spiral of 8 Project Covers (Open Eye) -->
+                <div class="vortex-disc" id="simVortexDisc">
+                  <!-- 1. Optmyzr Onboarding (Foreground Hero 1) -->
+                  <a href="#optmyzr-onboarding" class="swirl-card swirl-node-1" data-company="optmyzr">
+                    <img src="src/content/projects/optmyzr-onboarding-experience/cover.png" alt="Optmyzr Onboarding" onerror="this.src='public/images/logos/optmyzr.png'">
+                    <span class="swirl-tooltip">Optmyzr • Onboarding</span>
+                  </a>
+
+                  <!-- 2. Dedanext EDIAQI (Foreground Hero 2) -->
+                  <a href="#dedanext" class="swirl-card swirl-node-2" data-company="dedanext">
+                    <img src="src/content/projects/ediaqi-decision-support-system/cover.png" alt="Dedanext EDIAQI" onerror="this.src='public/images/logos/dedanext.png'">
+                    <span class="swirl-tooltip">Dedanext • Sensor Interface</span>
+                  </a>
+
+                  <!-- 3. Optmyzr Migration (Mid-Outer) -->
+                  <a href="#optmyzr-migration" class="swirl-card swirl-node-3" data-company="optmyzr">
+                    <img src="src/content/projects/optmyzr-dashboard-migration/cover.png" alt="Optmyzr Migration" onerror="this.src='public/images/logos/optmyzr.png'">
+                    <span class="swirl-tooltip">Optmyzr • Dashboard Migration</span>
+                  </a>
+
+                  <!-- 4. Groundwork ESG (Mid) -->
+                  <a href="#groundwork" class="swirl-card swirl-node-4" data-company="groundwork">
+                    <img src="src/content/projects/groundwork/cover.svg" alt="Groundwork" onerror="this.src='public/images/logos/groundwork.svg'">
+                    <span class="swirl-tooltip">Groundwork • EIT Award</span>
+                  </a>
+
+                  <!-- 5. Super Ego (Mid-Inner) -->
+                  <a href="#super-ego" class="swirl-card swirl-node-5" data-company="superego">
+                    <img src="src/content/projects/super-ego-app/cover.jpg" alt="Super Ego" onerror="this.src='public/images/about/sketching.jpg'">
+                    <span class="swirl-tooltip">YOU • Super Ego</span>
+                  </a>
+
+                  <!-- 6. Gosta Labs (Inner) -->
+                  <a href="#gosta-labs" class="swirl-card swirl-node-6" data-company="gosta">
+                    <img src="src/content/projects/gosta-labs/cover.svg" alt="Gosta Labs" onerror="this.src='public/images/logos/groundwork.svg'">
+                    <span class="swirl-tooltip">Gosta Labs • Spatial AI</span>
+                  </a>
+
+                  <!-- 7. Social Integration (Deep Inner) -->
+                  <a href="#social-integration" class="swirl-card swirl-node-7" data-company="social">
+                    <img src="src/content/projects/social-integration-pd/cover.jpg" alt="Social Integration" onerror="this.src='public/images/about/hero.jpg'">
+                    <span class="swirl-tooltip">Public Design Research</span>
+                  </a>
+
+                  <!-- 8. Spatial Design (Core Vortex) -->
+                  <a href="#spatial-design" class="swirl-card swirl-node-8" data-company="spatial">
+                    <img src="src/content/projects/spatial-design-restaurant/cover.jpg" alt="Spatial Experience Design" onerror="this.src='public/images/about/hiking.jpg'">
+                    <span class="swirl-tooltip">Spatial Systems</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Zero-Gravity Float View (Fallback toggle) -->
+            <div id="simFloatView" class="zero-gravity-space" style="display:none;">
+              <a href="#optmyzr-onboarding" class="floating-card-image" id="zgCard1" data-company="optmyzr">
+                <img src="src/content/projects/optmyzr-onboarding-experience/cover.png" alt="Optmyzr Onboarding" onerror="this.src='public/images/logos/optmyzr.png'">
+              </a>
+              <a href="#optmyzr-migration" class="floating-card-image" id="zgCard2" data-company="optmyzr">
+                <img src="src/content/projects/optmyzr-dashboard-migration/cover.png" alt="Optmyzr Migration" onerror="this.src='public/images/logos/optmyzr.png'">
+              </a>
+              <a href="#dedanext" class="floating-card-image" id="zgCard3" data-company="dedanext">
+                <img src="src/content/projects/ediaqi-decision-support-system/cover.png" alt="Dedanext EDIAQI" onerror="this.src='public/images/logos/dedanext.png'">
+              </a>
+              <a href="#groundwork" class="floating-card-image" id="zgCard4" data-company="groundwork">
+                <img src="src/content/projects/groundwork/cover.svg" alt="Groundwork" onerror="this.src='public/images/logos/groundwork.svg'">
+              </a>
+            </div>
+          </div>
+
+          <!-- View 4: Real 3D Isometric Folder (Super Ego, Hiking Photos, Substack Draft) -->
+          <div class="stage-view" id="simView4">
+            <div class="folder-stage-container" onmousemove="handleFolderStageMouse(event, 'simFolderRig')" onmouseleave="resetFolderStageMouse('simFolderRig')">
+              <div class="folder-3d-rig" id="simFolderRig">
+                <!-- Back Folder Cover with Top Tab -->
+                <div class="folder-back-cover">
+                  <div class="folder-top-tab">DOSSIER // 04</div>
+                  <div class="folder-inner-shadow"></div>
+                </div>
+
+                <!-- Sheet 1: Super Ego Orbit Pattern -->
+                <div class="folder-sheet sheet-1 active" id="simSheet1" onclick="pullSheet(1)">
+                  <div class="sheet-tab tab-left">
+                    <span class="sheet-tab-dot dot-emerald"></span>
+                    <span>YOU // 01</span>
+                  </div>
+                  <div style="padding:14px 16px 0; text-align:center;">
+                    <span style="font-family:var(--font-mono); font-size:9px; color:#059669; font-weight:700; text-transform:uppercase; letter-spacing:0.06em;">Habit Protocol • Super Ego</span>
+                    <div class="breath-circle-outer">
+                      <div class="breath-circle-inner">YOU</div>
+                    </div>
+                    <span style="font-size:10.5px; color:#44403c; display:block; font-weight:600; margin-top:2px;">Breath-paced habit interventions</span>
+                  </div>
+                  <div class="sheet-tuck-lines"></div>
+                </div>
+
+                <!-- Sheet 2: Real Hiking/Trail Photos -->
+                <div class="folder-sheet sheet-2" id="simSheet2" onclick="pullSheet(2)">
+                  <div class="sheet-tab tab-center">
+                    <span class="sheet-tab-dot dot-amber"></span>
+                    <span>TRAIL // 02</span>
+                  </div>
+                  <div style="padding:10px 12px 0; text-align:center;">
+                    <img src="public/images/about/hiking.jpg" alt="Hiking in mountains" style="width:100%; height:105px; object-fit:cover; border-radius:4px; box-shadow:0 2px 6px rgba(0,0,0,0.15);" onerror="this.src='public/images/about/sketching.jpg'">
+                    <span style="font-family:var(--font-mono); font-size:9.5px; color:#44403c; display:block; margin-top:5px; font-weight:700;">Sumit Nayyar • Nuuksio Trail Thinking</span>
+                  </div>
+                  <div class="sheet-tuck-lines"></div>
+                </div>
+
+                <!-- Sheet 3: Substack Draft Essay -->
+                <div class="folder-sheet sheet-3" id="simSheet3" onclick="pullSheet(3)">
+                  <div class="sheet-tab tab-right">
+                    <span class="sheet-tab-dot dot-orange"></span>
+                    <span>ESSAY // 03</span>
+                  </div>
+                  <div style="padding:14px 16px 0; text-align:left; position:relative;">
+                    <div style="position:absolute; top:8px; right:12px; font-size:13px; opacity:0.75;" title="Manuscript Paperclip">📎</div>
+                    <span style="font-family:var(--font-mono); font-size:9px; color:#ea580c; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Unsaid Moments // Draft #14</span>
+                    <h5 style="font-size:12.5px; color:#1c1917; margin:5px 0 4px; font-weight:700;">"The Friction of Attention"</h5>
+                    <p style="font-size:10.5px; color:#57534e; line-height:1.4; font-style:italic;">
+                      "Moments software didn't demand our gaze stay with us longest."
+                    </p>
+                    <span style="display:inline-block; margin-top:6px; font-family:var(--font-mono); font-size:9.5px; color:#ea580c; font-weight:700;">substack.com ↗</span>
+                  </div>
+                  <div class="sheet-tuck-lines"></div>
+                </div>
+
+                <!-- Front Pocket Sleeve (angled open with embossed badge) -->
+                <div class="folder-front-pocket">
+                  <div class="pocket-thumb-notch"></div>
+                  <div class="pocket-label-badge">
+                    <span>●</span> ARCHIVE NO. 04 — OFF THE CLOCK
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Controls to switch sheets -->
+            <div class="folder-controls-bar">
+              <button class="f-ctrl-btn active" id="fCtrl1" onclick="pullSheet(1)">● 01 Super Ego</button>
+              <button class="f-ctrl-btn" id="fCtrl2" onclick="pullSheet(2)">● 02 Trail Photos</button>
+              <button class="f-ctrl-btn" id="fCtrl3" onclick="pullSheet(3)">● 03 Substack Draft</button>
+            </div>
+          </div>
+
+          <!-- View 5: Craft Manifesto (Option A Refined - No Filler Text) -->
+          <div class="stage-view" id="simView5">
+            <div class="craft-sandbox-card">
+              <div class="craft-tabs-center">
+                <button class="ct-btn active" id="btnModeCraft" onclick="setCraftMode('craft')">Craft Mode</button>
+                <button class="ct-btn" id="btnModeSlop" onclick="setCraftMode('slop')">Slop Mode</button>
+              </div>
+
+              <!-- Direct to Interactive Physics Button (Zero filler lines) -->
+              <div class="interactive-button-testbed">
+                <button class="demo-spring-btn craft-feel" id="demoBtn">Tap Me &amp; Feel Physics ✦</button>
+                <div style="font-family:var(--font-mono); font-size:10.5px; color:#64748b; margin-top:10px;" id="physicsLabel">
+                  Spring: damping 0.16, stiffness 300, specular sheen active
+                </div>
+              </div>
+
+              <div class="cs-actions">
+                <a href="#resume" class="action-pill-btn primary" onclick="alert('Viewing Resume'); return false;">View Resume ↗</a>
+                <a href="mailto:sknayyar.sk@gmail.com" class="action-pill-btn secondary" onclick="navigator.clipboard.writeText('sknayyar.sk@gmail.com'); alert('Copied sknayyar.sk@gmail.com to clipboard!'); return false;">Copy Email 📋</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================================
+       SECTION 01 DETAIL & EVALUATION
+       ======================================================== -->
+  <div class="section-title">
+    <span class="num">01</span>
+    <span>Paragraph 1: Hybrid Identity (Avatar with Right-Aligned Figma Cursors)</span>
+  </div>
+
+  <div class="artifact-card approved" id="cardP1">
+    <div class="card-top">
+      <div class="card-title">
+        <h4>Avatar with Right-Aligned Multiplayer Figma Cursors</h4>
+        <p>Cursors positioned on the right side where your puppet avatar actually sits, live-framing the character with your 3 collaborative disciplines.</p>
+      </div>
+      <span class="tag">Approved</span>
+    </div>
+
+    <div class="preview-stage">
+      <div class="avatar-curator-stage" style="width:440px; height:350px;">
+        <video src="public/hero-video.mp4" autoplay loop muted playsinline class="avatar-video-bg"></video>
+
+        <div class="figma-cursor cursor-cog-inst">
+          <svg class="cursor-pointer-svg" viewBox="0 0 16 16" fill="none"><path d="M0 0 L13 9.5 L7.5 9.5 L5.5 15 Z" fill="#10b981" stroke="#000" stroke-width="1"/></svg>
+          <div class="cursor-tag">Cognitive Science</div>
+        </div>
+
+        <div class="figma-cursor cursor-design-inst">
+          <svg class="cursor-pointer-svg" viewBox="0 0 16 16" fill="none"><path d="M0 0 L13 9.5 L7.5 9.5 L5.5 15 Z" fill="#818cf8" stroke="#000" stroke-width="1"/></svg>
+          <div class="cursor-tag">Design Craft</div>
+        </div>
+
+        <div class="figma-cursor cursor-code-inst">
+          <svg class="cursor-pointer-svg" viewBox="0 0 16 16" fill="none"><path d="M0 0 L13 9.5 L7.5 9.5 L5.5 15 Z" fill="#f59e0b" stroke="#000" stroke-width="1"/></svg>
+          <div class="cursor-tag">Production Code</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="specs-grid">
+      <div class="spec-item">
+        <strong>Spatial Accuracy:</strong> Cursors clustered at right 25–110px framing the head, torso, and hands of the character.
+      </div>
+      <div class="spec-item">
+        <strong>Multiplayer Narrative:</strong> Visualizes the triad of disciplines inspecting and shaping one unified person.
+      </div>
+    </div>
+
+    <div class="action-row">
+      <div class="btn-group">
+        <button class="eval-btn approve active" onclick="setDecision('p1', 'approve')">✓ Approved</button>
+        <button class="eval-btn discuss" onclick="setDecision('p1', 'discuss')">💬 Discuss</button>
+        <button class="eval-btn reject" onclick="setDecision('p1', 'reject')">✕ Reject</button>
+      </div>
+    </div>
+    <input type="text" class="notes-input" id="notes-p1" placeholder="Add specific notes on P1..." oninput="updatePrompt()">
+  </div>
+
+
+  <!-- ========================================================
+       SECTION 02 DETAIL & EVALUATION
+       ======================================================== -->
+  <div class="section-title">
+    <span class="num">02</span>
+    <span>Paragraph 2: The Journey (Boarding Pass with Paper Physics)</span>
+  </div>
+
+  <div class="artifact-card approved" id="cardP2">
+    <div class="card-top">
+      <div class="card-title">
+        <h4>Tactile Boarding Pass with 3D Tilt &amp; Light Sheen</h4>
+        <p>Move your mouse over the ticket to observe 3D tilt, specular glare, and authentic perforated paper physics.</p>
+      </div>
+      <span class="tag">Approved</span>
+    </div>
+
+    <div class="preview-stage">
+      <div class="ticket-stage">
+        <div class="paper-ticket" id="labTicket" onmousemove="handleTicketMouse(event, 'labTicket')" onmouseleave="resetTicketMouse('labTicket')">
+          <div class="pt-left">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size: 8.5px; font-weight:800; text-transform:uppercase; color:#0284c7; letter-spacing:0.06em;">Scholar Transnational Ticket</span>
+              <span style="font-family:var(--font-mono); font-size:9.5px; color:#78716c;">SN-2024</span>
+            </div>
+            <div class="pt-route">
+              <div>
+                <div class="pt-city-code">DEL</div>
+                <div class="pt-city-name">New Delhi, IN</div>
+              </div>
+              <div class="pt-arrow">➔</div>
+              <div>
+                <div class="pt-city-code">TRN</div>
+                <div class="pt-city-name">Trento, IT</div>
+              </div>
+              <div class="pt-arrow">➔</div>
+              <div>
+                <div class="pt-city-code">HEL</div>
+                <div class="pt-city-name">Helsinki, FI</div>
+              </div>
+            </div>
+            <div class="pt-meta-strip">
+              <div class="pt-col"><span class="l">MIGRATION</span><span class="v">6,400+ KM</span></div>
+              <div class="pt-col"><span class="l">DEGREE</span><span class="v">DOUBLE M.SC.</span></div>
+              <div class="pt-col"><span class="l">FOCUS</span><span class="v">HCI & COGSCI</span></div>
+            </div>
+            <div class="pt-stamp">✓ Transit Approved • Cognitive Ergonomics</div>
+          </div>
+          <div class="pt-right">
+            <span style="font-size: 8px; font-weight:bold; color:#78716c;">SEAT</span>
+            <div class="pt-seat">01A</div>
+            <div style="width:100%; height:44px; background: repeating-linear-gradient(90deg, #1c1917, #1c1917 2px, transparent 2px, transparent 4px);"></div>
+            <span style="font-size: 8px; font-family:var(--font-mono); color:#a8a29e;">AY-122</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="specs-grid">
+      <div class="spec-item">
+        <strong>Paper Physics:</strong> Sub-pixel 3D perspective rotation tied to pointer offset with gentle spring damping and specular highlights.
+      </div>
+      <div class="spec-item">
+        <strong>Character Details:</strong> Perforated notches, boarding stub, seat assignment, and transit stamp.
+      </div>
+    </div>
+
+    <div class="action-row">
+      <div class="btn-group">
+        <button class="eval-btn approve active" onclick="setDecision('p2', 'approve')">✓ Approved</button>
+        <button class="eval-btn discuss" onclick="setDecision('p2', 'discuss')">💬 Discuss</button>
+        <button class="eval-btn reject" onclick="setDecision('p2', 'reject')">✕ Reject</button>
+      </div>
+    </div>
+    <input type="text" class="notes-input" id="notes-p2" placeholder="Add specific notes on P2..." oninput="updatePrompt()">
+  </div>
+
+
+  <!-- ========================================================
+       SECTION 03 DETAIL & EVALUATION
+       ======================================================== -->
+  <div class="section-title">
+    <span class="num">03</span>
+    <span>Paragraph 3: Shipped Production Impact (Jitter Blur Swirl Vortex)</span>
+  </div>
+
+  <div class="artifact-card discuss" id="cardP3">
+    <div class="card-top">
+      <div class="card-title">
+        <h4>Jitter Blur Swirl Vortex (8-Project Depth Gradient Accretion Disc)</h4>
+        <p>Inspired by the Jitter swirl effect: 8 authentic project covers spiral around a clean impact hub. Cards scale from 54px to 160px with progressive depth blur, 3D pointer parallax, and text spotlighting.</p>
+      </div>
+      <span class="tag blue">Jitter Blur Swirl</span>
+    </div>
+
+    <!-- Mode Selector Toggle -->
+    <div style="text-align:center; margin-bottom:12px;">
+      <div class="p3-toggle-bar">
+        <button class="p3-mode-btn active" id="p3BtnSwirl" onclick="setP3DisplayMode('swirl')">✦ Jitter Blur Swirl Vortex</button>
+        <button class="p3-mode-btn" id="p3BtnFloat" onclick="setP3DisplayMode('float')">Zero-Gravity Float (Prior)</button>
+      </div>
+    </div>
+
+    <div class="preview-stage" style="flex-direction:column; gap:20px;">
+      <!-- Interactive Paragraph Text Simulation -->
+      <div style="background:#0c121e; border:1px solid #1f2d45; border-radius:10px; padding:12px 16px; font-size:13.5px; color:#cbd5e1; max-width:540px; line-height:1.6;">
+        Hover company names to test highlight:<br>
+        "...spending 4+ years as a design engineer at
+        <span class="sim-hover-tag" onmouseenter="spotlightCompany('optmyzr')" onmouseleave="resetCompanySpotlight()">Optmyzr</span>
+        scaling analytics across 10,000+ accounts, researching sensor interfaces at
+        <span class="sim-hover-tag" onmouseenter="spotlightCompany('dedanext')" onmouseleave="resetCompanySpotlight()">Dedanext</span>
+        in Italy, and co-founded
+        <span class="sim-hover-tag" onmouseenter="spotlightCompany('groundwork')" onmouseleave="resetCompanySpotlight()">Groundwork</span>
+        in Finland..."
+      </div>
+
+      <!-- 1. Jitter Blur Swirl Vortex Lab View -->
+      <div id="labSwirlView" class="vortex-stage-container" onmousemove="handleVortexMouse(event, 'labVortexWrap')" onmouseleave="resetVortexMouse('labVortexWrap')">
+        <div class="vortex-interactive-wrapper" id="labVortexWrap">
+          <div class="vortex-disc" id="labVortexDisc">
+            <!-- 1. Optmyzr Onboarding (Foreground Hero 1) -->
+            <a href="#optmyzr-onboarding" class="swirl-card swirl-node-1" data-company="optmyzr">
+              <img src="src/content/projects/optmyzr-onboarding-experience/cover.png" alt="Optmyzr Onboarding" onerror="this.src='public/images/logos/optmyzr.png'">
+              <span class="swirl-tooltip">Optmyzr • Onboarding</span>
+            </a>
+
+            <!-- 2. Dedanext EDIAQI (Foreground Hero 2) -->
+            <a href="#dedanext" class="swirl-card swirl-node-2" data-company="dedanext">
+              <img src="src/content/projects/ediaqi-decision-support-system/cover.png" alt="Dedanext EDIAQI" onerror="this.src='public/images/logos/dedanext.png'">
+              <span class="swirl-tooltip">Dedanext • Sensor Interface</span>
+            </a>
+
+            <!-- 3. Optmyzr Migration (Mid-Outer) -->
+            <a href="#optmyzr-migration" class="swirl-card swirl-node-3" data-company="optmyzr">
+              <img src="src/content/projects/optmyzr-dashboard-migration/cover.png" alt="Optmyzr Migration" onerror="this.src='public/images/logos/optmyzr.png'">
+              <span class="swirl-tooltip">Optmyzr • Dashboard Migration</span>
+            </a>
+
+            <!-- 4. Groundwork ESG (Mid) -->
+            <a href="#groundwork" class="swirl-card swirl-node-4" data-company="groundwork">
+              <img src="src/content/projects/groundwork/cover.svg" alt="Groundwork" onerror="this.src='public/images/logos/groundwork.svg'">
+              <span class="swirl-tooltip">Groundwork • EIT Award</span>
+            </a>
+
+            <!-- 5. Super Ego (Mid-Inner) -->
+            <a href="#super-ego" class="swirl-card swirl-node-5" data-company="superego">
+              <img src="src/content/projects/super-ego-app/cover.jpg" alt="Super Ego" onerror="this.src='public/images/about/sketching.jpg'">
+              <span class="swirl-tooltip">YOU • Super Ego</span>
+            </a>
+
+            <!-- 6. Gosta Labs (Inner) -->
+            <a href="#gosta-labs" class="swirl-card swirl-node-6" data-company="gosta">
+              <img src="src/content/projects/gosta-labs/cover.svg" alt="Gosta Labs" onerror="this.src='public/images/logos/groundwork.svg'">
+              <span class="swirl-tooltip">Gosta Labs • Spatial AI</span>
+            </a>
+
+            <!-- 7. Social Integration (Deep Inner) -->
+            <a href="#social-integration" class="swirl-card swirl-node-7" data-company="social">
+              <img src="src/content/projects/social-integration-pd/cover.jpg" alt="Social Integration" onerror="this.src='public/images/about/hero.jpg'">
+              <span class="swirl-tooltip">Public Design Research</span>
+            </a>
+
+            <!-- 8. Spatial Design (Core Vortex) -->
+            <a href="#spatial-design" class="swirl-card swirl-node-8" data-company="spatial">
+              <img src="src/content/projects/spatial-design-restaurant/cover.jpg" alt="Spatial Experience Design" onerror="this.src='public/images/about/hiking.jpg'">
+              <span class="swirl-tooltip">Spatial Systems</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Zero-Gravity Float View (Fallback toggle) -->
+      <div id="labFloatView" class="zero-gravity-space" style="display:none;" id="lab3dCanvas">
+        <a href="#optmyzr-onboarding" class="floating-card-image" id="lZgCard1" data-company="optmyzr">
+          <img src="src/content/projects/optmyzr-onboarding-experience/cover.png" alt="Optmyzr Onboarding" onerror="this.src='public/images/logos/optmyzr.png'">
+        </a>
+        <a href="#optmyzr-migration" class="floating-card-image" id="lZgCard2" data-company="optmyzr">
+          <img src="src/content/projects/optmyzr-dashboard-migration/cover.png" alt="Optmyzr Migration" onerror="this.src='public/images/logos/optmyzr.png'">
+        </a>
+        <a href="#dedanext" class="floating-card-image" id="lZgCard3" data-company="dedanext">
+          <img src="src/content/projects/ediaqi-decision-support-system/cover.png" alt="Dedanext EDIAQI" onerror="this.src='public/images/logos/dedanext.png'">
+        </a>
+        <a href="#groundwork" class="floating-card-image" id="lZgCard4" data-company="groundwork">
+          <img src="src/content/projects/groundwork/cover.svg" alt="Groundwork" onerror="this.src='public/images/logos/groundwork.svg'">
+        </a>
+      </div>
+    </div>
+
+    <div class="specs-grid">
+      <div class="spec-item">
+        <strong>Logarithmic Spiral Depth:</strong> 8 project covers mapped along a spiral curve scaling from 54px up to 160px with dynamic Gaussian blur gradient (5.8px to 0px).
+      </div>
+      <div class="spec-item">
+        <strong>Interactive Focus Pull:</strong> Hovering any card pauses the orbit and snaps the card to 100% sharpness (<code>blur: 0px</code>, <code>scale: 1.18</code>).
+      </div>
+    </div>
+
+    <div class="action-row">
+      <div class="btn-group">
+        <button class="eval-btn approve" onclick="setDecision('p3', 'approve')">✓ Approve Blur Swirl Vortex</button>
+        <button class="eval-btn discuss active" onclick="setDecision('p3', 'discuss')">💬 Discuss</button>
+        <button class="eval-btn reject" onclick="setDecision('p3', 'reject')">✕ Reject</button>
+      </div>
+    </div>
+    <input type="text" class="notes-input visible" id="notes-p3" placeholder="Add specific notes on P3..." value="Jitter Blur Swirl Vortex with logarithmic depth blur gradient and text spotlight" oninput="updatePrompt()">
+  </div>
+
+
+  <!-- ========================================================
+       SECTION 04 DETAIL & EVALUATION
+       ======================================================== -->
+  <div class="section-title">
+    <span class="num">04</span>
+    <span>Paragraph 4: Off the Clock (Real 3D Isometric Folder)</span>
+  </div>
+
+  <div class="artifact-card" id="cardP4">
+    <div class="card-top">
+      <div class="card-title">
+        <h4>True 3D Isometric Folder (Cards Tucked Inside Sleeve)</h4>
+        <p>A physical 3D folder angled in space. Click the tabs to pull any document out for review while its base stays securely tucked inside the pocket.</p>
+      </div>
+      <span class="tag">Tucked Inside Folder</span>
+    </div>
+
+    <div class="preview-stage" style="flex-direction:column; gap:16px;">
+      <div class="folder-stage-container" onmousemove="handleFolderStageMouse(event, 'labFolderRig')" onmouseleave="resetFolderStageMouse('labFolderRig')">
+        <div class="folder-3d-rig" id="labFolderRig">
+          <div class="folder-back-cover">
+            <div class="folder-top-tab">DOSSIER // 04</div>
+            <div class="folder-inner-shadow"></div>
+          </div>
+
+          <!-- Sheet 1 -->
+          <div class="folder-sheet sheet-1 active" id="labSheet1" onclick="pullLabSheet(1)">
+            <div class="sheet-tab tab-left">
+              <span class="sheet-tab-dot dot-emerald"></span>
+              <span>YOU // 01</span>
+            </div>
+            <div style="padding:14px 16px 0; text-align:center;">
+              <span style="font-family:var(--font-mono); font-size:9px; color:#059669; font-weight:700; text-transform:uppercase; letter-spacing:0.06em;">Habit Protocol • Super Ego</span>
+              <div class="breath-circle-outer">
+                <div class="breath-circle-inner">YOU</div>
+              </div>
+              <span style="font-size:10.5px; color:#44403c; display:block; font-weight:600; margin-top:2px;">Breath-paced habit interventions</span>
+            </div>
+            <div class="sheet-tuck-lines"></div>
+          </div>
+
+          <!-- Sheet 2 -->
+          <div class="folder-sheet sheet-2" id="labSheet2" onclick="pullLabSheet(2)">
+            <div class="sheet-tab tab-center">
+              <span class="sheet-tab-dot dot-amber"></span>
+              <span>TRAIL // 02</span>
+            </div>
+            <div style="padding:10px 12px 0; text-align:center;">
+              <img src="public/images/about/hiking.jpg" alt="Hiking in mountains" style="width:100%; height:105px; object-fit:cover; border-radius:4px; box-shadow:0 2px 6px rgba(0,0,0,0.15);" onerror="this.src='public/images/about/sketching.jpg'">
+              <span style="font-family:var(--font-mono); font-size:9.5px; color:#44403c; display:block; margin-top:5px; font-weight:700;">Sumit Nayyar • Nuuksio Trail Thinking</span>
+            </div>
+            <div class="sheet-tuck-lines"></div>
+          </div>
+
+          <!-- Sheet 3 -->
+          <div class="folder-sheet sheet-3" id="labSheet3" onclick="pullLabSheet(3)">
+            <div class="sheet-tab tab-right">
+              <span class="sheet-tab-dot dot-orange"></span>
+              <span>ESSAY // 03</span>
+            </div>
+            <div style="padding:14px 16px 0; text-align:left; position:relative;">
+              <div style="position:absolute; top:8px; right:12px; font-size:13px; opacity:0.75;" title="Manuscript Paperclip">📎</div>
+              <span style="font-family:var(--font-mono); font-size:9px; color:#ea580c; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Unsaid Moments // Draft #14</span>
+              <h5 style="font-size:12.5px; color:#1c1917; margin:5px 0 4px; font-weight:700;">"The Friction of Attention"</h5>
+              <p style="font-size:10.5px; color:#57534e; line-height:1.4; font-style:italic;">
+                "Moments software didn't demand our gaze stay with us longest."
+              </p>
+              <span style="display:inline-block; margin-top:6px; font-family:var(--font-mono); font-size:9.5px; color:#ea580c; font-weight:700;">substack.com ↗</span>
+            </div>
+            <div class="sheet-tuck-lines"></div>
+          </div>
+
+          <!-- Front Pocket Sleeve -->
+          <div class="folder-front-pocket">
+            <div class="pocket-thumb-notch"></div>
+            <div class="pocket-label-badge">
+              <span>●</span> ARCHIVE NO. 04 — OFF THE CLOCK
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="folder-controls-bar">
+        <button class="f-ctrl-btn active" id="labFCtrl1" onclick="pullLabSheet(1)">● 01 Super Ego</button>
+        <button class="f-ctrl-btn" id="labFCtrl2" onclick="pullLabSheet(2)">● 02 Trail Photos</button>
+        <button class="f-ctrl-btn" id="labFCtrl3" onclick="pullLabSheet(3)">● 03 Substack Draft</button>
+      </div>
+    </div>
+
+    <div class="specs-grid">
+      <div class="spec-item">
+        <strong>Tucked Sleeve Physics:</strong> Documents are nested inside the physical pocket; active sheet slides up for inspection while remaining anchored inside the sleeve.
+      </div>
+      <div class="spec-item">
+        <strong>3D Isometric Depth:</strong> Pocket sits in front on the Z-axis, casting interior shadow onto the tucked documents with interactive cursor rotation.
+      </div>
+    </div>
+
+    <div class="action-row">
+      <div class="btn-group">
+        <button class="eval-btn approve" onclick="setDecision('p4', 'approve')">✓ Approve 3D Folder</button>
+        <button class="eval-btn discuss" onclick="setDecision('p4', 'discuss')">💬 Discuss</button>
+        <button class="eval-btn reject" onclick="setDecision('p4', 'reject')">✕ Reject</button>
+      </div>
+    </div>
+    <input type="text" class="notes-input" id="notes-p4" placeholder="Add specific notes on P4 3D Folder..." oninput="updatePrompt()">
+  </div>
+
+
+  <!-- ========================================================
+       SECTION 05 DETAIL & EVALUATION
+       ======================================================== -->
+  <div class="section-title">
+    <span class="num">05</span>
+    <span>Paragraph 5: The Craft Manifesto (Option A Refined - Clean)</span>
+  </div>
+
+  <div class="artifact-card approved" id="cardP5">
+    <div class="card-top">
+      <div class="card-title">
+        <h4>Option A Refined (Zero Filler Text Under Tabs)</h4>
+        <p>Centered Craft/Slop tabs go directly into the interactive spring physics button and action pills without any duplicate text.</p>
+      </div>
+      <span class="tag">Approved</span>
+    </div>
+
+    <div class="preview-stage">
+      <div class="craft-sandbox-card">
+        <div class="craft-tabs-center">
+          <button class="ct-btn active" id="btnLabCraft" onclick="setLabCraftMode('craft')">Craft Mode</button>
+          <button class="ct-btn" id="btnLabSlop" onclick="setLabCraftMode('slop')">Slop Mode</button>
+        </div>
+
+        <div class="interactive-button-testbed">
+          <button class="demo-spring-btn craft-feel" id="labDemoBtn">Feel The Physics ✦</button>
+          <div style="font-family:var(--font-mono); font-size:10px; color:#64748b; margin-top:10px;" id="labPhysicsLabel">
+            Spring: damping 0.16, stiffness 300, specular sheen active
+          </div>
+        </div>
+
+        <div class="cs-actions">
+          <a href="#resume" class="action-pill-btn primary">View Resume ↗</a>
+          <a href="mailto:sknayyar.sk@gmail.com" class="action-pill-btn secondary">sknayyar.sk@gmail.com</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="specs-grid">
+      <div class="spec-item">
+        <strong>Cleaned Hierarchy:</strong> Zero duplicate prose under tabs; the interaction speaks for itself.
+      </div>
+      <div class="spec-item">
+        <strong>Centered Layout:</strong> Balanced, focused conversion anchor leading directly to Resume and Email.
+      </div>
+    </div>
+
+    <div class="action-row">
+      <div class="btn-group">
+        <button class="eval-btn approve active" onclick="setDecision('p5', 'approve')">✓ Approved</button>
+        <button class="eval-btn discuss" onclick="setDecision('p5', 'discuss')">💬 Discuss</button>
+        <button class="eval-btn reject" onclick="setDecision('p5', 'reject')">✕ Reject</button>
+      </div>
+    </div>
+    <input type="text" class="notes-input" id="notes-p5" placeholder="Add specific notes on P5..." oninput="updatePrompt()">
+  </div>
+
+
+  <!-- ========================================================
+       BOTTOM PROMPT GENERATOR FOR DIRECT INTEGRATION
+       ======================================================== -->
+  <div class="prompt-card">
+    <h4>
+      <span>Generated Synthesis &amp; Integration Prompt</span>
+      <button class="copy-pill" onclick="copyPrompt()">Copy to Clipboard 📋</button>
+    </h4>
+    <p style="font-size: 13px; color: var(--text-muted);">
+      As you click Approve, Discuss, or Reject on each card above, this prompt updates in real-time.
+      Once all evaluations are complete, copy this prompt and send it to Antigravity to proceed with direct codebase implementation.
+    </p>
+    <textarea id="codedPrompt" class="prompt-area" readonly></textarea>
+  </div>
+
+</div>
+
+<script>
+  // Simulated Paragraph Content
+  const PARAGRAPHS = [
+    {
+      num: "01 // HYBRID IDENTITY",
+      text: "I'm a <strong>Design Engineer</strong> working at the intersection of cognitive science, design craft, and production code. Sometimes I get <span class='sim-hover-tag'>identity crises</span> and I keep switching between the three."
+    },
+    {
+      num: "02 // THE JOURNEY & PIVOT",
+      text: "After completing a Computer Science degree in India, I became obsessed with understanding the human mind behind the interface — why so much software feels frustrating or draining. That curiosity <span class='sim-hover-tag'>brought me to Europe</span> for a double Master's in HCI and Cognitive Science between <strong>Aalto University</strong> and the <strong>University of Trento</strong>."
+    },
+    {
+      num: "03 // SHIPPED PRODUCTION IMPACT",
+      text: "Over the past several years, I've brought that combination of human insight and frontend systems to high-impact products: spending 4+ years as a design engineer at <span class='sim-hover-tag' onmouseenter=\"spotlightCompany('optmyzr')\" onmouseleave=\"resetCompanySpotlight()\">Optmyzr</span> scaling core analytics across 10,000+ accounts, researching semi-ambient sensor interfaces with 200+ users at <span class='sim-hover-tag' onmouseenter=\"spotlightCompany('dedanext')\" onmouseleave=\"resetCompanySpotlight()\">Dedanext</span> in Italy, and co-founded <span class='sim-hover-tag' onmouseenter=\"spotlightCompany('groundwork')\" onmouseleave=\"resetCompanySpotlight()\">Groundwork</span> in Finland (awarded 2nd place at the EIT Jumpstarter Grand Final)."
+    },
+    {
+      num: "04 // LIFE OFF THE CLOCK",
+      text: "When I'm not having an identity crisis, I design visual identities for the <span class='sim-hover-tag'>Sustainability Community of Finland</span>, or just do random side-projects like <span class='sim-hover-tag'>YOU (Super Ego)</span> or contemplate about human relations on <span class='sim-hover-tag'>Substack</span>."
+    },
+    {
+      num: "05 // THE CRAFT MANIFESTO",
+      text: "I care about working with fast-paced teams, who care about the craft as well as overall experience — where designers write production code, and software respects the user's attention instead of exploiting it. In a world where anyone can generate a feature in seconds, <strong>craft is the differentiator</strong>."
+    }
+  ];
+
+  let currentSimStep = 1;
+
+  function renderSimText(step) {
+    const data = PARAGRAPHS[step - 1];
+    const container = document.getElementById("simTextContainer");
+    container.innerHTML = `
+      <div class="sim-step-indicator">
+        <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#10b981;"></span>
+        ${data.num}
+      </div>
+      <p class="sim-p-text">${data.text}</p>
+    `;
+  }
+
+  function setSimStep(step) {
+    currentSimStep = step;
+    document.querySelectorAll(".step-btn").forEach((btn, idx) => {
+      btn.classList.toggle("active", idx === step - 1);
+    });
+    renderSimText(step);
+
+    // Transition 3D views
+    for (let i = 1; i <= 5; i++) {
+      const view = document.getElementById("simView" + i);
+      if (view) {
+        view.classList.toggle("active", i === step);
+      }
+    }
+  }
+
+  // Section 01: Avatar Mouse Movement (Subtle Cursor Reactions Framing Right-Side Avatar)
+  function handleAvatarStageMouse(e) {
+    const stage = e.currentTarget;
+    const rect = stage.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const dx = (x - rect.width * 0.75) * 0.05;
+    const dy = (y - rect.height * 0.5) * 0.05;
+
+    const c1 = document.getElementById("cursorCog");
+    const c2 = document.getElementById("cursorDesign");
+    const c3 = document.getElementById("cursorCode");
+
+    if (c1) c1.style.transform = `translate(${dx}px, ${dy}px)`;
+    if (c2) c2.style.transform = `translate(${-dx * 1.1}px, ${-dy * 1.1}px)`;
+    if (c3) c3.style.transform = `translate(${dx * 0.8}px, ${-dy * 0.8}px)`;
+  }
+
+  // Section 02: Boarding Ticket Mouse Physics
+  function handleTicketMouse(e, ticketId) {
+    const ticket = document.getElementById(ticketId);
+    if (!ticket) return;
+    const rect = ticket.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotX = -((y - centerY) / centerY) * 12;
+    const rotY = ((x - centerX) / centerX) * 12;
+
+    ticket.style.transform = `perspective(800px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateZ(10px)`;
+    ticket.style.boxShadow = `${-rotY * 1.5}px ${rotX * 1.5 + 20}px 38px rgba(0,0,0,0.55)`;
+    ticket.style.setProperty("--light-x", `${((x / rect.width) * 100).toFixed(1)}%`);
+    ticket.style.setProperty("--light-y", `${((y / rect.height) * 100).toFixed(1)}%`);
+  }
+
+  function resetTicketMouse(ticketId) {
+    const ticket = document.getElementById(ticketId);
+    if (!ticket) return;
+    ticket.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg) translateZ(0px)";
+    ticket.style.boxShadow = "0 16px 36px rgba(0,0,0,0.45)";
+  }
+
+  // Section 03: Company Text Hover Spotlight & Jitter Swirl Handlers
+  function spotlightCompany(companyKey) {
+    const allCards = document.querySelectorAll(".floating-card-image, .swirl-card");
+    allCards.forEach(card => {
+      const match = card.getAttribute("data-company") === companyKey;
+      if (match) {
+        card.classList.add("highlight");
+        card.classList.remove("dimmed");
+      } else {
+        card.classList.add("dimmed");
+        card.classList.remove("highlight");
+      }
+    });
+  }
+
+  function resetCompanySpotlight() {
+    const allCards = document.querySelectorAll(".floating-card-image, .swirl-card");
+    allCards.forEach(card => {
+      card.classList.remove("highlight", "dimmed");
+    });
+  }
+
+  function handleVortexMouse(e, wrapId) {
+    const wrap = document.getElementById(wrapId);
+    if (!wrap) return;
+    const stage = e.currentTarget;
+    const rect = stage.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const dx = (x - cx) / cx;
+    const dy = (y - cy) / cy;
+    wrap.style.transform = `rotateX(${(-dy * 14).toFixed(2)}deg) rotateY(${(dx * 16).toFixed(2)}deg)`;
+  }
+
+  function resetVortexMouse(wrapId) {
+    const wrap = document.getElementById(wrapId);
+    if (!wrap) return;
+    wrap.style.transform = "rotateX(0deg) rotateY(0deg)";
+  }
+
+  function setP3DisplayMode(mode) {
+    const isSwirl = mode === "swirl";
+    const simSwirl = document.getElementById("simSwirlView");
+    const simFloat = document.getElementById("simFloatView");
+    if (simSwirl) simSwirl.style.display = isSwirl ? "flex" : "none";
+    if (simFloat) simFloat.style.display = isSwirl ? "none" : "block";
+
+    const labSwirl = document.getElementById("labSwirlView");
+    const labFloat = document.getElementById("labFloatView");
+    if (labSwirl) labSwirl.style.display = isSwirl ? "flex" : "none";
+    if (labFloat) labFloat.style.display = isSwirl ? "none" : "block";
+
+    const btnSwirl = document.getElementById("p3BtnSwirl");
+    const btnFloat = document.getElementById("p3BtnFloat");
+    if (btnSwirl) btnSwirl.classList.toggle("active", isSwirl);
+    if (btnFloat) btnFloat.classList.toggle("active", !isSwirl);
+  }
+
+  // Section 04: 3D Folder Mouse Parallax & Sheet Pulling
+  function pullSheet(sheetNum) {
+    for (let i = 1; i <= 3; i++) {
+      const sheet = document.getElementById("simSheet" + i);
+      const btn = document.getElementById("fCtrl" + i);
+      if (sheet) sheet.classList.toggle("active", i === sheetNum);
+      if (btn) btn.classList.toggle("active", i === sheetNum);
+    }
+  }
+
+  function pullLabSheet(sheetNum) {
+    for (let i = 1; i <= 3; i++) {
+      const sheet = document.getElementById("labSheet" + i);
+      const btn = document.getElementById("labFCtrl" + i);
+      if (sheet) sheet.classList.toggle("active", i === sheetNum);
+      if (btn) btn.classList.toggle("active", i === sheetNum);
+    }
+  }
+
+  function handleFolderStageMouse(e, rigId) {
+    const rig = document.getElementById(rigId);
+    if (!rig) return;
+    const stage = e.currentTarget;
+    const rect = stage.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+
+    const rotY = -16 + ((x - cx) / cx) * 10;
+    const rotX = 12 - ((y - cy) / cy) * 8;
+
+    rig.style.transform = `rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) rotateZ(-1deg)`;
+  }
+
+  function resetFolderStageMouse(rigId) {
+    const rig = document.getElementById(rigId);
+    if (!rig) return;
+    rig.style.transform = `rotateX(12deg) rotateY(-16deg) rotateZ(-1deg)`;
+  }
+
+  // Section 05: Craft vs Slop Toggle
+  function setCraftMode(mode) {
+    const btnCraft = document.getElementById("btnModeCraft");
+    const btnSlop = document.getElementById("btnModeSlop");
+    const demoBtn = document.getElementById("demoBtn");
+    const label = document.getElementById("physicsLabel");
+
+    if (mode === "craft") {
+      btnCraft.classList.add("active");
+      btnSlop.classList.remove("active");
+      demoBtn.className = "demo-spring-btn craft-feel";
+      demoBtn.innerText = "Tap Me & Feel Physics ✦";
+      label.innerText = "Spring: damping 0.16, stiffness 300, specular sheen active";
+    } else {
+      btnSlop.classList.add("active");
+      btnCraft.classList.remove("active");
+      demoBtn.className = "demo-spring-btn slop-feel";
+      demoBtn.innerText = "Tap Me (Generic / Flat)";
+      label.innerText = "Slop: no spring, no easing, static flat gray surface";
+    }
+  }
+
+  function setLabCraftMode(mode) {
+    const btnCraft = document.getElementById("btnLabCraft");
+    const btnSlop = document.getElementById("btnLabSlop");
+    const demoBtn = document.getElementById("labDemoBtn");
+    const label = document.getElementById("labPhysicsLabel");
+
+    if (mode === "craft") {
+      btnCraft.classList.add("active");
+      btnSlop.classList.remove("active");
+      demoBtn.className = "demo-spring-btn craft-feel";
+      demoBtn.innerText = "Feel The Physics ✦";
+      label.innerText = "Spring: damping 0.16, stiffness 300, specular sheen active";
+    } else {
+      btnSlop.classList.add("active");
+      btnCraft.classList.remove("active");
+      demoBtn.className = "demo-spring-btn slop-feel";
+      demoBtn.innerText = "Flat Button (No Physics)";
+      label.innerText = "Slop: standard linear button, no feedback";
+    }
+  }
+
+  // Decisions State Tracker
+  const decisions = {
+    p1: { status: "approve", notes: "Right-aligned Figma multiplayer cursors framing avatar" },
+    p2: { status: "approve", notes: "Approved with paper physics" },
+    p3: { status: "discuss", notes: "Jitter Blur Swirl Vortex with depth blur gradient and text spotlighting" },
+    p4: { status: "approve", notes: "Approved with tucked sleeve physics and staggered index tabs" },
+    p5: { status: "approve", notes: "Clean centered tabs with zero filler text under tabs" }
+  };
+
+  function setDecision(sectionKey, status) {
+    decisions[sectionKey].status = status;
+    const card = document.getElementById("card" + sectionKey.toUpperCase());
+    if (card) {
+      card.classList.remove("approved", "rejected", "discuss");
+      card.classList.add(status);
+
+      const notesInput = document.getElementById("notes-" + sectionKey);
+      if (notesInput) {
+        notesInput.classList.add("visible");
+        notesInput.focus();
+      }
+
+      const btnGroup = card.querySelector(".btn-group");
+      if (btnGroup) {
+        btnGroup.querySelectorAll(".eval-btn").forEach(b => b.classList.remove("active"));
+        const activeBtn = btnGroup.querySelector(`.eval-btn.${status}`);
+        if (activeBtn) activeBtn.classList.add("active");
+      }
+    }
+    updatePrompt();
+  }
+
+  function updatePrompt() {
+    for (let k in decisions) {
+      const input = document.getElementById("notes-" + k);
+      if (input && input.value.trim()) decisions[k].notes = input.value.trim();
+    }
+
+    const lines = [
+      "TASK: Integrate Approved Storyline Stage Artifacts into React Portfolio",
+      "STATUS: Review Board V7 Evaluations (Jitter Blur Swirl Vortex)",
+      "",
+      `[01 HYBRID IDENTITY]: ${decisions.p1.status.toUpperCase()} - ${decisions.p1.notes}`,
+      `[02 THE JOURNEY]: ${decisions.p2.status.toUpperCase()} - ${decisions.p2.notes}`,
+      `[03 SHIPPED IMPACT]: ${decisions.p3.status.toUpperCase()} - ${decisions.p3.notes}`,
+      `[04 OFF THE CLOCK]: ${decisions.p4.status.toUpperCase()} - ${decisions.p4.notes}`,
+      `[05 CRAFT MANIFESTO]: ${decisions.p5.status.toUpperCase()} - ${decisions.p5.notes}`,
+      "",
+      "FINAL EXECUTION BLUEPRINT:",
+      "1. P1: Avatar video container with 3 right-aligned multiplayer Figma cursors (Cognitive Science, Design Craft, Production Code).",
+      "2. P2: Boarding Pass with mouse parallax tilt & light sheen.",
+      "3. P3: Jitter Blur Swirl Vortex (8 project covers along logarithmic spiral with depth blur gradient, text spotlight linking).",
+      "4. P4: 3D Isometric Folder with authentically tucked cards (staggered index tabs, pocket thumb notch, base anchored in sleeve).",
+      "5. P5: Modern Craft differentiator sandbox with centered tabs and zero filler text under tabs."
+    ];
+
+    document.getElementById("codedPrompt").value = lines.join("\n");
+  }
+
+  function copyPrompt() {
+    const area = document.getElementById("codedPrompt");
+    area.select();
+    navigator.clipboard.writeText(area.value);
+    alert("Copied generated prompt to clipboard!");
+  }
+
+  // Initialize
+  setSimStep(1);
+  updatePrompt();
+</script>
+
+</body>
+</html>
