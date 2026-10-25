@@ -7,9 +7,9 @@ export const HERO_INTRO =
 
 export const TOC = [
   { href: "#contact", label: "Next", meta: "Open", pulse: true },
-  { href: "#ch4", label: "Side quests", meta: "Always" },
+  { href: "#ch4", label: "Lab", meta: "Always" },
   { href: "#ch3", label: "The founder", meta: "2026–Present" },
-  { href: "#ch2", label: "The designer", meta: "2026–Present" },
+  { href: "#ch2", label: "The designer", meta: "2024–Present" },
   { href: "#ch1", label: "The builder", meta: "2020–24" },
 ];
 
@@ -29,7 +29,7 @@ export const MX_ROWS: { no: string; name: string; sub: string; v: number[] }[] =
   { no: "SN-07", name: "Groundwork", sub: "— co-founder", v: [1, 1, 0, 1, 1, 0] },
   { no: "SN-08", name: "ActAI", sub: "— AI oversight", v: [0, 1, 1, 1, 0, 0] },
   { no: "SN-09", name: "Gosta Labs", sub: "— go-to-market", v: [1, 0, 0, 1, 0, 0] },
-  { no: "SQ", name: "Side quests", sub: "— Trackz, Re-Con, sketching", v: [0, 1, 0, 0, 0, 1] },
+  { no: "SQ", name: "Lab", sub: "— Trackz, Re-Con, sketching", v: [0, 1, 0, 0, 0, 1] },
 ];
 
 export type Tile =
@@ -50,7 +50,7 @@ export const CHAPTERS: Chapter[] = [
     ],
   },
   {
-    id: "ch2", label: "Chapter 02 · 2026–Present", title: "The designer",
+    id: "ch2", label: "Chapter 02 · 2024–Present", title: "The designer",
     lede: "I moved to Finland, then Italy, to study why software feels hard — a double M.Sc. in HCI & Cognitive Science at Aalto and Trento.",
     tiles: [
       { kind: "img", code: "SN-04", title: "Air quality, made readable", sub: "Deda Next · 200 participants", img: asset("work/ediaqi-corridor.jpg"), alt: "Air-quality display in a school corridor", href: "/projects/ediaqi-decision-support-system", chips: ["Trento", "EU Horizon", "2026"] },

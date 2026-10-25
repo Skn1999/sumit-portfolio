@@ -14,8 +14,9 @@ export type LabItem = {
   blurb: string;
 };
 
-/** Side quests shown in the bent 3D gallery (and its list view). */
+/** Lab projects shown in the bent 3D gallery (and its list view). Newest first. */
 export const LAB_ITEMS: LabItem[] = [
+  { code: "L-13", title: "Intent to Palette", tag: "AI tool · Lovable", kind: "browser", url: "intent-to-palette.lovable.app", href: "https://intent-to-palette.lovable.app/", blurb: "Say what it should feel like: describe the intent, add references, get a palette." },
   { code: "L-01", title: "ActAI", tag: "AI oversight · Vercel", kind: "browser", url: "temporary-brisk-agate-zgvse9l.vercel.app", href: "https://temporary-brisk-agate-zgvse9l.vercel.app/", blurb: "A review layer for AI agents doing real business tasks." },
   { code: "L-02", title: "Joy_ gifting flow", tag: "UX Bite · Lovable", kind: "browser", url: "giving-joy-glow.lovable.app", href: "https://giving-joy-glow.lovable.app", blurb: "Two moments worth redesigning in a gifting checkout." },
   { code: "L-03", title: "YOU", tag: "Behavioural design", kind: "img", img: asset("work/you.jpg"), href: "/projects/super-ego-app", blurb: "An OS-level assistant that nudges you back to what you meant to do." },

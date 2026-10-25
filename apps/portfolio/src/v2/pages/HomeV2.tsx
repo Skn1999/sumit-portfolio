@@ -276,7 +276,7 @@ export default function HomeV2() {
           <FieldNote />
           <Chapters />
           <Approach />
-          <section id="ch4" aria-label="Chapter 04, side quests" style={{ paddingBottom: 112 }}><BentGallery /></section>
+          <section id="ch4" aria-label="Chapter 04, lab" style={{ paddingBottom: 112 }}><BentGallery /></section>
         </>
       )}
     </Shell>

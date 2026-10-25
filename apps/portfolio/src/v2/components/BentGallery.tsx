@@ -7,6 +7,7 @@ type Pal = { bg: string; surface: string; chip: string; rule: string; rule2: str
 const PAL_LIGHT: Pal = { bg: "#F6F7F9", surface: "#FFFFFF", chip: "#EAECEF", rule: "#E1E4EA", rule2: "#C9CED6", ink: "#0D1117", muted: "#57606A", dark: "#0D1117", onDark: "#F0F3F6", clear: 0xf6f7f9, dim: [0.965, 0.969, 0.976] };
 const PAL_DARK: Pal = { bg: "#0D1117", surface: "#161B22", chip: "#1F2630", rule: "#262C36", rule2: "#3A414C", ink: "#E6EDF3", muted: "#8B949E", dark: "#05070A", onDark: "#E6EDF3", clear: 0x0d1117, dim: [0.051, 0.067, 0.09] };
 
+const COUNT_WORD = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen"][LAB_ITEMS.length - 10] ?? String(LAB_ITEMS.length);
 const G_COLS = 11, G_ROWS = 4, G_CW = 3.2, G_CH = 4.5, G_CAMZ = 10;
 const gWrap = (v: number, p: number) => (((v % p) + p) % p) - p / 2;
 
@@ -95,7 +96,7 @@ void main(){
   gl_FragColor = vec4(col, 1.0);
 }`;
 
-/** Side quests: an infinite grid of cards on a curved surface. Drag to move (with chromatic smear),
+/** Lab: an infinite grid of cards on a curved surface. Drag to move (with chromatic smear),
     click a card for details, arrow keys move too, Esc closes, or switch to a plain list. */
 export default function BentGallery() {
   const dark = useIsDark();
@@ -220,7 +221,7 @@ export default function BentGallery() {
   }, [focus]);
   const stop = (e: React.SyntheticEvent) => e.stopPropagation();
   const cur = focus ? LAB_ITEMS[focus.item] : null;
-  const hint = list ? "All 12, in order" : focus ? "Esc or click anywhere to close" : "Drag to explore · click a card";
+  const hint = list ? `All ${LAB_ITEMS.length}, newest first` : focus ? "Esc or click anywhere to close" : "Drag to explore · click a card";
 
   return (
     <>
@@ -228,11 +229,11 @@ export default function BentGallery() {
         <div className="v2-section" style={{ paddingBottom: 0 }}>
           <div className="v2-label-col">
             <span className="v2-mono">Chapter 04 · Always</span>
-            <h2 className="v2-h2">Side quests</h2>
+            <h2 className="v2-h2">Lab</h2>
           </div>
           <div className="v2-main-col" style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 20 }}>
             <p style={{ fontSize: 15, lineHeight: 1.6, maxWidth: 560 }}>
-              What a scanner does between jobs: live prototypes, unsolicited redesigns, ink sketches, identities and essays. Twelve of them, on a surface that bends and never ends.
+              What a scanner does between jobs: live prototypes, unsolicited redesigns, ink sketches, identities and essays. {COUNT_WORD} of them, on a surface that bends and never ends.
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
               <span className="v2-mono">{hint}</span>
@@ -246,7 +247,7 @@ export default function BentGallery() {
       {!list ? (
         <div
           className="v2-stage3d" tabIndex={0} role="region"
-          aria-label="Side quests, a curved 3D gallery. Drag to move, click a card for details, arrow keys move too, or switch to list view."
+          aria-label="Lab, a curved 3D gallery. Drag to move, click a card for details, arrow keys move too, or switch to list view."
           onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp}
           onPointerLeave={() => { if (!st.current.drag) setHover(null); }} onKeyDown={onKey}
           style={{ cursor: dragging ? "grabbing" : hover ? "pointer" : "grab" }}
