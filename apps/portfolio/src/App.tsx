@@ -2,7 +2,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -21,6 +21,26 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { TransitionProvider } from "./contexts/TransitionContext";
 import { AnimatePresence } from "framer-motion";
 import SmoothScroll from "./components/SmoothScroll";
+import { useParams } from "react-router-dom";
+import { V2_CASE_SLUGS } from "./v2/slugs";
+
+// v2 "Industrial Index" pages (code-split: they bring three.js and their own styles).
+const HomeV2 = lazy(() => import("./v2/pages/HomeV2"));
+const CaseStudyV2 = lazy(() => import("./v2/pages/CaseStudyV2"));
+const V2Fallback = () => <div style={{ minHeight: "100vh", background: "var(--v2-boot-bg, #F6F7F9)" }} />;
+
+/** The six rebuilt case studies use the v2 template; every other project keeps the classic page. */
+const ProjectRoute = () => {
+  const { slug } = useParams();
+  if (slug && V2_CASE_SLUGS.has(slug)) {
+    return (
+      <Suspense fallback={<V2Fallback />}>
+        <CaseStudyV2 slug={slug} />
+      </Suspense>
+    );
+  }
+  return <ProjectPage />;
+};
 
 const queryClient = new QueryClient();
 
@@ -47,7 +67,8 @@ const AnimatedRoutes = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Index />} />
+        <Route path="/" element={<Suspense fallback={<V2Fallback />}><HomeV2 /></Suspense>} />
+        <Route path="/classic" element={<Index />} />
         <Route path="/resume" element={<ResumePage />} />
         <Route path="/design" element={<UxDesignPage />} />
         <Route path="/ux-design" element={<UxDesignPage />} />
@@ -59,7 +80,7 @@ const AnimatedRoutes = () => {
         <Route path="/projects" element={<UxDesignPage />} />
         <Route path="/projects/ai" element={<Navigate to="/projects/actai" replace />} />
         <Route path="/projects/act-ai" element={<Navigate to="/projects/actai" replace />} />
-        <Route path="/projects/:slug" element={<ProjectPage />} />
+        <Route path="/projects/:slug" element={<ProjectRoute />} />
         <Route path="/visual-design" element={<UxDesignPage />} />
         <Route path="/writings/publication" element={<WritingsPage />} />
         <Route path="/writings/research" element={<WritingsPage />} />
