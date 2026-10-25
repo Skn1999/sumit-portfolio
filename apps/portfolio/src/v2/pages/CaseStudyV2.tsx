@@ -32,8 +32,7 @@ function Header({ c }: { c: CaseStudy }) {
     <header className="wrap" style={{ paddingTop: 40, paddingBottom: 40, display: "flex", flexDirection: "column", gap: 22 }}>
       <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap", alignItems: "center" }}>
         <nav className="crumb" aria-label="Breadcrumb">
-          <Link to="/#work">← All work</Link><span aria-hidden="true">/</span><span>{c.chapter}</span><span aria-hidden="true">/</span>
-          <span style={{ color: "var(--ink)" }}>{c.code}</span>
+          <Link to="/#work">← All work</Link><span aria-hidden="true">/</span><span style={{ color: "var(--ink)" }}>{c.chapter}</span>
         </nav>
         {import.meta.env.DEV && <span className="legend">{c.note}</span>}
       </div>
@@ -176,7 +175,7 @@ export default function CaseStudyV2({ slug }: { slug: string }) {
   return (
     <Shell active="work">
       <Helmet>
-        <title>{`${c.code} · ${c.title} — Sumit Nayyar`}</title>
+        <title>{`${c.title} — Sumit Nayyar`}</title>
         <meta name="description" content={plain} />
       </Helmet>
       <div className="v2-cs" key={slug}>

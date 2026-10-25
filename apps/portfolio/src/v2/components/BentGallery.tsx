@@ -61,10 +61,8 @@ function makeCardTexture(it: LabItem, palRef: { current: Pal }) {
       const ls = wrapLines(g, it.quote || "", W - 80).slice(0, 7);
       ls.forEach((l, i) => g.fillText(l, 40, MH - 48 - (ls.length - 1 - i) * 48));
     }
-    g.fillStyle = P.ink; g.fillRect(4, MH + 34, 12, 12);
-    g.font = '18px "Space Mono", monospace'; g.fillText(it.code, 26, MH + 46);
-    g.font = "600 26px Inter, sans-serif"; g.fillText(it.title, 110, MH + 47);
-    g.fillStyle = P.muted; g.font = "20px Inter, sans-serif"; g.fillText(it.tag, 110, MH + 80);
+    g.fillStyle = P.ink; g.font = "600 26px Inter, sans-serif"; g.fillText(it.title, 4, MH + 47);
+    g.fillStyle = P.muted; g.font = "20px Inter, sans-serif"; g.fillText(it.tag, 4, MH + 80);
     tex.needsUpdate = true;
   };
   draw();
@@ -255,13 +253,13 @@ export default function BentGallery() {
         >
           <canvas ref={canvasRef} aria-hidden="true" />
           <span className="hud" aria-hidden="true" style={{ left: 24, bottom: 20 }}>
-            {hover && !focus ? `→ ${LAB_ITEMS[hover.item].code} · ${LAB_ITEMS[hover.item].title}` : ""}
+            {hover && !focus ? `→ ${LAB_ITEMS[hover.item].title}` : ""}
           </span>
           <span className="hud" aria-hidden="true" style={{ right: 24, top: 18 }}>Speed {String(spd).padStart(3, "0")}</span>
           {cur && (
             <aside className="v2-gfocus v2-fade-in" aria-live="polite" onPointerDown={stop} onPointerUp={stop}>
               <span className="v2-mono" style={{ display: "inline-flex", gap: 8, alignItems: "center" }}>
-                <span style={{ width: 7, height: 7, background: "var(--ink)" }} />{cur.code} · {cur.tag}
+                {cur.tag}
               </span>
               <h3>{cur.title}</h3>
               <p style={{ fontSize: 16, lineHeight: 1.55 }}>{cur.blurb}</p>
@@ -283,7 +281,6 @@ export default function BentGallery() {
             {LAB_ITEMS.map((it) => (
               <li key={it.code} style={{ borderBottom: "1px solid var(--rule)" }}>
                 <a className="v2-lrow" href={it.href} target={it.href.startsWith("http") ? "_blank" : undefined} rel="noopener">
-                  <span style={{ fontFamily: "var(--f-mono)", fontSize: 12 }}>{it.code}</span>
                   <span style={{ fontSize: 15, fontWeight: 500 }}>{it.title}</span>
                   <span style={{ fontSize: 13, color: "var(--muted)" }}>{it.tag}</span>
                   <span style={{ fontSize: 14 }}>{it.blurb}</span>

@@ -8,8 +8,8 @@ export const HERO_INTRO =
 export const TOC = [
   { href: "#contact", label: "Next", meta: "Open", pulse: true },
   { href: "#ch4", label: "Side quests", meta: "Always" },
-  { href: "#ch3", label: "The founder", meta: "2025—" },
-  { href: "#ch2", label: "The researcher", meta: "2024–26" },
+  { href: "#ch3", label: "The founder", meta: "2026–Present" },
+  { href: "#ch2", label: "The designer", meta: "2026–Present" },
   { href: "#ch1", label: "The builder", meta: "2020–24" },
 ];
 
@@ -50,22 +50,22 @@ export const CHAPTERS: Chapter[] = [
     ],
   },
   {
-    id: "ch2", label: "Chapter 02 · 2024–26", title: "The researcher",
+    id: "ch2", label: "Chapter 02 · 2026–Present", title: "The designer",
     lede: "I moved to Finland, then Italy, to study why software feels hard — a double M.Sc. in HCI & Cognitive Science at Aalto and Trento.",
     tiles: [
       { kind: "img", code: "SN-04", title: "Air quality, made readable", sub: "Deda Next · 200 participants", img: asset("work/ediaqi-corridor.jpg"), alt: "Air-quality display in a school corridor", href: "/projects/ediaqi-decision-support-system", chips: ["Trento", "EU Horizon", "2026"] },
       { kind: "img", code: "SN-05", title: "YOU", sub: "Habit-alignment assistant", img: asset("work/you.jpg"), alt: "YOU, the Super-ego app, with three character illustrations", href: "/projects/super-ego-app", chips: ["Behavioural design", "2026"] },
       { kind: "img", code: "SN-10", title: "A+ usability evaluation", sub: "Expert review vs. user tests", img: asset("cases/aplus/workshop.jpg"), alt: "Workshop participants around a table working through printed problem cards", href: "/projects/a-plus-usability-project", chips: ["Usability", "Accessibility", "2025"], crop: true },
       { kind: "img", code: "SN-06", title: "Mesa Te Club", sub: "Co-design tools, Chile", img: asset("work/mesa-sims.jpg"), alt: "Co-design game board for planning shared housing spaces", href: "/projects/social-integration-pd", chips: ["Participatory", "2024"] },
+      { kind: "card", tone: "dark", code: "SN-08", title: "ActAI", sub: "PRD → deployed in ~10 h", label: "Live prototype ↗", text: "A review layer for AI agents doing real business tasks", href: "/projects/actai" },
+      { kind: "card", tone: "paper", code: "SN-09", title: "Gosta Labs", sub: "Presented to the CEO & board", label: "Strategy", text: "Taking an AI MedTech startup into Poland, Czechia and Romania", href: "/projects/gosta-labs" },
     ],
   },
   {
-    id: "ch3", label: "Chapter 03 · 2025—", title: "The founder",
+    id: "ch3", label: "Chapter 03 · 2026–Present", title: "The founder",
     lede: "Research wasn’t enough; I wanted it shipped. So I co-founded an accessibility venture and started taking ideas from PRD to working prototype in a day.",
     tiles: [
       { kind: "img", code: "SN-07", title: "Groundwork", sub: "2nd of 900+, EIT Jumpstarter", img: asset("work/groundwork.jpg"), alt: "Groundwork cover reading: Built for everyone, from the ground up.", href: "/projects/groundwork", chips: ["Helsinki", "WCAG / EAA", "2025"] },
-      { kind: "card", tone: "dark", code: "SN-08", title: "ActAI", sub: "PRD → deployed in ~10 h", label: "Live prototype ↗", text: "A review layer for AI agents doing real business tasks", href: "/projects/actai" },
-      { kind: "card", tone: "paper", code: "SN-09", title: "Gosta Labs", sub: "Presented to the CEO & board", label: "Strategy", text: "Taking an AI MedTech startup into Poland, Czechia and Romania", href: "/projects/gosta-labs" },
     ],
   },
 ];

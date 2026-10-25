@@ -84,7 +84,7 @@ export const CASES: CaseStudy[] = [
   ],
   "next": {
    "slug": "optmyzr-onboarding-experience",
-   "title": "SN-02 · Onboarding wizard",
+   "title": "Onboarding wizard",
    "sub": "−25% sign-up drop-off"
   }
  },
@@ -167,14 +167,14 @@ export const CASES: CaseStudy[] = [
   ],
   "next": {
    "slug": "ediaqi-decision-support-system",
-   "title": "SN-04 · Air quality, made readable",
+   "title": "Air quality, made readable",
    "sub": "Deda Next · 200 participants"
   }
  },
  {
   "slug": "ediaqi-decision-support-system",
   "code": "SN-04",
-  "chapter": "Chapter 02 · The researcher",
+  "chapter": "Chapter 02 · The designer",
   "title": "Air quality, made readable",
   "dek": "For my master’s internship with Deda Next on the EU Horizon Europe EDIAQI project, I designed a decision-support layer on top of a sensor network in Ferrara’s public schools and offices. It turns 12+ air-quality readings into clear, role-specific actions for teachers, office workers and facility staff.",
   "meta": [
@@ -264,14 +264,14 @@ export const CASES: CaseStudy[] = [
   ],
   "next": {
    "slug": "super-ego-app",
-   "title": "SN-05 · YOU",
+   "title": "YOU",
    "sub": "Habit-alignment assistant"
   }
  },
  {
   "slug": "super-ego-app",
   "code": "SN-05",
-  "chapter": "Chapter 02 · The researcher",
+  "chapter": "Chapter 02 · The designer",
   "title": "YOU: not your usual habit app",
   "dek": "YOU is a concept for an assistant that lives inside the phone’s operating system rather than in another app. It notices the preconscious habits that quietly pull us off course, and adapts its nudges to how emotionally self-aware each person is.",
   "meta": [
@@ -352,14 +352,14 @@ export const CASES: CaseStudy[] = [
   ],
   "next": {
    "slug": "a-plus-usability-project",
-   "title": "SN-10 · A+ usability evaluation",
+   "title": "A+ usability evaluation",
    "sub": "Expert review vs. user tests"
   }
  },
  {
   "slug": "a-plus-usability-project",
   "code": "SN-10",
-  "chapter": "Chapter 02 · The researcher",
+  "chapter": "Chapter 02 · The designer",
   "title": "A+ usability & accessibility evaluation",
   "dek": "A+ is the learning platform behind many of Aalto’s computer-science courses. Our team evaluated how usable and accessible it really is, through expert inspection and sessions with users with disabilities, and turned the findings into prioritised fixes for its developers.",
   "meta": [
@@ -437,7 +437,7 @@ export const CASES: CaseStudy[] = [
   ],
   "next": {
    "slug": "groundwork",
-   "title": "SN-07 · Groundwork",
+   "title": "Groundwork",
    "sub": "2nd of 900+, EIT Jumpstarter"
   }
  },
@@ -526,7 +526,7 @@ export const CASES: CaseStudy[] = [
   ],
   "next": {
    "slug": "optmyzr-dashboard-migration",
-   "title": "SN-01 · Dashboard rebuild",
+   "title": "Dashboard rebuild",
    "sub": "10 s → under 1 s load"
   }
  }

@@ -3,7 +3,8 @@ import { asset, reduceMotion } from "../lib";
 
 /* The hero clip ("hello" → "Moi") is an H.264 MP4 with colour on top and its alpha mask below,
    so it plays with transparency in every browser, Safari included. A tiny WebGL pass recombines
-   the two halves. It plays once and holds the last frame. Reduced motion or no WebGL → still image. */
+   the two halves. It loops at 0.9× speed (playbackRate — the file itself is untouched) and pauses while off screen. Reduced motion or no WebGL → still image. */
+const RATE = 0.9;
 const VS = "attribute vec2 p;varying vec2 v;void main(){v=vec2(p.x*0.5+0.5,0.5-p.y*0.5);gl_Position=vec4(p,0.,1.);}";
 const FS =
   "precision mediump float;uniform sampler2D t;uniform float h;varying vec2 v;void main(){float y=clamp(v.y,0.0,1.0)*(0.5-h);vec3 c=texture2D(t,vec2(v.x,y)).rgb;float a=texture2D(t,vec2(v.x,0.5+h+y)).r;a=smoothstep(0.02,0.98,a);gl_FragColor=vec4(c*a,a);}";
@@ -53,23 +54,35 @@ export default function HeroMoi() {
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
     let alive = true;
-    const loop = () => { if (!alive) return; draw(); if (!v.ended && !failed) raf = requestAnimationFrame(loop); };
+    let visible = true;
+    const loop = () => { if (!alive) return; draw(); if (!failed && visible) raf = requestAnimationFrame(loop); };
     const go = () => {
       if (!alive) return;
       setStill(false);
+      v.defaultPlaybackRate = RATE; v.playbackRate = RATE;
       v.play().catch(() => { if (alive) setStill(true); });
       cancelAnimationFrame(raf); raf = requestAnimationFrame(loop);
     };
     v.muted = true;
     if (v.readyState >= 2) go(); else v.addEventListener("loadeddata", go);
-    v.addEventListener("ended", draw);
+    // Some browsers reset the rate when the source (re)loads; keep it pinned.
+    const keepRate = () => { if (v.playbackRate !== RATE) v.playbackRate = RATE; };
+    v.addEventListener("ratechange", keepRate);
+    v.addEventListener("loadedmetadata", keepRate);
     const ro = new ResizeObserver(draw);
     ro.observe(el);
+    // Save battery: pause the loop while the hero is scrolled away.
+    const io = new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      if (visible) { if (v.readyState >= 2) go(); }
+      else { v.pause(); cancelAnimationFrame(raf); }
+    });
+    io.observe(el);
     // No forced context loss on cleanup: React StrictMode remounts reuse this same canvas.
     return () => {
       alive = false;
-      cancelAnimationFrame(raf); ro.disconnect();
-      v.removeEventListener("loadeddata", go); v.removeEventListener("ended", draw);
+      cancelAnimationFrame(raf); ro.disconnect(); io.disconnect();
+      v.removeEventListener("loadeddata", go); v.removeEventListener("ratechange", keepRate); v.removeEventListener("loadedmetadata", keepRate);
       gl.deleteTexture(tex); gl.deleteBuffer(b); gl.deleteProgram(pr);
     };
   }, []);
@@ -78,7 +91,7 @@ export default function HeroMoi() {
     <div className="v2-moi" aria-hidden="true">
       <img src={asset("hero-moi-still.webp")} alt="" style={{ opacity: still ? 1 : 0 }} />
       <canvas ref={canvasRef} />
-      <video ref={videoRef} src={asset("hero-moi.mp4")} muted playsInline preload="auto" />
+      <video ref={videoRef} src={asset("hero-moi.mp4")} muted loop playsInline preload="auto" />
     </div>
   );
 }

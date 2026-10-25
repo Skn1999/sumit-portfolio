@@ -82,12 +82,11 @@ function FieldNote() {
               <div className="v2-mx-wrap">
                 <table className="v2-mx">
                   <thead>
-                    <tr><th scope="col">No.</th><th scope="col">Project</th>{MX_COLS.map((c) => <th key={c} scope="col">{c}</th>)}</tr>
+                    <tr><th scope="col">Project</th>{MX_COLS.map((c) => <th key={c} scope="col">{c}</th>)}</tr>
                   </thead>
                   <tbody>
                     {MX_ROWS.map((r) => (
                       <tr key={r.no}>
-                        <td style={{ fontFamily: "var(--f-mono)", fontSize: 12 }}>{r.no}</td>
                         <th scope="row" style={{ fontWeight: 500 }}>{r.name} <span style={{ color: "var(--muted)", fontWeight: 400 }}>{r.sub}</span></th>
                         {r.v.map((v, j) => (
                           <td key={j}><span className={v ? "v2-y" : "v2-n"} aria-hidden="true" /><span className="v2-sr">{v ? "yes" : "no"}</span></td>
@@ -97,7 +96,7 @@ function FieldNote() {
                   </tbody>
                   <tfoot>
                     <tr style={{ fontFamily: "var(--f-mono)", fontSize: 12 }}>
-                      <td /><th scope="row" style={{ textAlign: "left", fontWeight: 400 }}>Total</th>{totals.map((t, j) => <td key={j}>{t}</td>)}
+                      <th scope="row" style={{ textAlign: "left", fontWeight: 400 }}>Total</th>{totals.map((t, j) => <td key={j}>{t}</td>)}
                     </tr>
                   </tfoot>
                 </table>
@@ -113,11 +112,10 @@ function FieldNote() {
   );
 }
 
-function TileMeta({ code, title, sub }: { code: string; title: string; sub: string }) {
+function TileMeta({ title, sub }: { title: string; sub: string }) {
   return (
     <div className="v2-tile-meta">
-      <span className="v2-tile-code"><i />{code}</span>
-      <div><h3>{title}</h3><span className="v2-tile-sub">{sub}</span></div>
+      <h3>{title}</h3><span className="v2-tile-sub">{sub}</span>
     </div>
   );
 }
@@ -127,7 +125,7 @@ function TileView({ t }: { t: Tile }) {
     return (
       <article className="v2-tile">
         <Link className={`v2-tile-media${t.crop ? " crop" : ""}`} to={t.href} aria-label={`${t.title} case study`}><img src={t.img} alt={t.alt} loading="lazy" /></Link>
-        <TileMeta code={t.code} title={t.title} sub={t.sub} />
+        <TileMeta title={t.title} sub={t.sub} />
         <ul className="v2-chips" style={{ fontSize: 12 }}>{t.chips.map((c) => <li key={c} style={{ padding: "4px 8px" }}>{c}</li>)}</ul>
       </article>
     );
@@ -141,7 +139,7 @@ function TileView({ t }: { t: Tile }) {
             {t.stat}<span style={{ display: "block", fontSize: 15, fontWeight: 400, letterSpacing: 0, color: "var(--muted)", marginTop: 8 }}>{t.statSub}</span>
           </span>
         </div>
-        <TileMeta code={t.code} title={t.title} sub={t.sub} />
+        <TileMeta title={t.title} sub={t.sub} />
       </article>
     );
   }
@@ -151,7 +149,7 @@ function TileView({ t }: { t: Tile }) {
         <span className="v2-mono" style={t.tone === "dark" ? { color: "#8B949E" } : undefined}>{t.label}</span>
         <span className="t">{t.text}</span>
       </Link>
-      <TileMeta code={t.code} title={t.title} sub={t.sub} />
+      <TileMeta title={t.title} sub={t.sub} />
     </article>
   );
 }
