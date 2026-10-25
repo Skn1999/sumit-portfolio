@@ -18,7 +18,7 @@ export default function HeroMoi() {
     if (!el || !v) return;
     if (reduceMotion()) { setStill(true); return; }
     const gl = el.getContext("webgl", { alpha: true, premultipliedAlpha: true });
-    if (!gl) { setStill(true); return; }
+    if (!gl || gl.isContextLost()) { setStill(true); return; }
     const sh = (t: number, s: string) => { const o = gl.createShader(t)!; gl.shaderSource(o, s); gl.compileShader(o); return o; };
     const pr = gl.createProgram()!;
     gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS));
@@ -52,14 +52,26 @@ export default function HeroMoi() {
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
-    const loop = () => { draw(); if (!v.ended && !failed) raf = requestAnimationFrame(loop); };
-    const go = () => { v.play().catch(() => setStill(true)); cancelAnimationFrame(raf); raf = requestAnimationFrame(loop); };
+    let alive = true;
+    const loop = () => { if (!alive) return; draw(); if (!v.ended && !failed) raf = requestAnimationFrame(loop); };
+    const go = () => {
+      if (!alive) return;
+      setStill(false);
+      v.play().catch(() => { if (alive) setStill(true); });
+      cancelAnimationFrame(raf); raf = requestAnimationFrame(loop);
+    };
     v.muted = true;
-    if (v.readyState >= 2) go(); else v.addEventListener("loadeddata", go, { once: true });
+    if (v.readyState >= 2) go(); else v.addEventListener("loadeddata", go);
     v.addEventListener("ended", draw);
     const ro = new ResizeObserver(draw);
     ro.observe(el);
-    return () => { cancelAnimationFrame(raf); ro.disconnect(); v.removeEventListener("ended", draw); gl.getExtension("WEBGL_lose_context")?.loseContext(); };
+    // No forced context loss on cleanup: React StrictMode remounts reuse this same canvas.
+    return () => {
+      alive = false;
+      cancelAnimationFrame(raf); ro.disconnect();
+      v.removeEventListener("loadeddata", go); v.removeEventListener("ended", draw);
+      gl.deleteTexture(tex); gl.deleteBuffer(b); gl.deleteProgram(pr);
+    };
   }, []);
 
   return (

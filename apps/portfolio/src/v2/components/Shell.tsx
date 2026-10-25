@@ -1,11 +1,20 @@
 import { useEffect, type ReactNode } from "react";
 import Dock from "./Dock";
+import SiteFooter from "./SiteFooter";
+import DashTooltip from "./DashTooltip";
 import "../v2.css";
 
-type Props = { children: ReactNode; active?: string; reader?: { on: boolean; set: (v: boolean) => void } };
+type Props = {
+  children: ReactNode;
+  active?: string;
+  reader?: { on: boolean; set: (v: boolean) => void };
+  /** Kicker for the contact footer, e.g. "Chapter 05" on the homepage. */
+  footerLabel?: string;
+};
 
-/** Page frame for every v2 page: token scope, dock, and the html class that fixes sticky positioning. */
-export default function Shell({ children, active, reader }: Props) {
+/** Page frame for every v2 page: token scope, dock, content, the contact footer,
+    and the html class that keeps position:sticky working. */
+export default function Shell({ children, active, reader, footerLabel }: Props) {
   useEffect(() => {
     const h = document.documentElement;
     h.classList.add("v2-root");
@@ -16,6 +25,8 @@ export default function Shell({ children, active, reader }: Props) {
       <a href="#main" className="v2-skip">Skip to content</a>
       <Dock active={active} reader={reader} />
       <main id="main">{children}</main>
+      <SiteFooter label={footerLabel} />
+      <DashTooltip />
     </div>
   );
 }

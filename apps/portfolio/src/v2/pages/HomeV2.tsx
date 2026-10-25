@@ -4,18 +4,12 @@ import { Helmet } from "react-helmet-async";
 import Shell from "../components/Shell";
 import HeroMoi from "../components/HeroMoi";
 import BentGallery from "../components/BentGallery";
-import KeycapContact from "../components/KeycapContact";
-import { APPROACH, CHAPTERS, DEEP_ON, HERO_INTRO, MX_COLS, MX_ROWS, STACK, TOC, WORK_LIST, type Tile } from "../data/home";
-import { asset, EMAIL, GITHUB, LINKEDIN, useReaderMode } from "../lib";
+import { APPROACH, CHAPTERS, DEEP_ON, HERO_INTRO, MX_COLS, MX_ROWS, TOC, WORK_LIST, type Tile } from "../data/home";
+import { asset, EMAIL, useReaderMode } from "../lib";
 
 const TITLE = "Sumit Nayyar — Product designer who writes the code";
 const DESC = HERO_INTRO;
 const DraftNote = ({ children }: { children: string }) => (import.meta.env.DEV ? <span className="v2-draftnote">{children}</span> : null);
-const MailIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.3">
-    <rect x="1.5" y="3" width="13" height="10" rx="1.5" /><path d="M2 4l6 5 6-5" />
-  </svg>
-);
 const scrollTo = (id: string) => (e: React.MouseEvent) => {
   const el = document.getElementById(id);
   if (!el) return;
@@ -33,7 +27,6 @@ function Hero() {
         <div className="v2-hero-text">
           <h1 className="v2-name">Sumit Nayyar</h1>
           <p className="v2-intro">{HERO_INTRO}</p>
-          <a className="v2-link" href="#scanner" onClick={scrollTo("scanner")} style={{ alignSelf: "flex-start" }}>What’s a scanner? ↓</a>
           <ol className="v2-toc" aria-label="Chapters">
             {TOC.map((t) => (
               <li key={t.href}>
@@ -211,56 +204,6 @@ function ApproachList() {
   );
 }
 
-function ContactLinks({ band }: { band?: boolean }) {
-  return (
-    <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap", alignItems: "center" }}>
-      <span style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "center" }}>
-        <a href={`mailto:${EMAIL}`} style={{ display: "inline-flex", gap: 8, alignItems: "center", textDecoration: "none" }}><MailIcon />Send me an email</a>
-        <Link to="/resume" style={{ textDecoration: "none" }}>Read my CV <span style={{ color: band ? "#8B949E" : "var(--muted)" }}>↗</span></Link>
-      </span>
-      <span style={{ display: "flex", gap: 20, fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase" }}>
-        <a href={LINKEDIN} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-        <a href={GITHUB} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-        {band && <span style={{ color: "#8B949E" }}>© {new Date().getFullYear()}</span>}
-      </span>
-    </div>
-  );
-}
-
-function ContactBand() {
-  return (
-    <section id="contact" className="v2-band" aria-label="Chapter 05, next">
-      <div className="v2-wrap">
-        <div className="v2-section" style={{ paddingTop: 72, paddingBottom: 40 }}>
-          <div className="v2-label-col">
-            <span className="v2-mono">Chapter 05 · From [MONTH 2026]</span>
-            <h2 className="v2-h2">Next: your team?</h2>
-          </div>
-          <div className="v2-main-col" style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-            <p style={{ fontSize: "clamp(19px, 2.4vw, 24px)", lineHeight: 1.4, letterSpacing: "-0.01em", maxWidth: 760 }}>
-              A product team where designers ship code, curiosity is a feature, and craft matters. Helsinki or EU remote.
-            </p>
-            <KeycapContact />
-            <div style={{ display: "flex", flexDirection: "column", gap: 28, paddingTop: 12 }}>
-              <div className="v2-sc-row">
-                <span className="v2-sc-l">Stack</span>
-                <ul aria-label="Tools I use" style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                  {STACK.map((s) => <li key={s} className="v2-chipd">{s}</li>)}
-                  <li className="v2-chipd" style={{ borderStyle: "dashed", color: "#8B949E" }}>[add]</li>
-                </ul>
-              </div>
-              <div className="v2-sc-row">
-                <span className="v2-sc-l">Contact</span>
-                <ContactLinks band />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ---------------------------------------------------------------- reader mode */
 
 function Letter() {
@@ -293,17 +236,6 @@ function Letter() {
         <span className="lab">Approach</span>
         <ApproachList />
       </section>
-      <section className="v2-lsec" aria-label="Stack">
-        <span className="lab">Stack</span>
-        <ul style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-          {STACK.map((s) => <li key={s} className="v2-chipl">{s}</li>)}
-          <li className="v2-chipl" style={{ borderStyle: "dashed", color: "var(--muted)" }}>[add]</li>
-        </ul>
-      </section>
-      <section className="v2-lsec" id="contact" aria-label="Contact">
-        <span className="lab">Contact</span>
-        <ContactLinks />
-      </section>
     </div>
   );
 }
@@ -333,7 +265,7 @@ export default function HomeV2() {
   const active = useActiveSection(reader);
   const set = (v: boolean) => { setReader(v); window.scrollTo({ top: 0 }); };
   return (
-    <Shell active={active} reader={{ on: reader, set }}>
+    <Shell active={active} reader={{ on: reader, set }} footerLabel={reader ? undefined : "Chapter 05"}>
       <Helmet>
         <title>{TITLE}</title>
         <meta name="description" content={DESC} />
@@ -347,7 +279,6 @@ export default function HomeV2() {
           <Chapters />
           <Approach />
           <section id="ch4" aria-label="Chapter 04, side quests" style={{ paddingBottom: 112 }}><BentGallery /></section>
-          <ContactBand />
         </>
       )}
     </Shell>

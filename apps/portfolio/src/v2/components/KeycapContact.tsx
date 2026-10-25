@@ -42,6 +42,26 @@ export default function KeycapContact() {
   const muteRef = useRef(mute); muteRef.current = mute;
   const t = useRef<any>(null);
   const actx = useRef<AudioContext | null>(null);
+  const kbRef = useRef<HTMLDivElement>(null);
+  const [focused, setFocused] = useState(false);
+
+  /* Typing works without a click: when the keyboard scrolls into view it takes focus, and gives it
+     back when it leaves. It never steals focus from a text field, or from another control inside the footer. */
+  useEffect(() => {
+    const el = kbRef.current;
+    if (!el || !("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver(([e]) => {
+      const a = document.activeElement;
+      if (e.isIntersecting && e.intersectionRatio >= 0.6) {
+        const busy = !!a && a !== el && (a.matches("input, textarea, select, [contenteditable]") || !!a.closest("#contact"));
+        if (!busy && a !== el) el.focus({ preventScroll: true });
+      } else if (a === el) {
+        el.blur();
+      }
+    }, { threshold: [0, 0.6] });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     const el = canvasRef.current;
@@ -196,7 +216,8 @@ export default function KeycapContact() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       <div
-        className="v2-kb" tabIndex={0} role="group"
+        ref={kbRef} className="v2-kb" tabIndex={0} role="group"
+        onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
         aria-label="A 3D keyboard that says hello. Click the keys or type; press Enter to copy my email address."
         onPointerDown={(e) => { const i = pick(e); if (i !== null) press(KEY_LAYOUT[i].id, i); }}
         onPointerMove={(e) => { const i = pick(e); if (i !== hover) setHover(i); }}
@@ -207,7 +228,9 @@ export default function KeycapContact() {
         <canvas ref={canvasRef} aria-hidden="true" />
       </div>
       <div aria-live="polite" style={{ display: "flex", alignItems: "center", gap: 12, fontFamily: "var(--f-mono)", fontSize: 20, minHeight: 28 }}>
-        <span style={{ color: "#8B949E" }}>&gt;</span><span>{typed}</span><span className="v2-caret" aria-hidden="true" />
+        <span style={{ color: "#8B949E" }}>&gt;</span>
+        {/* The caret sits flush against the last typed character, like a text field. */}
+        <span style={{ whiteSpace: "pre" }}>{typed}<span className={`v2-caret${focused ? " on" : ""}`} aria-hidden="true" /></span>
       </div>
       {sent && (
         <a className="v2-fade-in" href={`mailto:${EMAIL}`} style={{ alignSelf: "flex-start", fontSize: "clamp(24px, 5vw, 40px)", fontWeight: 500, letterSpacing: "-0.03em", textDecoration: "underline", textUnderlineOffset: 8, textDecorationThickness: 1, wordBreak: "break-all" }}>
@@ -215,8 +238,8 @@ export default function KeycapContact() {
         </a>
       )}
       <div style={{ display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
-        <span className="v2-mono">{sent ? "Copied to your clipboard — talk soon." : "Click the keys or just type · ↵ sends"}</span>
-        <button type="button" className="v2-sound" aria-pressed={!mute} onClick={() => setMute(!mute)}>{mute ? "Sound off" : "♪ Sound on"}</button>
+        <span className="v2-mono">{sent ? "Copied to your clipboard — talk soon." : focused ? "Listening · type hello, ↵ sends" : "Click the keys or just type · ↵ sends"}</span>
+        <button type="button" className="v2-sound" aria-pressed={!mute} onClick={() => { setMute(!mute); kbRef.current?.focus({ preventScroll: true }); }}>{mute ? "Sound off" : "♪ Sound on"}</button>
       </div>
       {!sent && (
         <a href={`mailto:${EMAIL}`} style={{ alignSelf: "flex-start", fontSize: 14, textDecoration: "underline", textUnderlineOffset: 4 }}>

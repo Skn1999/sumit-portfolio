@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Shell from "../components/Shell";
 import { SIGNATURES } from "../components/signatures";
+import ChromeSeg from "../components/ChromeSeg";
 import { CASE_BY_SLUG, type CaseStudy } from "../data/cases";
 import { asset, EMAIL } from "../lib";
 import "../case.css";
@@ -80,7 +81,7 @@ function Glance({ c }: { c: CaseStudy }) {
   ];
   return (
     <section className="wrap" aria-label="At a glance" style={{ paddingBottom: 64, display: "flex", flexDirection: "column", gap: 14 }}>
-      <span className="mono">At a glance · 30-second read</span>
+      {/* <span className="mono">At a glance · 30-second read</span> — hidden: it repeated what the strip already says */}
       <div className="glance">
         {cells.map((x, i) => (
           <a key={x.id} href={`#${x.id}`} onClick={(e) => { e.preventDefault(); document.getElementById(x.id)?.scrollIntoView({ behavior: "smooth" }); }}>
@@ -114,11 +115,7 @@ function LongRead({ c }: { c: CaseStudy }) {
       <aside className="side" aria-label="Reading controls">
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           <span className="mono">Reading depth</span>
-          <div className="v2-seg" role="group" aria-label="Reading depth">
-            {DEPTHS.map((d, i) => (
-              <button key={d.label} type="button" aria-pressed={i === depth} onClick={() => setDepth(i)}>{d.label}</button>
-            ))}
-          </div>
+          <ChromeSeg label="Reading depth" options={DEPTHS.map((d) => d.label)} value={depth} onChange={setDepth} />
           <span style={{ fontSize: 13, color: "var(--muted)" }} aria-live="polite">{DEPTHS[depth].note}</span>
         </div>
         <nav className="toc" aria-label="On this page">
