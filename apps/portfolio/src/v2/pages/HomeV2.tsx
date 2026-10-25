@@ -260,12 +260,13 @@ function useActiveSection(reader: boolean) {
 
 export default function HomeV2() {
   const [reader, setReader] = useReaderMode();
-  // The dock morphs as soon as the toggle is pressed; the page content swaps a beat later (140 ms),
-  // so mounting the heavier index layout doesn't stall the first part of the morph.
+  // The dock morphs as soon as the toggle is pressed; the page content swaps a beat later.
   const [view, setView] = useState(reader);
   useEffect(() => {
     if (view === reader) return;
-    const t = window.setTimeout(() => { setView(reader); window.scrollTo({ top: 0 }); }, 140);
+    // Entering: the light letter swaps in early. Leaving: the full layout mounts only after the
+    // dock has finished re-opening and its labels are back (~480 ms), so the work never lands mid-morph.
+    const t = window.setTimeout(() => { setView(reader); window.scrollTo({ top: 0 }); }, reader ? 140 : 480);
     return () => clearTimeout(t);
   }, [reader, view]);
   const active = useActiveSection(view);

@@ -106,6 +106,18 @@ export default function BentGallery() {
   const [hover, setHover] = useState<{ key: string; item: number } | null>(null);
   const [dragging, setDragging] = useState(false);
   const [spd, setSpd] = useState(0);
+  // Build the WebGL scene only when the stage gets close to the viewport: it's the heaviest
+  // thing on the page, and deferring it keeps page load and the dock's Reader-mode morph smooth.
+  const stageRef = useRef<HTMLDivElement>(null);
+  const [near, setNear] = useState(false);
+  useEffect(() => {
+    const el = stageRef.current;
+    if (near || !el) return;
+    if (!("IntersectionObserver" in window)) { setNear(true); return; }
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setNear(true); io.disconnect(); } }, { rootMargin: "600px 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [near, list]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const palRef = useRef<Pal>(dark ? PAL_DARK : PAL_LIGHT);
   const st = useRef({ ox: 0, oy: 0.4, vx: 0, vy: 0, sx: 0, sy: 0, drag: null as null | { x: number; y: number; lx: number; ly: number }, moved: 0 });
@@ -114,7 +126,7 @@ export default function BentGallery() {
   const g = useRef<any>(null);
 
   useEffect(() => {
-    if (list) return;
+    if (list || !near) return;
     const el = canvasRef.current;
     if (!el) return;
     let renderer: THREE.WebGLRenderer;
@@ -167,7 +179,7 @@ export default function BentGallery() {
     };
     raf = requestAnimationFrame(loop);
     return () => { cancelAnimationFrame(raf); ro.disconnect(); renderer.dispose(); cards.forEach((c) => c.tex.dispose()); geo.dispose(); g.current = null; };
-  }, [list]);
+  }, [list, near]);
 
   // Re-theme the canvas without rebuilding it.
   useEffect(() => {
@@ -246,7 +258,7 @@ export default function BentGallery() {
       </div>
       {!list ? (
         <div
-          className="v2-stage3d" tabIndex={0} role="region"
+          ref={stageRef} className="v2-stage3d" tabIndex={0} role="region"
           aria-label="Lab, a curved 3D gallery. Drag to move, click a card for details, arrow keys move too, or switch to list view."
           onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp}
           onPointerLeave={() => { if (!st.current.drag) setHover(null); }} onKeyDown={onKey}
