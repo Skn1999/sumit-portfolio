@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
 import KeycapContact from "./KeycapContact";
 import { STACK } from "../data/home";
-import { EMAIL, GITHUB, LINKEDIN } from "../lib";
+import { EMAIL, GITHUB, LINKEDIN, RESUME_URL } from "../lib";
 
 const MailIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.3">
@@ -13,7 +12,7 @@ function ContactLinks() {
     <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap", alignItems: "center" }}>
       <span style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "center" }}>
         <a href={`mailto:${EMAIL}`} style={{ display: "inline-flex", gap: 8, alignItems: "center", textDecoration: "none" }}><MailIcon />Send me an email</a>
-        <Link to="/resume" style={{ textDecoration: "none" }}>Read my CV <span style={{ color: "#8B949E" }}>↗</span></Link>
+        <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>Read my CV <span style={{ color: "#8B949E" }}>↗</span></a>
       </span>
       <span style={{ display: "flex", gap: 20, fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase" }}>
         <a href={LINKEDIN} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>

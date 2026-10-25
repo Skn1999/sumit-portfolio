@@ -5,7 +5,7 @@ import Shell from "../components/Shell";
 import { SIGNATURES } from "../components/signatures";
 import ChromeSeg from "../components/ChromeSeg";
 import { CASE_BY_SLUG, type CaseStudy } from "../data/cases";
-import { asset, EMAIL } from "../lib";
+import { asset, EMAIL, RESUME_URL } from "../lib";
 import "../case.css";
 
 const IDS = ["cs-problem", "cs-built", "cs-trade", "cs-result"];
@@ -160,7 +160,7 @@ function Footer({ c }: { c: CaseStudy }) {
           <span style={{ fontSize: 18 }}>I’m open to product design and design-engineering roles in Helsinki or EU remote.</span>
           <span style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             <a className="btn solid" href={`mailto:${EMAIL}`}>Email me</a>
-            <Link className="btn" to="/resume">Résumé ↗</Link>
+            <a className="btn" href={RESUME_URL} target="_blank" rel="noopener noreferrer">Résumé ↗</a>
           </span>
         </div>
       </div>

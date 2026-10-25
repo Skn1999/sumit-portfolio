@@ -37,5 +37,9 @@ export function useReaderMode(): [boolean, (v: boolean) => void] {
 }
 
 export const EMAIL = "sknayyar.sk@gmail.com";
+/** The résumé PDF the dock, footer and case pages open in a new tab (files live in public/).
+    TODO(Sumit): pick one of CV_2026.pdf, Resume-Design-Engineer.pdf, Resume-Product-Designer.pdf. */
+export const RESUME_FILE = "CV_2026.pdf";
+export const RESUME_URL = `${import.meta.env.BASE_URL}${RESUME_FILE}`;
 export const LINKEDIN = "https://linkedin.com/in/sumitnayyar-ux";
 export const GITHUB = "https://github.com/skn1999";
