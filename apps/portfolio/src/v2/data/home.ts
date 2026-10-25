@@ -42,7 +42,7 @@ export type Chapter = { id: string; label: string; title: string; lede: string; 
 export const CHAPTERS: Chapter[] = [
   {
     id: "ch1", label: "Chapter 01 · 2020–24", title: "The builder",
-    lede: "Four years at Optmyzr, intern to SDE-II. I learned what slow software costs people — and how to fix it in the code.",
+    lede: "Four years at Optmyzr, front-end intern to Design Engineer. I learned what slow software costs people — and how to fix it in the code.",
     tiles: [
       { kind: "img", code: "SN-01", title: "Dashboard rebuild", sub: "10s → <1s load", img: asset("work/optmyzr-dashboard.jpg"), alt: "Rebuilt Optmyzr account dashboard with metrics and charts", href: "/projects/optmyzr-dashboard-migration", chips: ["React", "Performance", "2023"] },
       { kind: "img", code: "SN-02", title: "Onboarding wizard", sub: "−25% sign-up drop-off", img: asset("work/optmyzr-onboarding.jpg"), alt: "Onboarding wizard illustration", href: "/projects/optmyzr-onboarding-experience", chips: ["Research", "Product design", "2023"] },
@@ -71,15 +71,14 @@ export const CHAPTERS: Chapter[] = [
 ];
 
 export const APPROACH = [
-  { t: "I start with the person who’s waiting.", d: "Before I design anything, I find out who is stuck and what it costs them — support tickets, session recordings, conversations. The problem gets a sentence before the solution gets a sketch." },
-  { t: "I design in the material.", d: "I prototype in code early. Real data, real latency and a real screen reader change a design faster than any review." },
-  { t: "I treat speed as a feature.", d: "A dashboard that takes ten seconds is a design problem, not just an engineering one. Load time, feedback and motion get the same care as layout." },
+  { t: "I start with the person who’s waiting.", d: "Before I design anything, I find out who is stuck and what it costs them — support tickets, session recordings, conversations. Writing down the problem before sketching/designing anything." },
+  { t: "I design in the material.", d: "Now, I prototype in code early and use Figma where research matters and time allows. Real data, real latency and a real screen reader change a design faster than any review." },
   { t: "I build for everyone.", d: "Accessibility is not a final pass. I design to WCAG from the first wireframe — it’s why I co-founded an accessibility venture." },
   { t: "I borrow across fields.", d: "Cognitive science, co-design workshops, go-to-market work. Being a scanner means I bring in what a single specialist might miss." },
-  { t: "I write things down.", d: "Decisions, trade-offs and the options we turned down, so the team can keep moving without another meeting." },
+  { t: "I measure success based on outcomes.", d: "Metrics, KPIs, heat-maps, depending on what the project/feature calls for. Also documenting decisions, trade-offs and the options we turned down, so the team can keep moving without another meeting." },
 ];
 
-export const STACK = ["Figma", "React", "Claude", "Lovable", "Vercel", "GitHub"];
+export const STACK = ["Figma", "React", "Claude", "Antigravity", "Vercel", "GitHub", "Qualtrics"];
 
 /** Reader mode: the work list inside the letter. */
 export const WORK_LIST = [

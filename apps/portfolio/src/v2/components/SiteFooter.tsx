@@ -35,7 +35,7 @@ export default function SiteFooter({ label = "Open to work" }: { label?: string 
           </div>
           <div className="v2-main-col" style={{ display: "flex", flexDirection: "column", gap: 28 }}>
             <p style={{ fontSize: "clamp(19px, 2.4vw, 24px)", lineHeight: 1.4, letterSpacing: "-0.01em", maxWidth: 760 }}>
-              A product team where designers ship code, curiosity is a feature, and craft matters. Helsinki or EU remote.
+              A product team where designers ship code, curiosity is a feature, and craft matters. Helsinki or remote, anywhere in the world.
             </p>
             <KeycapContact />
             <div style={{ display: "flex", flexDirection: "column", gap: 28, paddingTop: 12 }}>
@@ -43,7 +43,6 @@ export default function SiteFooter({ label = "Open to work" }: { label?: string 
                 <span className="v2-sc-l">Stack</span>
                 <ul aria-label="Tools I use" style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                   {STACK.map((s) => <li key={s} className="v2-chipd">{s}</li>)}
-                  <li className="v2-chipd" style={{ borderStyle: "dashed", color: "#8B949E" }}>[add]</li>
                 </ul>
               </div>
               <div className="v2-sc-row">

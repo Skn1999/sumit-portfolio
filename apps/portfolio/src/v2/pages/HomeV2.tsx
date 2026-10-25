@@ -216,8 +216,8 @@ function Letter() {
           <p>Hi, I’m Sumit.</p>
           <p>I’m a product designer who writes the code too. I help teams figure out what’s actually worth building, then take fuzzy concepts all the way to fast, accessible, beautifully crafted software.</p>
           <p>
-            Right now I’m doing a double M.Sc. in Human–Computer Interaction and Cognitive Science at <a href="https://www.aalto.fi/en" target="_blank" rel="noopener noreferrer">Aalto University</a> and
-            the <a href="https://www.unitn.it/en" target="_blank" rel="noopener noreferrer">University of Trento</a>, and co-building <Link to="/projects/groundwork">Groundwork</Link>, an accessibility venture that placed 2nd of 900+ teams at EIT Jumpstarter.
+            I did a double M.Sc. in Human–Computer Interaction and Cognitive Science at <a href="https://www.aalto.fi/en" target="_blank" rel="noopener noreferrer">Aalto University</a> and
+            the <a href="https://www.unitn.it/en" target="_blank" rel="noopener noreferrer">University of Trento</a>, and co-built <Link to="/projects/groundwork">Groundwork</Link> <i>(currently not taking any projects)</i>, an accessibility venture that placed 2nd of 900+ teams at EIT Jumpstarter.
           </p>
           <p>The work I’m most proud of:</p>
           <ul className="v2-wl">
@@ -225,9 +225,9 @@ function Letter() {
               <li key={w.title}><Link to={w.href}>{w.title}</Link> <span className="r">{w.r}</span> <span className="y">({w.y})</span></li>
             ))}
           </ul>
-          <p>Before grad school I spent four years at <Link to="/projects/optmyzr-dashboard-migration">Optmyzr</Link>, growing from intern to SDE-II. That’s where I learned what slow software costs people — and how to fix it in the code.</p>
-          <p>I’ve lived in three countries and I’m now in Trento, Italy, which means mountains at the weekend. I run, hike, fill sketchbooks with ink, and I’m learning Finnish and Italian, slowly.</p>
-          <p>I’m looking for a product team where designers ship code and curiosity is a feature — in Helsinki or EU remote. The easiest way to reach me is email: <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.</p>
+          <p>Before grad school I spent four years at <Link to="/projects/optmyzr-dashboard-migration">Optmyzr</Link>, growing from front-end intern to Design Engineer. That’s where I learned what slow software costs people — and how to fix it in the code.</p>
+          <p>I’ve lived in three countries and I’m now in Helsinki, Finland. I run, hike, fill sketchbooks with ink, and I’m learning Finnish and Italian, slowly.</p>
+          <p>I care about teams where designers ship code and curiosity is a feature — in Helsinki or remote (anywhere in the world). The easiest way to reach me is email: <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.</p>
         </div>
       </section>
       <section className="v2-lsec" aria-label="Approach">

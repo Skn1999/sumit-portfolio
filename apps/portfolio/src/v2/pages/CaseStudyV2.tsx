@@ -157,7 +157,7 @@ function Footer({ c }: { c: CaseStudy }) {
         </Link>
         <div>
           <span className="mono">Hiring for a role like this?</span>
-          <span style={{ fontSize: 18 }}>I’m open to product design and design-engineering roles in Helsinki or EU remote.</span>
+          <span style={{ fontSize: 18 }}>I’m open to product design and design-engineering roles in Helsinki or remote, anywhere in the world.</span>
           <span style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             <a className="btn solid" href={`mailto:${EMAIL}`}>Email me</a>
             <a className="btn" href={RESUME_URL} target="_blank" rel="noopener noreferrer">Résumé ↗</a>
