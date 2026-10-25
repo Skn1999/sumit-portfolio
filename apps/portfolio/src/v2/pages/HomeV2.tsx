@@ -260,24 +260,33 @@ function useActiveSection(reader: boolean) {
 
 export default function HomeV2() {
   const [reader, setReader] = useReaderMode();
-  const active = useActiveSection(reader);
-  const set = (v: boolean) => { setReader(v); window.scrollTo({ top: 0 }); };
+  // The dock morphs as soon as the toggle is pressed; the page content swaps a beat later (140 ms),
+  // so mounting the heavier index layout doesn't stall the first part of the morph.
+  const [view, setView] = useState(reader);
+  useEffect(() => {
+    if (view === reader) return;
+    const t = window.setTimeout(() => { setView(reader); window.scrollTo({ top: 0 }); }, 140);
+    return () => clearTimeout(t);
+  }, [reader, view]);
+  const active = useActiveSection(view);
+  const set = (v: boolean) => setReader(v);
   return (
-    <Shell active={active} reader={{ on: reader, set }} footerLabel={reader ? undefined : "Chapter 05"}>
+    <Shell active={reader ? undefined : active} reader={{ on: reader, set }} footerLabel={view ? undefined : "Chapter 05"}>
       <Helmet>
         <title>{TITLE}</title>
         <meta name="description" content={DESC} />
       </Helmet>
-      {reader ? (
+      {view ? (
         <Letter />
       ) : (
-        <>
+        // Fades in while the dock finishes morphing back.
+        <div className="v2-fade-in">
           <Hero />
           <FieldNote />
           <Chapters />
           <Approach />
           <section id="ch4" aria-label="Chapter 04, lab" style={{ paddingBottom: 112 }}><BentGallery /></section>
-        </>
+        </div>
       )}
     </Shell>
   );
