@@ -36,14 +36,13 @@ export const DWELL: Record<string, [string, string]> = {
   "SN-10": ["Known problems, no evidence.", "Minor issues. Major impact."],
   "SN-06": ["A board game for planning shared housing spaces.", "Co-design tools, used in Chile."],
   "SN-07": ["Accessibility arrives too late.", "Accessibility as infrastructure: 2nd of 900+ at EIT Jumpstarter."],
-  "SN-08": ["A review layer for AI agents doing real business tasks.", "From PRD to deployed in about 10 hours."],
   "SN-09": ["Taking an AI MedTech startup into Poland, Czechia and Romania.", "Presented to the CEO and board."],
 };
 
 /** "If you liked that…": the closest relative of each project, for the dwell-time suggestion. */
 export const DWELL_NEXT: Record<string, string> = {
   "SN-01": "SN-02", "SN-02": "SN-01", "SN-03": "SN-01", "SN-04": "SN-10", "SN-05": "SN-02",
-  "SN-10": "SN-07", "SN-06": "SN-07", "SN-07": "SN-10", "SN-08": "SN-01", "SN-09": "SN-07",
+  "SN-10": "SN-07", "SN-06": "SN-07", "SN-07": "SN-10", "SN-09": "SN-07",
 };
 
 export type Tile =
@@ -51,7 +50,7 @@ export type Tile =
   | { kind: "stat"; code: string; title: string; sub: string; label: string; stat: string; statSub: string }
   | { kind: "card"; tone: "dark" | "paper"; code: string; title: string; sub: string; label: string; text: string; href: string };
 
-/** Selected work, in the order it appears on the homepage. */
+/** Selected work, in the order it appears on the homepage. ActAI lives in the Lab for now (labs.ts). */
 export const WORK: Tile[] = [
   { kind: "img", code: "SN-01", title: "Dashboard rebuild", sub: "10s → <1s load", img: asset("work/optmyzr-dashboard.jpg"), alt: "Rebuilt Optmyzr account dashboard with metrics and charts", href: "/projects/optmyzr-dashboard-migration" },
   { kind: "img", code: "SN-02", title: "Onboarding wizard", sub: "−25% sign-up drop-off", img: asset("work/optmyzr-onboarding.jpg"), alt: "Onboarding wizard illustration", href: "/projects/optmyzr-onboarding-experience" },
@@ -61,7 +60,6 @@ export const WORK: Tile[] = [
   { kind: "img", code: "SN-10", title: "A+ usability evaluation", sub: "Expert review vs. user tests", img: asset("cases/aplus/workshop.jpg"), alt: "Workshop participants around a table working through printed problem cards", href: "/projects/a-plus-usability-project", crop: true },
   { kind: "img", code: "SN-06", title: "Mesa Te Club", sub: "Co-design tools, Chile", img: asset("work/mesa-sims.jpg"), alt: "Co-design game board for planning shared housing spaces", href: "/projects/social-integration-pd" },
   { kind: "img", code: "SN-07", title: "Groundwork", sub: "2nd of 900+, EIT Jumpstarter", img: asset("work/groundwork.jpg"), alt: "Groundwork cover reading: Built for everyone, from the ground up.", href: "/projects/groundwork" },
-  { kind: "card", tone: "dark", code: "SN-08", title: "ActAI", sub: "PRD → deployed in ~10 h", label: "Live prototype ↗", text: "A review layer for AI agents doing real business tasks", href: "/projects/actai" },
   { kind: "card", tone: "paper", code: "SN-09", title: "Gosta Labs", sub: "Presented to the CEO & board", label: "Strategy", text: "Taking an AI MedTech startup into Poland, Czechia and Romania", href: "/projects/gosta-labs" },
 ];
 
