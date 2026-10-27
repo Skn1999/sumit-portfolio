@@ -14,6 +14,8 @@ interface NavItem {
   subItems: SubNavItem[];
 }
 
+const SUBSTACK_URL = "https://sumit6131.substack.com";
+
 /* ── Navigation Items Hierarchy with Main Routes & Section Anchors ── */
 const NAV_HIERARCHY: NavItem[] = [
   {
@@ -26,32 +28,23 @@ const NAV_HIERARCHY: NavItem[] = [
   },
   {
     label: "Design",
-    mainRoute: "/ux-design",
+    mainRoute: "/#work",
     subItems: [
-      { to: "/ux-design#user-experience", label: "User Experience" },
-      { to: "/ux-design#visual-design", label: "Visual Design" },
+      { to: "/#work", label: "Selected Work" },
     ],
   },
   {
     label: "Design Engineering",
-    mainRoute: "/design-engineering",
+    mainRoute: "/#work",
     subItems: [
-      {
-        to: "/design-engineering#ai-side-projects",
-        label: "AI & Side Projects",
-      },
-      {
-        to: "/design-engineering#frontend-engineering",
-        label: "Front-end Systems",
-      },
+      { to: "/#work", label: "Selected Work" },
     ],
   },
   {
     label: "Writings",
-    mainRoute: "/writings/publication",
+    mainRoute: SUBSTACK_URL,
     subItems: [
-      { to: "/writings/publication#publication", label: "Publication" },
-      { to: "/writings/publication#research", label: "Research" },
+      { to: SUBSTACK_URL, label: "Substack ↗" },
     ],
   },
 ];
@@ -182,25 +175,47 @@ const Header = () => {
               className="flex flex-col items-start justify-start py-3.5 px-6 text-left cursor-pointer"
             >
               {/* Main Category Header acting as Main Route (Bold Monospace Uppercase) */}
-              <Link
-                to={item.mainRoute}
-                onClick={handleExplicitClick}
-                className="font-mono text-sm font-bold tracking-widest text-ink-primary uppercase mb-1 hover:text-ink-primary/70 transition-colors"
-              >
-                {item.label}
-              </Link>
+              {item.mainRoute.startsWith("http") ? (
+                <a
+                  href={item.mainRoute}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-sm font-bold tracking-widest text-ink-primary uppercase mb-1 hover:text-ink-primary/70 transition-colors"
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <Link
+                  to={item.mainRoute}
+                  onClick={handleExplicitClick}
+                  className="font-mono text-sm font-bold tracking-widest text-ink-primary uppercase mb-1 hover:text-ink-primary/70 transition-colors"
+                >
+                  {item.label}
+                </Link>
+              )}
 
               {/* Sub Nav Items Underneath acting as Sections within that route */}
               <div className="flex flex-col items-start font-mono text-xs tracking-wide text-ink-muted gap-y-2 mt-2">
                 {item.subItems.map((subItem, idx) => (
                   <span key={subItem.to} className="flex items-center">
-                    <Link
-                      to={subItem.to}
-                      onClick={handleExplicitClick}
-                      className="hover:text-ink-primary transition-colors hover:underline decoration-paper-border"
-                    >
-                      {subItem.label}
-                    </Link>
+                    {subItem.to.startsWith("http") ? (
+                      <a
+                        href={subItem.to}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-ink-primary transition-colors hover:underline decoration-paper-border"
+                      >
+                        {subItem.label}
+                      </a>
+                    ) : (
+                      <Link
+                        to={subItem.to}
+                        onClick={handleExplicitClick}
+                        className="hover:text-ink-primary transition-colors hover:underline decoration-paper-border"
+                      >
+                        {subItem.label}
+                      </Link>
+                    )}
                     {idx < item.subItems.length - 1 && (
                       <span className="text-paper-border text-[9px]">•</span>
                     )}
@@ -252,27 +267,49 @@ const Header = () => {
               {NAV_HIERARCHY.map((item, i) => (
                 <motion.div key={item.label} variants={slatVariant}>
                   <div className="mb-2">
-                    <Link
-                      to={item.mainRoute}
-                      onClick={() => setMenuOpen(false)}
-                      className="text-xs font-mono tracking-widest text-ink-primary uppercase font-bold block mb-1 hover:underline"
-                    >
-                      0{i + 1} // {item.label}
-                    </Link>
+                    {item.mainRoute.startsWith("http") ? (
+                      <a
+                        href={item.mainRoute}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-mono tracking-widest text-ink-primary uppercase font-bold block mb-1 hover:underline"
+                      >
+                        0{i + 1} // {item.label}
+                      </a>
+                    ) : (
+                      <Link
+                        to={item.mainRoute}
+                        onClick={() => setMenuOpen(false)}
+                        className="text-xs font-mono tracking-widest text-ink-primary uppercase font-bold block mb-1 hover:underline"
+                      >
+                        0{i + 1} // {item.label}
+                      </Link>
+                    )}
                     <div className="flex flex-col gap-1 pl-3 border-l-2 border-paper-border">
-                      {item.subItems.map((subItem) => (
-                        <Link
-                          key={subItem.to}
-                          to={subItem.to}
-                          onClick={() => setMenuOpen(false)}
-                          className="py-2 text-base font-mono text-ink-muted hover:text-ink-primary transition-colors flex items-center justify-between"
-                        >
-                          <span>{subItem.label}</span>
-                          <span className="text-xs font-mono text-ink-muted">
-                            →
-                          </span>
-                        </Link>
-                      ))}
+                      {item.subItems.map((subItem) =>
+                        subItem.to.startsWith("http") ? (
+                          <a
+                            key={subItem.to}
+                            href={subItem.to}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="py-2 text-base font-mono text-ink-muted hover:text-ink-primary transition-colors flex items-center justify-between"
+                          >
+                            <span>{subItem.label}</span>
+                            <span className="text-xs font-mono text-ink-muted">→</span>
+                          </a>
+                        ) : (
+                          <Link
+                            key={subItem.to}
+                            to={subItem.to}
+                            onClick={() => setMenuOpen(false)}
+                            className="py-2 text-base font-mono text-ink-muted hover:text-ink-primary transition-colors flex items-center justify-between"
+                          >
+                            <span>{subItem.label}</span>
+                            <span className="text-xs font-mono text-ink-muted">→</span>
+                          </Link>
+                        )
+                      )}
                     </div>
                   </div>
                 </motion.div>

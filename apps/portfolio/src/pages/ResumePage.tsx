@@ -170,7 +170,7 @@ const ResumePage: React.FC = () => {
 
   const dragStart = useRef({ x: 0, y: 0 });
   const clickStart = useRef({ x: 0, y: 0 });
-  const pdfUrl = `${import.meta.env.BASE_URL}Resume-Product-Designer.pdf`;
+  const pdfUrl = `${import.meta.env.BASE_URL}Sumit_Nayyar_CV.pdf`;
 
   // Monitor Window Size
   const [dimensions, setDimensions] = useState({
@@ -1002,7 +1002,7 @@ const CoreSystemsDesign = () => (
               }`}
               asChild
             >
-              <a href={pdfUrl} download="Resume-Product-Designer.pdf">
+              <a href={pdfUrl} download="Sumit_Nayyar_CV.pdf">
                 <Download className="w-4 h-4" />
                 <span>Download Resume</span>
               </a>
