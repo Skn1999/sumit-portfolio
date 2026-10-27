@@ -189,12 +189,23 @@ function SelectedWork() {
                   onFocus={() => setCur(i)} onBlur={() => leave(i)}
                 >
                   <TileView t={t} aside={<span className="v2-dwring" aria-hidden="true" style={ring} />}>
-                    {lines && lvl >= 1 && <p className="v2-dwmore">{lines[0]}</p>}
-                    {lines && lvl >= 2 && (
-                      <p className="v2-dwmore">
-                        <span style={{ color: "var(--ink)", fontWeight: 500 }}>{lines[1]}</span>
-                        {href && <> <Link className="v2-dwlink" to={href}>Read the case →</Link></>}
-                      </p>
+                    {lines && (
+                      // Always rendered; the grid rows ease from 0fr to 1fr so the tile grows instead of jumping.
+                      <div className="v2-dwx" data-open={lvl >= 1} aria-hidden={lvl < 1}>
+                        <div>
+                          <div className="v2-dwpad">
+                            <p className="v2-dwmore">{lines[0]}</p>
+                            <div className="v2-dwx" data-open={lvl >= 2} aria-hidden={lvl < 2}>
+                              <div>
+                                <p className="v2-dwmore v2-dwpad2">
+                                  <span style={{ color: "var(--ink)", fontWeight: 500 }}>{lines[1]}</span>
+                                  {href && <> <Link className="v2-dwlink" to={href} tabIndex={lvl >= 2 ? undefined : -1}>Read the case →</Link></>}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     )}
                   </TileView>
                 </div>

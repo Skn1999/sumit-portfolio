@@ -342,14 +342,20 @@ html.dark .v2-cseg { box-shadow: 0 1px 0 var(--glass-hi) inset, 0 -1px 0 var(--g
 .v2-dwt { transition: opacity 400ms var(--ease); }
 .v2-dwell[data-any="true"] .v2-dwt[data-lvl="0"] { opacity: 0.72; }
 .v2-dwell[data-any="true"] .v2-dwt[data-lvl="0"]:hover { opacity: 1; }
-.v2-dwmore { margin: 0; font-size: 15px; line-height: 1.55; color: var(--muted); animation: v2-dwin 420ms var(--ease) both; }
+/* Smooth grow: grid rows ease 0fr -> 1fr; the negative margin cancels the tile's gap while closed. */
+.v2-dwx { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 480ms var(--ease); }
+.v2-dwx[data-open="true"] { grid-template-rows: 1fr; }
+.v2-dwx > div { min-height: 0; overflow: hidden; }
+.v2-tile > .v2-dwx { margin-top: -14px; }
+.v2-dwpad { padding-top: 14px; }
+.v2-dwpad2 { padding-top: 10px; }
+.v2-dwmore { margin: 0; font-size: 15px; line-height: 1.55; color: var(--muted); opacity: 0; transform: translateY(-4px); transition: opacity 320ms var(--ease), transform 320ms var(--ease); }
+.v2-dwx[data-open="true"] > div > .v2-dwpad > .v2-dwmore, .v2-dwx[data-open="true"] > div > .v2-dwmore { opacity: 1; transform: none; transition-delay: 120ms; }
 .v2-dwlink { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
-@keyframes v2-dwin { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 .v2-dwring { flex: none; position: relative; width: 14px; height: 14px; border-radius: 50%; background: conic-gradient(var(--accent) calc(var(--p) * 1%), var(--rule) 0); transition: opacity 300ms var(--ease); }
 .v2-dwring::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--bg); }
 .v2-dwsug { margin: 0; font-size: 17px; line-height: 1.5; min-height: 26px; opacity: 0; transition: opacity 500ms var(--ease); }
 .v2-dwsug[data-on="true"] { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
-  .v2-dwt, .v2-dwring, .v2-dwsug, .v2-scan-btn { transition: none; }
-  .v2-dwmore { animation: none; }
+  .v2-dwt, .v2-dwring, .v2-dwsug, .v2-scan-btn, .v2-dwx, .v2-dwmore { transition: none; }
 }
