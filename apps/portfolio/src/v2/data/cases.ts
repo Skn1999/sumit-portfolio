@@ -140,7 +140,7 @@ export const CASES: CaseStudy[] = [
     "title": "A loading screen people walked away from",
     "lead": "<p class=\"lead\">Connecting a Google Ads or Microsoft Advertising account kicks off heavy backend processing. New users got a loading state with nothing to do.</p>",
     "read": "<p>Hotjar session recordings and heatmaps showed a significant share of new users abandoning onboarding during that wait — closing the tab or switching to other work. That silent churn cost us twice:</p><ul><li><b>Lost conversion.</b> People left before their first win in the product.</li><li><b>Missing context.</b> We knew nothing about their goals, team or budget, so recommendations started generic.</li></ul><blockquote class=\"quote\">How might we engage users during backend setup to reduce drop-offs and capture the data we need for immediate recommendations?</blockquote>",
-    "full": ""
+    "full": "<p>Setup took minutes, and the session recordings showed many people leaving during the wait.</p>"
    },
    {
     "kicker": "2 · What I built",
@@ -153,15 +153,15 @@ export const CASES: CaseStudy[] = [
     "kicker": "3 · Trade-offs",
     "title": "What I chose, and why",
     "lead": "<p class=\"lead\">Users think in goals, not ad jargon — so the wizard speaks their language and translates.</p>",
-    "read": "<div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Plain-language goals, mapped to Target CPA, ROAS and conversion value</span></div><div><span class=\"mono\">Over</span><span>Asking users for technical metrics directly</span></div><div><span class=\"mono\">Because</span><span>Goals are how people think; the system can do the translation</span></div></div><div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">A beta group first, then everyone</span></div><div><span class=\"mono\">Over</span><span>Launching to all users at once</span></div><div><span class=\"mono\">Because</span><span>Validate with real users before rolling out to 100%</span></div></div>",
+    "read": "<div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Plain-language goals, mapped to Target CPA, ROAS and conversion value</span></div><div><span class=\"mono\">Over</span><span>Asking users for technical metrics directly</span></div><div><span class=\"mono\">Because</span><span>Goals are how people think; the system can do the translation</span></div></div><div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Saving each step as it’s completed</span></div><div><span class=\"mono\">Over</span><span>Submitting everything at the end</span></div><div><span class=\"mono\">Because</span><span>The recommendation engine gets context by the time setup finishes, and answers are saved step by step, so they survive a drop-off</span></div></div><div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">A beta group first, then everyone</span></div><div><span class=\"mono\">Over</span><span>Launching to all users at once</span></div><div><span class=\"mono\">Because</span><span>Validate with real users before rolling out to 100%</span></div></div>",
     "full": ""
    },
    {
     "kicker": "4 · Result",
     "title": "Waiting became onboarding",
-    "lead": "<div class=\"stats\"><div><div class=\"stat\" style=\"font-size: 44px\">~25%</div><span class=\"mono\">Less setup drop-off</span></div><div><div class=\"stat\" style=\"font-size: 44px\">100%</div><span class=\"mono\">Rolled out after beta</span></div></div>",
+    "lead": "<div class=\"stats\"><div><div class=\"stat\" style=\"font-size: 44px\">~25%</div><span class=\"mono\">Less setup drop-off</span></div><div><div class=\"stat\" style=\"font-size: 44px\">+11%</div><span class=\"mono\">Higher completion</span></div><div><div class=\"stat\" style=\"font-size: 44px\">100%</div><span class=\"mono\">Rolled out after beta</span></div></div>",
     "read": "<ul><li><b>About 25% less drop-off</b> during account creation, by turning waiting time into an active, useful step.</li><li><b>Higher onboarding completion</b> across new users.</li><li><b>Richer personalisation data</b> up front, so recommendations were relevant from day one.</li></ul>",
-    "full": ""
+    "full": "<p>A wait is not dead time. If people have to wait anyway, it’s the best moment to ask them what they need.</p>"
    }
   ],
   "next": {
@@ -278,8 +278,16 @@ export const CASES: CaseStudy[] = [
     "2026"
    ],
    [
+    "Context",
+    "Social Interaction · University of Trento"
+   ],
+   [
     "My role",
     "Research synthesis, behavioural framing, interaction logic, hi-fi prototyping"
+   ],
+   [
+    "Team",
+    "Group of 4"
    ],
    [
     "Platform",
@@ -367,6 +375,10 @@ export const CASES: CaseStudy[] = [
    [
     "My role",
     "UX researcher · facilitator"
+   ],
+   [
+    "Team",
+    "Group of 4"
    ]
   ],
   "skills": [
