@@ -7,11 +7,47 @@ export const HERO_INTRO =
 
 export const TOC = [
   { href: "#contact", label: "Next", meta: "Open", pulse: true },
-  { href: "#ch4", label: "Lab", meta: "Always" },
-  { href: "#ch3", label: "The founder", meta: "2026–Present" },
-  { href: "#ch2", label: "The designer", meta: "2024–Present" },
-  { href: "#ch1", label: "The builder", meta: "2020–24" },
+  // Lab is off the homepage for now (it may get its own page).
+  // { href: "#ch4", label: "Lab", meta: "Always" },
+  { href: "#work", label: "Selected work", meta: "2020–Present" },
+  { href: "#scanner", label: "On being a scanner", meta: "Field note" },
 ];
+
+/** The six fields the scanner fragments are coloured by (same columns as the old matrix). */
+export const SCAN_FIELDS = [
+  { label: "Research", color: "#2F6FEB" },
+  { label: "Interaction", color: "#D96B27" },
+  { label: "Front-end", color: "#1A7F54" },
+  { label: "Strategy", color: "#8250DF" },
+  { label: "Facilitation", color: "#BF3989" },
+  { label: "Visual", color: "#9A6700" },
+];
+
+/** Selected work, in the order it appears on the homepage (codes from CHAPTERS below). */
+export const WORK_ORDER = ["SN-01", "SN-02", "SN-03", "SN-04", "SN-05", "SN-10", "SN-06", "SN-07", "SN-08", "SN-09"];
+
+/**
+ * Dwell time: what a project says after you linger on it. [first line, second line].
+ * Lines come from each case study's Problem and Result titles where there is one.
+ */
+export const DWELL: Record<string, [string, string]> = {
+  "SN-01": ["Ten seconds before anyone could start work.", "Now it loads in under a second."],
+  "SN-02": ["A loading screen people walked away from.", "The wait became onboarding: 25% fewer drop-offs."],
+  "SN-03": ["30+ React components used across the product suite.", "Co-built and maintained."],
+  "SN-04": ["Data everywhere, action nowhere.", "From readings to actions, tested with 200 participants."],
+  "SN-05": ["The gap between intending and doing.", "A cohesive nudge system inside the OS."],
+  "SN-10": ["Known problems, no evidence.", "Minor issues. Major impact."],
+  "SN-06": ["A board game for planning shared housing spaces.", "Co-design tools, used in Chile."],
+  "SN-07": ["Accessibility arrives too late.", "Accessibility as infrastructure: 2nd of 900+ at EIT Jumpstarter."],
+  "SN-08": ["A review layer for AI agents doing real business tasks.", "From PRD to deployed in about 10 hours."],
+  "SN-09": ["Taking an AI MedTech startup into Poland, Czechia and Romania.", "Presented to the CEO and board."],
+};
+
+/** "If you liked that…": the closest relative of each project, for the dwell-time suggestion. */
+export const DWELL_NEXT: Record<string, string> = {
+  "SN-01": "SN-02", "SN-02": "SN-01", "SN-03": "SN-01", "SN-04": "SN-10", "SN-05": "SN-02",
+  "SN-10": "SN-07", "SN-06": "SN-07", "SN-07": "SN-10", "SN-08": "SN-01", "SN-09": "SN-07",
+};
 
 export const DEEP_ON = [
   "Front-end engineering", "Cognitive science", "Accessibility", "Co-design", "Data-dense UI",

@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Shell from "../components/Shell";
 import HeroMoi from "../components/HeroMoi";
-import BentGallery from "../components/BentGallery";
-import { APPROACH, CHAPTERS, DEEP_ON, HERO_INTRO, MX_COLS, MX_ROWS, TOC, WORK_LIST, type Tile } from "../data/home";
+// Lab is off the homepage for now (it may get its own page).
+// import BentGallery from "../components/BentGallery";
+import ScannerField from "../components/ScannerField";
+import { APPROACH, CHAPTERS, DWELL, DWELL_NEXT, HERO_INTRO, TOC, WORK_LIST, WORK_ORDER, type Tile } from "../data/home";
 import { asset, EMAIL, useReaderMode } from "../lib";
 
 const TITLE = "Sumit Nayyar — Product designer who writes the code";
@@ -45,8 +47,6 @@ function Hero() {
 }
 
 function FieldNote() {
-  const [open, setOpen] = useState(false);
-  const totals = MX_COLS.map((_, j) => MX_ROWS.reduce((a, r) => a + r.v[j], 0));
   return (
     <section id="scanner" className="v2-wrap" aria-label="Who is a scanner">
       <div className="v2-section">
@@ -56,77 +56,36 @@ function FieldNote() {
         </div>
         <div className="v2-main-col v2-fieldnote" style={{ display: "flex", flexDirection: "column", gap: 28 }}>
           <p className="big">
-            Barbara Sher has a name for people like me: <span style={{ borderBottom: "2px solid var(--ink)" }}>scanners</span>. We’re wired to be curious about many things instead of one. For years that looked like a CV with too many tabs. Now I think it’s the job — I connect what a single specialist would miss.
+            Barbara Sher has a name for people like me:{" "}
+            <a className="v2-scanner-link" href="https://penguinrandomhouse.com/books/593218/refuse-to-choose-by-barbara-sher/9781594866265" target="_blank" rel="noopener noreferrer" title="Read more: Refuse to Choose! by Barbara Sher">scanners</a>.
+            We’re wired to be curious about many things instead of one. For years that looked like a CV with too many tabs. Now I think it’s the job — I connect what a single specialist would miss.
           </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <span className="v2-mono">Things I’ve gone deep on</span>
-            <ul className="v2-chips">{DEEP_ON.map((d) => <li key={d}>{d}</li>)}</ul>
-          </div>
-          <div style={{ display: "flex", gap: 20, alignItems: "center", flexWrap: "wrap" }}>
-            <button type="button" className="v2-cta" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="scanner-matrix">
-              <span aria-hidden="true">{open ? "−" : "+"}</span>{open ? "Hide the evidence" : "See how it shows up in my work"}
-            </button>
-            <a href="https://penguinrandomhouse.com/books/593218/refuse-to-choose-by-barbara-sher/9781594866265" target="_blank" rel="noopener noreferrer" style={{ fontSize: 14 }}>
-              Read more — <i>Refuse to Choose!</i> ↗
-            </a>
-          </div>
-          {open && (
-            <div id="scanner-matrix" className="v2-fade-in" style={{ display: "flex", flexDirection: "column", gap: 16, paddingTop: 8 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-                <span className="v2-mono">Fig. 01 — One person, six interests, ten projects</span>
-                <span className="v2-mono" style={{ display: "flex", gap: 16 }} aria-hidden="true">
-                  <span style={{ display: "inline-flex", gap: 6, alignItems: "center" }}><span className="v2-y" />Used</span>
-                  <span style={{ display: "inline-flex", gap: 6, alignItems: "center" }}><span className="v2-n" />Not used</span>
-                </span>
-              </div>
-              <div className="v2-mx-wrap">
-                <table className="v2-mx">
-                  <thead>
-                    <tr><th scope="col">Project</th>{MX_COLS.map((c) => <th key={c} scope="col">{c}</th>)}</tr>
-                  </thead>
-                  <tbody>
-                    {MX_ROWS.map((r) => (
-                      <tr key={r.no}>
-                        <th scope="row" style={{ fontWeight: 500 }}>{r.name} <span style={{ color: "var(--muted)", fontWeight: 400 }}>{r.sub}</span></th>
-                        {r.v.map((v, j) => (
-                          <td key={j}><span className={v ? "v2-y" : "v2-n"} aria-hidden="true" /><span className="v2-sr">{v ? "yes" : "no"}</span></td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                  <tfoot>
-                    <tr style={{ fontFamily: "var(--f-mono)", fontSize: 12 }}>
-                      <th scope="row" style={{ textAlign: "left", fontWeight: 400 }}>Total</th>{totals.map((t, j) => <td key={j}>{t}</td>)}
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
-              <p style={{ fontSize: 15, lineHeight: 1.6, color: "var(--muted)", maxWidth: 640 }}>
-                No column is empty, and no row uses everything — each project borrows a different mix. The chapters below are where those mixes came from.
-              </p>
-            </div>
-          )}
+          <ScannerField />
         </div>
       </div>
     </section>
   );
 }
 
-function TileMeta({ title, sub }: { title: string; sub: string }) {
+function TileMeta({ title, sub, aside }: { title: string; sub: string; aside?: ReactNode }) {
   return (
-    <div className="v2-tile-meta">
-      <h3>{title}</h3><span className="v2-tile-sub">{sub}</span>
+    <div className="v2-tile-meta-row">
+      <div className="v2-tile-meta">
+        <h3>{title}</h3><span className="v2-tile-sub">{sub}</span>
+      </div>
+      {aside}
     </div>
   );
 }
 
-function TileView({ t }: { t: Tile }) {
+/** A work tile. `aside` sits next to the title; `children` go under it (dwell-time lines). */
+function TileView({ t, aside, children }: { t: Tile; aside?: ReactNode; children?: ReactNode }) {
   if (t.kind === "img") {
     return (
       <article className="v2-tile">
         <Link className={`v2-tile-media${t.crop ? " crop" : ""}`} to={t.href} aria-label={`${t.title} case study`}><img src={t.img} alt={t.alt} loading="lazy" /></Link>
-        <TileMeta title={t.title} sub={t.sub} />
-        <ul className="v2-chips" style={{ fontSize: 12 }}>{t.chips.map((c) => <li key={c} style={{ padding: "4px 8px" }}>{c}</li>)}</ul>
+        <TileMeta title={t.title} sub={t.sub} aside={aside} />
+        {children}
       </article>
     );
   }
@@ -139,7 +98,8 @@ function TileView({ t }: { t: Tile }) {
             {t.stat}<span style={{ display: "block", fontSize: 15, fontWeight: 400, letterSpacing: 0, color: "var(--muted)", marginTop: 8 }}>{t.statSub}</span>
           </span>
         </div>
-        <TileMeta title={t.title} sub={t.sub} />
+        <TileMeta title={t.title} sub={t.sub} aside={aside} />
+        {children}
       </article>
     );
   }
@@ -149,27 +109,96 @@ function TileView({ t }: { t: Tile }) {
         <span className="v2-mono" style={t.tone === "dark" ? { color: "#8B949E" } : undefined}>{t.label}</span>
         <span className="t">{t.text}</span>
       </Link>
-      <TileMeta title={t.title} sub={t.sub} />
+      <TileMeta title={t.title} sub={t.sub} aside={aside} />
+      {children}
     </article>
   );
 }
 
-function Chapters() {
+const ALL_TILES = CHAPTERS.flatMap((ch) => ch.tiles);
+const WORK_TILES = WORK_ORDER.map((code) => ALL_TILES.find((t) => t.code === code)).filter((t): t is Tile => !!t);
+const DWELL_T1 = 1; // seconds of attention before a tile opens one line
+const DWELL_T2 = 3; // …and before it adds the result and a way in
+
+/**
+ * Selected work, with dwell time: whatever you linger on gets a little more room. Attention is hover or
+ * keyboard focus where there's a pointer, and "crossing the middle of the screen" on touch devices.
+ * Only the two tiles with the most attention stay open, so the grid never fills up.
+ */
+function SelectedWork() {
+  const [dw, setDw] = useState<number[]>(() => WORK_TILES.map(() => 0));
+  const [cur, setCur] = useState(-1);
+  const grid = useRef<HTMLDivElement>(null);
+
+  // Count tenths of a second while a tile has attention.
+  useEffect(() => {
+    if (cur < 0) return;
+    const t = window.setInterval(() => setDw((d) => d.map((v, i) => (i === cur ? Math.round((v + 0.1) * 10) / 10 : v))), 100);
+    return () => clearInterval(t);
+  }, [cur]);
+
+  // Touch: the tile crossing the middle band of the screen has attention.
+  useEffect(() => {
+    const el = grid.current;
+    if (!el || !("IntersectionObserver" in window) || !window.matchMedia?.("(hover: none)").matches) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        const i = Number((e.target as HTMLElement).dataset.i);
+        if (e.isIntersecting) setCur(i);
+        else setCur((c) => (c === i ? -1 : c));
+      });
+    }, { rootMargin: "-40% 0px -40% 0px" });
+    el.querySelectorAll("[data-i]").forEach((n) => io.observe(n));
+    return () => io.disconnect();
+  }, []);
+
+  const ranked = dw.map((d, i) => [d, i] as const).sort((a, b) => b[0] - a[0]);
+  const open = ranked.slice(0, 2).filter(([d]) => d >= DWELL_T1).map(([, i]) => i);
+  const top = ranked[0][0] >= DWELL_T2 ? WORK_TILES[ranked[0][1]] : null;
+  const next = top ? ALL_TILES.find((t) => t.code === DWELL_NEXT[top.code]) : null;
+  const leave = (i: number) => setCur((c) => (c === i ? -1 : c));
+
   return (
-    <div id="work">
-      {CHAPTERS.map((ch) => (
-        <section key={ch.id} id={ch.id} className="v2-wrap" aria-label={`${ch.label}, ${ch.title}`}>
-          <div className="v2-section">
-            <div className="v2-label-col">
-              <span className="v2-mono">{ch.label}</span>
-              <h2 className="v2-h2">{ch.title}</h2>
-              <p style={{ fontSize: 15, lineHeight: 1.6 }}>{ch.lede}</p>
-            </div>
-            <div className="v2-main-col v2-tiles">{ch.tiles.map((t) => <TileView key={t.code} t={t} />)}</div>
+    <section id="work" className="v2-wrap" aria-label="Selected work">
+      <div className="v2-section">
+        <div className="v2-label-col">
+          <span className="v2-mono">Work · 2020–Present</span>
+          <h2 className="v2-h2">Selected work</h2>
+          <p style={{ fontSize: 15, lineHeight: 1.6 }}>Projects across engineering, research and strategy. Linger on one and it tells you a little more.</p>
+        </div>
+        <div className="v2-main-col" style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+          <div className="v2-tiles v2-dwell" ref={grid} data-any={open.length > 0}>
+            {WORK_TILES.map((t, i) => {
+              const d = dw[i];
+              const lvl = open.includes(i) ? (d >= DWELL_T2 ? 2 : 1) : 0;
+              const lines = DWELL[t.code];
+              const href = t.kind === "stat" ? null : t.href;
+              const ring = { "--p": Math.min(100, Math.round((d / DWELL_T2) * 100)), opacity: cur === i && d > 0.2 && d < DWELL_T2 ? 1 : 0 } as React.CSSProperties;
+              return (
+                <div
+                  key={t.code} data-i={i} data-lvl={lvl} className="v2-dwt"
+                  onMouseEnter={() => setCur(i)} onMouseLeave={() => leave(i)}
+                  onFocus={() => setCur(i)} onBlur={() => leave(i)}
+                >
+                  <TileView t={t} aside={<span className="v2-dwring" aria-hidden="true" style={ring} />}>
+                    {lines && lvl >= 1 && <p className="v2-dwmore">{lines[0]}</p>}
+                    {lines && lvl >= 2 && (
+                      <p className="v2-dwmore">
+                        <span style={{ color: "var(--ink)", fontWeight: 500 }}>{lines[1]}</span>
+                        {href && <> <Link className="v2-dwlink" to={href}>Read the case →</Link></>}
+                      </p>
+                    )}
+                  </TileView>
+                </div>
+              );
+            })}
           </div>
-        </section>
-      ))}
-    </div>
+          <p className="v2-dwsug" aria-live="polite" data-on={!!(top && next)}>
+            {top && next ? `You spent a while on ${top.title}. If that’s your kind of problem, ${next.title} is its closest relative.` : ""}
+          </p>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -284,9 +313,10 @@ export default function HomeV2() {
         <div className="v2-fade-in">
           <Hero />
           <FieldNote />
-          <Chapters />
+          <SelectedWork />
           <Approach />
-          <section id="ch4" aria-label="Chapter 04, lab" style={{ paddingBottom: 112 }}><BentGallery /></section>
+          {/* Lab is off the homepage for now (it may get its own page).
+          <section id="ch4" aria-label="Chapter 04, lab" style={{ paddingBottom: 112 }}><BentGallery /></section> */}
         </div>
       )}
     </Shell>
