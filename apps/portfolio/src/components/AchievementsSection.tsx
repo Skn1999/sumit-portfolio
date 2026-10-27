@@ -78,7 +78,7 @@ const AchievementsSection: React.FC = () => {
     { name: "Finnish", level: "Basic / Learning" },
   ];
 
-  const resumePdfUrl = `${import.meta.env.BASE_URL}Resume-Product-Designer.pdf`;
+  const resumePdfUrl = `${import.meta.env.BASE_URL}Sumit_Nayyar_CV.pdf`;
 
   return (
     <section id="achievements" className="py-20 md:py-32 bg-paper-bg">
