@@ -1,8 +1,8 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ArrowUpRight, BookOpen, LayoutGrid, Moon, Sun } from "lucide-react";
+import { ArrowUpRight, BookOpen, LayoutGrid, Moon, Search, Sun } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
-import { asset, RESUME_URL } from "../lib";
+import { asset, openQuickActions, RESUME_URL, shortcutLabel } from "../lib";
 import { useChromeRim } from "../chrome";
 
 /** `fold`: hidden in Reader mode (the letter has no chapters to jump to, and contact lives in the footer). */
@@ -28,6 +28,7 @@ export default function Dock({ active, reader }: Props) {
   const [ind, setInd] = useState<{ x: number; w: number } | null>(null);
   const location = useLocation();
   const folded = !!reader?.on;
+  const [kbd] = useState(shortcutLabel);
   // Natural widths of the folding links, so their slots can animate to and from 0.
   const [nat, setNat] = useState<Record<string, number>>({});
   useChromeRim(fx, dark);
@@ -110,6 +111,11 @@ export default function Dock({ active, reader }: Props) {
         <button type="button" className="v2-icon-btn" onClick={toggleTheme} aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
           title={dark ? "Light theme" : "Dark theme"}>
           {dark ? <Sun size={17} /> : <Moon size={17} />}
+        </button>
+        {/* Quick actions, for people who don't know the shortcut. Shows the shortcut on desktop, a search icon on touch. */}
+        <button type="button" className="v2-icon-btn v2-kbtn" onClick={openQuickActions} aria-label={`Quick actions (${kbd})`} title={`Quick actions · ${kbd}`}>
+          <span className="v2-kbtn-key" aria-hidden="true">{kbd}</span>
+          <span className="v2-kbtn-ic" aria-hidden="true"><Search size={17} /></span>
         </button>
         <Link className="v2-dock-me" to="/#contact" onClick={toFooter} aria-label="Sumit Nayyar — open to work" title="Sumit Nayyar · open to work">
           <img src={asset("avatar.jpg")} alt="" />
