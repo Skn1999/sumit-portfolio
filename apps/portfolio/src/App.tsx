@@ -4,16 +4,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { lazy, Suspense, useEffect } from "react";
 import { HelmetProvider } from "react-helmet-async";
-import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import ProjectPage from "./pages/ProjectPage";
 import ResumePage from "./pages/ResumePage";
-import UxBitePage from "./pages/UxBitePage";
-import UxDesignPage from "./pages/UxDesignPage";
-import VisualDesignPage from "./pages/VisualDesignPage";
-import WritingsPage from "./pages/WritingsPage";
-import DataEngineeringPage from "./pages/DataEngineeringPage";
-import DesignEngineeringPage from "./pages/DesignEngineeringPage";
 import SiloPage from "./pages/labs/SiloPage";
 import FlowPage from "./pages/labs/FlowPage";
 import { NavIntentProvider } from "./contexts/NavIntentContext";
@@ -23,13 +15,22 @@ import { AnimatePresence } from "framer-motion";
 import SmoothScroll from "./components/SmoothScroll";
 import { useParams } from "react-router-dom";
 import { V2_CASE_SLUGS } from "./v2/slugs";
+import { SUBSTACK_URL } from "./v2/lib";
 
 // v2 "Industrial Index" pages (code-split: they bring three.js and their own styles).
 const HomeV2 = lazy(() => import("./v2/pages/HomeV2"));
 const CaseStudyV2 = lazy(() => import("./v2/pages/CaseStudyV2"));
 const V2Fallback = () => <div style={{ minHeight: "100vh", background: "var(--v2-boot-bg, #F6F7F9)" }} />;
 
-/** The six rebuilt case studies use the v2 template; every other project keeps the classic page. */
+/** Redirects external destinations (e.g. Substack) seamlessly. */
+const ExternalRedirect = ({ to }: { to: string }) => {
+  useEffect(() => {
+    window.location.replace(to);
+  }, [to]);
+  return null;
+};
+
+/** Only the active v2 case studies are exposed; legacy layout projects are hidden for now. */
 const ProjectRoute = () => {
   const { slug } = useParams();
   if (slug && V2_CASE_SLUGS.has(slug)) {
@@ -39,22 +40,30 @@ const ProjectRoute = () => {
       </Suspense>
     );
   }
-  return <ProjectPage />;
+  return <Navigate to="/" replace />;
 };
 
 const queryClient = new QueryClient();
 
-/** Scrolls to the element matching the URL hash after navigation. */
+/** Scrolls to the element matching the URL hash after navigation, retrying as lazy-loaded components mount. */
 const ScrollToHash = () => {
   const { hash, pathname } = useLocation();
 
   useEffect(() => {
     if (!hash) return;
-    // Small delay so the target page has time to render its DOM
-    const timer = setTimeout(() => {
-      const id = hash.replace("#", "");
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
+    const id = hash.replace("#", "");
+    let attempts = 0;
+    let timer: ReturnType<typeof setTimeout>;
+    const scroll = () => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      } else if (attempts < 10) {
+        attempts++;
+        timer = setTimeout(scroll, 80);
+      }
+    };
+    timer = setTimeout(scroll, 60);
     return () => clearTimeout(timer);
   }, [hash, pathname]);
 
@@ -68,24 +77,26 @@ const AnimatedRoutes = () => {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Suspense fallback={<V2Fallback />}><HomeV2 /></Suspense>} />
-        <Route path="/classic" element={<Index />} />
         <Route path="/resume" element={<ResumePage />} />
-        <Route path="/design" element={<UxDesignPage />} />
-        <Route path="/ux-design" element={<UxDesignPage />} />
-        <Route path="/design-engineering" element={<DesignEngineeringPage />} />
-        <Route path="/data-engineering" element={<DesignEngineeringPage />} />
+        <Route path="/design" element={<Navigate to="/#work" replace />} />
+        <Route path="/ux-design" element={<Navigate to="/#work" replace />} />
+        <Route path="/design-engineering" element={<Navigate to="/#work" replace />} />
+        <Route path="/data-engineering" element={<Navigate to="/#work" replace />} />
+        <Route path="/projects" element={<Navigate to="/#work" replace />} />
+        <Route path="/visual-design" element={<Navigate to="/#work" replace />} />
+        <Route path="/labs" element={<Navigate to="/labs/tack" replace />} />
         <Route path="/labs/silo" element={<SiloPage />} />
         <Route path="/labs/flow" element={<Navigate to="/labs/tack" replace />} />
         <Route path="/labs/tack" element={<FlowPage />} />
-        <Route path="/projects" element={<UxDesignPage />} />
-        <Route path="/projects/ai" element={<Navigate to="/projects/actai" replace />} />
-        <Route path="/projects/act-ai" element={<Navigate to="/projects/actai" replace />} />
+        <Route path="/projects/ai" element={<Navigate to="/" replace />} />
+        <Route path="/projects/act-ai" element={<Navigate to="/" replace />} />
         <Route path="/projects/:slug" element={<ProjectRoute />} />
-        <Route path="/visual-design" element={<UxDesignPage />} />
-        <Route path="/writings/publication" element={<WritingsPage />} />
-        <Route path="/writings/research" element={<WritingsPage />} />
-        <Route path="/ux-bites" element={<WritingsPage />} />
-        <Route path="/ux-bites/:slug" element={<UxBitePage />} />
+        <Route path="/publication" element={<ExternalRedirect to={SUBSTACK_URL} />} />
+        <Route path="/writings" element={<ExternalRedirect to={SUBSTACK_URL} />} />
+        <Route path="/writings/publication" element={<ExternalRedirect to={SUBSTACK_URL} />} />
+        <Route path="/writings/research" element={<ExternalRedirect to={SUBSTACK_URL} />} />
+        <Route path="/ux-bites" element={<Navigate to="/" replace />} />
+        <Route path="/ux-bites/*" element={<Navigate to="/" replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>

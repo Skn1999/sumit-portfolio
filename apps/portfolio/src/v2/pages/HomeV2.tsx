@@ -7,7 +7,7 @@ import HeroMoi from "../components/HeroMoi";
 // import BentGallery from "../components/BentGallery";
 import ScannerField from "../components/ScannerField";
 import { APPROACH, DWELL, DWELL_NEXT, HERO_INTRO, TOC, WORK, WORK_LIST, type Tile } from "../data/home";
-import { asset, EMAIL, useReaderMode } from "../lib";
+import { asset, EMAIL, SITE_URL, SUBSTACK_URL, useReaderMode } from "../lib";
 
 const TITLE = "Sumit Nayyar — Product designer who writes the code";
 const DESC = HERO_INTRO;
@@ -48,6 +48,7 @@ function Hero() {
 function FieldNote() {
   return (
     <section id="scanner" className="v2-wrap" aria-label="Who is a scanner">
+      <span id="about" style={{ display: "block", scrollMarginTop: 100 }} aria-hidden="true" />
       <div className="v2-section">
         <div className="v2-label-col">
           <h2 className="v2-h2">On being a scanner</h2>
@@ -266,8 +267,8 @@ function Letter() {
             ))}
           </ul>
           <p>Before grad school I spent four years at <Link to="/projects/optmyzr-dashboard-migration">Optmyzr</Link>, growing from front-end intern to Design Engineer. That’s where I learned what slow software costs people — and how to fix it in the code.</p>
-          <p>I’ve lived in three countries and I’m now in Helsinki, Finland. I run, hike, fill sketchbooks with ink, and I’m learning Finnish and Italian, slowly.</p>
-          <p>I care about teams where designers ship code and curiosity is a feature — in Helsinki or remote (anywhere in the world). The easiest way to reach me is email: <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.</p>
+          <p>I’ve lived in three countries and I’m now in Helsinki, Finland. I run, hike, fill sketchbooks with ink, write on my <a href={SUBSTACK_URL} target="_blank" rel="noopener noreferrer">Substack</a>, and I’m learning Finnish and Italian, slowly.</p>
+          <p>I care about teams where designers ship code and curiosity is a feature. Looking for next career opportunity in Helsinki or remote (anywhere in the world). The easiest way to reach me is email: <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.</p>
         </div>
       </section>
       <section className="v2-lsec" aria-label="Approach">
@@ -316,6 +317,16 @@ export default function HomeV2() {
       <Helmet>
         <title>{TITLE}</title>
         <meta name="description" content={DESC} />
+        <link rel="canonical" href={SITE_URL} />
+        <meta property="og:title" content={TITLE} />
+        <meta property="og:description" content={DESC} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={SITE_URL} />
+        <meta property="og:image" content={`${SITE_URL}/v2/avatar.jpg`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={TITLE} />
+        <meta name="twitter:description" content={DESC} />
+        <meta name="twitter:image" content={`${SITE_URL}/v2/avatar.jpg`} />
       </Helmet>
       {view ? (
         <Letter />
@@ -326,8 +337,6 @@ export default function HomeV2() {
           <FieldNote />
           <SelectedWork />
           <Approach />
-          {/* Lab is off the homepage for now (it may get its own page).
-          <section id="ch4" aria-label="Chapter 04, lab" style={{ paddingBottom: 112 }}><BentGallery /></section> */}
         </div>
       )}
     </Shell>

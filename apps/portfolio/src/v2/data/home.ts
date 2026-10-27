@@ -7,10 +7,9 @@ export const HERO_INTRO =
 
 export const TOC = [
   { href: "#contact", label: "Next", meta: "Open", pulse: true },
-  { href: "#ch4", label: "Lab", meta: "Always" },
-  { href: "#ch3", label: "The founder", meta: "2026–Present" },
-  { href: "#ch2", label: "The designer", meta: "2024–Present" },
-  { href: "#ch1", label: "The builder", meta: "2020–24" },
+  { href: "#approach", label: "How I work", meta: "Approach" },
+  { href: "#work", label: "Selected work", meta: "Cases" },
+  { href: "#scanner", label: "On being a scanner", meta: "Intro" },
 ];
 
 /** The six fields the scanner fragments are coloured by. */
@@ -78,7 +77,6 @@ export const WORK_LIST = [
   { title: "Dashboard rebuild", href: "/projects/optmyzr-dashboard-migration", r: "— Optmyzr · 10 s → under 1 s load", y: "2023" },
   { title: "Onboarding wizard", href: "/projects/optmyzr-onboarding-experience", r: "— Optmyzr · −25% sign-up drop-off", y: "2023" },
   { title: "Groundwork", href: "/projects/groundwork", r: "— co-founder · 2nd of 900+, EIT Jumpstarter", y: "2025" },
-  { title: "ActAI", href: "/projects/actai", r: "— AI oversight · PRD → deployed in ~10 h", y: "2026" },
   { title: "Air quality, made readable", href: "/projects/ediaqi-decision-support-system", r: "— Deda Next · 200 participants", y: "2026" },
   { title: "YOU", href: "/projects/super-ego-app", r: "— habit-alignment assistant", y: "2026" },
   { title: "A+ usability evaluation", href: "/projects/a-plus-usability-project", r: "— expert review vs. user tests", y: "2025" },
