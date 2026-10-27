@@ -159,6 +159,16 @@
     "height": 300,
     "aspectRatio": "30/300"
   },
+  "a-plus-usability-project/cover.jpg": {
+    "width": 599,
+    "height": 795,
+    "aspectRatio": "599/795"
+  },
+  "cover.jpg": {
+    "width": 599,
+    "height": 795,
+    "aspectRatio": "599/795"
+  },
   "actai/actai-steward-cover-animated.gif": {
     "width": 800,
     "height": 600,
@@ -610,11 +620,6 @@
     "aspectRatio": "1920/1027"
   },
   "social-integration-pd/cover.jpg": {
-    "width": 1562,
-    "height": 872,
-    "aspectRatio": "1562/872"
-  },
-  "cover.jpg": {
     "width": 1562,
     "height": 872,
     "aspectRatio": "1562/872"
