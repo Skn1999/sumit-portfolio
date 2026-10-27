@@ -24,13 +24,12 @@ function ContactLinks() {
 }
 
 /** The dark contact band that closes every v2 page: pitch, HELLO keycaps, stack and contact rows. */
-export default function SiteFooter({ label = "Open to work" }: { label?: string }) {
+export default function SiteFooter() {
   return (
     <footer id="contact" className="v2-band" aria-label="Contact">
       <div className="v2-wrap">
         <div className="v2-section" style={{ paddingTop: 72, paddingBottom: 40 }}>
           <div className="v2-label-col">
-            <span className="v2-mono">{label} · From [MONTH 2026]</span>
             <h2 className="v2-h2">Next: your team?</h2>
           </div>
           <div className="v2-main-col" style={{ display: "flex", flexDirection: "column", gap: 28 }}>

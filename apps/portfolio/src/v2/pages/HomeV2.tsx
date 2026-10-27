@@ -50,8 +50,7 @@ function FieldNote() {
     <section id="scanner" className="v2-wrap" aria-label="Who is a scanner">
       <div className="v2-section">
         <div className="v2-label-col">
-          <span className="v2-mono">Field note 01</span>
-          <h2 className="v2-mono" style={{ color: "var(--ink)", fontWeight: 400 }}>On being a scanner</h2>
+          <h2 className="v2-h2">On being a scanner</h2>
         </div>
         <div className="v2-main-col v2-fieldnote" style={{ display: "flex", flexDirection: "column", gap: 28 }}>
           <p className="big">
@@ -167,7 +166,6 @@ function SelectedWork() {
     <section id="work" className="v2-wrap" aria-label="Selected work">
       <div className="v2-section">
         <div className="v2-label-col">
-          <span className="v2-mono">Work · 2020–Present</span>
           <h2 className="v2-h2">Selected work</h2>
           <p style={{ fontSize: 15, lineHeight: 1.6 }}>Projects across engineering, research and strategy. Linger on one and it tells you a little more.</p>
         </div>
@@ -223,7 +221,6 @@ function Approach() {
     <section id="approach" className="v2-wrap" aria-label="How I work">
       <div className="v2-section">
         <div className="v2-label-col">
-          <span className="v2-mono">Approach</span>
           <h2 className="v2-h2">How I work</h2>
         </div>
         <div className="v2-main-col">
@@ -315,7 +312,7 @@ export default function HomeV2() {
   const active = useActiveSection(view);
   const set = (v: boolean) => setReader(v);
   return (
-    <Shell active={reader ? undefined : active} reader={{ on: reader, set }} footerLabel={view ? undefined : "Chapter 05"}>
+    <Shell active={reader ? undefined : active} reader={{ on: reader, set }}>
       <Helmet>
         <title>{TITLE}</title>
         <meta name="description" content={DESC} />
