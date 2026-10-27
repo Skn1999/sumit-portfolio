@@ -7,10 +7,10 @@ export const HERO_INTRO =
 
 export const TOC = [
   { href: "#contact", label: "Next", meta: "Open", pulse: true },
-  // Lab is off the homepage for now (it may get its own page).
-  // { href: "#ch4", label: "Lab", meta: "Always" },
-  { href: "#work", label: "Selected work", meta: "2020–Present" },
-  { href: "#scanner", label: "On being a scanner", meta: "Field note" },
+  { href: "#ch4", label: "Lab", meta: "Always" },
+  { href: "#ch3", label: "The founder", meta: "2026–Present" },
+  { href: "#ch2", label: "The designer", meta: "2024–Present" },
+  { href: "#ch1", label: "The builder", meta: "2020–24" },
 ];
 
 /** The six fields the scanner fragments are coloured by (same columns as the old matrix). */

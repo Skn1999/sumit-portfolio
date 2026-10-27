@@ -54,12 +54,12 @@ export default function ScannerField() {
     return () => io.disconnect();
   }, [near]);
 
-  // Line up on arrival: once the stage is mostly on screen, wait a beat, then turn slowly into place.
+  // Line up on arrival: once the stage is mostly on screen, wait 1.5 s (long enough to see the noise), then turn slowly into place.
   useEffect(() => {
     const el = stage.current;
     if (!el) return;
     let t = 0;
-    const go = () => { t = window.setTimeout(() => { speed.current = 0.022; goal.current = { yaw: 0, pitch: 0 }; }, 900); };
+    const go = () => { t = window.setTimeout(() => { speed.current = 0.022; goal.current = { yaw: 0, pitch: 0 }; }, 1500); };
     if (!("IntersectionObserver" in window)) { go(); return () => clearTimeout(t); }
     const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { go(); io.disconnect(); } }, { threshold: 0.6 });
     io.observe(el);

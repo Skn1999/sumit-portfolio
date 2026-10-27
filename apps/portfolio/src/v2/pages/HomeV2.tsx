@@ -123,11 +123,13 @@ const DWELL_T2 = 3; // …and before it adds the result and a way in
 /**
  * Selected work, with dwell time: whatever you linger on gets a little more room. Attention is hover or
  * keyboard focus where there's a pointer, and "crossing the middle of the screen" on touch devices.
- * Only the two tiles with the most attention stay open, so the grid never fills up.
+ * The two tiles opened most recently stay open (the one you're on always opens at 1 s), so the grid
+ * never fills up.
  */
 function SelectedWork() {
   const [dw, setDw] = useState<number[]>(() => WORK_TILES.map(() => 0));
   const [cur, setCur] = useState(-1);
+  const [recent, setRecent] = useState<number[]>([]); // opened tiles, most recent first
   const grid = useRef<HTMLDivElement>(null);
 
   // Count tenths of a second while a tile has attention.
@@ -136,6 +138,12 @@ function SelectedWork() {
     const t = window.setInterval(() => setDw((d) => d.map((v, i) => (i === cur ? Math.round((v + 0.1) * 10) / 10 : v))), 100);
     return () => clearInterval(t);
   }, [cur]);
+
+  // A tile that crosses the first threshold moves to the front of the open list.
+  useEffect(() => {
+    if (cur < 0 || dw[cur] < DWELL_T1 || recent[0] === cur) return;
+    setRecent((r) => [cur, ...r.filter((x) => x !== cur)].slice(0, 2));
+  }, [cur, dw, recent]);
 
   // Touch: the tile crossing the middle band of the screen has attention.
   useEffect(() => {
@@ -153,7 +161,7 @@ function SelectedWork() {
   }, []);
 
   const ranked = dw.map((d, i) => [d, i] as const).sort((a, b) => b[0] - a[0]);
-  const open = ranked.slice(0, 2).filter(([d]) => d >= DWELL_T1).map(([, i]) => i);
+  const open = recent;
   const top = ranked[0][0] >= DWELL_T2 ? WORK_TILES[ranked[0][1]] : null;
   const next = top ? ALL_TILES.find((t) => t.code === DWELL_NEXT[top.code]) : null;
   const leave = (i: number) => setCur((c) => (c === i ? -1 : c));
