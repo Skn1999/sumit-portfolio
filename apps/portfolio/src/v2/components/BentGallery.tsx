@@ -96,6 +96,25 @@ void main(){
   gl_FragColor = vec4(col, 1.0);
 }`;
 
+type BentGalleryCard = { tex: THREE.CanvasTexture; draw: () => void };
+type BentGalleryState = {
+  renderer: THREE.WebGLRenderer;
+  scene: THREE.Scene;
+  camera: THREE.PerspectiveCamera;
+  meshes: THREE.Mesh[];
+  ray: THREE.Raycaster;
+  ndc: THREE.Vector2;
+  el: HTMLCanvasElement;
+  shared: {
+    uCurve: { value: number };
+    uVel: { value: THREE.Vector2 };
+    uTime: { value: number };
+    uChroma: { value: number };
+    uDimCol: { value: THREE.Vector3 };
+  };
+  cards: BentGalleryCard[];
+};
+
 /** Lab: an infinite grid of cards on a curved surface. Drag to move (with chromatic smear),
     click a card for details, arrow keys move too, Esc closes, or switch to a plain list. */
 export default function BentGallery() {
@@ -123,7 +142,7 @@ export default function BentGallery() {
   const st = useRef({ ox: 0, oy: 0.4, vx: 0, vy: 0, sx: 0, sy: 0, drag: null as null | { x: number; y: number; lx: number; ly: number }, moved: 0 });
   const focusRef = useRef(focus); focusRef.current = focus;
   const hoverRef = useRef(hover); hoverRef.current = hover;
-  const g = useRef<any>(null);
+  const g = useRef<BentGalleryState | null>(null);
 
   useEffect(() => {
     if (list || !near) return;
@@ -187,7 +206,7 @@ export default function BentGallery() {
     const t = g.current; if (!t) return;
     t.renderer.setClearColor(palRef.current.clear, 1);
     const d = palRef.current.dim; t.shared.uDimCol.value.set(d[0], d[1], d[2]);
-    t.cards.forEach((c: any) => c.draw());
+    t.cards.forEach((c) => c.draw());
   }, [dark]);
 
   const unitsPerPx = () => (2 * G_CAMZ * Math.tan((20 * Math.PI) / 180)) / (g.current?.el.clientHeight || 640);

@@ -30,6 +30,16 @@ function keyGeo(w: number, d: number) {
   return g;
 }
 
+type KeyObj = { i: number; id: string; cap: THREE.Group; body: THREE.Mesh; y: number; v: number; pressT: number };
+type KeycapThreeState = {
+  renderer: THREE.WebGLRenderer;
+  camera: THREE.PerspectiveCamera;
+  keys: KeyObj[];
+  el: HTMLCanvasElement;
+  ray: THREE.Raycaster;
+  ndc: THREE.Vector2;
+};
+
 /** "HELLO ↵" keycaps. Click them or type; Enter copies the email address. Synthesised Web Audio thock, mutable. */
 export default function KeycapContact() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -40,27 +50,44 @@ export default function KeycapContact() {
   const hoverRef = useRef(hover); hoverRef.current = hover;
   const typedRef = useRef(typed); typedRef.current = typed;
   const muteRef = useRef(mute); muteRef.current = mute;
-  const t = useRef<any>(null);
+  const t = useRef<KeycapThreeState | null>(null);
   const actx = useRef<AudioContext | null>(null);
   const kbRef = useRef<HTMLDivElement>(null);
   const [focused, setFocused] = useState(false);
+  const inViewRef = useRef(false);
+  const handlersRef = useRef<{ press: (id: string) => void; clack: (id: string) => void }>({
+    press: () => {},
+    clack: () => {},
+  });
 
-  /* Typing works without a click: when the keyboard scrolls into view it takes focus, and gives it
-     back when it leaves. It never steals focus from a text field, or from another control inside the footer. */
+  /* Passive key listener when visible: allows typing without stealing DOM focus from screen readers or keyboard users. */
   useEffect(() => {
     const el = kbRef.current;
     if (!el || !("IntersectionObserver" in window)) return;
     const io = new IntersectionObserver(([e]) => {
-      const a = document.activeElement;
-      if (e.isIntersecting && e.intersectionRatio >= 0.6) {
-        const busy = !!a && a !== el && (a.matches("input, textarea, select, [contenteditable]") || !!a.closest("#contact"));
-        if (!busy && a !== el) el.focus({ preventScroll: true });
-      } else if (a === el) {
-        el.blur();
-      }
-    }, { threshold: [0, 0.6] });
+      inViewRef.current = e.isIntersecting && e.intersectionRatio >= 0.5;
+    }, { threshold: [0, 0.5] });
     io.observe(el);
-    return () => io.disconnect();
+
+    const onGlobalKey = (e: KeyboardEvent) => {
+      if (!inViewRef.current) return;
+      const a = document.activeElement;
+      const isInput = !!a && (a.matches("input, textarea, select, [contenteditable]") || a.tagName === "BUTTON" || a.tagName === "A");
+      if (isInput && a !== el) return;
+      const k = e.key;
+      if (k === "Enter") { e.preventDefault(); handlersRef.current.press("ENTER"); return; }
+      if (k === "Backspace") { e.preventDefault(); handlersRef.current.press("BACK"); return; }
+      if (k.length === 1 && /[a-z]/i.test(k)) {
+        const up = k.toUpperCase();
+        if (KEY_LAYOUT.some((x) => x.id === up)) handlersRef.current.press(up);
+        else { handlersRef.current.clack(up); setTyped((s) => (s + k.toLowerCase()).slice(-24)); setSent(false); }
+      }
+    };
+    window.addEventListener("keydown", onGlobalKey);
+    return () => {
+      io.disconnect();
+      window.removeEventListener("keydown", onGlobalKey);
+    };
   }, []);
 
   useEffect(() => {
@@ -132,7 +159,11 @@ export default function KeycapContact() {
   const audio = () => {
     if (muteRef.current) return null;
     try {
-      if (!actx.current) { const AC = window.AudioContext || (window as any).webkitAudioContext; if (!AC) return null; actx.current = new AC(); }
+      if (!actx.current) {
+        const AC = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+        if (!AC) return null;
+        actx.current = new AC();
+      }
       if (actx.current.state === "suspended") actx.current.resume();
       return actx.current;
     } catch { return null; }
@@ -193,13 +224,14 @@ export default function KeycapContact() {
     if (id === "BACK") { setTyped((s) => s.slice(0, -1)); setSent(false); return; }
     setTyped((s) => (s + id.toLowerCase()).slice(-24)); setSent(false);
   };
+  handlersRef.current = { press, clack };
 
   const pick = (e: React.PointerEvent): number | null => {
     const c = t.current; if (!c) return null;
     const r = c.el.getBoundingClientRect();
     c.ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     c.ray.setFromCamera(c.ndc, c.camera);
-    const hits = c.ray.intersectObjects(c.keys.map((k: any) => k.body), false);
+    const hits = c.ray.intersectObjects(c.keys.map((k) => k.body), false);
     return hits.length ? (hits[0].object.userData.key as number) : null;
   };
   const onKey = (e: React.KeyboardEvent) => {
