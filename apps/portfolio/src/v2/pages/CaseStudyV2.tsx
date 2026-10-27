@@ -5,7 +5,7 @@ import Shell from "../components/Shell";
 import { SIGNATURES } from "../components/signatures";
 import ChromeSeg from "../components/ChromeSeg";
 import { CASE_BY_SLUG, type CaseStudy } from "../data/cases";
-import { asset, EMAIL, RESUME_URL } from "../lib";
+import { asset, EMAIL, RESUME_URL, SITE_URL } from "../lib";
 import "../case.css";
 
 const IDS = ["cs-problem", "cs-built", "cs-trade", "cs-result"];
@@ -165,15 +165,40 @@ function Footer({ c }: { c: CaseStudy }) {
   );
 }
 
+const CASE_OG_IMAGES: Record<string, string> = {
+  "optmyzr-dashboard-migration": "v2/work/optmyzr-dashboard.jpg",
+  "optmyzr-onboarding-experience": "v2/work/optmyzr-onboarding.jpg",
+  "ediaqi-decision-support-system": "v2/work/ediaqi-corridor.jpg",
+  "super-ego-app": "v2/work/you.jpg",
+  "a-plus-usability-project": "v2/cases/aplus/workshop.jpg",
+  "social-integration-pd": "v2/work/mesa-sims.jpg",
+  "groundwork": "v2/work/groundwork.jpg",
+  "gosta-labs": "v2/cases/gosta/gtm-partnerships.jpg",
+};
+
 export default function CaseStudyV2({ slug }: { slug: string }) {
   const c = CASE_BY_SLUG[slug];
   const Sig = c.signature ? SIGNATURES[c.signature] : null;
   const plain = c.dek.replace(/<[^>]+>/g, "").replace(/\[[^\]]*\]/g, "").replace(/\s+/g, " ").trim();
+  const caseTitle = `${c.title} — Sumit Nayyar`;
+  const caseUrl = `${SITE_URL}/projects/${slug}`;
+  const ogImg = `${SITE_URL}/${CASE_OG_IMAGES[slug] || "v2/avatar.jpg"}`;
+
   return (
     <Shell active="work">
       <Helmet>
-        <title>{`${c.title} — Sumit Nayyar`}</title>
+        <title>{caseTitle}</title>
         <meta name="description" content={plain} />
+        <link rel="canonical" href={caseUrl} />
+        <meta property="og:title" content={caseTitle} />
+        <meta property="og:description" content={plain} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={caseUrl} />
+        <meta property="og:image" content={ogImg} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={caseTitle} />
+        <meta name="twitter:description" content={plain} />
+        <meta name="twitter:image" content={ogImg} />
       </Helmet>
       <div className="v2-cs" key={slug}>
         <Header c={c} />

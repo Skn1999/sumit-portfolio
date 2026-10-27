@@ -23,11 +23,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 
 // ── Configuration ──────────────────────────────────────────────────────
-const SITE_NAME = "Sumit Knayyar";
+const SITE_NAME = "Sumit Nayyar";
 const SITE_URL = "https://skn1999.github.io/sumit-portfolio"; // deployed URL
 const DEFAULT_DESCRIPTION =
-  "Full-stack Engineer & UX Designer with 4+ years of experience crafting delightful digital experiences. Masters in Human-Computer Interaction.";
-const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.png`;
+  "Curious about too many things — and that’s the point. I help teams figure out what’s actually worth building, then take fuzzy concepts all the way to fast, accessible, beautifully crafted software.";
+const DEFAULT_OG_IMAGE = `${SITE_URL}/v2/avatar.jpg`;
 
 // Base path must match vite.config.ts (`base` option in production)
 const BASE_PATH = process.env.VITE_BASE_PATH || "/sumit-portfolio/";
@@ -259,16 +259,17 @@ function getStaticRoutes() {
     {
       route: "/",
       meta: {
-        title: `${SITE_NAME} — Engineer & Designer`,
+        title: "Sumit Nayyar — Product designer who writes the code",
         description: DEFAULT_DESCRIPTION,
         url: SITE_URL,
         keywords: [
           "portfolio",
-          "full-stack engineer",
+          "product designer",
+          "design engineer",
           "UX designer",
           "HCI",
           "React",
-          "product design",
+          "accessibility",
         ],
       },
     },
@@ -281,43 +282,43 @@ function getStaticRoutes() {
       },
     },
     {
-      route: "/projects",
+      route: "/ux-design",
       meta: {
-        title: `Projects | ${SITE_NAME}`,
-        description: `Explore engineering and design projects by ${SITE_NAME}.`,
-        url: `${SITE_URL}/projects`,
+        title: `Selected Work | ${SITE_NAME}`,
+        description: DEFAULT_DESCRIPTION,
+        url: `${SITE_URL}/#work`,
       },
     },
     {
       route: "/design-engineering",
       meta: {
-        title: `Design Engineering & Systems | ${SITE_NAME}`,
-        description: `AI LLM workflows, autonomous agent oversight, ActAI email delegation, and front-end React systems by ${SITE_NAME}.`,
-        url: `${SITE_URL}/design-engineering`,
+        title: `Selected Work | ${SITE_NAME}`,
+        description: DEFAULT_DESCRIPTION,
+        url: `${SITE_URL}/#work`,
       },
     },
     {
-      route: "/data-engineering",
+      route: "/projects",
       meta: {
-        title: `Design Engineering & Systems | ${SITE_NAME}`,
-        description: `AI LLM workflows, autonomous agent oversight, ActAI email delegation, and front-end React systems by ${SITE_NAME}.`,
-        url: `${SITE_URL}/data-engineering`,
+        title: `Selected Work | ${SITE_NAME}`,
+        description: DEFAULT_DESCRIPTION,
+        url: `${SITE_URL}/#work`,
       },
     },
     {
-      route: "/projects/ai",
+      route: "/writings/publication",
       meta: {
-        title: `ActAI: Intelligent Email Delegation & Oversight Review | ${SITE_NAME}`,
-        description: `An autonomous email delegation and oversight prototype built to solve the AI trust gap. Combines a 3-screen progressive disclosure model, an instant source-grounded evidence inspector, and bounded decision choices.`,
-        url: `${SITE_URL}/projects/actai`,
+        title: `Publications & Essays | ${SITE_NAME}`,
+        description: "Essays and writings on design, human-computer interaction, and technology by Sumit Nayyar.",
+        url: "https://sumit6131.substack.com",
       },
     },
     {
-      route: "/projects/act-ai",
+      route: "/ux-bites",
       meta: {
-        title: `ActAI: Intelligent Email Delegation & Oversight Review | ${SITE_NAME}`,
-        description: `An autonomous email delegation and oversight prototype built to solve the AI trust gap. Combines a 3-screen progressive disclosure model, an instant source-grounded evidence inspector, and bounded decision choices.`,
-        url: `${SITE_URL}/projects/actai`,
+        title: "Sumit Nayyar — Product designer who writes the code",
+        description: DEFAULT_DESCRIPTION,
+        url: SITE_URL,
       },
     },
   ];
