@@ -4,7 +4,7 @@
 
 export type CaseSection = { kicker: string; title: string; lead: string; read: string; full: string };
 export type CaseStudy = {
-  slug: string; code: string; chapter: string; title: string; dek: string; meta: [string, string][]; note: string;
+  slug: string; code: string; chapter: string; title: string; dek: string; meta: [string, string][];
   skills: string[]; links: { label: string; href: string }[];
   signature: "LoadRace" | "OnboardingWizard" | "TabletSimulator" | "PersonaNudge" | "SeverityCompare" | "DotField";
   label2: string; glance: [string, string, string, string, string]; secs: CaseSection[];
@@ -40,7 +40,6 @@ export const CASES: CaseStudy[] = [
     "React, TypeScript, Redux Toolkit, MUI, CSS-in-JS"
    ]
   ],
-  "note": "Bracketed text is yours to fill",
   "skills": [],
   "links": [],
   "signature": "LoadRace",
@@ -116,7 +115,6 @@ export const CASES: CaseStudy[] = [
     "Hotjar heatmaps &amp; session recordings, user research"
    ]
   ],
-  "note": "From your write-up · bracketed text is yours to fill",
   "skills": [
    "UX research",
    "Hotjar analytics",
@@ -199,7 +197,6 @@ export const CASES: CaseStudy[] = [
     "32 sensors · 12+ parameters"
    ]
   ],
-  "note": "Content from your project write-up",
   "skills": [
    "UX research",
    "Heuristic evaluation",
@@ -296,7 +293,6 @@ export const CASES: CaseStudy[] = [
     "Mobile OS concept"
    ]
   ],
-  "note": "From your write-up · bracketed text is yours to fill",
   "skills": [
    "Behavioural design",
    "Social psychology",
@@ -384,7 +380,6 @@ export const CASES: CaseStudy[] = [
     "<span class=\"ph\">[Team size]</span>"
    ]
   ],
-  "note": "Bracketed text is yours to fill",
   "skills": [
    "Usability testing",
    "Heuristic evaluation",
@@ -469,7 +464,6 @@ export const CASES: CaseStudy[] = [
     "Helsinki <span class=\"ph\">[confirm]</span>"
    ]
   ],
-  "note": "From your write-up · bracketed text is yours to fill",
   "skills": [
    "Inclusive design",
    "Digital accessibility",

@@ -6,12 +6,11 @@ import HeroMoi from "../components/HeroMoi";
 // Lab is off the homepage for now (it may get its own page).
 // import BentGallery from "../components/BentGallery";
 import ScannerField from "../components/ScannerField";
-import { APPROACH, CHAPTERS, DWELL, DWELL_NEXT, HERO_INTRO, TOC, WORK_LIST, WORK_ORDER, type Tile } from "../data/home";
+import { APPROACH, DWELL, DWELL_NEXT, HERO_INTRO, TOC, WORK, WORK_LIST, type Tile } from "../data/home";
 import { asset, EMAIL, useReaderMode } from "../lib";
 
 const TITLE = "Sumit Nayyar — Product designer who writes the code";
 const DESC = HERO_INTRO;
-const DraftNote = ({ children }: { children: string }) => (import.meta.env.DEV ? <span className="v2-draftnote">{children}</span> : null);
 const scrollTo = (id: string) => (e: React.MouseEvent) => {
   const el = document.getElementById(id);
   if (!el) return;
@@ -115,8 +114,6 @@ function TileView({ t, aside, children }: { t: Tile; aside?: ReactNode; children
   );
 }
 
-const ALL_TILES = CHAPTERS.flatMap((ch) => ch.tiles);
-const WORK_TILES = WORK_ORDER.map((code) => ALL_TILES.find((t) => t.code === code)).filter((t): t is Tile => !!t);
 const DWELL_T1 = 1; // seconds of attention before a tile opens one line
 const DWELL_T2 = 3; // …and before it adds the result and a way in
 
@@ -127,7 +124,7 @@ const DWELL_T2 = 3; // …and before it adds the result and a way in
  * never fills up.
  */
 function SelectedWork() {
-  const [dw, setDw] = useState<number[]>(() => WORK_TILES.map(() => 0));
+  const [dw, setDw] = useState<number[]>(() => WORK.map(() => 0));
   const [cur, setCur] = useState(-1);
   const [recent, setRecent] = useState<number[]>([]); // opened tiles, most recent first
   const grid = useRef<HTMLDivElement>(null);
@@ -162,8 +159,8 @@ function SelectedWork() {
 
   const ranked = dw.map((d, i) => [d, i] as const).sort((a, b) => b[0] - a[0]);
   const open = recent;
-  const top = ranked[0][0] >= DWELL_T2 ? WORK_TILES[ranked[0][1]] : null;
-  const next = top ? ALL_TILES.find((t) => t.code === DWELL_NEXT[top.code]) : null;
+  const top = ranked[0][0] >= DWELL_T2 ? WORK[ranked[0][1]] : null;
+  const next = top ? WORK.find((t) => t.code === DWELL_NEXT[top.code]) : null;
   const leave = (i: number) => setCur((c) => (c === i ? -1 : c));
 
   return (
@@ -176,7 +173,7 @@ function SelectedWork() {
         </div>
         <div className="v2-main-col" style={{ display: "flex", flexDirection: "column", gap: 28 }}>
           <div className="v2-tiles v2-dwell" ref={grid} data-any={open.length > 0}>
-            {WORK_TILES.map((t, i) => {
+            {WORK.map((t, i) => {
               const d = dw[i];
               const lvl = open.includes(i) ? (d >= DWELL_T2 ? 2 : 1) : 0;
               const lines = DWELL[t.code];
@@ -228,7 +225,6 @@ function Approach() {
         <div className="v2-label-col">
           <span className="v2-mono">Approach</span>
           <h2 className="v2-h2">How I work</h2>
-          <DraftNote>Draft copy — edit to your voice</DraftNote>
         </div>
         <div className="v2-main-col">
           <ApproachList />
@@ -258,7 +254,6 @@ function Letter() {
       <section className="v2-lsec v2-letter" aria-label="About me">
         <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 18 }}>
           <img src={asset("avatar.jpg")} alt="Sumit Nayyar" width={56} height={56} style={{ borderRadius: "50%", objectFit: "cover" }} />
-          <DraftNote>Letter-style homepage · draft copy — edit to your voice</DraftNote>
         </div>
         <div>
           <p>Hi, I’m Sumit.</p>
