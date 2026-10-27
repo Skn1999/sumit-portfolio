@@ -17,7 +17,7 @@ export const CASES: CaseStudy[] = [
   "code": "SN-01",
   "chapter": "Chapter 01 · The builder",
   "title": "Dashboard rebuild",
-  "dek": "I rebuilt Optmyzr’s account dashboard in React and cut its load time from about 10 seconds to under one. <span class=\"ph\">[One line on who this helped: e.g. the PPC managers who open it first thing every day]</span>",
+  "dek": "I rebuilt Optmyzr’s account dashboard in React and cut its load time from about 10 seconds to under one. Each widget now updates on its own, which keeps the whole dashboard fast for the people using it.",
   "meta": [
    [
     "Company",
@@ -29,15 +29,15 @@ export const CASES: CaseStudy[] = [
    ],
    [
     "My role",
-    "<span class=\"ph\">[e.g. Front-end engineer]</span>"
+    "Design Engineer · solo on this project"
    ],
    [
     "Team",
-    "<span class=\"ph\">[Who you worked with]</span>"
+    "CORE Team"
    ],
    [
     "Stack",
-    "React, <span class=\"ph\">[more]</span>"
+    "React, TypeScript, Redux Toolkit, MUI, CSS-in-JS"
    ]
   ],
   "note": "Bracketed text is yours to fill",
@@ -46,9 +46,9 @@ export const CASES: CaseStudy[] = [
   "signature": "LoadRace",
   "label2": "What I built",
   "glance": [
-   "The account dashboard took about 10 seconds to load.",
-   "A rebuilt account dashboard in React.",
-   "<span class=\"ph\">[The one trade-off you’d defend in an interview]</span>",
+   "The first screen people open took up to 10 seconds to load on large accounts.",
+   "A React dashboard where every widget loads and updates on its own.",
+   "A plug-and-play system over managing each ad platform separately.",
    "10 s → &lt;1 s",
    "Dashboard load time"
   ],
@@ -56,30 +56,30 @@ export const CASES: CaseStudy[] = [
    {
     "kicker": "1 · Problem",
     "title": "Ten seconds before anyone could start work",
-    "lead": "<p class=\"lead\">The account dashboard is the first screen people see in Optmyzr, and it took about 10 seconds to load.</p>",
-    "read": "<p><span class=\"ph\">[Who was waiting — e.g. agency PPC managers checking many accounts a day — and what that cost them or the business]</span>.</p>",
-    "full": "<p><span class=\"ph\">[How you knew: support tickets, session recordings, a metric, a conversation]</span>.</p><p><span class=\"ph\">[A quote or data point that made the problem undeniable]</span>.</p>"
+    "lead": "<p class=\"lead\">The account dashboard is the first screen people see in Optmyzr, and it took up to 10 seconds to load.</p>",
+    "read": "<p>The people waiting were digital marketers and agencies running ad campaigns across several platforms. They open this dashboard first, often to pull a report or decide where to spend next, so it has to load fast and feel close to real time.</p><p>The old view layer, built on Backbone.js and jQuery, had no scoped state. One changed value re-rendered every widget on the page, and adding a new ad platform meant copying layout boilerplate.</p>",
+    "full": "<p>We heard it from customers, and my own profiling backed it up. We also kept test accounts with very large amounts of data; on those, the dashboard took 8–10 seconds before anyone could use it.</p><figure class=\"fig\"><img src=\"%ASSET%cases/dashboard/cascade.png\" alt=\"Diagram: on the left, one update fans out and re-renders every widget; on the right, a Redux selector filter sends each widget only its own data\" loading=\"lazy\"><figcaption>Before, one update re-rendered every widget. After, each widget only hears about its own data.</figcaption></figure>"
    },
    {
     "kicker": "2 · What I built",
     "title": "One screen with the signals that matter",
-    "lead": "<p class=\"lead\">A rebuilt account dashboard in React. It brings the main account signals onto one screen.</p>",
-    "read": "<p>Performance metrics, a metric comparison chart, the PPC audit score, top elements and the account quality score.</p><ul><li><span class=\"ph\">[What you personally built — e.g. the widget layer, data fetching, the charts]</span></li><li><span class=\"ph\">[How it shipped — e.g. behind a flag, account by account]</span></li></ul>",
-    "full": "<figure class=\"fig\"><img src=\"%ASSET%work/optmyzr-widget-config.jpg\" alt=\"Diagram: a widget configuration object mapping layout, panels and spacing to dashboard panels\"><figcaption><span class=\"ph\">[Caption for the architecture diagram]</span></figcaption></figure><p><span class=\"ph\">[Technical notes for engineers: data loading, caching, rendering]</span>.</p>"
+    "lead": "<p class=\"lead\">A React dashboard where every widget loads and updates on its own. It was one part of a full dashboard redesign I took on by myself.</p>",
+    "read": "<p>It brings the main account signals onto one screen: performance metrics, a metric comparison chart, the PPC audit score, top elements and the account quality score.</p><ul><li><b>Scoped data.</b> Each widget subscribes only to the data it needs, through Redux Toolkit slices, so one update no longer re-renders the whole page.</li><li><b>Load on scroll.</b> The page shell appears straight away. Heavy charts and tables load as they scroll into view.</li><li><b>Layouts from JSON.</b> A rendering engine builds each layout from a JSON config, so a new ad platform is mostly a new config, not new code.</li></ul><p>It went to a beta group first. After good feedback it launched for everyone, with the option to switch back to the old dashboard.</p>",
+    "full": "<figure class=\"fig\"><img src=\"%ASSET%cases/dashboard/dynamic-widget-hydration.png\" alt=\"Diagram: a JSON pipeline feeds a core registry engine, which renders charts, data lists and metric cards\" loading=\"lazy\"><figcaption>A JSON config goes in; the registry engine turns it into charts, lists and metric cards.</figcaption></figure><figure class=\"fig\"><img src=\"%ASSET%work/optmyzr-widget-config.jpg\" alt=\"Code: a WidgetConfig interface with layout, panels and spacing, mapped to dashboard panels\" loading=\"lazy\"><figcaption>One config object describes layout, panels and spacing for a widget.</figcaption></figure>"
    },
    {
     "kicker": "3 · Trade-offs",
-    "title": "What I gave up, and why",
-    "lead": "<p class=\"lead\"><span class=\"ph\">[The one trade-off you’d defend in an interview]</span></p>",
-    "read": "<div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\"><span class=\"ph\">[What you picked]</span></span></div><div><span class=\"mono\">Over</span><span><span class=\"ph\">[The option you rejected]</span></span></div><div><span class=\"mono\">Because</span><span><span class=\"ph\">[The constraint that decided it]</span></span></div></div>\n<div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\"><span class=\"ph\">[What you picked]</span></span></div><div><span class=\"mono\">Over</span><span><span class=\"ph\">[The option you rejected]</span></span></div><div><span class=\"mono\">Because</span><span><span class=\"ph\">[The constraint that decided it]</span></span></div></div>\n",
-    "full": "<p><span class=\"ph\">[What you would do differently next time, and why]</span>.</p>"
+    "title": "What I chose, and why",
+    "lead": "<p class=\"lead\">A plug-and-play system over managing each ad platform separately.</p>",
+    "read": "<div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">A plug-and-play layout built from a JSON config</span></div><div><span class=\"mono\">Over</span><span>Hand-building a layout for each ad platform</span></div><div><span class=\"mono\">Because</span><span>New platforms then needed no changes to the core</span></div></div>\n<div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Loading heavy charts and tables as they scroll into view</span></div><div><span class=\"mono\">Over</span><span>Loading everything when the page opens</span></div><div><span class=\"mono\">Because</span><span>People need the top of the dashboard in under a second; the rest can follow</span></div></div>",
+    "full": "<p>The architecture held up well. With more time I would have explored what it opened up: letting people save dashboard views for each ad account, and share those views with their teammates.</p>"
    },
    {
     "kicker": "4 · Result",
     "title": "Under a second",
     "lead": "<div style=\"display: flex; gap: 48px; flex-wrap: wrap; align-items: flex-end\"><div><div class=\"stat\">10 s</div><span class=\"mono\">Before</span></div><div><div class=\"stat\">&lt;1 s</div><span class=\"mono\" style=\"color: var(--ok)\">After</span></div></div>",
-    "read": "<p>Load time fell from about 10 seconds to under one. <span class=\"ph\">[A second result: usage, retention, support tickets, or what users or the team said]</span>.</p>",
-    "full": "<p><span class=\"ph\">[What came next, and what you learned]</span>.</p>"
+    "read": "<ul><li><b>Under a second.</b> Load time fell from up to 10 seconds to under one.</li><li><b>New platforms without core changes.</b> Adding Microsoft Ads, Amazon Ads and Meta Ads was mostly a matter of JSON configs.</li><li><b>3× more component reuse.</b> Other developers stopped rewriting components and worked in configs. Only components specific to one account type were new.</li><li><b>Fewer support tickets</b> about the account dashboard.</li></ul>",
+    "full": "<p>What I learned: investing some time in architecture goes a long way. Adding three ad platforms later was routine because of it.</p>"
    }
   ],
   "next": {

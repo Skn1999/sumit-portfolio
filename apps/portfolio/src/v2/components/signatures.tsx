@@ -3,13 +3,10 @@ import { asset, reduceMotion, useIsDark } from "../lib";
 
 /* The signature interaction for each case study — one per project, each built to make the result felt. */
 
-function SigHead({ kicker, title, children }: { kicker: string; title: string; children?: ReactNode }) {
+function SigHead({ title, children }: { title: string; children?: ReactNode }) {
   return (
     <div className="sig-head">
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        <span className="mono">{kicker}</span>
-        <h2 className="sec-h">{title}</h2>
-      </div>
+      <h2 className="sec-h">{title}</h2>
       {children}
     </div>
   );
@@ -55,7 +52,7 @@ export function LoadRace() {
   const clock = (ms: number, cap: number) => (Math.min(ms, cap) / 1000).toFixed(1) + " s";
   return (
     <section className="wrap sig" aria-label="Load time, before and after">
-      <SigHead kicker="Feel the difference" title="Same dashboard. 10 seconds vs. under 1.">
+      <SigHead title="Same dashboard. 10 seconds vs. under 1.">
         <button type="button" className="btn solid" onClick={replay}>{done ? "▶ Replay the load" : "Loading…"}</button>
       </SigHead>
       <div className="race">
@@ -127,7 +124,7 @@ export function OnboardingWizard() {
     (nm ? `, shared with ${nm} ${nm > 1 ? "teammates" : "teammate"}` : "") + ". Your first recommendations are tailored from these answers.";
   return (
     <section className="wrap sig" aria-label="Try the onboarding wizard">
-      <SigHead kicker="Try it" title="Setup that used to be dead time.">
+      <SigHead title="Setup that used to be dead time.">
         <button type="button" className="btn" onClick={restart}>↺ Start over</button>
       </SigHead>
       <div className="wz">
@@ -220,7 +217,7 @@ export function TabletSimulator() {
   const s = STATES[st];
   return (
     <section className="wrap sig" aria-label="The in-room display, five states">
-      <SigHead kicker="The in-room display" title="From a reading to an action, in five states.">
+      <SigHead title="From a reading to an action, in five states.">
         <button type="button" className="btn solid" onClick={play}>{playing ? "❚❚ Stop" : "▶ Simulate a CO₂ spike"}</button>
       </SigHead>
       <div className="sim">
@@ -273,7 +270,7 @@ export function PersonaNudge() {
   const cur = SHOTS[who][kind];
   return (
     <section className="wrap sig" aria-label="Same moment, different person">
-      <SigHead kicker="Same app, different person" title="Who you are changes how YOU nudges." />
+      <SigHead title="Who you are changes how YOU nudges." />
       <div className="nx">
         <div className="nxshot">
           {SHOTS.flatMap((row, i) => row.map((s, j) => {
@@ -318,7 +315,7 @@ export function SeverityCompare() {
   const pct = (n: number) => Math.round((n / MAXN) * 1000) / 10;
   return (
     <section className="wrap sig" aria-label="Where the two methods disagreed">
-      <SigHead kicker="Two lenses on the same platform" title="Experts and users found different problems.">
+      <SigHead title="Experts and users found different problems.">
         <Seg label="Choose an evaluation" options={MODES.map((x) => x.label)} value={m} onChange={setM} />
       </SigHead>
       <div className="sev">
@@ -395,7 +392,7 @@ export function DotField() {
   };
   return (
     <section className="wrap sig" aria-label="EIT Jumpstarter ranking">
-      <SigHead kicker="Out of 900+ teams" title="Groundwork came second.">
+      <SigHead title="Groundwork came second.">
         <button type="button" className="btn solid" onClick={replay}>▶ Find us</button>
       </SigHead>
       <div className="field" role="img" aria-label="A field of 900 dots, one per team. The second dot is highlighted: Groundwork.">

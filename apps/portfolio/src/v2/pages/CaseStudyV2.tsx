@@ -32,9 +32,8 @@ function Header({ c }: { c: CaseStudy }) {
     <header className="wrap" style={{ paddingTop: 40, paddingBottom: 40, display: "flex", flexDirection: "column", gap: 22 }}>
       <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap", alignItems: "center" }}>
         <nav className="crumb" aria-label="Breadcrumb">
-          <Link to="/#work">← All work</Link><span aria-hidden="true">/</span><span style={{ color: "var(--ink)" }}>{c.chapter}</span>
+          <Link to="/#work">← All work</Link><span aria-hidden="true">/</span><span style={{ color: "var(--ink)" }}>{c.chapter.replace(/^Chapter \d+ · /, "")}</span>
         </nav>
-        {import.meta.env.DEV && <span className="legend">{c.note}</span>}
       </div>
       <h1 className="h1">{c.title}</h1>
       <p className="dek" dangerouslySetInnerHTML={html(c.dek)} />
@@ -80,11 +79,10 @@ function Glance({ c }: { c: CaseStudy }) {
   ];
   return (
     <section className="wrap" aria-label="At a glance" style={{ paddingBottom: 64, display: "flex", flexDirection: "column", gap: 14 }}>
-      {/* <span className="mono">At a glance · 30-second read</span> — hidden: it repeated what the strip already says */}
       <div className="glance">
-        {cells.map((x, i) => (
+        {cells.map((x) => (
           <a key={x.id} href={`#${x.id}`} onClick={(e) => { e.preventDefault(); document.getElementById(x.id)?.scrollIntoView({ behavior: "smooth" }); }}>
-            <span className="q"><span>{i + 1}</span>{x.q}</span>{x.a}<span className="more">Read more ↓</span>
+            <span className="q">{x.q}</span>{x.a}<span className="more">Read more ↓</span>
           </a>
         ))}
       </div>
@@ -122,7 +120,7 @@ function LongRead({ c }: { c: CaseStudy }) {
           {toc.map((label, i) => (
             <a key={IDS[i]} href={`#${IDS[i]}`} aria-current={i === active ? "true" : undefined}
               onClick={(e) => { e.preventDefault(); document.getElementById(IDS[i])?.scrollIntoView({ behavior: "smooth" }); }}>
-              <span className="mono" style={{ width: 14 }}>{i + 1}</span>{label}
+              {label}
             </a>
           ))}
           <div className="bar" aria-hidden="true"><i style={{ width: `${Math.round(((active + 1) / toc.length) * 100)}%` }} /></div>
@@ -131,7 +129,6 @@ function LongRead({ c }: { c: CaseStudy }) {
       <div className="body" ref={body}>
         {c.secs.map((s, i) => (
           <section key={IDS[i]} id={IDS[i]} data-i={i} aria-labelledby={`${IDS[i]}-h`}>
-            <span className="mono">{s.kicker}</span>
             <h2 className="sec-h" id={`${IDS[i]}-h`}>{s.title}</h2>
             <div className="lvl" dangerouslySetInnerHTML={html(s.lead)} />
             {depth >= 1 && <div className="lvl reveal" dangerouslySetInnerHTML={html(s.read)} />}
