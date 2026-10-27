@@ -5,5 +5,7 @@ export const V2_CASE_SLUGS = new Set([
   "ediaqi-decision-support-system",
   "super-ego-app",
   "a-plus-usability-project",
+  "social-integration-pd",
   "groundwork",
+  "gosta-labs",
 ]);

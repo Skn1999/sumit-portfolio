@@ -178,7 +178,7 @@ export function OnboardingWizard() {
             ))}
           </ol>
           <span style={{ fontSize: 13, color: "var(--muted)" }}>
-            A simplified recreation of the wizard. The bar at the bottom stands in for the backend setup that runs while people answer. <Ph>Confirm the goal → metric mappings</Ph>
+            A simplified recreation of the wizard. The bar at the bottom stands in for the backend setup that runs while people answer.
           </span>
         </div>
       </div>

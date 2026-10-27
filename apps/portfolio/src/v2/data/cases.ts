@@ -1,12 +1,13 @@
-/* Case-study content for the six v2 case pages. Generated from the design canvas copy.
-   Body fields are trusted HTML strings written for this site; %ASSET% is replaced with the public/v2 base path.
-   Text in <span class="ph">[…]</span> is a placeholder for Sumit to fill in. */
+/* Case-study content for the v2 case pages. Generated from the design canvas copy.
+   Body fields are trusted HTML strings written for this site; %ASSET% is replaced with the public/v2 base path. */
 
 export type CaseSection = { kicker: string; title: string; lead: string; read: string; full: string };
 export type CaseStudy = {
   slug: string; code: string; chapter: string; title: string; dek: string; meta: [string, string][];
   skills: string[]; links: { label: string; href: string }[];
-  signature: "LoadRace" | "OnboardingWizard" | "TabletSimulator" | "PersonaNudge" | "SeverityCompare" | "DotField";
+  /** The case’s interactive piece; null when the case has none.
+      A+ (SeverityCompare) is switched off for now: its counts were read off the team’s charts and need checking. */
+  signature: "LoadRace" | "OnboardingWizard" | "TabletSimulator" | "PersonaNudge" | "SeverityCompare" | "DotField" | null;
   label2: string; glance: [string, string, string, string, string]; secs: CaseSection[];
   next: { slug: string; title: string; sub: string };
 };
@@ -139,7 +140,7 @@ export const CASES: CaseStudy[] = [
     "title": "A loading screen people walked away from",
     "lead": "<p class=\"lead\">Connecting a Google Ads or Microsoft Advertising account kicks off heavy backend processing. New users got a loading state with nothing to do.</p>",
     "read": "<p>Hotjar session recordings and heatmaps showed a significant share of new users abandoning onboarding during that wait — closing the tab or switching to other work. That silent churn cost us twice:</p><ul><li><b>Lost conversion.</b> People left before their first win in the product.</li><li><b>Missing context.</b> We knew nothing about their goals, team or budget, so recommendations started generic.</li></ul><blockquote class=\"quote\">How might we engage users during backend setup to reduce drop-offs and capture the data we need for immediate recommendations?</blockquote>",
-    "full": "<p><span class=\"ph\">[How long setup took, and what share of users dropped off before the wizard]</span>.</p>"
+    "full": ""
    },
    {
     "kicker": "2 · What I built",
@@ -152,15 +153,15 @@ export const CASES: CaseStudy[] = [
     "kicker": "3 · Trade-offs",
     "title": "What I chose, and why",
     "lead": "<p class=\"lead\">Users think in goals, not ad jargon — so the wizard speaks their language and translates.</p>",
-    "read": "<div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Plain-language goals, mapped to Target CPA, ROAS and conversion value</span></div><div><span class=\"mono\">Over</span><span>Asking users for technical metrics directly</span></div><div><span class=\"mono\">Because</span><span>Goals are how people think; the system can do the translation</span></div></div><div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Saving each step as it’s completed</span></div><div><span class=\"mono\">Over</span><span>Submitting everything at the end</span></div><div><span class=\"mono\">Because</span><span>The recommendation engine gets context by the time setup finishes <span class=\"ph\">[and answers survive a drop-off — confirm]</span></span></div></div><div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">A beta group first, then everyone</span></div><div><span class=\"mono\">Over</span><span>Launching to all users at once</span></div><div><span class=\"mono\">Because</span><span>Validate with real users before rolling out to 100%</span></div></div>",
-    "full": "<p><span class=\"ph\">[What you would do differently next time]</span>.</p>"
+    "read": "<div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Plain-language goals, mapped to Target CPA, ROAS and conversion value</span></div><div><span class=\"mono\">Over</span><span>Asking users for technical metrics directly</span></div><div><span class=\"mono\">Because</span><span>Goals are how people think; the system can do the translation</span></div></div><div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">A beta group first, then everyone</span></div><div><span class=\"mono\">Over</span><span>Launching to all users at once</span></div><div><span class=\"mono\">Because</span><span>Validate with real users before rolling out to 100%</span></div></div>",
+    "full": ""
    },
    {
     "kicker": "4 · Result",
     "title": "Waiting became onboarding",
-    "lead": "<div class=\"stats\"><div><div class=\"stat\" style=\"font-size: 44px\">~25%</div><span class=\"mono\">Less setup drop-off</span></div><div><div class=\"stat\" style=\"font-size: 44px\"><span class=\"ph\">[x%]</span></div><span class=\"mono\">Higher completion</span></div><div><div class=\"stat\" style=\"font-size: 44px\">100%</div><span class=\"mono\">Rolled out after beta</span></div></div>",
+    "lead": "<div class=\"stats\"><div><div class=\"stat\" style=\"font-size: 44px\">~25%</div><span class=\"mono\">Less setup drop-off</span></div><div><div class=\"stat\" style=\"font-size: 44px\">100%</div><span class=\"mono\">Rolled out after beta</span></div></div>",
     "read": "<ul><li><b>About 25% less drop-off</b> during account creation, by turning waiting time into an active, useful step.</li><li><b>Higher onboarding completion</b> across new users.</li><li><b>Richer personalisation data</b> up front, so recommendations were relevant from day one.</li></ul>",
-    "full": "<p><span class=\"ph\">[What came next, and what you learned]</span>.</p>"
+    "full": ""
    }
   ],
   "next": {
@@ -277,16 +278,8 @@ export const CASES: CaseStudy[] = [
     "2026"
    ],
    [
-    "Context",
-    "<span class=\"ph\">[Course or brief, e.g. Social Interaction]</span>"
-   ],
-   [
     "My role",
     "Research synthesis, behavioural framing, interaction logic, hi-fi prototyping"
-   ],
-   [
-    "Team",
-    "<span class=\"ph\">[Team size]</span>"
    ],
    [
     "Platform",
@@ -322,7 +315,7 @@ export const CASES: CaseStudy[] = [
     "title": "The gap between intending and doing",
     "lead": "<p class=\"lead\">You open your phone to check the weather and, twenty minutes later, you’re deep in social media with no memory of the detour. Most productivity tools assume we’re rational planners who just need a better to-do list. The real friction is the autopilot habit loop.</p>",
     "read": "<div class=\"drift\"><div><b>Invisible drift</b><span>People slide off task without noticing the moment it happens.</span></div><div><b>Autopilot habits</b><span>By the time you notice you’re distracted, the moment has passed.</span></div><div><b>Emotions ignored</b><span>Stress and mood drive the impulse, but most tools pretend they don’t exist.</span></div><div><b>Intention ≠ action</b><span>A lasting gap between the goals we set and what our hands actually do.</span></div></div>",
-    "full": "<figure class=\"fig\"><img src=\"%ASSET%cases/you/assumptions-research.jpg\" alt=\"Research synthesis board with sticky notes grouped into behavioural assumptions\" loading=\"lazy\"><figcaption>Fig 01 · Research synthesis and behavioural assumptions.</figcaption></figure><p><span class=\"ph\">[Research you ran: interviews, diary study, survey — and how many people]</span>.</p>"
+    "full": "<figure class=\"fig\"><img src=\"%ASSET%cases/you/assumptions-research.jpg\" alt=\"Research synthesis board with sticky notes grouped into behavioural assumptions\" loading=\"lazy\"><figcaption>Fig 01 · Research synthesis and behavioural assumptions.</figcaption></figure>"
    },
    {
     "kicker": "2 · What I designed",
@@ -336,14 +329,14 @@ export const CASES: CaseStudy[] = [
     "title": "What I chose, and why",
     "lead": "<p class=\"lead\">Meet people where the drift happens, without reading what they do.</p>",
     "read": "<div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">An OS-level assistant</span></div><div><span class=\"mono\">Over</span><span>Another standalone app</span></div><div><span class=\"mono\">Because</span><span>Drift happens between apps; a separate app would never see the moment</span></div></div><div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Passive rhythms: app switching, late-night scrolling</span></div><div><span class=\"mono\">Over</span><span>Monitoring private content</span></div><div><span class=\"mono\">Because</span><span>Meaningful nudges without reading anyone’s messages or feeds</span></div></div><div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Nudges tuned to emotional awareness and persona</span></div><div><span class=\"mono\">Over</span><span>One kind of nudge for everyone</span></div><div><span class=\"mono\">Because</span><span>A breathing pulse helps one person; another needs a moment to reflect</span></div></div>",
-    "full": "<p><span class=\"ph\">[What you would do differently, or what you’d test next]</span>.</p>"
+    "full": ""
    },
    {
     "kicker": "4 · Result",
     "title": "A cohesive nudge system",
     "lead": "<div class=\"stats\"><div><div class=\"stat\" style=\"font-size: 44px\">2</div><span class=\"mono\">Personas</span></div><div><div class=\"stat\" style=\"font-size: 44px\">2</div><span class=\"mono\">Kinds of nudge</span></div><div><div class=\"stat\" style=\"font-size: 44px\">0</div><span class=\"mono\">Private content read</span></div></div>",
     "read": "<ul><li><b>An OS-level behavioural framework,</b> prototyped as an assistant that adapts its interventions to real-time emotional self-awareness.</li><li><b>A dual-process nudge system</b> that combines subtle System 1 cues (haptic breathing pulses, app-delay timers) with reflective System 2 prompts (adjusting goals, a letter to your future self).</li><li><b>Privacy by design.</b> Meaningful nudges from rhythm tracking alone, without monitoring content.</li></ul>",
-    "full": "<figure class=\"fig\"><img src=\"%ASSET%cases/you/cover.jpg\" alt=\"YOU, Super-ego app cover with three characters labelled super-ego, ego and id\" loading=\"lazy\"><figcaption>YOU, the Super-ego app.</figcaption></figure><p><span class=\"ph\">[What feedback you got, and what you learned]</span>.</p>"
+    "full": "<figure class=\"fig\"><img src=\"%ASSET%cases/you/cover.jpg\" alt=\"YOU, Super-ego app cover with three characters labelled super-ego, ego and id\" loading=\"lazy\"><figcaption>YOU, the Super-ego app.</figcaption></figure>"
    }
   ],
   "next": {
@@ -373,11 +366,7 @@ export const CASES: CaseStudy[] = [
    ],
    [
     "My role",
-    "<span class=\"ph\">[Your role on the team]</span>"
-   ],
-   [
-    "Team",
-    "<span class=\"ph\">[Team size]</span>"
+    "UX researcher · facilitator"
    ]
   ],
   "skills": [
@@ -391,7 +380,7 @@ export const CASES: CaseStudy[] = [
    "WCAG 2.1"
   ],
   "links": [],
-  "signature": "SeverityCompare",
+  "signature": null,
   "label2": "What we did",
   "glance": [
    "A+ had known usability problems, but no evidence of how they affected real users — especially users with accessibility needs.",
@@ -406,14 +395,14 @@ export const CASES: CaseStudy[] = [
     "title": "Known problems, no evidence",
     "lead": "<p class=\"lead\">A+ is an open-source learning platform developed and used at Aalto University for course delivery, assignments and student interaction, mostly in computer science.</p>",
     "read": "<p>Its usability limits were known, but nobody had a structured, evidence-based picture of how they affected real users — least of all users with accessibility needs.</p><p>We set out to evaluate A+’s usability and accessibility with a mix of collaborative inspection and user-based methods, give its development team prioritised recommendations, and explore how AI could help in the research.</p>",
-    "full": "<p><span class=\"ph\">[Your part in framing the brief with the A+ team]</span>.</p>"
+    "full": ""
    },
    {
     "kicker": "2 · What we did",
     "title": "Two lenses, one workshop",
     "lead": "<p class=\"lead\">We looked at A+ as experts first, then through the eyes of users with disabilities, and brought both sets of findings into a workshop.</p>",
     "read": "<div class=\"methods\">\n<div><span class=\"mono\">Lens 1</span><h3>Inspection-based evaluation</h3><p>We identified usability issues, checked the platform against established usability and design principles, and tested its compliance with accessibility standards. Findings from the heuristic evaluation were rated by severity and grouped by theme.</p></div>\n<div><span class=\"mono\">Lens 2</span><h3>User-based evaluation</h3><p>We observed and interviewed users with disabilities to find their pain points and check our earlier findings. Their sessions were analysed through qualitative coding and affinity diagramming.</p></div>\n<div><span class=\"mono\">Analysis</span><h3>Affinity diagram + severity comparison</h3><p>We compared how severity ratings were distributed across the two evaluations. AI supported the analysis, but every output was cross-checked and refined by hand.</p></div>\n<div><span class=\"mono\">Workshop</span><h3>Prioritise, then ideate</h3><p>A workshop with prioritisation and ideation activities to agree on the issues that mattered most and explore how to fix them.</p></div>\n</div><figure class=\"fig\"><img src=\"%ASSET%cases/aplus/affinity.jpg\" alt=\"Affinity diagram grouping findings into five themes: navigation efficiency, accessibility and readability, interface design, user experience, and submission feedback\"><figcaption>The affinity diagram: five themes emerged from the user sessions.</figcaption></figure><div class=\"two\"><figure class=\"fig\"><img src=\"%ASSET%cases/aplus/workshop.jpg\" alt=\"Workshop participants around a table working through printed problem cards\" loading=\"lazy\"><figcaption>The workshop: prioritising problems in small groups.</figcaption></figure><figure class=\"fig\"><img src=\"%ASSET%cases/aplus/whiteboard.jpg\" alt=\"Whiteboard with printed problem cards grouped under Accessibility and Plugin-related problems\" loading=\"lazy\"><figcaption>Problem cards sorted by theme.</figcaption></figure></div>",
-    "full": "<figure class=\"fig\"><img src=\"%ASSET%cases/aplus/severity.jpg\" alt=\"Two stacked bar charts of severity ratings by category, one for the inspection-based and one for the user-based evaluation\"><figcaption>Distribution of severity ratings by category, inspection vs. user tests.</figcaption></figure><p><span class=\"ph\">[What you personally ran: which heuristics, how many sessions, which workshop activities]</span>.</p>"
+    "full": "<figure class=\"fig\"><img src=\"%ASSET%cases/aplus/severity.jpg\" alt=\"Two stacked bar charts of severity ratings by category, one for the inspection-based and one for the user-based evaluation\"><figcaption>Distribution of severity ratings by category, inspection vs. user tests.</figcaption></figure>"
    },
    {
     "kicker": "3 · Trade-offs",
@@ -427,7 +416,94 @@ export const CASES: CaseStudy[] = [
     "title": "Minor issues. Major impact.",
     "lead": "<p class=\"lead\">The most revealing finding wasn’t any single issue but how they added up. Many problems were minor on their own, yet together they made A+ harder to use for everyone, not only users with accessibility needs.</p>",
     "read": "<p>We delivered prioritised improvement suggestions to the A+ team. Examples included clearer focus states for screen-reader users, a sticky sidebar and a back-to-top button for faster navigation, and a semantic colour palette for accessibility and visual consistency.</p><div class=\"two\"><figure class=\"fig\"><img src=\"%ASSET%cases/aplus/palette.jpg\" alt=\"Proposed semantic colour palette: primary, secondary, info, warning, danger, success and two neutrals, each with a hex value\"><figcaption>A proposed semantic colour palette.</figcaption></figure><figure class=\"fig\"><img src=\"%ASSET%cases/aplus/sidebar.jpg\" alt=\"A+ course sidebar with clearer active and focus states on its navigation items\"><figcaption>Clearer active and focus states in the course sidebar.</figcaption></figure></div>",
-    "full": "<p>Combining the two methods proved more valuable than either alone. Seeing findings from both converge gave the team much stronger confidence in the final recommendations.</p><p>The workshop was where the project came together. Facilitating discussion between groups, and balancing interface design against the platform’s pedagogical decisions, was the hardest part. It made clear that good accessibility work is rarely just a design problem: it means understanding the constraints and intentions behind the system you’re evaluating.</p><p><span class=\"ph\">[What the A+ team did with the recommendations]</span>.</p>"
+    "full": "<p>Combining the two methods proved more valuable than either alone. Seeing findings from both converge gave the team much stronger confidence in the final recommendations.</p><p>The workshop was where the project came together. Facilitating discussion between groups, and balancing interface design against the platform’s pedagogical decisions, was the hardest part. It made clear that good accessibility work is rarely just a design problem: it means understanding the constraints and intentions behind the system you’re evaluating.</p>"
+   }
+  ],
+  "next": {
+   "slug": "social-integration-pd",
+   "title": "Mesa Te Club",
+   "sub": "Co-design tools, Chile"
+  }
+ },
+ {
+  "slug": "social-integration-pd",
+  "code": "SN-06",
+  "chapter": "Chapter 02 · The designer",
+  "title": "Mesa Te Club: designing shared spaces over a cup of tea",
+  "dek": "In Chile’s DS19 housing programme, families on subsidies and families who bought at market price share a building, but rarely its courtyard. Mesa Te Club is a participatory design framework that brings future residents, developers, municipalities and the housing ministry to the same table, with tea and a set of playful tools, to design the common areas together.",
+  "meta": [
+   [
+    "Year",
+    "2024"
+   ],
+   [
+    "Type",
+    "Participatory design proposal · Aalto University"
+   ],
+   [
+    "My role",
+    "Workshop design, research synthesis and co-design tools"
+   ],
+   [
+    "Team",
+    "Group of 4"
+   ],
+   [
+    "Context",
+    "DS19 social housing, Chile"
+   ]
+  ],
+  "skills": [
+   "Participatory design",
+   "Co-design workshops",
+   "Stakeholder mapping",
+   "Facilitation",
+   "Game design",
+   "Miro"
+  ],
+  "links": [
+   {
+    "label": "Full case study (PDF) ↗",
+    "href": "https://drive.google.com/file/d/1CY0eJk9NE1xTOhLDLWOJgP_xtaGxVlD_/view?usp=sharing"
+   }
+  ],
+  "signature": null,
+  "label2": "What I designed",
+  "glance": [
+   "Mixed-income buildings with common areas nobody uses, designed before anyone moves in.",
+   "Six co-design activities built on a tea ritual residents already had.",
+   "An existing ritual over a new meeting; real prices over wish lists.",
+   "6 steps",
+   "From first ideas to life in the finished space"
+  ],
+  "secs": [
+   {
+    "kicker": "1 · Problem",
+    "title": "Integration on paper, segregation in the courtyard",
+    "lead": "<p class=\"lead\">You move into a new apartment. There’s a courtyard downstairs, a couple of benches, a patch of grass. On paper it’s a common area. In practice, nobody uses it. The kids from the subsidised units play on one side, the families who bought at market price stay on the other.</p>",
+    "read": "<p>DS19 asks private developers to reserve some units for vulnerable families, mixed in with market-rate buyers, to reduce segregation inside the same building. In practice, three things get in the way:</p><ul><li><b>Spaces are designed top-down.</b> Common areas are optimised for cost and maintenance, not social life. Residents arrive after it’s built.</li><li><b>Integration only on paper.</b> The Social Integration Plan mandates activities, but never touches the design of shared spaces.</li><li><b>A missed opportunity.</b> DS19 already runs “Mesa Te Club” tea gatherings, but uses them to talk at people, not with them.</li></ul><p>That last one changed everything for me. There was already a table, already tea, already a name. What if we turned that table into a design studio?</p><blockquote class=\"quote\">What if the common areas of social housing were co-designed by the people who will actually live there, through something as simple as sharing tea?</blockquote>",
+    "full": "<figure class=\"fig\"><img src=\"%ASSET%cases/mesa/cover.jpg\" alt=\"A long outdoor table of people sharing tea, annotated with the actors who would sit at it: residents, developers, municipality, ministry of housing and experts\" loading=\"lazy\"><figcaption>Everyone at one table: the idea in a picture. Photo: Te Club.</figcaption></figure><p>Before designing anything, I mapped who has a stake in a DS19 common area, what drives each of them, and what blocks them.</p><ul><li><b>Housing ministry.</b> Sets the guidelines and balances budget with integration goals, but is far from residents’ everyday life.</li><li><b>Municipalities.</b> Closest to the urban challenges and want better tools, but lack resources and design methods.</li><li><b>Developers.</b> Experts in construction and cost, reluctant to take on social responsibilities or hand residents any design power.</li><li><b>Residents.</b> Want affordable housing, safe spaces for children and a place for community. They have the most at stake and the least say.</li></ul><figure class=\"fig\"><img src=\"%ASSET%cases/mesa/stakeholder-ecosystem.jpg\" alt=\"Main actors and agendas: a four-part circle of housing ministry, municipalities, developers and residents, each with their goals\" loading=\"lazy\"><figcaption>Four actors, four agendas. Everyone wanted better common areas; nobody had a way to design them together.</figcaption></figure>"
+   },
+   {
+    "kicker": "2 · What I designed",
+    "title": "Six activities, one table",
+    "lead": "<p class=\"lead\">The framework turns the existing tea gatherings into a ladder of co-design activities, each fitted to a moment in the DS19 timeline and asking for a different kind of input.</p>",
+    "read": "<ul><li><b>Tree of Dreams.</b> Future residents leave ideas for their homes online and in the sales room, from day one.</li><li><b>Mesa Te Club.</b> Tea and snacks with future neighbours: updates on the project, and more ideas for the ideal common space.</li><li><b>Build-A-Space Lab.</b> Architects, planners, municipal social workers and developers work through a Common Area Canvas to set the requirements.</li><li><b>Playing Sims.</b> Future residents arrange pre-priced modules on a plan of their building, then vote on the best layout.</li><li><b>Design Reveal.</b> The chosen design goes out by email, on the website and in the WhatsApp group, so expectations are right.</li><li><b>“Never have I ever”.</b> Months after move-in, residents and developers play a custom card game in the finished space to learn what works.</li></ul><div class=\"two\"><figure class=\"fig\"><img src=\"%ASSET%cases/mesa/common-area-canvas.jpg\" alt=\"Common Area Canvas with boxes for key components, value, neighbour relationship, resident segments, required elements, concerns, geography and cost structure\" loading=\"lazy\"><figcaption>The Common Area Canvas for the experts’ lab.</figcaption></figure><figure class=\"fig\"><img src=\"%ASSET%cases/mesa/playing-sims.jpg\" alt=\"Playing Sims: pre-priced module cards such as a pool, a slide and a bench, placed on a plan of the building’s common area\" loading=\"lazy\"><figcaption>Playing Sims: pre-priced modules on the building plan.</figcaption></figure></div>",
+    "full": "<figure class=\"fig\"><img src=\"%ASSET%cases/mesa/co-design-activities-overview.jpg\" alt=\"Co-design activities table: aim, channels, target group, recording method, outcome, timespan and level of participation for each of the six activities\" loading=\"lazy\"><figcaption>The full framework: aim, channels, who takes part, outcome and timing for each activity.</figcaption></figure><div class=\"two\"><figure class=\"fig\"><img src=\"%ASSET%cases/mesa/design-reveal.jpg\" alt=\"Design Reveal: an email announcing that the common space project is coming to life, sent to future residents by email, website and WhatsApp\" loading=\"lazy\"><figcaption>Design Reveal: closing the loop with every future resident.</figcaption></figure><figure class=\"fig\"><img src=\"%ASSET%cases/mesa/never-have-i-ever.jpg\" alt=\"“Never have I ever” cards with prompts about using the common space, and open discussion questions underneath\" loading=\"lazy\"><figcaption>The post-occupancy card game.</figcaption></figure></div><figure class=\"fig\"><img src=\"%ASSET%cases/mesa/how-it-fits-together.jpg\" alt=\"Timeline of the Social Integration Plan over about three years, showing where the common area activities sit from Tree of Dreams to Never Have I Ever\" loading=\"lazy\"><figcaption>How it fits the Social Integration Plan’s timeline.</figcaption></figure>"
+   },
+   {
+    "kicker": "3 · Trade-offs",
+    "title": "What I chose, and why",
+    "lead": "<p class=\"lead\">Each choice lowers the cost of taking part, for residents and for developers.</p>",
+    "read": "<div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Building on the tea gatherings DS19 already runs</span></div><div><span class=\"mono\">Over</span><span>New, formal consultation meetings</span></div><div><span class=\"mono\">Because</span><span>The table, the tea and the name already existed. Changing how they’re used is easier than asking people to come to something new.</span></div></div><div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Pre-priced modules on a real plan</span></div><div><span class=\"mono\">Over</span><span>Open wish lists</span></div><div><span class=\"mono\">Because</span><span>Residents negotiate within the actual budget, so what they choose can be built.</span></div></div><div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Activities timed to DS19’s legal milestones</span></div><div><span class=\"mono\">Over</span><span>A separate process running alongside</span></div><div><span class=\"mono\">Because</span><span>Developers can adopt it within their budget and schedule, without slowing delivery.</span></div></div>",
+    "full": ""
+   },
+   {
+    "kicker": "4 · Result",
+    "title": "A framework developers could actually run",
+    "lead": "<div class=\"stats\"><div><div class=\"stat\" style=\"font-size: 44px\">6</div><span class=\"mono\">Co-design activities</span></div><div><div class=\"stat\" style=\"font-size: 44px\">4</div><span class=\"mono\">Actors at one table</span></div><div><div class=\"stat\" style=\"font-size: 44px\">0–48</div><span class=\"mono\">Months covered</span></div></div>",
+    "read": "<ul><li><b>A framework that fits the system.</b> Structured co-design that works within developer budgets and DS19’s legal milestones, while giving residents a real say over shared space.</li><li><b>Co-design as a ritual.</b> Top-down meetings turned into tea-time design sessions with tangible, playful tools.</li></ul>",
+    "full": "<p>Read the whole thing: <a href=\"https://drive.google.com/file/d/1CY0eJk9NE1xTOhLDLWOJgP_xtaGxVlD_/view?usp=sharing\" target=\"_blank\" rel=\"noopener noreferrer\">the full case study (PDF) ↗</a>.</p>"
    }
   ],
   "next": {
@@ -461,7 +537,7 @@ export const CASES: CaseStudy[] = [
    ],
    [
     "Base",
-    "Helsinki <span class=\"ph\">[confirm]</span>"
+    "Helsinki"
    ]
   ],
   "skills": [
@@ -501,21 +577,107 @@ export const CASES: CaseStudy[] = [
     "title": "Accessibility as infrastructure",
     "lead": "<p class=\"lead\">Instead of another set of guidelines or audit reports, we built a way of working that puts accessibility into the first commit.</p>",
     "read": "<div class=\"cards3\"><div><span class=\"mono\">Framework</span><h3>Open-source delivery primitives</h3><p>Accessibility design primitives and structural code guidelines, so teams build accessible components from the first commit.</p></div><div><span class=\"mono\">Workshops</span><h3>Co-design facilitation</h3><p>A facilitation model that brings users with disabilities into early ideation, so decisions come from lived experience, not abstract rules.</p></div><div><span class=\"mono\">Validation</span><h3>Pan-European practitioner review</h3><p>Stress-tested through practitioner feedback and mentor reviews across Europe during EIT Jumpstarter.</p></div></div><figure class=\"fig\"><img src=\"%ASSET%cases/groundwork/methodology.jpg\" alt=\"Groundwork methodology: Design (frameworks shaped by lived experience), Develop (accessible components and patterns), Deploy (internal capability through testing, rollout and governance)\" loading=\"lazy\"><figcaption>Fig 02 · The co-design methodology and delivery framework.</figcaption></figure>",
-    "full": "<p><span class=\"ph\">[What you built yourself as design engineer: components, docs, the workshop kit — and a link to the open-source repo]</span>.</p>"
+    "full": ""
    },
    {
     "kicker": "3 · Trade-offs",
     "title": "What we said no to",
     "lead": "<p class=\"lead\">A delivery process, not another set of guidelines.</p>",
-    "read": "<div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">A delivery framework with code-level primitives</span></div><div><span class=\"mono\">Over</span><span>More guidelines or audit reports</span></div><div><span class=\"mono\">Because</span><span>Teams need accessibility in the first commit, not in a report after release</span></div></div><div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Co-designing with users with disabilities</span></div><div><span class=\"mono\">Over</span><span>Designing from compliance rules alone</span></div><div><span class=\"mono\">Because</span><span>Lived experience grounds decisions in what actually helps</span></div></div><div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Open source</span></div><div><span class=\"mono\">Over</span><span><span class=\"ph\">[The alternative you considered]</span></span></div><div><span class=\"mono\">Because</span><span><span class=\"ph\">[Why open source was the right call]</span></span></div></div>",
-    "full": "<p><span class=\"ph\">[What you would do differently as a founder]</span>.</p>"
+    "read": "<div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">A delivery framework with code-level primitives</span></div><div><span class=\"mono\">Over</span><span>More guidelines or audit reports</span></div><div><span class=\"mono\">Because</span><span>Teams need accessibility in the first commit, not in a report after release</span></div></div><div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Co-designing with users with disabilities</span></div><div><span class=\"mono\">Over</span><span>Designing from compliance rules alone</span></div><div><span class=\"mono\">Because</span><span>Lived experience grounds decisions in what actually helps</span></div></div>",
+    "full": ""
    },
    {
     "kicker": "4 · Result",
     "title": "2nd of 900+",
     "lead": "<div class=\"stats\"><div><div class=\"stat\" style=\"font-size: 44px\">2nd</div><span class=\"mono\">Grand Final</span></div><div><div class=\"stat\" style=\"font-size: 44px\">900+</div><span class=\"mono\">European applicants</span></div><div><div class=\"stat\" style=\"font-size: 44px\">Day 1</div><span class=\"mono\">Accessibility in delivery</span></div></div>",
     "read": "<ul><li><b>2nd place Grand Finalist</b> out of 900+ European applicants in EIT Jumpstarter 2025, New European Bauhaus category.</li><li><b>Accessibility from day one.</b> We showed it can be built into product delivery without slowing launches.</li></ul><p><a href=\"https://wearegroundwork.org/\" target=\"_blank\" rel=\"noopener\">wearegroundwork.org ↗</a></p>",
-    "full": "<figure class=\"fig\"><img src=\"%ASSET%work/groundwork.jpg\" alt=\"Groundwork cover reading: Built for everyone, from the ground up.\" loading=\"lazy\"><figcaption>Groundwork.</figcaption></figure><p><span class=\"ph\">[Where Groundwork is now, and what being a founder taught you]</span>.</p>"
+    "full": "<figure class=\"fig\"><img src=\"%ASSET%work/groundwork.jpg\" alt=\"Groundwork cover reading: Built for everyone, from the ground up.\" loading=\"lazy\"><figcaption>Groundwork.</figcaption></figure>"
+   }
+  ],
+  "next": {
+   "slug": "gosta-labs",
+   "title": "Gosta Labs",
+   "sub": "Presented to the CEO & board"
+  }
+ },
+ {
+  "slug": "gosta-labs",
+  "code": "SN-09",
+  "chapter": "Chapter 02 · The designer",
+  "title": "Gosta Labs: getting an AI MedTech startup ready to grow beyond Finland",
+  "dek": "Gosta Labs makes an AI assistant that writes clinical notes from doctor–patient conversations. In a course project with Aalto University, our team planned its move into Poland, Czechia and Romania. I led the internal side: what the company itself had to change to grow, written up as a three-year roadmap for the CEO and board.",
+  "meta": [
+   [
+    "Year",
+    "2025 · April–June"
+   ],
+   [
+    "Type",
+    "Strategy project · Global Business in the Digital Age, Aalto University"
+   ],
+   [
+    "My role",
+    "Student consultant · led the internal development track"
+   ],
+   [
+    "Team",
+    "Group of 5"
+   ],
+   [
+    "Client",
+    "Gosta Labs · AI clinical documentation"
+   ]
+  ],
+  "skills": [
+   "Organisational strategy",
+   "Stakeholder interviews",
+   "Market research",
+   "Go-to-market",
+   "Roadmapping"
+  ],
+  "links": [
+   {
+    "label": "Final presentation (PDF) ↗",
+    "href": "%ASSET%cases/gosta/final-presentation.pdf"
+   }
+  ],
+  "signature": null,
+  "label2": "What I did",
+  "glance": [
+   "Eleven healthcare customers in Finland, and no structure yet to grow beyond it.",
+   "Led the internal track: a readiness check, CEO interviews and a three-year roadmap.",
+   "Two markets first, sold through local partners, before a third.",
+   "3 years",
+   "Internal roadmap, presented to the CEO and board"
+  ],
+  "secs": [
+   {
+    "kicker": "1 · Problem",
+    "title": "Growing in Finland, not yet built to grow abroad",
+    "lead": "<p class=\"lead\">Gosta Labs had 11 healthcare customers and growing revenue in Finland. The next step was Central and Eastern Europe, and two kinds of problems stood in the way.</p>",
+    "read": "<ul><li><b>Outside the company.</b> Different national healthcare rules, local language models, slow hospital procurement, and very different levels of electronic health record (EHR) maturity from country to country.</li><li><b>Inside the company.</b> No formal role definitions or competence map, no regular loop from sales back to product, and no model for deciding where people and money go.</li></ul><p>The second list is often the one that breaks a startup while it expands.</p>",
+    "full": "<figure class=\"fig\"><img src=\"%ASSET%cases/gosta/market-prioritisation.jpg\" alt=\"Market prioritization slide: a table of opportunity and challenge for Poland, Czechia and Romania next to a map of Central and Eastern Europe\" loading=\"lazy\"><figcaption>Where to start: the opportunity and the challenge in each target market.</figcaption></figure>"
+   },
+   {
+    "kicker": "2 · What I did",
+    "title": "Readiness first, then a roadmap",
+    "lead": "<p class=\"lead\">Our group split into a <b>market track</b> and an <b>internal track</b>. I led the internal track, where I brainstormed on “Is the company ready to grow, and what has to change first?”</p>",
+    "read": "<ul><li><b>Readiness assessment.</b> I looked at how the team plans, works, hires and spends, to find what would not survive a second and third market.</li><li><b>Interviews with the CEO.</b> I prepared and ran them to find the real bottlenecks in day-to-day work, so the analysis matched how the startup actually runs.</li><li><b>A three-year roadmap.</b> Competence, operations and resources, year by year: who to hire and when, which processes to write down, and how to allocate people and budget.</li><li><b>Handover.</b> I co-wrote the final report and presented the recommendations to the CEO and executive board.</li></ul>",
+    "full": "<p>The roadmap rested on four pieces of work:</p><ul><li><b>Go-to-market fit.</b> Hospital procurement, competitors, EHR integration paths and flexible pricing in Poland, Czechia and Romania (with the market track).</li><li><b>Competency and hiring plan.</b> A 12–24 month map of skills and hires, with clear roles and paths to move between teams.</li><li><b>Written-down processes.</b> Core workflows documented, and a feedback loop so what sales hears reaches product.</li><li><b>Resource planning.</b> A quarterly model that ties hiring, workload and budget to the market rollout.</li></ul><div class=\"two\"><figure class=\"fig\"><img src=\"%ASSET%cases/gosta/internal-strategy.jpg\" alt=\"Internal Development Strategy slide listing three areas: competency gaps, formalising operations, and resource allocation and role clarity\" loading=\"lazy\"><figcaption>The three areas the internal analysis pointed to.</figcaption></figure><figure class=\"fig\"><img src=\"%ASSET%cases/gosta/roadmap.jpg\" alt=\"Roadmap slide: a table of competence, operations and resources for year 1, year 2 and year 3\" loading=\"lazy\"><figcaption>The three-year roadmap, as presented.</figcaption></figure></div>"
+   },
+   {
+    "kicker": "3 · Trade-offs",
+    "title": "What we chose, and why",
+    "lead": "<p class=\"lead\">Each choice keeps the expansion small enough to learn from before it grows.</p>",
+    "read": "<div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Poland and Czechia first, Romania later</span></div><div><span class=\"mono\">Over</span><span>Entering all three markets at once</span></div><div><span class=\"mono\">Because</span><span>Poland has mature health records and EU funding; Czechia has acute doctor burnout and R&amp;D strength. Romania is planned once the first pilots have made the case.</span></div></div><div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Selling through local partners</span></div><div><span class=\"mono\">Over</span><span>Selling directly from Finland</span></div><div><span class=\"mono\">Because</span><span>Hospital tenders and EHR integration need people on the ground; procurement can’t be managed from afar.</span></div></div><div class=\"tradeoff\"><div><span class=\"mono\">Chose</span><span style=\"font-weight: 500\">Hire and document before scaling</span></div><div><span class=\"mono\">Over</span><span>Growing the team as deals come in</span></div><div><span class=\"mono\">Because</span><span>Clear roles and written-down processes let new regional teams start without the Finnish team slowing down.</span></div></div>",
+    "full": ""
+   },
+   {
+    "kicker": "4 · Result",
+    "title": "Handed to the CEO and the board",
+    "lead": "<div class=\"stats\"><div><div class=\"stat\" style=\"font-size: 44px\">3 years</div><span class=\"mono\">Internal roadmap</span></div><div><div class=\"stat\" style=\"font-size: 44px\">24 mo</div><span class=\"mono\">Market entry plan</span></div><div><div class=\"stat\" style=\"font-size: 44px\">3</div><span class=\"mono\">Markets assessed</span></div></div>",
+    "read": "<ul><li><b>A strategy on two tracks.</b> A plan for entering Central and Eastern Europe, and a three-year plan for the company itself, presented to the CEO and executive board.</li><li><b>A blueprint to grow without breaking what works.</b> Hiring, processes and resourcing laid out so the expansion doesn’t disrupt the Finnish business.</li></ul>",
+    "full": "<p>Read the whole thing: <a href=\"%ASSET%cases/gosta/final-presentation.pdf\" target=\"_blank\" rel=\"noopener noreferrer\">the final presentation (PDF) ↗</a>.</p><figure class=\"fig\"><img src=\"%ASSET%cases/gosta/gtm-partnerships.jpg\" alt=\"GTM partnerships slide: Gosta Labs in the middle of university hospitals, EHR vendors, policy stakeholders and health IT consultants, with short, mid and long-term steps\" loading=\"lazy\"><figcaption>Who Gosta Labs would sell with, and in what order.</figcaption></figure>"
    }
   ],
   "next": {

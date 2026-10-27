@@ -1,6 +1,6 @@
 import { asset } from "../lib";
 
-/* Homepage copy and structure. Copy marked [like this] is a placeholder for Sumit to fill in. */
+/* Homepage copy and structure. */
 
 export const HERO_INTRO =
   "Curious about too many things — and that’s the point. I help teams figure out what’s actually worth building, then take fuzzy concepts all the way to fast, accessible, beautifully crafted software.";
@@ -78,10 +78,10 @@ export const WORK_LIST = [
   { title: "Dashboard rebuild", href: "/projects/optmyzr-dashboard-migration", r: "— Optmyzr · 10 s → under 1 s load", y: "2023" },
   { title: "Onboarding wizard", href: "/projects/optmyzr-onboarding-experience", r: "— Optmyzr · −25% sign-up drop-off", y: "2023" },
   { title: "Groundwork", href: "/projects/groundwork", r: "— co-founder · 2nd of 900+, EIT Jumpstarter", y: "2025" },
-  { title: "ActAI", href: "/projects/actai", r: "— AI oversight · PRD → deployed in ~10 h", y: "[year]" },
+  { title: "ActAI", href: "/projects/actai", r: "— AI oversight · PRD → deployed in ~10 h", y: "2026" },
   { title: "Air quality, made readable", href: "/projects/ediaqi-decision-support-system", r: "— Deda Next · 200 participants", y: "2026" },
   { title: "YOU", href: "/projects/super-ego-app", r: "— habit-alignment assistant", y: "2026" },
   { title: "A+ usability evaluation", href: "/projects/a-plus-usability-project", r: "— expert review vs. user tests", y: "2025" },
-  { title: "Gosta Labs", href: "/projects/gosta-labs", r: "— go-to-market · presented to the CEO & board", y: "[year]" },
+  { title: "Gosta Labs", href: "/projects/gosta-labs", r: "— go-to-market · presented to the CEO & board", y: "2025" },
   { title: "Mesa Te Club", href: "/projects/social-integration-pd", r: "— co-design, Chile", y: "2024" },
 ];

@@ -52,7 +52,7 @@ function Header({ c }: { c: CaseStudy }) {
           )}
           {c.links.length > 0 && (
             <span style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              {c.links.map((l) => <a key={l.href} className="btn" href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>)}
+              {c.links.map((l) => <a key={l.href} className="btn" href={l.href.split("%ASSET%").join(asset(""))} target="_blank" rel="noopener noreferrer">{l.label}</a>)}
             </span>
           )}
         </div>
@@ -82,7 +82,7 @@ function Glance({ c }: { c: CaseStudy }) {
       <div className="glance">
         {cells.map((x) => (
           <a key={x.id} href={`#${x.id}`} onClick={(e) => { e.preventDefault(); document.getElementById(x.id)?.scrollIntoView({ behavior: "smooth" }); }}>
-            <span className="q">{x.q}</span>{x.a}<span className="more">Read more ↓</span>
+            <span className="q">{x.q}</span>{x.a}
           </a>
         ))}
       </div>
@@ -131,8 +131,8 @@ function LongRead({ c }: { c: CaseStudy }) {
           <section key={IDS[i]} id={IDS[i]} data-i={i} aria-labelledby={`${IDS[i]}-h`}>
             <h2 className="sec-h" id={`${IDS[i]}-h`}>{s.title}</h2>
             <div className="lvl" dangerouslySetInnerHTML={html(s.lead)} />
-            {depth >= 1 && <div className="lvl reveal" dangerouslySetInnerHTML={html(s.read)} />}
-            {depth >= 2 && <div className="lvl reveal" dangerouslySetInnerHTML={html(s.full)} />}
+            {depth >= 1 && s.read && <div className="lvl reveal" dangerouslySetInnerHTML={html(s.read)} />}
+            {depth >= 2 && s.full && <div className="lvl reveal" dangerouslySetInnerHTML={html(s.full)} />}
           </section>
         ))}
         {depth < 2 && (
@@ -167,7 +167,7 @@ function Footer({ c }: { c: CaseStudy }) {
 
 export default function CaseStudyV2({ slug }: { slug: string }) {
   const c = CASE_BY_SLUG[slug];
-  const Sig = SIGNATURES[c.signature];
+  const Sig = c.signature ? SIGNATURES[c.signature] : null;
   const plain = c.dek.replace(/<[^>]+>/g, "").replace(/\[[^\]]*\]/g, "").replace(/\s+/g, " ").trim();
   return (
     <Shell active="work">
@@ -178,7 +178,7 @@ export default function CaseStudyV2({ slug }: { slug: string }) {
       <div className="v2-cs" key={slug}>
         <Header c={c} />
         <Glance c={c} />
-        <Sig />
+        {Sig && <Sig />}
         <LongRead c={c} />
         <Footer c={c} />
       </div>

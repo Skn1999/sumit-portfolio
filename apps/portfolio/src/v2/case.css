@@ -6,7 +6,6 @@
 
 .v2-cs .wrap { max-width: 1200px; margin: 0 auto; padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); }
 .v2-cs .mono { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-.v2-cs .ph { color: var(--muted); border-bottom: 1px dashed var(--accent); font-style: normal; }
 .v2-cs .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .v2-cs .btn { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; border: 1px solid var(--ink); background: transparent; color: var(--ink); border-radius: 8px; min-height: 44px; padding: 0 16px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; text-decoration: none; transition: background 160ms var(--ease), color 160ms var(--ease); }
 .v2-cs .btn:hover { background: var(--ink); color: var(--on-ink); }
@@ -36,7 +35,6 @@
 .v2-cs .glance a:hover { background: var(--surface); color: var(--ink); }
 .v2-cs .glance .q { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: flex; gap: 8px; }
 .v2-cs .glance .a { font-size: 18px; line-height: 1.4; font-weight: 500; }
-.v2-cs .glance .more { font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; color: var(--muted); margin-top: auto; }
 
 .v2-cs .stat { font-size: 64px; font-weight: 600; letter-spacing: -0.04em; line-height: 1; font-variant-numeric: tabular-nums; }
 .v2-cs .stat small { font-size: .38em; font-weight: 500; letter-spacing: 0; color: var(--muted); }
