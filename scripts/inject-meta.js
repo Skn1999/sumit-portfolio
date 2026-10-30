@@ -27,7 +27,7 @@ const SITE_NAME = "Sumit Nayyar";
 const SITE_URL = "https://skn1999.github.io/sumit-portfolio"; // deployed URL
 const DEFAULT_DESCRIPTION =
   "Curious about too many things — and that’s the point. I help teams figure out what’s actually worth building, then take fuzzy concepts all the way to fast, accessible, beautifully crafted software.";
-const DEFAULT_OG_IMAGE = `${SITE_URL}/v2/avatar.jpg`;
+const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 // Base path must match vite.config.ts (`base` option in production)
 const BASE_PATH = process.env.VITE_BASE_PATH || "/sumit-portfolio/";
@@ -76,7 +76,7 @@ function getTemplate() {
 function injectMeta(template, meta) {
   let html = template;
 
-  const title = meta.title || `${SITE_NAME} — Engineer & Designer`;
+  const title = meta.title || `${SITE_NAME} — Product Designer & Builder`;
   const description = meta.description || DEFAULT_DESCRIPTION;
   const ogImage = meta.ogImage || DEFAULT_OG_IMAGE;
   const url = meta.url || SITE_URL;
@@ -259,7 +259,7 @@ function getStaticRoutes() {
     {
       route: "/",
       meta: {
-        title: "Sumit Nayyar — Product designer who writes the code",
+        title: "Sumit Nayyar — Product Designer & Builder",
         description: DEFAULT_DESCRIPTION,
         url: SITE_URL,
         keywords: [
@@ -316,7 +316,7 @@ function getStaticRoutes() {
     {
       route: "/ux-bites",
       meta: {
-        title: "Sumit Nayyar — Product designer who writes the code",
+        title: "Sumit Nayyar — Product Designer & Builder",
         description: DEFAULT_DESCRIPTION,
         url: SITE_URL,
       },

@@ -2,6 +2,8 @@ import { useEffect, type ReactNode } from "react";
 import Dock from "./Dock";
 import SiteFooter from "./SiteFooter";
 import DashTooltip from "./DashTooltip";
+// Quick actions (Ctrl + K) modal commented out for now:
+// import QuickActions from "./QuickActions";
 import "../v2.css";
 
 type Props = {
@@ -25,6 +27,8 @@ export default function Shell({ children, active, reader }: Props) {
       <main id="main">{children}</main>
       <SiteFooter />
       <DashTooltip />
+      {/* Quick actions (⌘K / Ctrl K) modal commented out for now:
+      <QuickActions reader={reader} /> */}
     </div>
   );
 }

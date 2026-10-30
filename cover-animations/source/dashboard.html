@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Dashboard cover</title>
+<link rel="stylesheet" href="base.css">
+<style>
+#stage{background:#DCE5F2}
+.win{position:absolute;left:150px;top:78px;width:660px;height:400px;border-radius:14px;background:#fff;box-shadow:0 30px 60px -24px rgba(20,40,80,.35),0 0 0 1px rgba(13,17,23,.06);overflow:hidden}
+.tb{height:30px;border-bottom:1px solid #EDF0F4;display:flex;align-items:center;gap:6px;padding:0 12px}
+.tb i{width:9px;height:9px;border-radius:50%;background:#E1E4EA}
+.tb .url{margin-left:14px;font-size:10px;color:#8B949E;background:#F3F5F8;border-radius:6px;padding:3px 10px;width:220px}
+.side{position:absolute;left:0;top:30px;bottom:0;width:118px;background:#F7F8FA;border-right:1px solid #EDF0F4;padding:16px 14px}
+.side b{display:block;height:7px;border-radius:4px;background:#E1E4EA;margin:0 0 13px}
+.side b.on{background:#C9D6F2}
+.ct{position:absolute;left:118px;top:30px;right:0;bottom:0;padding:16px}
+.w{position:absolute;border-radius:10px;border:1px solid #E6EAF0;background:#fff;overflow:hidden}
+.w .sk{position:absolute;inset:0;background:#E7EBF1}
+.w .in{position:absolute;inset:0;padding:10px 12px}
+.w small{display:block;font-size:9px;color:#8B949E;text-transform:uppercase;letter-spacing:.06em}
+.kpi b{display:block;font-size:20px;font-weight:700;letter-spacing:-.02em;margin-top:4px;font-variant-numeric:tabular-nums}
+.kpi em{font-style:normal;font-size:10px;color:#1A7F54;font-weight:600}
+#spin{position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;border:3px solid #C9D3E2;border-top-color:#2F6FEB}
+.watch{position:absolute;left:640px;top:24px;width:170px;height:42px;border-radius:12px;background:#0D1117;color:#F0F3F6;display:flex;align-items:center;justify-content:space-between;padding:0 14px}
+.watch .mono{font-size:9px;color:#8B949E}
+.watch b{font-size:22px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.phase{position:absolute;left:150px;top:36px;font-size:11px;color:#3D4A5C}
+.phase span{position:absolute;white-space:nowrap}
+.badge{position:absolute;z-index:5;font-size:9px;font-weight:600;color:#fff;background:#2F6FEB;border-radius:999px;padding:3px 8px;white-space:nowrap}
+#lapse{position:absolute;left:540px;top:38px;width:90px;text-align:right;font-size:9px;color:#57606A}
+</style></head>
+<body><div id="stage"><div id="all" style="position:absolute;inset:0;transform:scale(1.08) translateY(14px)">
+  <div class="phase mono"><span id="ph0">Before · one update re-renders everything</span><span id="ph1">After · every widget loads on its own</span></div>
+  <div class="watch"><span class="mono">Load time</span><b id="sw">0.0 s</b></div>
+  <div id="lapse" class="mono">time-lapse</div>
+  <div class="win">
+    <div class="tb"><i></i><i></i><i></i><span class="url">app · account dashboard</span></div>
+    <div class="side"><b class="on" style="width:70%"></b><b style="width:84%"></b><b style="width:60%"></b><b style="width:76%"></b><b style="width:52%"></b><b style="width:68%"></b></div>
+    <div class="ct" id="ct">
+      <div class="w kpi" id="k0" style="left:16px;top:16px;width:162px;height:76px"><div class="in"><small>Conversions</small><b id="k0n">1,284</b><em>▲ 8.2%</em></div><div class="sk"></div></div>
+      <div class="w kpi" id="k1" style="left:189px;top:16px;width:162px;height:76px"><div class="in"><small>Cost</small><b id="k1n">$8,402</b><em>▼ 3.1%</em></div><div class="sk"></div></div>
+      <div class="w kpi" id="k2" style="left:362px;top:16px;width:162px;height:76px"><div class="in"><small>CTR</small><b id="k2n">4.6%</b><em>▲ 0.4</em></div><div class="sk"></div></div>
+      <div class="w" id="ring" style="left:16px;top:102px;width:162px;height:136px"><div class="in"><small>Quality score</small>
+        <svg width="138" height="104" viewBox="0 0 138 104" style="margin-top:4px"><circle cx="69" cy="54" r="38" fill="none" stroke="#EEF1F5" stroke-width="9"/><circle id="arc" cx="69" cy="54" r="38" fill="none" stroke="#2F6FEB" stroke-width="9" stroke-linecap="round" stroke-dasharray="0 239" transform="rotate(-90 69 54)"/><text id="rn" x="69" y="61" text-anchor="middle" font-size="22" font-weight="700" fill="#0D1117" font-family="Inter">0.0</text></svg></div><div class="sk"></div></div>
+      <div class="w" id="spark" style="left:189px;top:102px;width:335px;height:136px"><div class="in"><small>Daily trend · clicks</small>
+        <svg width="311" height="104" viewBox="0 0 311 104" style="margin-top:4px"><path d="M0 100 H311" stroke="#EEF1F5"/><path id="sp" d="M0 78 C20 70 30 84 48 74 S80 50 100 58 S130 76 150 60 S185 30 205 40 S240 62 258 44 S290 22 311 26" fill="none" stroke="#2F6FEB" stroke-width="2.5" stroke-linecap="round"/><path id="spa" d="M0 78 C20 70 30 84 48 74 S80 50 100 58 S130 76 150 60 S185 30 205 40 S240 62 258 44 S290 22 311 26 V100 H0Z" fill="#2F6FEB" opacity="0"/></svg></div><div class="sk"></div></div>
+      <div class="w" id="bars" style="left:16px;top:248px;width:508px;height:108px"><div class="in"><small>Keyword spread</small>
+        <div id="bw" style="position:absolute;left:12px;right:12px;bottom:12px;height:68px;display:flex;align-items:flex-end;gap:7px"></div></div><div class="sk"></div></div>
+      <div id="spin"></div>
+    </div>
+    <div class="badge" id="badge">1 widget re-rendered</div>
+  </div>
+  </div>
+  <div class="grain"></div>
+</div>
+<script src="engine.js"></script>
+<script>
+var BH = [38, 62, 44, 80, 56, 92, 70, 48, 66, 86, 58, 40, 74, 52, 88, 64, 46, 78, 60, 34];
+var bw = document.getElementById('bw');
+BH.forEach(function (h, i) { var d = document.createElement('i'); d.style.cssText = 'flex:1;border-radius:3px 3px 0 0;background:' + (i % 5 === 3 ? '#D96B27' : '#9DB8F0'); d.dataset.h = h; bw.appendChild(d); });
+var SPLEN = 0;
+function fmt(n) { return Math.round(n).toLocaleString('en-US'); }
+window.COVER = { dur: 8, poster: 4.4, frame: function (t) {
+  if (!SPLEN) SPLEN = E.$('#sp').getTotalLength();
+  var after = E.seg(t, 2.7, 3.0, E.inOut) * (1 - E.seg(t, 7.2, 7.8, E.inOut));   // 0 = old, 1 = new
+  // skeleton weight: full in old phase, gone in new
+  var skw = 1 - after;
+  var pulse = 0.78 + 0.22 * Math.sin(t * 2 * Math.PI * 1.1);
+  document.querySelectorAll('.w .sk').forEach(function (s) { s.style.opacity = skw * (t < 3 || t > 7 ? pulse : 1); });
+  E.css('#spin', { opacity: skw, transform: 'rotate(' + t * 360 * 1.4 + 'deg)' });
+  E.css('#ph0', { opacity: 1 - after }); E.css('#ph1', { opacity: after });
+  E.css('#lapse', { opacity: 1 - after });
+  // stopwatch
+  var sw, col = '#F0F3F6';
+  if (t < 2.6) { sw = 10 * E.seg(t, 0.2, 2.4, function (p) { return p; }); if (sw > 6) col = '#FF9B8A'; }
+  else if (t < 3.0) { sw = 10; col = '#FF9B8A'; }
+  else if (t < 7.4) { sw = 0.8 * E.seg(t, 3.0, 4.25, function (p) { return p; }); if (t > 4.25) col = '#7EE2A8'; }
+  else { sw = 0; }
+  E.set('#sw', sw.toFixed(1) + ' s'); E.css('#sw', { color: col });
+  var bump = 1 + 0.08 * Math.sin(Math.PI * E.seg(t, 2.4, 2.75)) + 0.08 * Math.sin(Math.PI * E.seg(t, 4.2, 4.5));
+  E.css('.watch', { transform: 'scale(' + bump + ')' });
+  // hydration: each widget on its own clock
+  var out = 1 - E.seg(t, 6.9, 7.4);
+  function hyd(id, at) { var p = E.seg(t, at, at + 0.35) * out; E.css('#bw', { opacity: out }); E.css('#' + id + ' .in', { opacity: p, transform: 'translateY(' + (1 - p) * 6 + 'px)' }); return E.seg(t, at, at + 0.9, E.out); }
+  var p0 = hyd('k0', 3.05), p1 = hyd('k1', 3.2), p2 = hyd('k2', 3.35), pr = hyd('ring', 3.5), ps = hyd('spark', 3.65), pb = hyd('bars', 3.8);
+  var upd = E.seg(t, 5.0, 5.6, E.inOut);
+  E.set('#k0n', fmt(E.lerp(0, 1284, p0) + 33 * upd));
+  E.set('#k1n', '$' + fmt(E.lerp(0, 8402, p1)));
+  E.set('#k2n', (E.lerp(0, 4.6, p2)).toFixed(1) + '%');
+  E.$('#arc').setAttribute('stroke-dasharray', (239 * 0.71 * pr) + ' 239');
+  E.$('#rn').textContent = (7.1 * pr).toFixed(1);
+  E.$('#sp').setAttribute('stroke-dasharray', SPLEN); E.$('#sp').setAttribute('stroke-dashoffset', SPLEN * (1 - ps));
+  E.$('#spa').setAttribute('opacity', 0.08 * ps);
+  [].forEach.call(bw.children, function (d, i) { var p = E.seg(t, 3.8 + i * 0.025, 4.3 + i * 0.025, E.back); d.style.height = (d.dataset.h * Math.max(0, p)) + '%'; });
+  // isolated update: one widget changes, the rest stay still
+  var iso = E.seg(t, 4.8, 5.1) * (1 - E.seg(t, 6.3, 6.7));
+  ['k1', 'k2', 'ring', 'spark', 'bars'].forEach(function (id) { E.css('#' + id, { opacity: 1 - 0.45 * iso }); });
+  E.css('#k0', { boxShadow: '0 0 0 ' + (2 * iso) + 'px #2F6FEB', borderColor: iso > 0.1 ? '#2F6FEB' : '#E6EAF0' });
+  E.css('#badge', { left: '210px', top: '38px', opacity: iso, transform: 'translateY(' + (1 - iso) * 6 + 'px)' });
+} };
+</script>
+</body></html>
