@@ -78,6 +78,9 @@ html.dark .v2 {
 :where(.v2) button { font: inherit; color: inherit; }
 
 .v2-wrap { max-width: 1360px; margin: 0 auto; padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); }
+/* Wider screens get a wider column so the page doesn’t feel cramped (1360 → 1520 → 1680). */
+@media (min-width: 1600px) { .v2-wrap { max-width: 1520px; } }
+@media (min-width: 1920px) { .v2-wrap { max-width: 1680px; } }
 .v2-mono { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 
 .v2-btn {
@@ -410,4 +413,67 @@ html.dark .v2-qa { --qa-sel: #1F2630; --qa-scrim: rgba(0, 0, 0, 0.5); --qa-shado
   .v2-qa-panel, .v2-qa.in .v2-qa-panel { transform: none; }
   .v2-qa-panel { opacity: 0; }
   .v2-qa.in .v2-qa-panel { opacity: 1; }
+}
+
+/* ---------- Selected work: animated covers (see DESIGN-LANGUAGE.md §8 "Cover caption") ---------- */
+.v2-cv-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 20px; align-items: start; }
+.v2-cv-col { display: flex; flex-direction: column; gap: 36px; min-width: 0; }
+.v2-cv-col + .v2-cv-col { padding-top: 88px; }
+.v2-cv { display: block; color: var(--ink); text-decoration: none; }
+.v2-cv-frame { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--tint, var(--chip)); }
+.v2-cv-frame::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgba(50, 64, 79, 0.08); pointer-events: none; }
+html.dark .v2-cv-frame::after { box-shadow: inset 0 0 0 1px rgba(240, 243, 246, 0.08); }
+.v2-cv-frame video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; }
+.v2-cv-veil { position: absolute; inset: 0; background: rgba(255, 255, 255, 0); transition: background 300ms var(--ease); }
+.v2-cv:hover .v2-cv-veil { background: rgba(255, 255, 255, 0.12); }
+.v2-cv-cap { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.v2-cv-t1 { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; font-size: 15px; }
+.v2-cv-title { font-weight: 500; transition: color 160ms var(--ease); }
+.v2-cv:hover .v2-cv-title { color: var(--accent); }
+.v2-cv-ctx { font-size: 13px; color: var(--muted); white-space: nowrap; }
+.v2-cv-hov { display: block; font-size: 14px; line-height: 1.5; color: var(--muted); max-height: 0; opacity: 0; overflow: hidden; transition: max-height 300ms var(--ease), opacity 300ms var(--ease), margin-top 300ms var(--ease); }
+.v2-cv:hover .v2-cv-hov, .v2-cv:focus-visible .v2-cv-hov { max-height: 44px; opacity: 1; margin-top: 8px; }
+/* Quiet tags: the 8px tag shape, no ink fill, muted text, a step smaller, so the title leads. */
+.v2-qtags { display: inline-flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.v2-qtags > span { font-size: 12px; font-weight: 500; line-height: 1; border-radius: 8px; padding: 6px 10px; background: var(--chip); color: var(--muted); white-space: nowrap; }
+
+/* "That’s it." → "That’s not all of it." — the rest of the work */
+.v2-na { border-top: 1px solid var(--rule); }
+.v2-na-h { margin: 0; padding-top: 36px; font-size: 40px; line-height: 1.05; font-weight: 500; letter-spacing: -0.03em; color: var(--ink); }
+.v2-na-st { position: relative; display: inline-block; transition: color 380ms var(--ease); }
+.v2-na-st::after { content: ""; position: absolute; left: -2px; right: -2px; top: 54%; height: 3px; background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform 380ms var(--ease); }
+.v2-na-st[data-on="true"] { color: var(--muted); }
+.v2-na-st[data-on="true"]::after { transform: scaleX(1); }
+.v2-na-caret { display: inline-block; width: 2px; height: 34px; background: var(--ink); vertical-align: -5px; margin-left: 3px; animation: v2NaBlink 1s steps(2) infinite; }
+@keyframes v2NaBlink { 50% { opacity: 0; } }
+.v2-na-sub { margin: 8px 0 20px; font-size: 15px; color: var(--muted); opacity: 0; transition: opacity 400ms var(--ease); }
+.v2-na-sub[data-on="true"] { opacity: 1; }
+.v2-na-rows { border-top: 1px solid var(--rule); }
+.v2-na-row { display: grid; grid-template-columns: 72px minmax(0, 1fr) auto 120px; gap: 20px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--rule); color: var(--ink); text-decoration: none;
+  opacity: 0; transform: translateY(10px); transition: opacity 360ms var(--ease), transform 420ms var(--ease); }
+.v2-na-row[data-on="true"] { opacity: 1; transform: none; }
+.v2-na-row b { font-size: 18px; font-weight: 500; transition: color 160ms var(--ease); }
+.v2-na-row:hover b { color: var(--accent); }
+.v2-na-out { color: var(--muted); }
+.v2-na-th { display: block; width: 72px; aspect-ratio: 16 / 10; overflow: hidden; background: var(--chip); }
+.v2-na-th img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.v2-na-ctx { font-size: 13px; color: var(--muted); text-align: right; white-space: nowrap; }
+/* Touch: no hover, so the impact line is always shown. */
+@media (hover: none) {
+  .v2-cv-hov { max-height: none; opacity: 1; margin-top: 8px; }
+}
+@media (max-width: 900px) {
+  .v2-na-h { font-size: 32px; }
+  .v2-na-caret { height: 28px; }
+  .v2-na-row { grid-template-columns: 56px minmax(0, 1fr); row-gap: 8px; }
+  .v2-na-th { width: 56px; grid-row: span 3; align-self: start; }
+  .v2-na-row .v2-qtags, .v2-na-ctx { grid-column: 2; justify-self: start; text-align: left; }
+}
+@media (max-width: 640px) {
+  .v2-cv-grid { grid-template-columns: 1fr; }
+  .v2-cv-col + .v2-cv-col { padding-top: 0; margin-top: 36px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-cv-veil, .v2-cv-hov, .v2-cv-title, .v2-na-st, .v2-na-st::after, .v2-na-sub, .v2-na-row, .v2-na-row b { transition: none; }
+  .v2-na-caret { animation: none; }
 }
