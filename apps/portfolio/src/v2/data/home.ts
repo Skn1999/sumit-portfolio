@@ -83,3 +83,27 @@ export const WORK_LIST = [
   { title: "Gosta Labs", href: "/projects/gosta-labs", r: "— go-to-market · presented to the CEO & board", y: "2025" },
   { title: "Mesa Te Club", href: "/projects/social-integration-pd", r: "— co-design, Chile", y: "2024" },
 ];
+
+/**
+ * Selected work: four animated covers (16:9 loops from cover-animations/, served from public/v2/covers),
+ * in masonry order (two columns, the second one staggered). Title = what the project achieved,
+ * ctx = where and when, impact = the one line that unfolds on hover/focus. Two quiet tags: kind of work, my role.
+ */
+export type Cover = { code: string; title: string; ctx: string; impact: string; cat: string; role: string; video: string; poster: string; tint: string; href: string };
+export const COVERS: Cover[][] = [
+  [
+    { code: "SN-04", title: "Indoor air quality, made readable for 200 people", ctx: "EU Horizon · 2026", impact: "The display says what to do, then tracks the air until it’s good.", cat: "Product design", role: "UX/UI lead", video: asset("covers/ediaqi.mp4"), poster: asset("covers/ediaqi-poster.jpg"), tint: "#D6F0E0", href: "/projects/ediaqi-decision-support-system" },
+    { code: "SN-10", title: "Five minor issues, one major barrier", ctx: "Aalto University · 2025", impact: "Expert review and user tests, compared to rank what to fix first.", cat: "UX research", role: "Facilitator", video: asset("covers/aplus.mp4"), poster: asset("covers/aplus-poster.jpg"), tint: "#F6F7F9", href: "/projects/a-plus-usability-project" },
+  ],
+  [
+    { code: "SN-01", title: "Cut dashboard load from 10 s to under 1 s", ctx: "Optmyzr · 2023", impact: "Every widget loads on its own, so one update touches one widget.", cat: "Design engineering", role: "Solo build", video: asset("covers/dashboard.mp4"), poster: asset("covers/dashboard-poster.jpg"), tint: "#DCE5F2", href: "/projects/optmyzr-dashboard-migration" },
+    { code: "SN-05", title: "Nudges that catch the moment of drift", ctx: "University of Trento · 2026", impact: "A nudge system inside the OS, tuned to each person.", cat: "Interaction design", role: "Prototyping", video: asset("covers/you.mp4"), poster: asset("covers/you-poster.jpg"), tint: "#0B1418", href: "/projects/super-ego-app" },
+  ],
+];
+
+/** "That’s not all of it." — the rest of the work, as rows under the covers. */
+export const MORE_WORK = [
+  { code: "SN-07", title: "Groundwork", out: "2nd of 900+, EIT Jumpstarter", cat: "Strategy", role: "Co-founder", ctx: "Startup · 2025", img: asset("work/groundwork.jpg"), href: "/projects/groundwork" },
+  { code: "SN-09", title: "Gosta Labs", out: "Presented to the CEO & board", cat: "Strategy", role: "Track lead", ctx: "Course · 2025", img: asset("cases/gosta/internal-strategy.jpg"), href: "/projects/gosta-labs" },
+  { code: "SN-06", title: "Mesa Te Club", out: "Co-design tools, Chile", cat: "Co-design", role: "Workshop design", ctx: "Course · 2024", img: asset("cases/mesa/cover.jpg"), href: "/projects/social-integration-pd" },
+];

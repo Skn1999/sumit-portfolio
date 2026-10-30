@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Shell from "../components/Shell";
@@ -6,10 +6,10 @@ import HeroMoi from "../components/HeroMoi";
 // Lab is off the homepage for now (it may get its own page).
 // import BentGallery from "../components/BentGallery";
 import ScannerField from "../components/ScannerField";
-import { APPROACH, DWELL, DWELL_NEXT, HERO_INTRO, TOC, WORK, WORK_LIST, type Tile } from "../data/home";
-import { asset, EMAIL, SITE_URL, SUBSTACK_URL, useReaderMode } from "../lib";
+import { APPROACH, COVERS, HERO_INTRO, MORE_WORK, TOC, WORK_LIST, type Cover } from "../data/home";
+import { asset, EMAIL, reduceMotion, SITE_URL, SUBSTACK_URL, useReaderMode } from "../lib";
 
-const TITLE = "Sumit Nayyar — Product designer who writes the code";
+const TITLE = "Sumit Nayyar — Product Designer & Builder";
 const DESC = HERO_INTRO;
 const scrollTo = (id: string) => (e: React.MouseEvent) => {
   const el = document.getElementById(id);
@@ -66,151 +66,113 @@ function FieldNote() {
   );
 }
 
-function TileMeta({ title, sub, aside }: { title: string; sub: string; aside?: ReactNode }) {
+/** A cover loop: muted, plays only while on screen, poster only under reduced motion. */
+function CoverVideo({ c }: { c: Cover }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    v.muted = true;
+    if (reduceMotion() || !("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) v.play().catch(() => {});
+      else v.pause();
+    }, { threshold: 0.25 });
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
   return (
-    <div className="v2-tile-meta-row">
-      <div className="v2-tile-meta">
-        <h3>{title}</h3><span className="v2-tile-sub">{sub}</span>
+    <span className="v2-cv-frame" style={{ "--tint": c.tint } as React.CSSProperties}>
+      <video ref={ref} src={c.video} poster={c.poster} muted loop playsInline preload="metadata" aria-hidden="true" />
+      <span className="v2-cv-veil" />
+    </span>
+  );
+}
+
+const NOT_ALL = "not all of it.";
+
+/**
+ * "That’s it." strikes itself out, types "not all of it." and the rest of the work unfolds below.
+ * Runs once, when the section scrolls into view. Reduced motion shows the end state.
+ */
+function NotAll() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [step, setStep] = useState(0); // 0 "That’s it." · 1 struck · 2 typing · 3 rows in
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (reduceMotion() || !("IntersectionObserver" in window)) { setStep(3); setN(NOT_ALL.length); return; }
+    const timers: number[] = [];
+    let iv = 0;
+    const run = () => {
+      timers.push(window.setTimeout(() => setStep(1), 700));
+      timers.push(window.setTimeout(() => {
+        setStep(2);
+        let k = 0;
+        iv = window.setInterval(() => {
+          k += 1; setN(k);
+          if (k >= NOT_ALL.length) { clearInterval(iv); timers.push(window.setTimeout(() => setStep(3), 250)); }
+        }, 55);
+      }, 1200));
+    };
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); run(); } }, { threshold: 0.4 });
+    io.observe(el);
+    return () => { io.disconnect(); timers.forEach(clearTimeout); clearInterval(iv); };
+  }, []);
+  return (
+    <div className="v2-na" ref={ref}>
+      <h3 className="v2-na-h" aria-label="That’s not all of it.">
+        <span aria-hidden="true">
+          That’s <span className="v2-na-st" data-on={step >= 1}>it.</span> <span>{NOT_ALL.slice(0, n)}</span>
+          {step === 2 && <span className="v2-na-caret" />}
+        </span>
+      </h3>
+      <p className="v2-na-sub" data-on={step >= 3}>I’ve done plenty of other things.</p>
+      <div className="v2-na-rows">
+        {MORE_WORK.map((m, i) => (
+          <Link key={m.code} className="v2-na-row" to={m.href} data-on={step >= 3} style={{ transitionDelay: step >= 3 ? `${i * 120}ms` : "0ms" }}>
+            <span className="v2-na-th"><img src={m.img} alt="" loading="lazy" /></span>
+            <span><b>{m.title}</b> <span className="v2-na-out">— {m.out}</span></span>
+            <span className="v2-qtags"><span>{m.cat}</span><span>{m.role}</span></span>
+            <span className="v2-na-ctx">{m.ctx}</span>
+          </Link>
+        ))}
       </div>
-      {aside}
     </div>
   );
 }
 
-/** A work tile. `aside` sits next to the title; `children` go under it (dwell-time lines). */
-function TileView({ t, aside, children }: { t: Tile; aside?: ReactNode; children?: ReactNode }) {
-  if (t.kind === "img") {
-    return (
-      <article className="v2-tile">
-        <Link className={`v2-tile-media${t.crop ? " crop" : ""}`} to={t.href} aria-label={`${t.title} case study`}><img src={t.img} alt={t.alt} loading="lazy" /></Link>
-        <TileMeta title={t.title} sub={t.sub} aside={aside} />
-        {children}
-      </article>
-    );
-  }
-  if (t.kind === "stat") {
-    return (
-      <article className="v2-tile">
-        <div className="v2-tile-card paper">
-          <span className="v2-mono">{t.label}</span>
-          <span style={{ fontSize: 44, fontWeight: 500, letterSpacing: "-0.03em", lineHeight: 1 }}>
-            {t.stat}<span style={{ display: "block", fontSize: 15, fontWeight: 400, letterSpacing: 0, color: "var(--muted)", marginTop: 8 }}>{t.statSub}</span>
-          </span>
-        </div>
-        <TileMeta title={t.title} sub={t.sub} aside={aside} />
-        {children}
-      </article>
-    );
-  }
-  return (
-    <article className="v2-tile">
-      <Link className={`v2-tile-card ${t.tone}`} to={t.href}>
-        <span className="v2-mono" style={t.tone === "dark" ? { color: "#8B949E" } : undefined}>{t.label}</span>
-        <span className="t">{t.text}</span>
-      </Link>
-      <TileMeta title={t.title} sub={t.sub} aside={aside} />
-      {children}
-    </article>
-  );
-}
-
-const DWELL_T1 = 1; // seconds of attention before a tile opens one line
-const DWELL_T2 = 3; // …and before it adds the result and a way in
-
 /**
- * Selected work, with dwell time: whatever you linger on gets a little more room. Attention is hover or
- * keyboard focus where there's a pointer, and "crossing the middle of the screen" on touch devices.
- * The two tiles opened most recently stay open (the one you're on always opens at 1 s), so the grid
- * never fills up.
+ * Selected work, right after the hero: a two-column masonry of animated covers (16:9, uncropped).
+ * Caption row 1: what the project achieved + context. Row 2: quiet tags. Hover/focus unfolds the impact.
  */
 function SelectedWork() {
-  const [dw, setDw] = useState<number[]>(() => WORK.map(() => 0));
-  const [cur, setCur] = useState(-1);
-  const [recent, setRecent] = useState<number[]>([]); // opened tiles, most recent first
-  const grid = useRef<HTMLDivElement>(null);
-
-  // Count tenths of a second while a tile has attention.
-  useEffect(() => {
-    if (cur < 0) return;
-    const t = window.setInterval(() => setDw((d) => d.map((v, i) => (i === cur ? Math.round((v + 0.1) * 10) / 10 : v))), 100);
-    return () => clearInterval(t);
-  }, [cur]);
-
-  // A tile that crosses the first threshold moves to the front of the open list.
-  useEffect(() => {
-    if (cur < 0 || dw[cur] < DWELL_T1 || recent[0] === cur) return;
-    setRecent((r) => [cur, ...r.filter((x) => x !== cur)].slice(0, 2));
-  }, [cur, dw, recent]);
-
-  // Touch: the tile crossing the middle band of the screen has attention.
-  useEffect(() => {
-    const el = grid.current;
-    if (!el || !("IntersectionObserver" in window) || !window.matchMedia?.("(hover: none)").matches) return;
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        const i = Number((e.target as HTMLElement).dataset.i);
-        if (e.isIntersecting) setCur(i);
-        else setCur((c) => (c === i ? -1 : c));
-      });
-    }, { rootMargin: "-40% 0px -40% 0px" });
-    el.querySelectorAll("[data-i]").forEach((n) => io.observe(n));
-    return () => io.disconnect();
-  }, []);
-
-  const ranked = dw.map((d, i) => [d, i] as const).sort((a, b) => b[0] - a[0]);
-  const open = recent;
-  const top = ranked[0][0] >= DWELL_T2 ? WORK[ranked[0][1]] : null;
-  const next = top ? WORK.find((t) => t.code === DWELL_NEXT[top.code]) : null;
-  const leave = (i: number) => setCur((c) => (c === i ? -1 : c));
-
   return (
     <section id="work" className="v2-wrap" aria-label="Selected work">
       <div className="v2-section">
         <div className="v2-label-col">
           <h2 className="v2-h2">Selected work</h2>
-          <p style={{ fontSize: 15, lineHeight: 1.6 }}>Projects across engineering, research and strategy. Linger on one and it tells you a little more.</p>
+          <p style={{ fontSize: 15, lineHeight: 1.6 }}>Four projects, each shown as a short loop of the moment that mattered. Hover a cover for the outcome.</p>
         </div>
-        <div className="v2-main-col" style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-          <div className="v2-tiles v2-dwell" ref={grid} data-any={open.length > 0}>
-            {WORK.map((t, i) => {
-              const d = dw[i];
-              const lvl = open.includes(i) ? (d >= DWELL_T2 ? 2 : 1) : 0;
-              const lines = DWELL[t.code];
-              const href = t.kind === "stat" ? null : t.href;
-              const ring = { "--p": Math.min(100, Math.round((d / DWELL_T2) * 100)), opacity: cur === i && d > 0.2 && d < DWELL_T2 ? 1 : 0 } as React.CSSProperties;
-              return (
-                <div
-                  key={t.code} data-i={i} data-lvl={lvl} className="v2-dwt"
-                  onMouseEnter={() => setCur(i)} onMouseLeave={() => leave(i)}
-                  onFocus={() => setCur(i)} onBlur={() => leave(i)}
-                >
-                  <TileView t={t} aside={<span className="v2-dwring" aria-hidden="true" style={ring} />}>
-                    {lines && (
-                      // Always rendered; the grid rows ease from 0fr to 1fr so the tile grows instead of jumping.
-                      <div className="v2-dwx" data-open={lvl >= 1} aria-hidden={lvl < 1}>
-                        <div>
-                          <div className="v2-dwpad">
-                            <p className="v2-dwmore">{lines[0]}</p>
-                            <div className="v2-dwx" data-open={lvl >= 2} aria-hidden={lvl < 2}>
-                              <div>
-                                <p className="v2-dwmore v2-dwpad2">
-                                  <span style={{ color: "var(--ink)", fontWeight: 500 }}>{lines[1]}</span>
-                                  {href && <> <Link className="v2-dwlink" to={href} tabIndex={lvl >= 2 ? undefined : -1}>Read the case →</Link></>}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </TileView>
-                </div>
-              );
-            })}
+        <div className="v2-main-col" style={{ display: "flex", flexDirection: "column", gap: 40 }}>
+          <div className="v2-cv-grid">
+            {COVERS.map((col, ci) => (
+              <div className="v2-cv-col" key={ci}>
+                {col.map((c) => (
+                  <Link key={c.code} className="v2-cv" to={c.href}>
+                    <CoverVideo c={c} />
+                    <span className="v2-cv-cap">
+                      <span className="v2-cv-t1"><span className="v2-cv-title">{c.title}</span><span className="v2-cv-ctx">{c.ctx}</span></span>
+                      <span className="v2-qtags"><span>{c.cat}</span><span>{c.role}</span></span>
+                    </span>
+                    <span className="v2-cv-hov">{c.impact}</span>
+                  </Link>
+                ))}
+              </div>
+            ))}
           </div>
-          <p className="v2-dwsug" aria-live="polite" data-on={!!(top && next)}>
-            {top && next ? `You spent a while on ${top.title}. If that’s your kind of problem, ${next.title} is its closest relative.` : ""}
-          </p>
+          <NotAll />
         </div>
       </div>
     </section>
@@ -322,11 +284,15 @@ export default function HomeV2() {
         <meta property="og:description" content={DESC} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={SITE_URL} />
-        <meta property="og:image" content={`${SITE_URL}/v2/avatar.jpg`} />
+        <meta property="og:image" content={`${SITE_URL}/og-image.png`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:alt" content="Sumit Nayyar — Product Designer &amp; Builder" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={TITLE} />
         <meta name="twitter:description" content={DESC} />
-        <meta name="twitter:image" content={`${SITE_URL}/v2/avatar.jpg`} />
+        <meta name="twitter:image" content={`${SITE_URL}/og-image.png`} />
       </Helmet>
       {view ? (
         <Letter />
@@ -334,8 +300,8 @@ export default function HomeV2() {
         // Fades in while the dock finishes morphing back.
         <div className="v2-fade-in">
           <Hero />
-          <FieldNote />
           <SelectedWork />
+          <FieldNote />
           <Approach />
         </div>
       )}
