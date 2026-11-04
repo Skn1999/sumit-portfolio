@@ -12,7 +12,7 @@ const IndexContent = () => {
   return (
     <Layout>
       <SEO
-        title="Sumit Nayyar | Product Designer & Design Engineer"
+        title="Sumit Nayyar | Product Designer & Builder"
         rawTitle
         description="Helsinki-based Product Designer and Behavioral Science Researcher, bridging HCI research and enterprise B2B SaaS execution."
         path="/"

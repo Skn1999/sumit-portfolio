@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>YOU cover</title>
+<link rel="stylesheet" href="base.css">
+<style>
+#stage{background:#04090C;color:#E8F1F4}
+.glow{position:absolute;border-radius:50%;filter:blur(2px)}
+.phone{position:absolute;left:363px;top:26px;width:234px;height:488px;border-radius:40px;background:#0B0F12;box-shadow:0 0 0 1.5px #39444B,0 40px 80px -20px rgba(0,0,0,.8),0 0 60px -10px rgba(60,190,210,.25)}
+.scr{position:absolute;left:8px;top:8px;right:8px;bottom:8px;border-radius:33px;overflow:hidden;background:#EDEFF5;color:#0D1117}
+.island{position:absolute;left:50%;top:9px;width:70px;height:20px;margin-left:-35px;border-radius:12px;background:#000;z-index:30}
+.sb{position:absolute;left:0;right:0;top:0;height:36px;display:flex;justify-content:space-between;align-items:center;padding:0 22px 0 26px;font-size:12px;font-weight:700;z-index:25}
+.sb i{font-style:normal;letter-spacing:1px;font-size:10px}
+.layer{position:absolute;inset:0}
+#home{background:linear-gradient(160deg,#C9C3F2,#F2C9DA 60%,#F7E2C8)}
+.grid{position:absolute;left:18px;right:18px;top:52px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px 12px}
+.app{height:40px;border-radius:11px;position:relative}
+.app small{position:absolute;left:-6px;right:-6px;top:43px;text-align:center;font-size:7.5px;color:#1F2328}
+.dock{position:absolute;left:12px;right:12px;bottom:12px;height:58px;border-radius:22px;background:rgba(255,255,255,.4);display:flex;justify-content:space-around;align-items:center}
+.dock .app{width:40px}
+#wx{background:linear-gradient(180deg,#3E8EEA,#7CC0F5);color:#fff;transform-origin:36px 72px}
+#wx .city{position:absolute;left:0;right:0;top:64px;text-align:center;font-size:15px;font-weight:600}
+#wx .deg{position:absolute;left:0;right:0;top:82px;text-align:center;font-size:64px;font-weight:300;letter-spacing:-.04em}
+#wx .cond{position:absolute;left:0;right:0;top:164px;text-align:center;font-size:12px;opacity:.9}
+#wx .hr{position:absolute;left:14px;right:14px;top:200px;height:76px;border-radius:16px;background:rgba(255,255,255,.18);display:flex;justify-content:space-around;align-items:center;font-size:10px;text-align:center}
+#feed{background:#fff;transform-origin:36px 72px}
+#feed .hd{box-sizing:border-box;position:absolute;left:0;right:0;top:0;height:66px;background:#fff;z-index:2;padding:36px 14px 0;display:flex;justify-content:space-between;align-items:center}
+#feed .hd b{font-size:16px;font-weight:700;letter-spacing:-.01em}
+#feed .hd .ic{display:flex;gap:12px;align-items:center;position:relative}
+#feed .hd svg{width:17px;height:17px;fill:none;stroke:#0D1117;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#feed .dm{position:absolute;right:-6px;top:-6px;min-width:14px;height:14px;border-radius:7px;background:#FF3040;color:#fff;font-size:8.5px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 3px}
+#col{position:absolute;left:0;right:0;top:66px}
+.stories{display:flex;gap:10px;padding:6px 12px 10px;border-bottom:1px solid #EFEFEF}
+.st{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:7.5px;color:#262626}
+.st i{box-sizing:border-box;display:block;width:44px;height:44px;border-radius:50%;padding:2px;background:linear-gradient(45deg,#F9CE34,#EE2A7B,#6228D7)}
+.st i b{box-sizing:border-box;display:block;width:100%;height:100%;border-radius:50%;border:2.5px solid #fff}
+.post{padding:0 0 8px}
+.post .who{display:flex;gap:8px;align-items:center;font-size:10px;font-weight:700;padding:8px 12px}
+.post .who i{width:24px;height:24px;border-radius:50%;box-shadow:0 0 0 1.5px #fff,0 0 0 2.5px #EE2A7B}
+.post .who em{margin-left:auto;font-style:normal;color:#262626;letter-spacing:1px}
+.post .img{height:200px}
+.post .act{display:flex;gap:12px;padding:8px 12px 4px}
+.post .act svg{width:17px;height:17px;fill:none;stroke:#0D1117;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.post .act svg:last-child{margin-left:auto}
+.post .lk{font-size:9px;font-weight:700;padding:0 12px}
+.post .bar{height:6px;border-radius:3px;background:#EFEFEF;width:62%;margin:5px 12px 0}
+#nudge{position:absolute;left:8px;right:8px;top:40px;border-radius:20px;background:rgba(250,251,252,.985);box-shadow:0 16px 40px -10px rgba(0,0,0,.45);padding:12px 12px 10px;z-index:28}
+#nudge .t{display:flex;align-items:center;gap:8px;font-size:10px;color:#57606A}
+#nudge .orb{width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#A9F0E8,#2AA7B8 60%,#145E78)}
+#nudge p{margin:8px 0 10px;font-size:12.5px;line-height:1.35;font-weight:600;color:#0D1117}
+#nudge .b{display:flex;gap:6px}
+#nudge .b span{flex:1;height:30px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+#touch{position:absolute;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;background:rgba(255,255,255,.35);border:2px solid rgba(255,255,255,.95);z-index:45;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+.cap{position:absolute;left:70px;width:250px}
+.cap .mono{font-size:10px;color:#6FC7D2}
+.cap b{display:block;font-size:26px;line-height:1.15;font-weight:700;letter-spacing:-.02em;margin-top:8px}
+#rh{position:absolute;left:640px;top:196px;width:250px}
+#rh .mono{font-size:9px;color:#7E8C93}
+#rh svg{display:block;margin-top:10px}
+</style></head>
+<body><div id="stage">
+  <div class="glow" style="left:-260px;top:250px;width:1100px;height:900px;background:radial-gradient(closest-side,rgba(35,120,140,.35),rgba(4,9,12,0) 70%)"></div>
+  <div class="glow" style="left:420px;top:-420px;width:900px;height:800px;background:radial-gradient(closest-side,rgba(30,90,110,.28),rgba(4,9,12,0) 70%)"></div>
+
+  <div class="cap" id="c0" style="top:206px"><span class="mono">Intent</span><b>Reply to one message.</b></div>
+  <div class="cap" id="c1" style="top:206px"><span class="mono">Drift</span><b id="drift">+0 min of scrolling</b></div>
+  <div class="cap" id="c2" style="top:206px"><span class="mono">YOU</span><b>A nudge at the moment of drift.</b></div>
+
+  <div id="rh"><span class="mono">App switches / min · rhythm, not content</span>
+    <svg width="250" height="110" viewBox="0 0 250 110"><path d="M0 100 H250" stroke="#1E2A30"/><path id="rline" fill="none" stroke="#6FC7D2" stroke-width="2" stroke-linejoin="round"/><circle id="rdot" r="5" fill="#F7B955"/></svg>
+  </div>
+
+  <div class="phone"><div class="island"></div><div class="scr">
+    <div class="sb"><span id="clk">9:41</span><i>●●● ▮</i></div>
+    <div class="layer" id="home">
+      <div class="grid" id="grid"></div>
+      <div class="dock"><div class="app" style="background:#34C759"></div><div class="app" style="background:#0A84FF"></div><div class="app" style="background:#FF9F0A"></div><div class="app" style="background:#5E5CE6"></div></div>
+    </div>
+    <div class="layer" id="wx"><div class="city">Trento</div><div class="deg">18°</div><div class="cond">Sunny · H 21° L 9°</div>
+      <div class="hr"><div>Now<br><b style="font-size:15px">18°</b></div><div>11<br><b style="font-size:15px">19°</b></div><div>12<br><b style="font-size:15px">20°</b></div><div>13<br><b style="font-size:15px">21°</b></div><div>14<br><b style="font-size:15px">21°</b></div></div></div>
+    <div class="layer" id="feed"><div class="hd"><b>Instagram</b><span class="ic"><svg viewBox="0 0 20 20"><path d="M10 17s-6.5-4-6.5-8.3A3.5 3.5 0 0 1 10 6.6a3.5 3.5 0 0 1 6.5 2.1C16.5 13 10 17 10 17z"/></svg><svg viewBox="0 0 20 20"><path d="M17.5 3 2.5 9l6 2.3L11 17.5z M8.5 11.3 17.5 3"/></svg><span class="dm">1</span></span></div><div id="col"></div></div>
+    <div id="nudge"><div class="t"><span class="orb"></span><span><b style="color:#0D1117">YOU</b> · now</span></div>
+      <p>You opened Instagram to reply to one message, 23 minutes ago. Back to your plan?</p>
+      <div class="b"><span id="nb" style="background:#0D1117;color:#fff">Back to plan</span><span style="background:#EAECEF">5 more min</span></div></div>
+  </div></div>
+  <div id="touch"></div>
+  <div class="grain light"></div>
+</div>
+<script src="engine.js"></script>
+<script>
+var APPS = ['#3E8EEA', '#FF453A', '#30D158', '#FFD60A', '#BF5AF2', '#64D2FF', '#FF9F0A', '#FF375F', '#8E8E93', '#32ADE6', '#AC8E68', '#5E5CE6', '#FF6482', '#66D4CF', '#FFCC00', '#0A84FF'];
+var NAMES = ['Instagram', 'Calendar', 'Messages', 'Notes', 'Podcasts', 'Maps', 'Photos', 'Music', 'Settings', 'Mail', 'Books', 'Health', 'Social', 'Fitness', 'Wallet', 'Files'];
+var g = document.getElementById('grid');
+APPS.forEach(function (c, i) { var a = document.createElement('div'); a.className = 'app'; a.style.background = i === 0 ? 'linear-gradient(45deg,#F9CE34 0%,#EE2A7B 55%,#6228D7 100%)' : c; a.innerHTML = '<small>' + NAMES[i] + '</small>'; g.appendChild(a); });
+var PC = ['#FAD4C0', '#C9E4F5', '#D8F0C8', '#F2D2EC', '#FFE7A3', '#CFD4FF', '#BFEDE6', '#F8CACA'];
+var col = document.getElementById('col');
+var html = '<div class="stories">' + ['Your story','mira.k','dan_runs','lena.s'].map(function (n, k) { return '<span class="st"><i><b style="background:' + PC[(k + 2) % 8] + '"></b></i>' + n + '</span>'; }).join('') + '</div>';
+for (var i = 0; i < 14; i++) html += '<div class="post"><div class="who"><i style="background:' + PC[(i + 3) % 8] + '"></i>' + ['mira.k', 'dan_runs', 'foodie.eu', 'lena.s', 'trips', 'catclub'][i % 6] + '<em>···</em></div><div class="img" style="background:' + PC[i % 8] + '"></div><div class="act"><svg viewBox=\"0 0 20 20\"><path d=\"M10 17s-6.5-4-6.5-8.3A3.5 3.5 0 0 1 10 6.6a3.5 3.5 0 0 1 6.5 2.1C16.5 13 10 17 10 17z\"/></svg><svg viewBox=\"0 0 20 20\"><path d=\"M3.5 10a6.5 6.5 0 1 1 3 5.5L3 16.5l1-3.4A6.5 6.5 0 0 1 3.5 10z\"/></svg><svg viewBox=\"0 0 20 20\"><path d=\"M17.5 3 2.5 9l6 2.3L11 17.5z M8.5 11.3 17.5 3\"/></svg><svg viewBox=\"0 0 20 20\"><path d=\"M5 3h10v14l-5-3.5L5 17z\"/></svg></div><div class="lk">' + (120 + i * 37) + ' likes</div><div class="bar"></div></div>';
+col.innerHTML = html;
+// rhythm signal
+function rhythm(x) { // x in seconds of the loop
+  var base = 0.12 + 0.04 * Math.sin(x * 9);
+  var drift = E.seg(x, 2.3, 4.4, E.inOut) * (1 - E.seg(x, 5.0, 6.2, E.inOut));
+  var jag = 0.12 * Math.sin(x * 23) + 0.08 * Math.sin(x * 41);
+  return E.clamp(base + drift * (0.68 + jag), 0, 1);
+}
+function scroll(t) { // feed offset, accelerating then braking at the nudge
+  var a = E.clamp(t - 2.3, 0, 2.7);
+  return a < 2.3 ? 60 * a * a : 60 * 2.3 * 2.3 + (a - 2.3) * 120 * E.seg(t, 4.6, 5.0, function (p) { return 1 - p; });
+}
+window.COVER = { dur: 8.5, poster: 5.0, frame: function (t) {
+  // app layers
+  E.css('#wx', { display: 'none' });
+
+  var fIn = E.seg(t, 0.75, 1.15, E.out), fOut = E.seg(t, 5.85, 6.25, E.inOut);
+  E.css('#feed', { opacity: fIn * (1 - fOut), transform: 'scale(' + E.lerp(0.18, 1, fIn) * (1 - 0.1 * fOut) + ')' });
+  E.css('#col', { transform: 'translateY(' + (-scroll(t)) + 'px)' });
+  var nIn = E.seg(t, 4.55, 5.05, E.back), nOut = E.seg(t, 5.8, 6.1, E.inOut);
+  E.css('#nudge', { opacity: Math.min(1, nIn * 1.5) * (1 - nOut), transform: 'translateY(' + ((1 - nIn) * -130 - nOut * 30) + 'px) scale(' + (1 - 0.06 * nOut) + ')' });
+  E.css('#nb', { transform: 'scale(' + (1 - 0.06 * Math.sin(Math.PI * E.seg(t, 5.55, 5.8))) + ')' });
+  // clock
+  var mins = Math.round(23 * E.seg(t, 2.4, 4.55, function (p) { return p; }));
+  var reset = t > 8.1;
+  var m = reset ? 0 : (t > 4.55 ? 23 : mins), hh = 9 * 60 + 41 + m;
+  E.set('#clk', Math.floor(hh / 60) + ':' + String(hh % 60).padStart(2, '0'));
+  E.set('#drift', '+' + (t > 4.55 ? 23 : mins) + ' min of scrolling');
+  // captions
+  var c1 = E.seg(t, 2.2, 2.5) * (1 - E.seg(t, 4.7, 5.0)), c2 = E.seg(t, 4.75, 5.1) * (1 - E.seg(t, 7.8, 8.2)), c0 = 1 - E.seg(t, 2.0, 2.3) + E.seg(t, 8.0, 8.4);
+  E.css('#c0', { opacity: Math.min(1, c0), transform: 'translateY(' + (1 - Math.min(1, c0)) * 8 + 'px)' });
+  E.css('#c1', { opacity: c1, transform: 'translateY(' + (1 - c1) * 8 + 'px)' });
+  E.css('#c2', { opacity: c2, transform: 'translateY(' + (1 - c2) * 8 + 'px)' });
+  // rhythm chart drawn up to now
+  var pts = [], W = 250, now = Math.min(t, 7.6);
+  for (var x = 0; x <= now; x += 0.05) pts.push((x / 7.6 * W).toFixed(1) + ' ' + (100 - rhythm(x) * 90).toFixed(1));
+  E.$('#rline').setAttribute('d', 'M' + pts.join(' L'));
+  var fade = 1 - E.seg(t, 7.9, 8.4);
+  E.css('#rh', { opacity: fade });
+  var nx = 4.6 / 7.6 * W, ny = 100 - rhythm(4.6) * 90;
+  E.$('#rdot').setAttribute('cx', nx); E.$('#rdot').setAttribute('cy', ny);
+  E.$('#rdot').setAttribute('opacity', E.seg(t, 4.6, 4.8));
+  // touch: tap weather, swipe, tap "Back to plan"
+  var tx, ty, to;
+  if (t < 1.4) { tx = E.lerp(560, 407, E.seg(t, 0.1, 0.5, E.inOut)); ty = E.lerp(420, 106, E.seg(t, 0.1, 0.5, E.inOut)); to = E.seg(t, 0.05, 0.25) * (1 - E.seg(t, 0.8, 1.0)); }
+  else if (t < 3) { tx = 480; ty = E.lerp(470, 300, E.seg(t, 1.95, 2.35, E.inOut)); to = E.seg(t, 1.8, 1.95) * (1 - E.seg(t, 2.3, 2.5)); }
+  else { tx = E.lerp(600, 437, E.seg(t, 5.15, 5.55, E.inOut)); ty = E.lerp(400, 177, E.seg(t, 5.15, 5.55, E.inOut)); to = E.seg(t, 5.1, 5.3) * (1 - E.seg(t, 5.9, 6.1)); }
+  var press = (t > 0.5 && t < 0.75) || (t > 5.55 && t < 5.8) ? 0.8 : 1;
+  E.css('#touch', { left: tx + 'px', top: ty + 'px', opacity: to, transform: 'scale(' + press + ')' });
+} };
+</script>
+</body></html>

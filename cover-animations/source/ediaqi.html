@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><title>EDIAQI cover</title>
+<link rel="stylesheet" href="base.css">
+<style>
+/* The in-room display, rebuilt from the Italian prototype. Designed at the prototype's own scale (771 px wide), then scaled down. */
+#bg{position:absolute;inset:0}
+#dev *{box-sizing:border-box}
+#dev{position:absolute;left:0;top:0;width:771px;height:1040px;transform-origin:0 0;border-radius:44px;overflow:hidden;
+  box-shadow:0 60px 120px -50px rgba(20,60,45,.45),0 0 0 2px rgba(13,17,23,.06)}
+.P{font-family:'Poppins','Inter',sans-serif}
+.hd{position:absolute;left:40px;right:40px;top:44px;display:flex;justify-content:space-between;align-items:flex-start}
+.hd b{display:block;font-family:'Poppins';font-weight:700;font-size:30px;letter-spacing:-.01em;color:#16202A}
+.hd small{display:block;font-size:15px;color:#6B7680;margin-top:2px}
+.pill{position:absolute;left:50%;top:48px;margin-left:-38px;width:76px;height:30px;border-radius:15px;background:rgba(34,176,125,.14);display:flex;align-items:center;justify-content:center;gap:7px}
+.pill i{width:10px;height:10px;border-radius:50%;background:#1FA572}
+.pill svg{width:14px;height:14px;stroke:#1FA572;fill:none;stroke-width:2;stroke-linecap:round}
+.time{font-size:26px;font-weight:500;color:#4A5560;font-variant-numeric:tabular-nums;margin-top:4px}
+#face{position:absolute;left:300px;top:118px;width:170px;height:170px}
+.bub{position:absolute;top:150px;background:#fff;border-radius:18px;padding:16px 20px;font-size:18px;line-height:1.35;color:#16202A;box-shadow:0 10px 30px -14px rgba(13,17,23,.35);white-space:nowrap}
+.bub.r{left:500px}.bub.l{right:500px}
+.ttl{position:absolute;left:30px;right:30px;top:318px;text-align:center;font-family:'Poppins';font-weight:800;font-size:62px;line-height:1.05;letter-spacing:-.03em}
+.sub{position:absolute;left:0;right:0;top:400px;text-align:center;font-size:23px;color:#3B4650}
+.L{position:absolute;left:0;right:0;top:0;bottom:0}
+/* readings card */
+.rc{position:absolute;background:rgba(255,255,255,.75);border:2px solid rgba(13,17,23,.06);border-radius:22px;padding:22px 24px}
+.rc .k{font-size:15px;font-weight:600;letter-spacing:.08em;color:#5B6670;display:flex;align-items:center;gap:10px}
+.rc .k svg{width:20px;height:20px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.rc .v{font-family:'Poppins';font-weight:700;font-size:40px;letter-spacing:-.02em;color:#16202A;margin-top:12px;font-variant-numeric:tabular-nums}
+.rc .v small{font-family:'Inter';font-weight:500;font-size:16px;color:#6B7680;margin-left:4px}
+/* alert */
+.co2{position:absolute;left:40px;right:40px;top:470px;height:126px;border-radius:24px;border:3px solid #F0A12C;background:rgba(255,255,255,.55);display:flex;align-items:center;padding:0 32px;gap:14px}
+.co2 .n{font-family:'Poppins';font-weight:800;font-size:58px;letter-spacing:-.03em;color:#E07A10;font-variant-numeric:tabular-nums}
+.co2 .u{font-size:22px;color:#E07A10;margin-top:14px}
+.co2 .r{margin-left:auto;text-align:right}
+.co2 .r b{display:block;font-family:'Poppins';font-weight:700;font-size:19px;color:#E07A10}
+.co2 .r span{font-size:14px;color:#E58A2A}
+.az{position:absolute;left:0;right:0;top:630px;text-align:center;font-family:'Poppins';font-weight:600;font-size:16px;letter-spacing:.16em;color:#E07A10}
+.ac{position:absolute;left:40px;right:40px;height:60px;border-radius:16px;background:rgba(255,255,255,.6);border:2px solid rgba(240,161,44,.25);display:flex;align-items:center;padding:0 30px;font-size:19px;color:#16202A}
+.ac::before{content:"";width:8px;height:8px;border-radius:50%;background:#E07A10;margin-right:16px}
+.btn{position:absolute;height:76px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:21px}
+.btn.p{font-family:'Poppins';font-weight:700;color:#fff}
+.btn.s{background:rgba(255,255,255,.7);border:2px solid rgba(13,17,23,.08);color:#3B4650}
+/* recovery */
+.dim{position:absolute;left:170px;right:170px;top:480px;height:104px;border-radius:20px;border:2px solid rgba(18,140,190,.35);background:rgba(255,255,255,.7);display:flex;align-items:center;gap:22px;padding:0 28px}
+.dim svg{width:38px;height:38px;stroke:#0A8DBF;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.dim b{display:block;font-family:'Poppins';font-weight:700;font-size:20px;color:#0A8DBF}
+.dim span{font-size:16px;color:#4A5560}
+.prog{position:absolute;left:170px;right:170px;top:616px;height:12px;border-radius:6px;background:rgba(18,140,190,.18);overflow:hidden}
+.prog i{display:block;height:100%;background:#12A8D6;border-radius:6px}
+.mini{position:absolute;top:670px;width:214px;height:104px;border-radius:18px;background:rgba(255,255,255,.7);border:2px solid rgba(13,17,23,.06);text-align:center;padding-top:20px}
+.mini small{display:block;font-size:13px;letter-spacing:.08em;color:#5B6670}
+.mini b{font-family:'Poppins';font-weight:700;font-size:30px;color:#0A8DBF;font-variant-numeric:tabular-nums}
+.mini b span{font-family:'Inter';font-weight:500;font-size:14px;color:#6B7680;margin-left:3px}
+.seg{position:absolute;left:40px;right:40px;bottom:44px;height:66px;border-radius:16px;border:2px solid rgba(13,17,23,.08);background:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;font-size:20px;color:#3B4650}
+.lg{position:absolute;left:40px;right:40px;top:780px;height:132px;border-radius:20px;border:2px solid rgba(13,17,23,.06);background:rgba(255,255,255,.6);padding:16px 16px 0}
+.lg .h{text-align:center;font-family:'Poppins';font-weight:600;font-size:13px;letter-spacing:.16em;color:#16202A;margin-bottom:10px}
+.lg .g{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.lg .g span{height:62px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:12px;font-weight:600}
+.lg .g i{width:20px;height:20px;border-radius:50%}
+#touch{position:absolute;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:rgba(13,17,23,.18);border:2px solid rgba(255,255,255,.95);z-index:40}
+#rip{position:absolute;border-radius:50%;border:2px solid #fff;z-index:39}
+</style></head>
+<body><div id="stage">
+  <div id="bg"></div>
+  <div id="dev">
+    <div class="hd"><div><b>Aula 2B</b><small>Piano 2, Edificio A</small></div><span class="time" id="clock">11:20</span></div>
+    <div class="pill"><i></i><svg viewBox="0 0 16 16"><path d="M4.5 4.5a5 5 0 0 0 0 7M11.5 4.5a5 5 0 0 1 0 7M6.6 6.6a2 2 0 0 0 0 2.8M9.4 6.6a2 2 0 0 1 0 2.8"/></svg></div>
+    <svg id="face" viewBox="0 0 170 170"><defs><radialGradient id="fg" cx="40%" cy="35%" r="70%"><stop offset="0" id="fg0"/><stop offset="1" id="fg1"/></radialGradient></defs>
+      <circle cx="85" cy="85" r="85" fill="url(#fg)"/><circle cx="58" cy="76" r="10" fill="#fff"/><circle cx="112" cy="76" r="10" fill="#fff"/><path id="mouth" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+      <g id="warn" opacity="0"><circle cx="150" cy="22" r="20" fill="#fff"/><circle cx="150" cy="22" r="14" fill="none" stroke="#F0A12C" stroke-width="3"/><path d="M150 14v10M150 29v.5" stroke="#F0A12C" stroke-width="3.4" stroke-linecap="round"/></g></svg>
+    <div class="bub r" id="b0">Tutto ok qui!</div>
+    <div class="bub r" id="b1">Uffa! Apri le<br>finestre!</div>
+    <div class="bub l" id="b2">Dai, sta<br>migliorando!</div>
+    <div class="ttl" id="t0">Aria buona</div>
+    <div class="ttl" id="t1">Serve cambiare aria</div>
+    <div class="ttl" id="t2" style="font-size:52px;top:306px">Stiamo monitorando<br>il recupero</div>
+    <div class="sub" id="s0">La qualità dell’aria in questa stanza è stabile</div>
+    <div class="sub" id="s1">La CO2 è alta in questa stanza</div>
+    <div class="sub" id="s2" style="top:430px;color:#16202A">La qualità dell’aria sta migliorando</div>
+
+    <div class="L" id="L0">
+      <div class="rc" style="left:40px;top:470px;width:333px;height:132px"><div class="k"><svg viewBox="0 0 20 20" stroke="#1FA572"><path d="M3 7h9a2.5 2.5 0 1 0-2.5-2.5M3 11h12a2.5 2.5 0 1 1-2.5 2.5"/></svg>CO2</div><div class="v"><span id="n0">680</span><small>ppm</small></div></div>
+      <div class="rc" style="left:398px;top:470px;width:333px;height:132px"><div class="k"><svg viewBox="0 0 20 20" stroke="#1FA572"><path d="M10 3v9.5a3 3 0 1 0 0 0"/><circle cx="10" cy="15" r="2.6"/></svg>TEMPERATURA</div><div class="v">21<small>°C</small></div></div>
+      <div class="rc" style="left:40px;top:622px;width:333px;height:132px"><div class="k"><svg viewBox="0 0 20 20" stroke="#1FA572"><path d="M10 3c3 4 5 6.5 5 9a5 5 0 0 1-10 0c0-2.5 2-5 5-9z"/></svg>UMIDITÀ</div><div class="v">46<small>%</small></div></div>
+      <div class="rc" style="left:398px;top:622px;width:333px;height:132px"><div class="k"><svg viewBox="0 0 20 20" stroke="#1FA572"><path d="M3 7h9a2.5 2.5 0 1 0-2.5-2.5M3 11h12a2.5 2.5 0 1 1-2.5 2.5"/></svg>TVOC</div><div class="v" style="font-size:30px">basso</div></div>
+      <div class="lg"><div class="h">LEGENDA QUALITÀ ARIA</div><div class="g"><span style="background:#E3F6EC;color:#12A06B;box-shadow:inset 0 0 0 3px #1FA572"><i style="background:#1FA572"></i>Buona</span><span style="background:#EEF6DA;color:#6E9E2A"><i style="background:#8CC63F"></i>Accettabile</span><span style="background:#FBF1D2;color:#B8901A"><i style="background:#F2C230"></i>Mediocre</span><span style="background:#FBEBD6;color:#C4790F"><i style="background:#F0A12C"></i>Scadente</span><span style="background:#FBE1DE;color:#C2393D"><i style="background:#E5484D"></i>Insalubre</span><span style="background:#F8DCDC;color:#B0262B"><i style="background:#D12F35"></i>Pessima</span></div></div>
+      <div class="seg">Segnala un problema</div>
+    </div>
+
+    <div class="L" id="L1">
+      <div class="co2"><span class="n" id="n1">1250</span><span class="u">ppm CO2</span><span class="r"><b>La CO2 è alta in questa stanza</b><span>Probabilmente ci sono troppe persone</span></span></div>
+      <div class="az">AZIONE CONSIGLIATA</div>
+      <div class="ac" style="top:668px">Apri le finestre per alcuni minuti</div>
+      <div class="ac" style="top:740px">Se possibile, fai una breve pausa</div>
+      <div class="btn p" id="go" style="left:40px;width:333px;bottom:44px;background:#E37E12">Ho aperto le finestre</div>
+      <div class="btn s" style="left:398px;width:333px;bottom:44px">Segnala un problema</div>
+    </div>
+
+    <div class="L" id="L2">
+      <div class="dim"><svg viewBox="0 0 40 40"><path d="M4 12l10 10 6-6 14 14M34 22v8h-8"/></svg><div><b>CO2 in diminuzione</b><span>Continua così per qualche minuto</span></div></div>
+      <div class="prog"><i id="fill"></i></div>
+      <div class="mini" style="left:40px"><small>CO2</small><b><span id="n2" style="font-family:'Poppins';font-weight:700;font-size:30px;color:#0A8DBF;margin:0">1250</span><span>ppm</span></b></div>
+      <div class="mini" style="left:278px"><small>TEMPERATURA</small><b>20<span>°C</span></b></div>
+      <div class="mini" style="left:517px"><small>UMIDITÀ</small><b>47<span>%</span></b></div>
+      <div class="btn p" style="left:40px;width:333px;bottom:44px;background:#0B8FC0">Va meglio</div>
+      <div class="btn s" style="left:398px;width:333px;bottom:44px">Non migliora</div>
+    </div>
+  </div>
+  <div id="rip"></div><div id="touch"></div>
+  <div class="grain"></div>
+</div>
+<script src="engine.js"></script>
+<script>
+var SC = 0.48, DX = (960 - 771 * SC) / 2, DY = (540 - 1040 * SC) / 2;
+E.css('#dev', { transform: 'translate(' + DX + 'px,' + DY + 'px) scale(' + SC + ')' });
+var S = [ // buona, cambiare aria, recupero — colours sampled from the prototype
+  { f0: '#2ED38E', f1: '#13A86B', t: '#12A06B', card: '#ECFAF3', page: '#DDF3E7' },
+  { f0: '#F8B43A', f1: '#E8860F', t: '#E07A10', card: '#FFF6E2', page: '#FBE8C8' },
+  { f0: '#2BC3EA', f1: '#0A9CCB', t: '#0A8DBF', card: '#EAF6FD', page: '#D7ECF8' }];
+function blend(key, w) { var r = [0, 0, 0]; S.forEach(function (s, i) { var h = E.hex(s[key]); for (var k = 0; k < 3; k++) r[k] += h[k] * w[i]; }); return 'rgb(' + r.map(Math.round).join(',') + ')'; }
+// timeline (s)
+var A_IN = [2.6, 3.2], R_IN = [5.6, 6.2], G_IN = [9.2, 9.8], TAP = 5.0, DUR = 12;
+function stage(x, y) { return [DX + x * SC, DY + y * SC]; }
+window.COVER = { dur: DUR, poster: 3.8, frame: function (t) {
+  var wa = E.seg(t, A_IN[0], A_IN[1], E.inOut) * (1 - E.seg(t, R_IN[0], R_IN[1], E.inOut));
+  var wr = E.seg(t, R_IN[0], R_IN[1], E.inOut) * (1 - E.seg(t, G_IN[0], G_IN[1], E.inOut));
+  var w = [Math.max(0, 1 - wa - wr), wa, wr];
+  E.css('#bg', { background: blend('page', w) });
+  E.css('#dev', { background: 'linear-gradient(180deg,' + blend('card', w) + ',#FFFFFF 140%)' });
+  E.$('#fg0').setAttribute('stop-color', blend('f0', w)); E.$('#fg1').setAttribute('stop-color', blend('f1', w));
+  var curve = 16 * w[0] - 14 * w[1] + 12 * w[2];
+  E.$('#mouth').setAttribute('d', 'M58 112 Q85 ' + (112 + curve) + ' 112 112');
+  E.$('#warn').setAttribute('opacity', w[1]);
+  var bump = 1 + 0.05 * Math.sin(Math.PI * E.seg(t, A_IN[0], A_IN[1] + 0.2)) + 0.05 * Math.sin(Math.PI * E.seg(t, R_IN[0], R_IN[1] + 0.2)) + 0.05 * Math.sin(Math.PI * E.seg(t, G_IN[0], G_IN[1] + 0.2));
+  E.css('#face', { transform: 'scale(' + bump + ')', transformOrigin: '85px 85px' });
+  [0, 1, 2].forEach(function (i) {
+    var o = E.clamp((w[i] - 0.4) / 0.3, 0, 1);
+    E.css('#t' + i, { opacity: o, color: S[i].t, transform: 'translateY(' + (1 - o) * 14 + 'px)' });
+    E.css('#s' + i, { opacity: o });
+    E.css('#L' + i, { opacity: o, transform: 'translateY(' + (1 - o) * 18 + 'px)' });
+    var bo = E.clamp((w[i] - 0.55) / 0.25, 0, 1);
+    E.css('#b' + i, { opacity: bo, transform: 'scale(' + (0.9 + 0.1 * bo) + ')', transformOrigin: i === 2 ? 'right center' : 'left center' });
+  });
+  // CO2: rises in the good screen, holds while the alert asks for action, falls during recovery
+  var co2 = t < 1.4 ? 680 : t < R_IN[1] ? E.lerp(680, 1250, E.seg(t, 1.4, 3.0, E.inOut)) : E.lerp(1250, 680, E.seg(t, R_IN[1], G_IN[0] + 0.2, E.inOut));
+  var c = String(Math.round(co2 / 10) * 10);
+  E.set('#n0', c); E.set('#n1', c); E.set('#n2', c);
+  E.css('#n0', { color: co2 > 900 ? '#E07A10' : '#16202A' });
+  E.css('#fill', { width: (E.seg(t, R_IN[1], G_IN[0], function (p) { return p; }) * 100) + '%' });
+  E.set('#clock', t > TAP + 0.2 && t < DUR - 0.3 ? '11:21' : '11:20');
+  // touch on "Ho aperto le finestre"
+  var tgt = stage(206, 1040 - 44 - 38), from = [820, 560];
+  var m = E.seg(t, TAP - 0.9, TAP - 0.15, E.inOut);
+  var tx = E.lerp(from[0], tgt[0], m), ty = E.lerp(from[1], tgt[1], m);
+  var to = E.seg(t, TAP - 1.0, TAP - 0.7) * (1 - E.seg(t, TAP + 0.4, TAP + 0.8));
+  var press = Math.sin(Math.PI * E.seg(t, TAP - 0.12, TAP + 0.12));
+  E.css('#touch', { left: tx + 'px', top: ty + 'px', opacity: to, transform: 'scale(' + (1 - 0.22 * press) + ')' });
+  E.css('#go', { transform: 'scale(' + (1 - 0.04 * press) + ')', filter: 'brightness(' + (1 - 0.1 * press) + ')' });
+  var rp = E.seg(t, TAP, TAP + 0.6), r = 18 + rp * 60;
+  E.css('#rip', { left: (tgt[0] - r) + 'px', top: (tgt[1] - r) + 'px', width: 2 * r + 'px', height: 2 * r + 'px', opacity: rp > 0 && rp < 1 ? (1 - rp) * 0.9 : 0 });
+} };
+</script>
+</body></html>

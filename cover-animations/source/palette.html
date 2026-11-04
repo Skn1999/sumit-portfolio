@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Intent to Palette cover</title>
+<link rel="stylesheet" href="base.css">
+<style>
+#stage{background:#F3F3F8;color:#1B1D2A}
+.serif{font-family:'Fraunces',Georgia,serif;font-weight:500}
+.in{position:absolute;left:58px;top:62px;width:384px;height:416px;background:#fff;border-radius:14px;box-shadow:0 1px 2px rgba(27,29,42,.06),0 24px 50px -28px rgba(40,44,90,.35);border:1px solid #E7E8F0;padding:24px}
+.in h1{margin:0;font-size:30px;line-height:1.08;letter-spacing:-.01em}
+.in h1 i{color:#5056C8}
+.lab{font-size:11px;color:#6B6F80;margin:18px 0 6px;font-weight:500}
+.ta{height:84px;border-radius:9px;background:#F6F7FA;border:1px solid #E3E5EE;padding:10px 12px;font-size:13px;line-height:1.45;color:#1B1D2A}
+.ta .ph{color:#A3A7B6}
+.caret{display:inline-block;width:1.5px;height:15px;background:#5056C8;vertical-align:-3px;margin-left:1px}
+.chips{display:flex;gap:8px}
+.chips span{flex:1;height:32px;border-radius:8px;border:1px solid #E3E5EE;display:flex;align-items:center;gap:8px;padding:0 10px;font-size:12px}
+.chips span.on{border-color:#5056C8;background:#F1F1FB}
+.chips i{width:12px;height:12px;border-radius:3px;border:1px solid #C9CCD8}
+.chips .on i{background:#5056C8;border-color:#5056C8}
+.drop{height:36px;border:1px dashed #D5D8E3;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11.5px;color:#6B6F80}
+.gen{margin-top:16px;height:36px;border-radius:8px;background:#5056C8;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:600}
+.gen svg{width:14px;height:14px}
+.out{position:absolute;left:478px;top:62px;width:424px}
+.name{display:flex;justify-content:space-between;align-items:flex-start;height:58px}
+.name h2{margin:0;font-size:24px;line-height:1.1}
+.name p{margin:4px 0 0;font-size:11px;color:#6B6F80}
+.fix{font-size:11px;font-weight:600;border:1px solid #D5D8E3;background:#fff;border-radius:7px;padding:6px 10px;white-space:nowrap}
+.sw{display:flex;gap:9px;margin-top:10px}
+.s{width:77px}
+.s b{display:block;height:70px;border-radius:9px;box-shadow:inset 0 0 0 1px rgba(27,29,42,.08)}
+.s small{display:block;font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;color:#6B6F80;margin-top:6px}
+.s span{font-size:11px;font-weight:600;font-variant-numeric:tabular-nums}
+.ghost b{background:#E9EAF1;box-shadow:none}
+.pv{margin-top:16px;height:196px;border-radius:12px;padding:20px 22px;position:relative;box-shadow:0 0 0 1px rgba(27,29,42,.08)}
+.pv .mono{font-size:8.5px;color:#8A8E9C}
+.pv h3{margin:8px 0 4px;font-size:24px}
+.pv p{margin:0;font-size:12px;max-width:290px}
+.btns{display:flex;gap:16px;align-items:center;margin-top:18px}
+.btns .p{height:36px;padding:0 16px;border-radius:9px;display:flex;align-items:center;font-size:12.5px;font-weight:600}
+.btns .l{font-size:12.5px;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.chip{position:absolute;right:18px;bottom:20px;font-size:10.5px;font-weight:600;border-radius:999px;padding:5px 10px;display:flex;gap:6px;align-items:center;white-space:nowrap}
+.toast{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);background:#1B1D2A;color:#fff;font-size:12px;border-radius:10px;padding:9px 14px;display:flex;gap:8px;align-items:center;white-space:nowrap;z-index:30}
+#cur{position:absolute;width:20px;height:24px;z-index:45}
+</style></head>
+<body><div id="stage">
+  <div class="in">
+    <h1 class="serif">Say what it should <i>feel</i> like.</h1>
+    <div class="lab">Intent</div>
+    <div class="ta" id="ta"><span class="ph" id="ph">Describe the feeling…</span><span id="typed"></span><span class="caret" id="caret"></span></div>
+    <div class="lab">Designing for</div>
+    <div class="chips"><span class="on"><i></i>Product UI</span><span><i></i>Visual / Brand</span></div>
+    <div class="lab">Reference images <span style="color:#A3A7B6">0/6</span></div>
+    <div class="drop">Drop or click to add</div>
+    <div class="gen" id="gen"><svg id="spark" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/></svg><span id="genl">Generate</span></div>
+  </div>
+  <div class="out">
+    <div class="name" id="name"><div><h2 class="serif" id="pn">Quiet Harbor</h2><p id="rat">Deep teal for trust, warm cream and peach to keep it human.</p></div><span class="fix" id="fix">Fix WCAG</span></div>
+    <div class="sw" id="sw"></div>
+    <div class="pv" id="pv"><span class="mono">Preview</span><h3 class="serif" id="pt">Welcome aboard</h3><p id="pp">Your first goal is ready. Let's set it up together.</p>
+      <div class="btns"><span class="p" id="pb">Get started</span><span class="l" id="pl">Learn more</span></div>
+      <span class="chip" id="chip"></span></div>
+  </div>
+  <div class="toast" id="toast"><span style="color:#7EE2A8">✓</span>Adjusted colors to meet WCAG AA</div>
+  <svg id="cur" viewBox="0 0 20 24"><path d="M2 2 L2 19 L6.5 15 L9.5 22 L12.5 20.7 L9.6 14 L16 14 Z" fill="#1B1D2A" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>
+  <div class="grain"></div>
+</div>
+<script src="engine.js"></script>
+<script>
+var TXT = 'Calm fintech onboarding — trustworthy, but warm and human.';
+var SW = [['Primary', '#2F5D62'], ['Surface', '#FBF6EF'], ['Text', '#1E2A2E'], ['Accent', '#E08E5A'], ['Success', '#5B8C6E']];
+var ACC2 = '#A9532A';
+var sw = document.getElementById('sw');
+SW.forEach(function (s, i) { var d = document.createElement('div'); d.className = 's'; d.id = 's' + i; d.innerHTML = '<b></b><small>' + s[0] + '</small><span></span>'; sw.appendChild(d); });
+var GREY = '#E9EAF1', GREY2 = '#D8DAE3';
+window.COVER = { dur: 9, poster: 5.4, frame: function (t) {
+  var reset = E.seg(t, 7.7, 8.3, E.inOut);           // 0 → 1 as the loop clears
+  // typing, then deleting on reset
+  var n = Math.floor(TXT.length * E.seg(t, 0.5, 2.3, function (p) { return p; }));
+  if (t > 7.6) n = Math.floor(TXT.length * (1 - E.seg(t, 7.6, 8.0, function (p) { return p; })));
+  E.set('#typed', TXT.slice(0, n));
+  E.css('#ph', { display: n ? 'none' : 'inline' });
+  var typing = (t > 0.5 && t < 2.3) || (t > 7.6 && t < 8.0);
+  var caretOn = typing ? 1 : (t > 2.6 && t < 7.6) ? 0 : (Math.floor(t * 2.2) % 2 === 0 ? 1 : 0);
+  E.css('#caret', { opacity: caretOn });
+  // generate button
+  var press = 1 - 0.04 * Math.sin(Math.PI * E.seg(t, 2.6, 2.8));
+  var loading = t > 2.75 && t < 3.25;
+  E.css('#gen', { transform: 'scale(' + press + ')', opacity: loading ? 0.85 : 1 });
+  E.set('#genl', loading ? 'Generating…' : 'Generate');
+  E.css('#spark', { transform: 'rotate(' + (loading ? (t - 2.75) * 540 : 0) + 'deg)' });
+  // palette name + swatches
+  var shown = E.seg(t, 3.15, 3.5) * (1 - reset);
+  E.css('#name', { opacity: shown, transform: 'translateY(' + (1 - shown) * 8 + 'px)' });
+  var fixOn = E.seg(t, 5.3, 5.5) * (1 - E.seg(t, 6.9, 7.2));
+  E.css('#fix', { opacity: fixOn, transform: 'scale(' + (1 - 0.06 * Math.sin(Math.PI * E.seg(t, 5.85, 6.05))) + ')', borderColor: t > 5.8 && t < 6.2 ? '#5056C8' : '#D5D8E3' });
+  var fixed = E.seg(t, 6.0, 6.5, E.inOut) * (1 - reset);
+  var acc = fixed > 0 ? E.mix(SW[3][1], ACC2, fixed) : SW[3][1];
+  SW.forEach(function (s, i) {
+    var p = E.seg(t, 3.25 + i * 0.12, 3.75 + i * 0.12, E.back);
+    var col = i === 3 ? acc : s[1];
+    var el = document.getElementById('s' + i), r = 1 - reset;
+    E.css(el.querySelector('b'), { background: p > 0 && r > 0.01 ? E.mix(GREY.replace('#', '#'), col, Math.min(1, p) * r) : GREY, transform: 'scale(' + (0.7 + 0.3 * Math.max(0, Math.min(1.1, p))) + ')' });
+    E.css(el.querySelector('small'), { opacity: 0.35 + 0.65 * Math.min(1, p) * r });
+    el.querySelector('span').textContent = (p > 0.2 && r > 0.5) ? (i === 3 && fixed > 0.5 ? ACC2 : s[1]).toUpperCase() : '';
+    // pulse the swatch when it paints the preview
+    var pulse = [4.55, 3.95, 4.15, 4.75, -1][i];
+    var pp = pulse > 0 ? Math.sin(Math.PI * E.seg(t, pulse, pulse + 0.3)) : 0;
+    if (i === 3) pp = Math.max(pp, Math.sin(Math.PI * E.seg(t, 6.0, 6.5)));
+    el.style.transform = 'translateY(' + (-6 * pp) + 'px)';
+  });
+  // preview painting
+  var r = 1 - reset;
+  var bg = E.seg(t, 3.95, 4.3) * r, tx = E.seg(t, 4.15, 4.5) * r, pr = E.seg(t, 4.55, 4.9) * r, lk = E.seg(t, 4.75, 5.1) * r;
+  E.css('#pv', { background: E.mix('#FFFFFF', SW[1][1], bg) });
+  E.css('#pt', { color: E.mix(GREY2, SW[2][1], tx) }); E.css('#pp', { color: E.mix(GREY2, '#4A555A', tx) });
+  E.css('#pb', { background: E.mix(GREY, SW[0][1], pr), color: E.mix('#B9BCC8', '#FFFFFF', pr) });
+  E.css('#pl', { color: lk > 0 ? E.mix(GREY2, acc, lk) : GREY2 });
+  // contrast chip on the link
+  var ch = E.seg(t, 5.15, 5.4) * (1 - reset);
+  var ok = fixed > 0.6;
+  E.$('#chip').innerHTML = ok ? '<b>Aa</b> 4.9 : 1 · WCAG AA ✓' : '<b>Aa</b> 2.4 : 1 · fails AA';
+  E.css('#chip', { opacity: ch, background: ok ? '#E3F2E9' : '#FBE4E1', color: ok ? '#11663F' : '#B4231A', transform: 'translateY(' + (1 - ch) * 6 + 'px)' });
+  // toast
+  var to = E.seg(t, 6.35, 6.6) * (1 - E.seg(t, 7.3, 7.6));
+  E.css('#toast', { opacity: to, transform: 'translateX(-50%) translateY(' + (1 - to) * 12 + 'px)' });
+  // cursor: Generate, then Fix WCAG
+  var cx, cy, co;
+  if (t < 4) { var m = E.seg(t, 2.0, 2.55, E.inOut); cx = E.lerp(330, 236, m); cy = E.lerp(520, 444, m); co = E.seg(t, 1.9, 2.1) * (1 - E.seg(t, 3.1, 3.4)); }
+  else { var m2 = E.seg(t, 5.3, 5.85, E.inOut); cx = E.lerp(760, 862, m2); cy = E.lerp(470, 84, m2); co = E.seg(t, 5.2, 5.4) * (1 - E.seg(t, 6.5, 6.8)); }
+  E.css('#cur', { left: cx + 'px', top: cy + 'px', opacity: co });
+} };
+</script>
+</body></html>

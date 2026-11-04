@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>A+ cover</title>
+<link rel="stylesheet" href="base.css">
+<style>
+/* Site palette only: paper, ink, muted, hairlines. A+ blue appears only inside A+'s own UI. */
+#stage{background:#F6F7F9;color:#0D1117}
+:root{--ink:#0D1117;--muted:#57606A;--rule:#E1E4EA;--chip:#EAECEF;--ap:#3D6FB0}
+.mono{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- the A+ page ---------- */
+.win{position:absolute;left:48px;top:58px;width:520px;height:424px;background:#fff;border:1px solid var(--rule);overflow:hidden;box-shadow:0 1px 0 rgba(13,17,23,.03),0 28px 56px -36px rgba(13,17,23,.28)}
+.bar{position:absolute;left:0;right:0;top:0;height:34px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:#fff;z-index:5}
+.bar .logo{font-weight:700;font-size:13px;color:var(--ap)}
+.body{position:absolute;left:0;right:0;top:34px;bottom:0;overflow:hidden}
+.side{position:absolute;left:0;top:0;width:196px;padding:14px 10px;border-right:1px solid var(--rule);background:#FBFBFC;height:640px}
+.it{position:relative;height:32px;display:flex;align-items:center;gap:10px;padding:0 10px;font-size:12.5px;color:#24292F;border-radius:4px;margin-bottom:3px}
+.it svg{width:15px;height:15px;flex:none;stroke:var(--ap);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.it.course{font-weight:700;font-size:13px;color:var(--ap)}
+.it .ext{margin-left:auto;font-size:11px;color:#8C959F}
+.it .extl{position:absolute;right:10px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.act{position:absolute;inset:0;border-radius:4px;background:var(--ap);z-index:-1}
+.actbar{position:absolute;left:0;top:6px;bottom:6px;width:3px;border-radius:2px;background:var(--ink)}
+.content{position:absolute;left:196px;right:0;top:0;padding:22px 26px;height:900px}
+.content h4{margin:0 0 4px;font-size:17px;font-weight:600;letter-spacing:-.01em}
+.content .sub{font-size:11px;color:var(--muted);margin-bottom:16px}
+.ln{height:7px;border-radius:4px;background:#EEF0F3;margin-bottom:9px}
+.blk{height:64px;border-radius:6px;background:#F3F4F6;margin:14px 0}
+#focus{position:absolute;pointer-events:none;border-radius:5px;z-index:6}
+#top{position:absolute;right:16px;bottom:14px;height:28px;width:112px;justify-content:center;border-radius:14px;background:var(--ink);color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;gap:6px;z-index:7}
+#key{position:absolute;left:48px;top:494px;display:flex;align-items:center;gap:10px}
+#key .cap{height:24px;min-width:40px;padding:0 9px;border:1px solid #C9CED6;border-bottom-width:2px;border-radius:5px;background:#fff;font-family:'Space Mono',monospace;font-size:10px;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+
+/* ---------- the ledger ---------- */
+.led{position:absolute;left:608px;top:58px;width:304px}
+.led .hd{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:10px;border-bottom:1px solid var(--ink)}
+.row{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;height:42px;border-bottom:1px solid var(--rule);font-size:12.5px;line-height:1.25}
+.row .n{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted)}
+.sev{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;height:20px;padding:0 7px;border-radius:10px;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.tally{position:relative;height:78px;margin-top:16px}
+.sq{position:absolute;top:0;width:14px;height:14px;background:var(--ink)}
+.tl{position:absolute;left:0;top:24px;font-size:20px;font-weight:600;letter-spacing:-.02em;white-space:nowrap}
+.tc{position:absolute;left:0;top:52px;white-space:nowrap}
+#head{position:absolute;left:608px;top:448px;width:304px;font-size:22px;font-weight:600;letter-spacing:-.025em;line-height:1.15}
+#head span{color:var(--muted);font-weight:500}
+svg#lead{position:absolute;inset:0;pointer-events:none;z-index:8}
+</style></head>
+<body><div id="stage">
+  <div class="win">
+    <div class="bar"><span class="mono" style="font-size:9px">plus.cs.aalto.fi / cs-a1110</span><span class="logo">A+</span></div>
+    <div class="body">
+      <div class="side" id="side">
+        <div class="it course"><svg viewBox="0 0 16 16"><path d="M2 7.5 8 2.5l6 5M3.5 6.5V14h9V6.5"/></svg>CS-A1110</div>
+        <div class="it" id="i1"><span class="act" id="act"></span><span class="actbar" id="actbar"></span><svg viewBox="0 0 16 16" id="i1svg"><path d="M3 2.5h7.5L13 5v8.5H3zM10.5 2.5V5H13"/></svg><span id="i1t">Course materials</span></div>
+        <div class="it" id="i2"><svg viewBox="0 0 16 16"><path d="M3 13.5V8M8 13.5V3M13 13.5V6"/></svg>Your points</div>
+        <div class="it" id="i3"><svg viewBox="0 0 16 16"><path d="M3 2.5h8l2 2v9H3zM5.5 2.5v4h5v-4M5 13.5V10h6v3.5"/></svg>Code Vault<span class="ext" id="x3">↗</span><span class="extl" id="xl3">new tab ↗</span></div>
+      </div>
+      <div class="content" id="content">
+        <h4>Round 3 · Loops</h4><div class="sub">Course materials › Week 3</div>
+        <div class="ln" style="width:92%"></div><div class="ln" style="width:84%"></div><div class="ln" style="width:88%"></div><div class="ln" style="width:60%"></div>
+        <div class="blk"></div>
+        <div class="ln" style="width:90%"></div><div class="ln" style="width:78%"></div><div class="ln" style="width:85%"></div>
+        <div class="blk" style="height:90px"></div>
+        <div class="ln" style="width:88%"></div><div class="ln" style="width:70%"></div><div class="ln" style="width:82%"></div><div class="ln" style="width:64%"></div>
+        <div class="blk"></div>
+        <div class="ln" style="width:86%"></div><div class="ln" style="width:74%"></div>
+      </div>
+      <div id="top">↑ Back to top</div>
+    </div>
+    <div id="focus"></div>
+  </div>
+  <div id="key"><span class="cap">Tab</span><span class="mono" id="keyl">Keyboard walkthrough</span></div>
+
+  <div class="led">
+    <div class="hd"><span class="mono" style="color:var(--ink)" id="ledh">Expert review</span><span class="mono" id="ledc">0 found</span></div>
+    <div id="rows"></div>
+    <div class="tally" id="tally">
+      <div id="sqs"></div>
+      <div class="tl" id="tl">5 × minor</div>
+      <div class="tc mono" id="tc">rated on their own</div>
+    </div>
+  </div>
+  <div id="head">Minor issues.<br><span>Major impact.</span></div>
+  <svg id="lead" width="960" height="540"><path id="lp" fill="none" stroke="#57606A" stroke-width="1"/><circle id="lc" r="2.5" fill="#0D1117"/></svg>
+  <div class="grain"></div>
+</div>
+<script src="engine.js"></script>
+<script>
+var ISS = [
+  'Active page shown by colour alone',
+  'Focus ring barely visible',
+  'External links not announced',
+  'Sidebar scrolls out of view',
+  'No quick way back to the top'
+];
+var rows = document.getElementById('rows');
+ISS.forEach(function (t, i) { var r = document.createElement('div'); r.className = 'row'; r.id = 'r' + i; r.innerHTML = '<span class="n">0' + (i + 1) + '</span><span class="t">' + t + '</span><span class="sev" id="s' + i + '"></span>'; rows.appendChild(r); });
+var sqs = document.getElementById('sqs');
+for (var k = 0; k < 5; k++) { var q = document.createElement('div'); q.className = 'sq'; q.id = 'q' + k; sqs.appendChild(q); }
+
+// ---------- timeline (seconds). Paced so each beat can be read. ----------
+var STEP = [1.0, 2.3, 3.6, 4.9, 6.2];          // before: Tab moves the focus, an issue is logged
+var TALLY_IN = 6.9, MERGE_A = 7.9, MERGE_B = 9.1; // five minors → one major barrier (slow merge)
+var AFTER = 10.0;                               // the walkthrough again, with the fixes
+var FIX = [10.6, 11.5, 12.4, 13.3, 14.2];
+var HEAD = 15.0, RESET_A = 17.0, RESET_B = 17.8, DUR = 18.2;
+
+// focus ring geometry in .win-local coordinates (the ring lives inside .win)
+var BODY = 34;
+function itemRect(i) { // measured from the real sidebar row, so the ring always wraps its full width
+  var b = E.$('.body'), sd = E.$('#side'), el = E.$('#i' + i);
+  return { x: b.offsetLeft + sd.offsetLeft + el.offsetLeft, y: b.offsetTop + sd.offsetTop + el.offsetTop, w: el.offsetWidth, h: el.offsetHeight };
+}
+var PAGE = { x: 214, y: BODY + 300, w: 284, h: 70 };
+function topRect() { var b = E.$('.body'), el = E.$('#top'); return { x: b.offsetLeft + el.offsetLeft, y: b.offsetTop + el.offsetTop, w: el.offsetWidth, h: el.offsetHeight }; }
+function winOrigin() { var w = E.$('.win'); return { x: w.offsetLeft + w.clientLeft, y: w.offsetTop + w.clientTop }; }
+function rowY(i) { var r = E.$('#r' + i); return r.getBoundingClientRect ? (E.$('.led').offsetTop + r.offsetTop + r.offsetHeight / 2) : 0; }
+
+window.COVER = { dur: DUR, poster: 15.6, frame: function (t) {
+  var reset = E.seg(t, RESET_A, RESET_B, E.inOut);
+  var live = t < RESET_A;
+  var found = 0; STEP.forEach(function (s) { if (t >= s + 0.35 && live) found++; });
+  var fixed = 0; FIX.forEach(function (s) { if (t >= s && live) fixed++; });
+  var isAfter = t >= AFTER && live;
+
+  // ----- page scroll: before, the sidebar scrolls away with the page; after, it stays put
+  var sc1 = E.seg(t, STEP[3] - 0.3, STEP[3] + 0.5, E.inOut) * (1 - E.seg(t, AFTER - 1.2, AFTER - 0.4, E.inOut));
+  var sc2 = E.seg(t, FIX[3] - 0.2, FIX[3] + 0.6, E.inOut) * (1 - reset);
+  var contentScroll = 150 * Math.max(sc1, sc2), sideScroll = 150 * sc1;
+  E.css('#content', { transform: 'translateY(' + (-contentScroll) + 'px)' });
+  E.css('#side', { transform: 'translateY(' + (-sideScroll) + 'px)' });
+
+  // ----- the fixes, shown in the UI
+  var f1 = E.seg(t, FIX[0], FIX[0] + 0.45) * (1 - reset);
+  E.css('#act', { opacity: 1 - 0.88 * f1 });
+  E.css('#i1t', { color: f1 > 0.5 ? '#0D1117' : '#fff', fontWeight: f1 > 0.5 ? '700' : '500' });
+  E.$('#i1svg').style.stroke = f1 > 0.5 ? '#3D6FB0' : '#fff';
+  E.css('#actbar', { transform: 'scaleY(' + f1 + ')', opacity: f1 });
+  var f3 = E.seg(t, FIX[2], FIX[2] + 0.45) * (1 - reset);
+  E.css('#x3', { opacity: 1 - f3 }); E.css('#xl3', { opacity: f3 });
+  var f5 = E.seg(t, FIX[4] - 0.35, FIX[4] + 0.15, E.out) * (1 - reset);   // button settles before the ring arrives
+  E.css('#top', { opacity: f5, transform: 'translateY(' + (1 - f5) * 8 + 'px)' });
+
+  // ----- keyboard focus ring: faint dotted (before) → clear 2px ink (after)
+  var R, fo = 1, solid = false, tgtB = [1, 2, 3, 'page', 'page'], tgtA = [1, 2, 3, 3, 'top'];
+  function rectOf(tg) { return tg === 'page' ? PAGE : tg === 'top' ? topRect() : itemRect(tg); }
+  if (t < AFTER) {
+    var k = -1; STEP.forEach(function (s, i) { if (t >= s - 0.3) k = i; });
+    if (k < 0) { fo = 0; k = 0; }
+    var p = E.seg(t, STEP[k] - 0.3, STEP[k] + 0.1, E.inOut), A = rectOf(tgtB[Math.max(0, k - 1)]), B = rectOf(tgtB[k]);
+    R = { x: E.lerp(A.x, B.x, p), y: E.lerp(A.y, B.y, p), w: E.lerp(A.w, B.w, p), h: E.lerp(A.h, B.h, p) };
+    if (tgtB[k] !== 'page' || p < 1) R.y -= (tgtB[k] === 'page' ? 0 : sideScroll);
+    fo *= 1 - E.seg(t, STEP[4] + 1.2, STEP[4] + 1.7);
+  } else {
+    var j = -1; FIX.forEach(function (s, i) { if (t >= s - 0.25) j = i; });
+    if (j < 0) { fo = 0; j = 0; }
+    solid = true;
+    var pp = E.seg(t, FIX[j] - 0.25, FIX[j] + 0.1, E.inOut), A2 = rectOf(tgtA[Math.max(0, j - 1)]), B2 = rectOf(tgtA[j]);
+    R = { x: E.lerp(A2.x, B2.x, pp), y: E.lerp(A2.y, B2.y, pp), w: E.lerp(A2.w, B2.w, pp), h: E.lerp(A2.h, B2.h, pp) };
+    fo *= 1 - reset;
+  }
+  var toTop = solid && t >= FIX[4] - 0.25 ? E.seg(t, FIX[4] - 0.25, FIX[4] + 0.1, E.inOut) : 0;
+  var off = solid ? E.lerp(1, 3, toTop) : 1, bw = solid ? 2 : 1;   // tight around sidebar rows (they sit 3px apart), roomier around the button   // ring sits `off` px outside the target, border included in the box
+  E.css('#focus', { boxSizing: 'border-box', left: (R.x - off - bw) + 'px', top: (R.y - off - bw) + 'px', width: (R.w + (off + bw) * 2) + 'px', height: (R.h + (off + bw) * 2) + 'px', opacity: fo,
+    border: solid ? '2px solid #0D1117' : '1px dotted #C2C8D0', borderRadius: (solid && t >= FIX[4] - 0.25 ? E.lerp(9, 19, E.seg(t, FIX[4] - 0.25, FIX[4] + 0.1)) : (solid ? 9 : 5)) + 'px', boxShadow: 'none' });
+  var tabT = (t < AFTER ? STEP : FIX).some(function (s) { return t >= s - 0.3 && t < s - 0.1; });
+  E.css('#key .cap', { transform: tabT ? 'translateY(1px)' : 'none', borderBottomWidth: tabT ? '1px' : '2px' });
+  E.set('#keyl', isAfter ? 'Keyboard walkthrough · with the fixes' : 'Keyboard walkthrough · before');
+
+  // ----- ledger
+  for (var i = 0; i < 5; i++) {
+    var on = E.seg(t, STEP[i] + 0.25, STEP[i] + 0.7) * (1 - reset);
+    E.css('#r' + i, { opacity: 0.18 + 0.82 * on });
+    E.css('#r' + i + ' .t', { color: on > 0.5 ? '#0D1117' : '#9AA2AC' });
+    var fxd = t >= FIX[i] && live, sv = E.$('#s' + i);
+    sv.textContent = fxd ? 'Fixed' : (on > 0.5 ? 'Minor' : '—');
+    E.css(sv, { background: fxd ? '#0D1117' : 'transparent', color: fxd ? '#fff' : '#57606A', boxShadow: fxd ? 'none' : (on > 0.5 ? 'inset 0 0 0 1px #C9CED6' : 'none') });
+  }
+  E.set('#ledh', isAfter ? 'Prioritised fixes' : 'Expert review');
+  E.set('#ledc', isAfter ? fixed + ' / 5 fixed' : found + ' found');
+
+  // ----- leader line: focused spot → its ledger row (before only)
+  var W0 = winOrigin(), li = -1; STEP.forEach(function (s, i) { if (t >= s + 0.1 && t < s + 1.1) li = i; });
+  if (li >= 0 && t < AFTER) {
+    var lp = E.seg(t, STEP[li] + 0.1, STEP[li] + 0.6, E.out), lo = 1 - E.seg(t, STEP[li] + 0.8, STEP[li] + 1.1);
+    var sx = W0.x + R.x + R.w + 3, sy = W0.y + R.y + R.h / 2, ex = 600, ey = rowY(li), path = E.$('#lp');
+    path.setAttribute('d', 'M' + sx + ' ' + sy + ' C' + (sx + 60) + ' ' + sy + ' ' + (ex - 60) + ' ' + ey + ' ' + ex + ' ' + ey);
+    var L = path.getTotalLength(); path.setAttribute('stroke-dasharray', L); path.setAttribute('stroke-dashoffset', L * (1 - lp));
+    path.setAttribute('opacity', lo * 0.7); E.$('#lc').setAttribute('cx', ex); E.$('#lc').setAttribute('cy', ey); E.$('#lc').setAttribute('opacity', lp > 0.95 ? lo : 0);
+  } else { E.$('#lp').setAttribute('opacity', 0); E.$('#lc').setAttribute('opacity', 0); }
+
+  // ----- tally: hold on "5 × minor", then a slow merge into "1 major barrier"
+  var merge = E.seg(t, MERGE_A, MERGE_B, E.inOut);
+  E.css('#tally', { opacity: E.seg(t, TALLY_IN, TALLY_IN + 0.4) * (1 - E.seg(t, HEAD - 0.6, HEAD - 0.1)) * (1 - reset) });
+  for (var q2 = 0; q2 < 5; q2++) {
+    var x = E.lerp(q2 * 20, q2 * (96 / 5), merge), w = E.lerp(14, 96 / 5 + 0.5, merge);
+    E.css('#q' + q2, { left: x + 'px', width: w + 'px', opacity: t >= STEP[q2] + 0.35 ? 1 : 0 });
+  }
+  // text crossfades instead of snapping: old label out during the first part of the merge, new label in at the end
+  var outT = E.seg(t, MERGE_A, MERGE_A + 0.45), inT = E.seg(t, MERGE_B - 0.45, MERGE_B + 0.1);
+  var showNew = t >= MERGE_A + 0.45;
+  E.set('#tl', showNew ? '= 1 major barrier' : found + ' × minor');
+  E.set('#tc', showNew ? 'for keyboard & screen-reader users' : 'each rated minor on its own');
+  var o = showNew ? inT : 1 - outT;
+  E.css('#tl', { opacity: o, transform: 'translateY(' + (1 - o) * (showNew ? 6 : -6) + 'px)' });
+  E.css('#tc', { opacity: o });
+
+  // ----- headline
+  var h = E.seg(t, HEAD, HEAD + 0.6) * (1 - reset);
+  E.css('#head', { opacity: h, transform: 'translateY(' + (1 - h) * 8 + 'px)' });
+} };
+</script>
+</body></html>

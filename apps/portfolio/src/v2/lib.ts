@@ -21,7 +21,7 @@ export function useIsDark() {
 }
 
 /** Reader mode: the letter-style homepage. Remembered per viewer, overridable with ?mode=reader. */
-const READER_KEY = "v2-reader-mode";
+export const READER_KEY = "v2-reader-mode";
 export function useReaderMode(): [boolean, (v: boolean) => void] {
   const [on, setOn] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
@@ -44,3 +44,10 @@ export const RESUME_URL = `${import.meta.env.BASE_URL}${RESUME_FILE}`;
 export const LINKEDIN = "https://linkedin.com/in/sumitnayyar-ux";
 export const GITHUB = "https://github.com/skn1999";
 export const SUBSTACK_URL = "https://sumit6131.substack.com";
+
+/** Quick actions (⌘K): the dock's key and anything else can open the palette by firing this event. */
+export const QUICK_ACTIONS_EVENT = "v2:quick-actions";
+export const openQuickActions = () => window.dispatchEvent(new Event(QUICK_ACTIONS_EVENT));
+/** "⌘K" on Apple devices, "Ctrl K" elsewhere. */
+export const shortcutLabel = () =>
+  typeof navigator !== "undefined" && /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent) ? "⌘K" : "Ctrl K";
