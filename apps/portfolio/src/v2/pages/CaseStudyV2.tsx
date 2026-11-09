@@ -5,6 +5,8 @@ import Shell from "../components/Shell";
 import { SIGNATURES } from "../components/signatures";
 import ChromeSeg from "../components/ChromeSeg";
 import { CASE_BY_SLUG, type CaseStudy } from "../data/cases";
+import { WALL_BY_SLUG } from "../data/caseWalls";
+import CaseWall from "../components/CaseWall";
 import { asset, EMAIL, RESUME_URL, SITE_URL } from "../lib";
 import "../case.css";
 
@@ -179,6 +181,8 @@ const CASE_OG_IMAGES: Record<string, string> = {
 export default function CaseStudyV2({ slug }: { slug: string }) {
   const c = CASE_BY_SLUG[slug];
   const Sig = c.signature ? SIGNATURES[c.signature] : null;
+  // The four homepage cases use the process-wall page (cover, 30 sec read / Full read).
+  const wall = WALL_BY_SLUG[slug];
   const plain = c.dek.replace(/<[^>]+>/g, "").replace(/\[[^\]]*\]/g, "").replace(/\s+/g, " ").trim();
   const caseTitle = `${c.title} — Sumit Nayyar`;
   const caseUrl = `${SITE_URL}/projects/${slug}`;
@@ -200,13 +204,17 @@ export default function CaseStudyV2({ slug }: { slug: string }) {
         <meta name="twitter:description" content={plain} />
         <meta name="twitter:image" content={ogImg} />
       </Helmet>
-      <div className="v2-cs" key={slug}>
-        <Header c={c} />
-        <Glance c={c} />
-        {Sig && <Sig />}
-        <LongRead c={c} />
-        <Footer c={c} />
-      </div>
+      {wall ? (
+        <CaseWall key={slug} c={c} w={wall} footer={<Footer c={c} />} />
+      ) : (
+        <div className="v2-cs" key={slug}>
+          <Header c={c} />
+          <Glance c={c} />
+          {Sig && <Sig />}
+          <LongRead c={c} />
+          <Footer c={c} />
+        </div>
+      )}
     </Shell>
   );
 }
